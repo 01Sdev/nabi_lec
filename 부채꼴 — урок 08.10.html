@@ -1,0 +1,667 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>부채꼴 — урок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Unbounded:wght@500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&display=swap">
+<style>
+/* Layout: one reading column (~760px), sections stacked like a workbook; colored boxes by role */
+:root{
+  --bg:#f5f7fb; --paper:#ffffff; --ink:#1b2333; --muted:#5b6578; --line:#d9dfea;
+  --blue:#2f6fd6; --blue-bg:#e8f0fd;
+  --coral:#e2574c; --coral-bg:#fdecea;
+  --green:#1f9a6a; --green-bg:#e4f5ee;
+  --amber:#c98a12; --amber-bg:#fdf3dc;
+  --sector:#9fd3e6; --sector2:#f3b6b4; --sector3:#c4bde6;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11151d; --paper:#1a202b; --ink:#e7ebf3; --muted:#9aa4b8; --line:#2d3646;
+  --blue:#7aa8f5; --blue-bg:#1c2a44; --coral:#f2867c; --coral-bg:#3a2122;
+  --green:#5fd0a2; --green-bg:#16332a; --amber:#f0c060; --amber-bg:#352a12;
+  --sector:#2f6d82; --sector2:#7a3b3a; --sector3:#4b4380; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11151d; --paper:#1a202b; --ink:#e7ebf3; --muted:#9aa4b8; --line:#2d3646;
+  --blue:#7aa8f5; --blue-bg:#1c2a44; --coral:#f2867c; --coral-bg:#3a2122;
+  --green:#5fd0a2; --green-bg:#16332a; --amber:#f0c060; --amber-bg:#352a12;
+  --sector:#2f6d82; --sector2:#7a3b3a; --sector3:#4b4380; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{text-wrap:balance;line-height:1.25;margin:0}
+h1{font:700 clamp(26px,5vw,36px)/1.2 var(--f-disp)}
+h2{font:700 21px/1.3 var(--f-disp);display:flex;gap:10px;align-items:baseline}
+h2 .n{color:var(--muted);font-size:15px}
+h3{font-size:17px;font-weight:700}
+p{margin:0}
+.kr{font-family:var(--f-kr)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border:1px solid var(--line);border-radius:99px;color:var(--muted);background:var(--paper)}
+.lead{color:var(--muted);font-size:17px;max-width:62ch}
+section{display:flex;flex-direction:column;gap:16px}
+.m{font-family:var(--f-math);font-style:italic}
+.mr{font-family:var(--f-math)}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-family:var(--f-math);line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 3px}
+.box{border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.box .tag{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.analogy{background:var(--amber-bg)} .analogy .tag{color:var(--amber)}
+.orig{background:var(--paper);border:1px solid var(--line)} .orig .tag{color:var(--muted)}
+.warn{background:var(--coral-bg)} .warn .tag{color:var(--coral)}
+.ex{background:var(--green-bg)} .ex .tag{color:var(--green)}
+.info{background:var(--blue-bg)} .info .tag{color:var(--blue)}
+.tr{color:var(--muted);font-size:15px}
+.formula{font-family:var(--f-math);font-size:20px;padding:6px 0;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.card b{font-family:var(--f-kr);font-size:17px}
+.card i{font-style:normal;color:var(--blue);font-weight:600;font-size:14px}
+.card small{color:var(--muted);font-size:13px;line-height:1.4}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){.two{grid-template-columns:1fr}}
+.two>*{min-width:0}
+figure{margin:0;display:flex;flex-direction:column;gap:6px;align-items:center}
+figure svg{width:100%;max-width:300px;height:auto}
+figcaption{font-size:13px;color:var(--muted);text-align:center;max-width:52ch}
+svg text{fill:var(--ink);font-family:var(--f-math);font-size:13px}
+svg .lbl{font-style:italic}
+ol.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.key{background:var(--coral-bg);border-radius:6px;padding:1px 6px}
+/* lab */
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+@media (max-width:620px){.lab{grid-template-columns:1fr}}
+.lab label{font-size:14px;color:var(--muted);display:flex;justify-content:space-between}
+.lab input[type=range]{width:100%;accent-color:var(--blue)}
+.ctrl{display:flex;flex-direction:column;gap:12px}
+.readout{display:flex;flex-direction:column;gap:8px;font-variant-numeric:tabular-nums}
+.ro{display:flex;justify-content:space-between;gap:8px;border-bottom:1px dashed var(--line);padding-bottom:4px;flex-wrap:wrap}
+.ro span:last-child{font-family:var(--f-math);font-size:17px}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.status{font-weight:600;color:var(--green);min-height:1.5em}
+/* problems */
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pn{font:700 22px var(--f-disp);color:var(--blue)}
+.badge{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--bg);border:1px solid var(--line);font-family:var(--f-kr)}
+.badge.rep{background:var(--green-bg);color:var(--green);border-color:transparent}
+.typehead{background:var(--blue-bg);border-radius:12px;padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.typehead h3{font-family:var(--f-kr)}
+.choices{display:flex;flex-wrap:wrap;gap:6px 20px;font-family:var(--f-math)}
+details{border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details.sol summary{color:var(--green)}
+details>div{padding-top:8px;display:flex;flex-direction:column;gap:6px}
+.ans{font-weight:700;color:var(--green)}
+.ov{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:480px;background:var(--paper)}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--bg);font-size:14px}
+ul.mist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.ol{text-decoration:overline}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:14px">
+  <div class="chips"><span class="chip kr">중1 수학</span><span class="chip kr">II 평면도형의 성질 › 2 원과 부채꼴</span><span class="chip">стр. 137 · 145–149</span></div>
+  <h1><span class="kr">부채꼴의 호의 길이와 넓이</span><br><span style="font-size:.6em;color:var(--muted)">Длина дуги и площадь сектора</span></h1>
+  <p class="lead">Сектор — это «кусок пиццы» из круга. Здесь разберём формулы со стр. 137 и все задачи 431–447 (стр. 145–149): что считать, в каком порядке и где обычно ошибаются.</p>
+</header>
+
+<!-- 0 vocabulary -->
+<section>
+  <h2><span class="n">0</span>Словарь · <span class="kr">단어장</span></h2>
+  <p class="tr">Эти слова будут в каждой задаче. Корейский текст на контрольной — именно такой.</p>
+  <div class="grid">
+    <div class="card"><b>원</b><i>круг, окружность</i><small>Все точки на одном расстоянии от центра O.</small></div>
+    <div class="card"><b>부채꼴</b><i>сектор</i><small>Часть круга между двумя радиусами. «부채» = веер.</small></div>
+    <div class="card"><b>호</b><i>дуга</i><small>Кусок окружности. Пишут <span class="mr">AB</span> с дужкой сверху.</small></div>
+    <div class="card"><b>현</b><i>хорда</i><small>Отрезок между двумя точками окружности (прямой).</small></div>
+    <div class="card"><b>중심각</b><i>центральный угол</i><small>Угол с вершиной в центре O, например ∠AOB.</small></div>
+    <div class="card"><b>반지름</b><i>радиус</i><small><span class="m">r</span>. От центра до окружности.</small></div>
+    <div class="card"><b>지름</b><i>диаметр</i><small>Хорда через центр, = 2<span class="m">r</span>.</small></div>
+    <div class="card"><b>원주율</b><i>число π</i><small>Длина окружности ÷ диаметр ≈ 3,14.</small></div>
+    <div class="card"><b>둘레의 길이</b><i>длина границы, периметр</i><small>Сумма длин всех линий вокруг фигуры.</small></div>
+    <div class="card"><b>넓이</b><i>площадь</i><small><span class="m">S</span>. Единицы: cm².</small></div>
+    <div class="card"><b>정비례한다</b><i>прямо пропорционально</i><small>Угол ×2 → величина тоже ×2.</small></div>
+    <div class="card"><b>활꼴</b><i>сегмент круга</i><small>Часть круга между хордой и дугой.</small></div>
+    <div class="card"><b>색칠한 부분</b><i>закрашенная часть</i><small>То, что нужно посчитать.</small></div>
+    <div class="card"><b>평행 ( ∥ )</b><i>параллельны</i><small>Даёт равные углы: 동위각, 엇각.</small></div>
+    <div class="card"><b>동위각 / 엇각</b><i>соответственные / накрест лежащие углы</i><small>При параллельных прямых они равны.</small></div>
+    <div class="card"><b>이등변삼각형</b><i>равнобедренный треугольник</i><small>△OAB: OA = OB = <span class="m">r</span>, углы при основании равны.</small></div>
+    <div class="card"><b>서로소</b><i>взаимно простые</i><small>Отношение надо сократить до конца: 2:6 → 1:3.</small></div>
+    <div class="card"><b>옳지 않은 것</b><i>то, что НЕверно</i><small>Ищем ошибку, а не правильный ответ!</small></div>
+    <div class="card"><b>구하시오</b><i>найдите</i><small>Ответ — число, без вариантов.</small></div>
+  </div>
+</section>
+
+<!-- 1 warm-up -->
+<section>
+  <h2><span class="n">1</span>Разминка · <span class="kr">원의 둘레와 넓이</span></h2>
+  <div class="box orig">
+    <span class="tag">Учебник, стр. 137 · ①</span>
+    <p class="kr">(1) 원주율 : 원에서 지름의 길이에 대한 둘레의 길이의 비율 ⇒ (원주율) = <span class="fr"><span>(원의 둘레의 길이)</span><span>(원의 지름의 길이)</span></span> = π</p>
+    <p class="tr">π — во сколько раз длина окружности больше диаметра.</p>
+    <p class="kr">(2) 반지름의 길이가 <span class="m">r</span>인 원의 둘레의 길이를 <span class="m">l</span>, 넓이를 <span class="m">S</span>라 하면</p>
+    <div class="formula"><span><span class="m">l</span> = 2π<span class="m">r</span></span><span style="width:24px"></span><span><span class="m">S</span> = π<span class="m">r</span>²</span></div>
+    <p class="tr">Для круга радиуса <span class="m">r</span>: длина окружности <span class="m">l</span> = 2π<span class="m">r</span>, площадь <span class="m">S</span> = π<span class="m">r</span>².</p>
+  </div>
+  <div class="box info">
+    <span class="tag">Вспомни: что пропорционально углу (тип 74–76)</span>
+    <p class="kr">한 원에서 중심각의 크기에 <b>정비례하는 것</b> → 호의 길이, 부채꼴의 넓이</p>
+    <p class="kr">정비례하지 <b>않는</b> 것 → 현의 길이, 삼각형의 넓이, 활꼴의 넓이</p>
+    <p>В одном круге: угол ×2 → дуга ×2 и площадь сектора ×2. А <b>хорда</b> — нет! Но равные углы всё равно дают равные хорды (и наоборот).</p>
+  </div>
+</section>
+
+<!-- 2 concept -->
+<section>
+  <h2><span class="n">2</span>Сектор = доля круга · <span class="kr">부채꼴의 호와 넓이</span></h2>
+  <div class="box analogy">
+    <span class="tag">Представь</span>
+    <p>Пицца радиуса <span class="m">r</span> — это 360°. Кусок с углом 90° — это <span class="fr"><span>90</span><span>360</span></span> = ¼ пиццы. Значит, и корочка (дуга), и сам сыр (площадь) — тоже ровно ¼ от целой пиццы.</p>
+    <p>Вся идея: <b>сектор = (вся пицца) × <span class="fr"><span><span class="m">x</span></span><span>360</span></span></b>.</p>
+  </div>
+  <div class="two">
+    <div class="box orig">
+      <span class="tag">Учебник, стр. 137 · ②(1)</span>
+      <p class="kr">반지름의 길이가 <span class="m">r</span>, 중심각의 크기가 <span class="m">x</span>°인 부채꼴의 호의 길이를 <span class="m">l</span>, 넓이를 <span class="m">S</span>라 하면</p>
+      <div class="formula">① <span class="m">l</span> = 2π<span class="m">r</span> × <span class="fr"><span class="m">x</span><span>360</span></span></div>
+      <div class="formula">② <span class="m">S</span> = π<span class="m">r</span>² × <span class="fr"><span class="m">x</span><span>360</span></span></div>
+      <p class="tr">Радиус <span class="m">r</span>, центральный угол <span class="m">x</span>°: длина дуги <span class="m">l</span> и площадь <span class="m">S</span> — доля <span class="fr"><span class="m">x</span><span>360</span></span> от целого круга.</p>
+    </div>
+    <figure><svg id="figConcept" viewBox="0 0 260 230"></svg><figcaption>Жёлтый сектор: угол <span class="m">x</span>°, дуга <span class="m">l</span> (коралловая), радиус <span class="m">r</span>.</figcaption></figure>
+  </div>
+  <div class="two">
+    <div class="box orig">
+      <span class="tag">Учебник, стр. 137 · ②(2)</span>
+      <p class="kr">반지름의 길이가 <span class="m">r</span>, 호의 길이가 <span class="m">l</span>인 부채꼴의 넓이를 <span class="m">S</span>라 하면</p>
+      <div class="formula"><span class="m">S</span> = <span class="fr"><span>1</span><span>2</span></span><span class="m">rl</span></div>
+      <p class="tr">Если известны радиус и дуга, угол не нужен: <span class="m">S</span> = ½ · <span class="m">r</span> · <span class="m">l</span>.</p>
+    </div>
+    <div class="box analogy">
+      <span class="tag">Почему так</span>
+      <p>Разрежь сектор на очень тонкие кусочки и сложи их «валетом». Получится почти прямоугольник: высота <span class="m">r</span>, ширина <span class="m">l</span>÷2. Площадь = <span class="m">r</span> × <span class="fr"><span class="m">l</span><span>2</span></span>. Как у треугольника: ½ × основание (<span class="m">l</span>) × высота (<span class="m">r</span>).</p>
+      <p class="tr">Проверка: <span class="m">S</span> = π<span class="m">r</span>²·<span class="fr"><span class="m">x</span><span>360</span></span> = ½<span class="m">r</span>·(2π<span class="m">r</span>·<span class="fr"><span class="m">x</span><span>360</span></span>) = ½<span class="m">rl</span> ✓</p>
+    </div>
+  </div>
+  <div class="box ex">
+    <span class="tag">Пример</span>
+    <p>Радиус 6 cm, угол 120°.</p>
+    <p><b>Шаг 1.</b> Доля круга: <span class="fr"><span>120</span><span>360</span></span> = <span class="fr"><span>1</span><span>3</span></span>.</p>
+    <p><b>Шаг 2.</b> Дуга: <span class="m">l</span> = 2π·6 × <span class="fr"><span>1</span><span>3</span></span> = 4π cm.</p>
+    <p><b>Шаг 3.</b> Площадь: <span class="m">S</span> = π·36 × <span class="fr"><span>1</span><span>3</span></span> = 12π cm².</p>
+    <p><b>Шаг 4.</b> Проверка через ½<span class="m">rl</span>: ½·6·4π = 12π ✓</p>
+  </div>
+  <div class="box warn">
+    <span class="tag">Осторожно</span>
+    <p>π в ответе обычно <b>оставляют буквой</b>: 12π cm², а не 37,68. Не подставляй 3,14, если в вариантах стоит π.</p>
+    <p>Не путай <span class="m">r</span>² и 2<span class="m">r</span>: площадь — π<span class="m">r</span>², дуга — 2π<span class="m">r</span>.</p>
+  </div>
+</section>
+
+<!-- 3 lab -->
+<section>
+  <h2><span class="n">3</span>Лаборатория · <span class="kr">실험실</span></h2>
+  <p class="tr">Двигай ползунки. Смотри, как меняются дуга и площадь — и что происходит с хордой.</p>
+  <div class="lab">
+    <figure><svg id="labSvg" viewBox="0 0 260 260"></svg></figure>
+    <div class="ctrl">
+      <label for="rS"><span>반지름 <span class="m">r</span></span><b id="rV">6</b></label>
+      <input id="rS" type="range" min="1" max="12" value="6">
+      <label for="xS"><span>중심각 <span class="m">x</span>°</span><b id="xV">120</b></label>
+      <input id="xS" type="range" min="5" max="355" step="5" value="120">
+      <div class="readout">
+        <div class="ro"><span>доля <span class="fr"><span class="m">x</span><span>360</span></span></span><span id="oFrac"></span></div>
+        <div class="ro"><span>호 <span class="m">l</span></span><span id="oL" style="color:var(--coral)"></span></div>
+        <div class="ro"><span>넓이 <span class="m">S</span></span><span id="oS"></span></div>
+        <div class="ro"><span>½<span class="m">rl</span></span><span id="oH"></span></div>
+        <div class="ro"><span>현 (хорда)</span><span id="oC" style="color:var(--blue)"></span></div>
+      </div>
+      <div class="btns"><button id="b60">60°</button><button id="b90">90°</button><button id="bDbl">Угол ×2</button></div>
+      <p class="status" id="labStatus"></p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 recipe -->
+<section>
+  <h2><span class="n">4</span>Рецепт решения · <span class="kr">풀이 순서</span></h2>
+  <div class="two">
+    <div class="box info">
+      <span class="tag">Тип A · отношения (431–442)</span>
+      <ol class="steps">
+        <li>Обозначь неизвестный угол буквой (<span class="m">x</span> или <span class="m">a</span>).</li>
+        <li>Найди <b>прямую линию</b> (диаметр, 180°) или <b>прямой угол</b> (□, 90°) и составь уравнение.</li>
+        <li>Есть ∥? Ищи <span class="kr">동위각/엇각</span> и равнобедренный △ с OA = OB.</li>
+        <li><span class="key">Отношение площадей / дуг = отношение углов. Хорды — НЕ пропорциональны!</span></li>
+      </ol>
+    </div>
+    <div class="box ex">
+      <span class="tag">Тип B · формулы (443–447)</span>
+      <ol class="steps">
+        <li>Выпиши, что дано: <span class="m">r</span>? <span class="m">x</span>? <span class="m">l</span>? <span class="m">S</span>?</li>
+        <li>Нет <span class="m">r</span>? Найди его из <span class="m">l</span> = 2π<span class="m">r</span>·<span class="fr"><span class="m">x</span><span>360</span></span>.</li>
+        <li>Есть <span class="m">r</span> и <span class="m">l</span> → сразу <span class="m">S</span> = ½<span class="m">rl</span>.</li>
+        <li>Проверь, что ответ с π и в правильных единицах.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 5 problems -->
+<section>
+  <h2><span class="n">5</span>Задачи · <span class="kr">유형 연습</span> стр. 145–149</h2>
+  <p class="tr">Рисунки перерисованы по учебнику — пропорции могут немного отличаться. Сначала попробуй сам, потом открой подсказку, и только потом решение.</p>
+
+  <div class="typehead">
+    <h3>74 중심각의 크기와 부채꼴의 넓이</h3>
+    <p class="kr">한 원에서 부채꼴의 넓이는 중심각의 크기에 정비례한다. ⇒ (부채꼴 AOB의 넓이) : (부채꼴 DOC의 넓이) = ∠AOB : ∠DOC</p>
+    <p class="tr">Площади секторов относятся как их центральные углы.</p>
+  </div>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">431</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림에서 ∠EOF : ∠AOB = 1 : 2, <span class="ol">BC</span>(호) = <span class="ol">EF</span>(호), 부채꼴 EOF의 넓이는 S₁, 부채꼴 COD의 넓이는 S₂이다. S₁ : S₂ = <span class="m">a</span> : <span class="m">b</span>일 때, <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오. (단, <span class="m">a</span>, <span class="m">b</span>는 서로소이다.)</p>
+    <p class="tr">∠EOF : ∠AOB = 1 : 2, дуга BC = дуга EF. S₁ — сектор EOF, S₂ — сектор COD. S₁ : S₂ = a : b (несократимо). Найдите a + b.</p>
+    <figure><svg data-fig="431" viewBox="0 0 260 240"></svg><figcaption>AD — прямая (диаметр), ∠COD = 90°.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Пусть ∠EOF = <span class="m">a</span>°. Тогда ∠AOB = 2<span class="m">a</span>, а ∠BOC = <span class="m">a</span> (равные дуги → равные углы). Что лежит на прямой AD?</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) ∠EOF = <span class="m">a</span>, ∠AOB = 2<span class="m">a</span>, ∠BOC = ∠EOF = <span class="m">a</span> (호 BC = 호 EF).</p>
+      <p>2) A, O, D на одной прямой: ∠AOB + ∠BOC + ∠COD = 180° → 2<span class="m">a</span> + <span class="m">a</span> + 90 = 180 → <span class="m">a</span> = 30°.</p>
+      <p>3) S₁ : S₂ = ∠EOF : ∠COD = 30 : 90 = 1 : 3.</p>
+      <p class="ans">Ответ: a + b = 1 + 3 = 4</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">432</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림에서 4∠AOD = ∠BOC 이고, 부채꼴 AOB의 넓이를 S₁, 부채꼴 BOC의 넓이를 S₂라 할 때, S₁ : S₂의 값을 구하면?</p>
+    <p class="tr">4∠AOD = ∠BOC. S₁ — сектор AOB, S₂ — сектор BOC. Найдите S₁ : S₂.</p>
+    <div class="choices"><span>① 1 : 4</span><span>② 1 : 2</span><span>③ 1 : 3</span><span>④ 2 : 3</span><span>⑤ 2 : 5</span></div>
+    <figure><svg data-fig="432" viewBox="0 0 260 240"></svg><figcaption>AC — диаметр, OD ⟂ (горизонтальный диаметр через B).</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>∠AOD = <span class="m">x</span>. Тогда ∠AOB = 90 − <span class="m">x</span>. А ∠AOB + ∠BOC = 180 (A, O, C на прямой).</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) ∠DOB = 90°, значит ∠AOB = 90° − <span class="m">x</span>.</p>
+      <p>2) AC — прямая: (90 − <span class="m">x</span>) + 4<span class="m">x</span> = 180 → 3<span class="m">x</span> = 90 → <span class="m">x</span> = 30°.</p>
+      <p>3) ∠AOB = 60°, ∠BOC = 120° → S₁ : S₂ = 60 : 120 = 1 : 2.</p>
+      <p class="ans">Ответ: ② 1 : 2</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">433</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림에서 4∠AOD = ∠BOC, 부채꼴 AOB의 넓이는 S₁, 부채꼴 BOC의 넓이는 S₂이다. S₁ : S₂ = <span class="m">a</span> : <span class="m">b</span>일 때, <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오. (단, <span class="m">a</span>, <span class="m">b</span>는 서로소이다.)</p>
+    <p class="tr">То же, что 432, но ответ — число a + b.</p>
+    <figure><svg data-fig="433" viewBox="0 0 260 240"></svg><figcaption>FB и DE — перпендикулярные диаметры, AC — диаметр.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Решается точно так же, как 432.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>∠AOB = 90 − <span class="m">x</span>; (90 − <span class="m">x</span>) + 4<span class="m">x</span> = 180 → <span class="m">x</span> = 30.</p>
+      <p>S₁ : S₂ = 60 : 120 = 1 : 2.</p>
+      <p class="ans">Ответ: a + b = 3</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">434</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 원 O에서 부채꼴 AOB의 넓이는 42이고 원 O의 넓이는 135일 때, ∠<span class="m">x</span> + ∠<span class="m">y</span>의 크기를 구하시오.</p>
+    <p class="tr">Площадь сектора AOB = 42, площадь круга = 135. Найдите ∠x + ∠y.</p>
+    <figure><svg data-fig="434" viewBox="0 0 260 240"></svg><figcaption>P — снаружи круга, A лежит на OP. x = ∠OPB, y = ∠OBP.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Сектор — это доля круга: <span class="fr"><span>42</span><span>135</span></span> = <span class="fr"><span>∠AOB</span><span>360</span></span>. Потом — сумма углов треугольника OPB.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) ∠AOB = 360 × <span class="fr"><span>42</span><span>135</span></span> = 112°.</p>
+      <p>2) В △OPB угол при O — это ∠AOB = 112°.</p>
+      <p>3) <span class="m">x</span> + <span class="m">y</span> = 180 − 112 = 68°.</p>
+      <p class="ans">Ответ: 68°</p>
+    </div></details>
+  </article>
+
+  <div class="typehead">
+    <h3>75 중심각의 크기와 현의 길이</h3>
+    <p class="kr">(1) ∠AOB = ∠COD 이면 <span class="ol">AB</span> = <span class="ol">CD</span> &nbsp; (2) 호 AB = 호 CD 이면 <span class="ol">AB</span> = <span class="ol">CD</span> &nbsp; (3) <span class="ol">AB</span> = <span class="ol">CD</span> 이면 ∠AOB = ∠COD, 호 AB = 호 CD</p>
+    <p class="tr">Равные углы ⇔ равные дуги ⇔ равные хорды. «Равно» работает, «в 2 раза» для хорд — нет.</p>
+  </div>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">435</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림과 같이 <span class="ol">BO</span> ∥ <span class="ol">CD</span>, <span class="ol">BC</span> = 7 cm일 때, <span class="ol">AB</span>의 길이는?</p>
+    <p class="tr">BO ∥ CD, BC = 7 cm. Найдите AB. (AD — диаметр.)</p>
+    <div class="choices"><span>① 3 cm</span><span>② 5 cm</span><span>③ 7 cm</span><span>④ 12 cm</span><span>⑤ 14 cm</span></div>
+    <figure><svg data-fig="435" viewBox="0 0 260 240"></svg><figcaption>Пунктир OC — дорисуй его сам, это ключ.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Проведи OC. △OCD — равнобедренный (OC = OD = r). Найди равные углы с помощью ∥.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) BO ∥ CD, прямая AD: ∠AOB = ∠ODC (<span class="kr">동위각</span>).</p>
+      <p>2) OC = OD → ∠OCD = ∠ODC.</p>
+      <p>3) BO ∥ CD, прямая OC: ∠BOC = ∠OCD (<span class="kr">엇각</span>).</p>
+      <p>4) Значит ∠AOB = ∠BOC → хорды равны: AB = BC = 7 cm.</p>
+      <p class="ans">Ответ: ③ 7 cm</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">436</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 원 O에서 <span class="ol">AB</span>가 지름이고, <span class="ol">CD</span> = 5 cm, <span class="ol">AC</span> ∥ <span class="ol">OD</span>일 때, <span class="ol">BD</span>의 길이를 구하시오.</p>
+    <p class="tr">AB — диаметр, CD = 5 cm, AC ∥ OD. Найдите BD.</p>
+    <figure><svg data-fig="436" viewBox="0 0 260 240"></svg><figcaption>Пунктир OC — дополнительное построение.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Как в 435: провести OC, △OAC — равнобедренный.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) AC ∥ OD, прямая AB: ∠CAO = ∠DOB (<span class="kr">동위각</span>).</p>
+      <p>2) OA = OC → ∠OCA = ∠OAC.</p>
+      <p>3) AC ∥ OD, прямая OC: ∠COD = ∠OCA (<span class="kr">엇각</span>).</p>
+      <p>4) ∠COD = ∠DOB → BD = CD = 5 cm.</p>
+      <p class="ans">Ответ: 5 cm</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">437</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 원 O에서 호 AB = 호 AD, 호 BC = 호 CD이고 <span class="ol">AB</span> = 8 cm, <span class="ol">OB</span> = 5 cm, <span class="ol">BC</span> = 6 cm일 때, 색칠한 부분의 둘레의 길이를 구하시오.</p>
+    <p class="tr">Дуга AB = дуга AD, дуга BC = дуга CD; AB = 8, OB = 5, BC = 6. Найдите периметр закрашенной части.</p>
+    <figure><svg data-fig="437" viewBox="0 0 260 240"></svg><figcaption>Закрашен четырёхугольник ABCD.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Равные дуги → равные хорды. Какие отрезки образуют границу? Нужен ли OB?</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) 호 AB = 호 AD → AD = AB = 8. 호 BC = 호 CD → CD = BC = 6.</p>
+      <p>2) Периметр = AB + BC + CD + DA = 8 + 6 + 6 + 8 = 28 cm.</p>
+      <p>OB = 5 — лишнее данное, ловушка.</p>
+      <p class="ans">Ответ: 28 cm</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">438</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 원 O에서 호 AB = 호 AD = 호 CD이고, <span class="ol">AB</span> = 7 cm, <span class="ol">OB</span> = 5 cm일 때, 색칠한 부분의 둘레의 길이를 구하시오.</p>
+    <p class="tr">Дуги AB = AD = CD; AB = 7, OB = 5. Найдите периметр закрашенной части.</p>
+    <figure><svg data-fig="438" viewBox="0 0 260 240"></svg><figcaption>Закрашен пятиугольник B–A–D–C–O.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Граница: три хорды + два радиуса. Радиусы все равны.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) Равные дуги → AB = AD = CD = 7.</p>
+      <p>2) OB = OC = 5 (радиусы).</p>
+      <p>3) Периметр = 7 · 3 + 5 · 2 = 31 cm.</p>
+      <p class="ans">Ответ: 31 cm</p>
+    </div></details>
+  </article>
+
+  <div class="typehead">
+    <h3>76 중심각의 크기에 정비례하는 것</h3>
+    <p class="kr">(1) 정비례하는 것 ⇒ 호의 길이, 부채꼴의 넓이 &nbsp; (2) 정비례하지 않는 것 ⇒ 현의 길이, 삼각형의 넓이, 활꼴의 넓이</p>
+    <p class="tr">В этих задачах почти всегда неверный вариант — «хорда в N раз больше» или «треугольник в N раз больше».</p>
+  </div>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">439</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+    <p class="kr">다음 중 옳지 <u>않은</u> 것은?</p>
+    <p class="tr">Что из этого НЕверно? (EF = 4 cm, все отмеченные углы по 40°.)</p>
+    <div class="choices"><span>① <span class="ol">CD</span> = 4 cm</span><span>② <span class="ol">EF</span> = <span class="ol">AB</span></span><span>③ <span class="ol">BC</span> = 4 cm</span><span>④ <span class="ol">AC</span> = <span class="ol">BD</span></span><span>⑤ <span class="ol">AC</span> = 8 cm</span></div>
+    <figure><svg data-fig="439" viewBox="0 0 260 240"></svg><figcaption>FD и EC — диаметры; ∠EOF = ∠AOB = ∠BOC = ∠COD = 40°.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Все углы по 40° → все эти хорды по 4 cm. ∠AOC = 80° — в 2 раза больше. А хорда AC — тоже в 2 раза?</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>①②③ верны: равные углы 40° → хорды CD = EF = AB = BC = 4.</p>
+      <p>④ верно: ∠AOC = 80° = ∠BOD → AC = BD.</p>
+      <p>⑤ неверно: хорда не пропорциональна углу. В △ABC: AC &lt; AB + BC = 8.</p>
+      <p class="ans">Ответ: ⑤</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">440</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 원 O에서 <span class="ol">AB</span> = 7 cm일 때, 옳지 <u>않은</u> 것은?</p>
+    <p class="tr">AB = 7 cm. Что НЕверно? (∠GOF = ∠AOB = ∠BOC = ∠COD = ∠DOE = 15°.)</p>
+    <div class="choices"><span>① <span class="ol">DE</span> = 7 cm</span><span>② 호 AE = 4 호 FG</span><span>③ <span class="ol">AC</span> = <span class="ol">CE</span></span><span>④ <span class="ol">FG</span> + <span class="ol">DE</span> = 14 cm</span><span>⑤ <span class="ol">BE</span> = 3<span class="ol">FG</span></span></div>
+    <figure><svg data-fig="440" viewBox="0 0 260 240"></svg><figcaption>GE — диаметр, пять углов по 15°.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>В вариантах без слова «호» речь о хордах. Где хорду умножают на число?</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>① DE = AB = 7 ✓ (угол 15°). ② дуга AE: 60° = 4 · 15° ✓ (дуги пропорциональны).</p>
+      <p>③ ∠AOC = ∠COE = 30° → AC = CE ✓. ④ FG = DE = 7 → 14 ✓.</p>
+      <p>⑤ BE — хорда; угол 45° = 3 · 15°, но хорда ≠ 3 · FG ✗.</p>
+      <p class="ans">Ответ: ⑤</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">441</span><span class="badge">중</span></div>
+    <p class="kr">다음 원을 보고 2∠AOD = ∠BOC일 때 옳은 것을 모두 고르면? (정답 2개)</p>
+    <p class="tr">2∠AOD = ∠BOC. Выберите ВСЕ верные (два ответа).</p>
+    <div class="choices"><span>① <span class="ol">OA</span> = <span class="ol">OC</span></span><span>② 2 호 AD = 호 BC</span><span>③ 2<span class="ol">AD</span> = <span class="ol">BC</span></span><span>④ 2△ODA = △OBC</span><span>⑤ 2<span class="ol">OB</span> = <span class="ol">DB</span></span></div>
+    <figure><svg data-fig="441" viewBox="0 0 260 240"></svg><figcaption>D, O, B — не на одной прямой.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Пропорциональны только дуга и площадь сектора. Плюс всё, что верно всегда (радиусы).</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>① OA, OC — радиусы, равны всегда ✓.</p>
+      <p>② дуги пропорциональны углам ✓.</p>
+      <p>③ хорда — нет ✗. ④ площадь треугольника — нет ✗.</p>
+      <p>⑤ DB — не диаметр (D, O, B не на прямой) ✗.</p>
+      <p class="ans">Ответ: ①, ②</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">442</span><span class="badge">중</span></div>
+    <p class="kr">아래 그림의 원 O에서 <span class="ol">FG</span> = 7일 때, 다음 중 옳지 <u>않은</u> 것은?</p>
+    <p class="tr">FG = 7. Что НЕверно? (Углы, отмеченные ∘, равны: ∠AOB = ∠BOC = ∠COD = ∠DOE = ∠FOG.)</p>
+    <div class="choices"><span>① <span class="ol">AC</span> = <span class="ol">CE</span></span><span>② <span class="ol">CD</span> = 7</span><span>③ 호 BE = 3 호 FG</span><span>④ <span class="ol">CE</span> = 14</span><span>⑤ <span class="ol">AB</span> + <span class="ol">BC</span> = 14</span></div>
+    <figure><svg data-fig="442" viewBox="0 0 260 240"></svg><figcaption>Пять равных углов (∘).</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Все хорды на равных углах = 7. Ищи вариант, где хорду удвоили.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>① ∠AOC = ∠COE (по 2 угла) → AC = CE ✓. ② CD = FG = 7 ✓.</p>
+      <p>③ дуга BE — 3 угла, FG — 1 угол → в 3 раза ✓. ⑤ 7 + 7 = 14 ✓.</p>
+      <p>④ CE — одна хорда на двойном угле, но 2 · 7 = 14 ей не равна (CE &lt; CD + DE = 14) ✗.</p>
+      <p class="ans">Ответ: ④</p>
+    </div></details>
+  </article>
+
+  <div class="typehead">
+    <h3>77 호의 길이를 이용한 부채꼴의 넓이</h3>
+    <p class="kr">반지름의 길이가 <span class="m">r</span>, 호의 길이가 <span class="m">l</span>인 부채꼴의 넓이를 <span class="m">S</span>라 하면 <span class="m">S</span> = <span class="fr"><span>1</span><span>2</span></span><span class="m">rl</span></p>
+  </div>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">443</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+    <p class="kr">중심각의 크기가 60°이고, 호의 길이가 12π cm인 부채꼴의 넓이는?</p>
+    <p class="tr">Угол 60°, дуга 12π cm. Найдите площадь сектора.</p>
+    <div class="choices"><span>① 144π cm²</span><span>② 189π cm²</span><span>③ 216π cm²</span><span>④ 240π cm²</span><span>⑤ 432π cm²</span></div>
+    <details><summary>Подсказка</summary><div><p>Сначала найди <span class="m">r</span> из формулы дуги, потом ½<span class="m">rl</span>.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) 2π<span class="m">r</span> × <span class="fr"><span>60</span><span>360</span></span> = 12π → <span class="fr"><span>π<span class="m">r</span></span><span>3</span></span> = 12π → <span class="m">r</span> = 36.</p>
+      <p>2) <span class="m">S</span> = ½ · 36 · 12π = 216π cm².</p>
+      <p class="ans">Ответ: ③</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">444</span><span class="badge">중</span></div>
+    <p class="kr">중심각의 크기가 80°이고, 호의 길이가 16π cm인 부채꼴의 넓이를 구하시오.</p>
+    <p class="tr">Угол 80°, дуга 16π cm. Найдите площадь.</p>
+    <div class="choices"><span>① 122π cm²</span><span>② 178π cm²</span><span>③ 200π cm²</span><span>④ 220π cm²</span><span>⑤ 288π cm²</span></div>
+    <details><summary>Подсказка</summary><div><p>Как в 443. <span class="fr"><span>80</span><span>360</span></span> = <span class="fr"><span>2</span><span>9</span></span>.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) 2π<span class="m">r</span> × <span class="fr"><span>2</span><span>9</span></span> = 16π → <span class="fr"><span>4<span class="m">r</span></span><span>9</span></span> = 16 → <span class="m">r</span> = 36.</p>
+      <p>2) <span class="m">S</span> = ½ · 36 · 16π = 288π cm².</p>
+      <p class="ans">Ответ: ⑤</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">445</span><span class="badge">중</span></div>
+    <p class="kr">다음 그림의 부채꼴에서 색칠한 부분의 넓이는?</p>
+    <p class="tr">Найдите площадь закрашенной части (два сектора с общей вершиной).</p>
+    <div class="choices"><span>① 15π cm²</span><span>② 16π cm²</span><span>③ 17π cm²</span><span>④ 18π cm²</span><span>⑤ 19π cm²</span></div>
+    <figure><svg data-fig="445" viewBox="0 0 300 140"></svg><figcaption>Большой сектор: r = 12, дуга 2π. Маленький: r = 6. Углы вертикальные — равны.</figcaption></figure>
+    <details><summary>Подсказка</summary><div><p>Углы одинаковые → дуга пропорциональна радиусу. Радиус в 2 раза меньше → дуга в 2 раза меньше.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) Большой: <span class="m">S</span> = ½ · 12 · 2π = 12π.</p>
+      <p>2) Маленький: угол тот же (맞꼭지각), r = 6 → дуга = 2π · <span class="fr"><span>6</span><span>12</span></span> = π. <span class="m">S</span> = ½ · 6 · π = 3π.</p>
+      <p>3) Всего 12π + 3π = 15π cm².</p>
+      <p class="ans">Ответ: ①</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">446</span><span class="badge">중</span></div>
+    <p class="kr">다음 중 반지름이 5 cm이고, 호의 길이가 8π cm인 부채꼴의 넓이가 <span class="m">x</span> cm²일 때, <span class="m">x</span>와 값이 같은 것은?</p>
+    <p class="tr">Сектор: r = 5, дуга 8π, площадь x. Какая величина равна x?</p>
+    <div class="choices" style="flex-direction:column;font-family:var(--f-kr)"><span>① 반지름이 8 cm인 원의 넓이</span><span>② 반지름이 30 cm이고, 중심각이 90°인 부채꼴의 넓이</span><span>③ 호의 길이가 6π이고, 반지름이 10인 부채꼴의 넓이</span><span>④ 지름이 18 cm인 원의 넓이</span><span>⑤ 반지름이 10인 원의 둘레의 길이</span></div>
+    <details><summary>Подсказка</summary><div><p><span class="m">x</span> = ½ · 5 · 8π. Потом посчитай каждый вариант. В ④ дан <b>диаметр</b>!</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p><span class="m">x</span> = ½ · 5 · 8π = 20π.</p>
+      <p>① π · 8² = 64π. ② π · 30² · ¼ = 225π. ③ ½ · 10 · 6π = 30π. ④ r = 9 → 81π. ⑤ 2π · 10 = 20π ✓ (число совпадает, хотя это длина).</p>
+      <p class="ans">Ответ: ⑤</p>
+    </div></details>
+  </article>
+
+  <article class="prob">
+    <div class="ph"><span class="pn">447</span><span class="badge">중</span></div>
+    <p class="kr">어떤 부채꼴의 호의 길이가 3π cm이고 넓이가 6π cm²이다. 중심각의 크기를 <span class="m">x</span>°라 할 때, <span class="fr"><span class="m">x</span><span>5</span></span>의 값을 구하시오.</p>
+    <p class="tr">Дуга 3π cm, площадь 6π cm². Угол x°. Найдите x / 5.</p>
+    <details><summary>Подсказка</summary><div><p>Из <span class="m">S</span> = ½<span class="m">rl</span> найди <span class="m">r</span>, затем угол из формулы дуги.</p></div></details>
+    <details class="sol"><summary>Решение</summary><div>
+      <p>1) 6π = ½ · <span class="m">r</span> · 3π → <span class="m">r</span> = 4.</p>
+      <p>2) 2π · 4 × <span class="fr"><span class="m">x</span><span>360</span></span> = 3π → <span class="m">x</span> = <span class="fr"><span>3 · 360</span><span>8</span></span> = 135.</p>
+      <p>3) <span class="fr"><span>135</span><span>5</span></span> = 27. Не забудь последний шаг!</p>
+      <p class="ans">Ответ: 27</p>
+    </div></details>
+  </article>
+</section>
+
+<!-- 6 cheat sheet -->
+<section>
+  <h2><span class="n">6</span>Шпаргалка · <span class="kr">정리</span></h2>
+  <div class="ov"><table>
+    <tr><th>Что дано</th><th>Что делать</th><th>Формула</th></tr>
+    <tr><td><span class="m">r</span>, <span class="m">x</span>°</td><td>Доля круга</td><td class="mr"><i>l</i> = 2π<i>r</i>·<i>x</i>/360, &nbsp; <i>S</i> = π<i>r</i>²·<i>x</i>/360</td></tr>
+    <tr><td><span class="m">r</span>, <span class="m">l</span></td><td>Сразу площадь</td><td class="mr"><i>S</i> = ½<i>rl</i></td></tr>
+    <tr><td><span class="m">x</span>°, <span class="m">l</span></td><td>Сначала <i>r</i>, потом <i>S</i></td><td class="mr">2π<i>r</i>·<i>x</i>/360 = <i>l</i> → <i>S</i> = ½<i>rl</i></td></tr>
+    <tr><td><span class="m">l</span>, <span class="m">S</span></td><td>Сначала <i>r</i>, потом угол</td><td class="mr"><i>r</i> = 2<i>S</i>/<i>l</i></td></tr>
+    <tr><td>Отношение углов</td><td>Дуги, площади секторов — в том же отношении</td><td class="kr">호, 부채꼴 넓이 ∝ 중심각</td></tr>
+    <tr><td>Равные углы</td><td>Равные дуги и равные хорды</td><td class="kr">현: «=» да, «×2» нет</td></tr>
+  </table></div>
+  <div class="box warn">
+    <span class="tag">Частые ошибки</span>
+    <ul class="mist">
+      <li>«Угол в 2 раза больше → хорда в 2 раза больше». Нет! (439, 440, 441, 442)</li>
+      <li>Потеряли диаметр/прямой угол на рисунке → не составили уравнение (431–433).</li>
+      <li>В 435–436 не провели радиус OC — без него не видно равнобедренный треугольник.</li>
+      <li>Дан диаметр, а подставили как радиус (446 ④).</li>
+      <li>Нашли <span class="m">x</span>, но не ответили на вопрос (a + b, <span class="m">x</span>/5).</li>
+      <li>В периметр добавили лишний отрезок (437: OB = 5 не нужен).</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e}
+const V=n=>`var(--${n})`;
+const rad=d=>d*Math.PI/180;
+function P(cx,cy,R,deg){return [cx+R*Math.cos(rad(deg)),cy-R*Math.sin(rad(deg))]}
+function sectorPath(cx,cy,R,a1,a2){ // ccw from a1 to a2
+  let sweep=((a2-a1)%360+360)%360; if(sweep===0)sweep=360;
+  const [x1,y1]=P(cx,cy,R,a1),[x2,y2]=P(cx,cy,R,a1+sweep);
+  if(sweep>=359.99) return `M${cx-R},${cy} A${R},${R} 0 1 0 ${cx+R},${cy} A${R},${R} 0 1 0 ${cx-R},${cy}Z`;
+  return `M${cx},${cy} L${x1},${y1} A${R},${R} 0 ${sweep>180?1:0} 0 ${x2},${y2} Z`;
+}
+function arcPath(cx,cy,R,a1,a2){let s=((a2-a1)%360+360)%360;const [x1,y1]=P(cx,cy,R,a1),[x2,y2]=P(cx,cy,R,a1+s);return `M${x1},${y1} A${R},${R} 0 ${s>180?1:0} 0 ${x2},${y2}`}
+const line=(g,a,b,o={})=>el("line",Object.assign({x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:V("ink"),"stroke-width":1.6,"stroke-linecap":"round"},o),g);
+function label(g,cx,cy,R,deg,t,off=14){const [x,y]=P(cx,cy,R+off,deg);el("text",{x,y,"text-anchor":"middle","dominant-baseline":"middle"},g,t)}
+function txt(g,x,y,t,o={}){return el("text",Object.assign({x,y,"text-anchor":"middle","dominant-baseline":"middle"},o),g,t)}
+function rightMark(g,O,a1,a2,s=9){const p1=P(O[0],O[1],s,a1),p2=P(O[0],O[1],s,a2),c=[p1[0]+p2[0]-O[0],p1[1]+p2[1]-O[1]];el("path",{d:`M${p1} L${c} L${p2}`,fill:"none",stroke:V("ink"),"stroke-width":1.2},g)}
+function angArc(g,O,a1,a2,r=16,col="ink"){el("path",{d:arcPath(O[0],O[1],r,a1,a2),fill:"none",stroke:V(col),"stroke-width":1.3},g)}
+
+/* standard circle figure: pts {name:deg}, rays [names], chords [[n1,n2]], sectors [[n1,n2,color]] */
+function circleFig(svg,{cx=130,cy=120,R=90,pts={},rays=[],diam=[],chords=[],sectors=[],poly=null,dashed=[],extra}){
+  const g=svg;
+  sectors.forEach(([a,b,c])=>el("path",{d:sectorPath(cx,cy,R,pts[a],pts[b]),fill:V(c),stroke:"none"},g));
+  if(poly) el("polygon",{points:poly.map(n=>n==="O"?[cx,cy]:P(cx,cy,R,pts[n])).join(" "),fill:V(poly.color||"sector"),stroke:"none"},g);
+  el("circle",{cx,cy,r:R,fill:"none",stroke:V("ink"),"stroke-width":1.8},g);
+  rays.forEach(n=>line(g,[cx,cy],P(cx,cy,R,pts[n])));
+  diam.forEach(d=>line(g,P(cx,cy,R,d),P(cx,cy,R,d+180)));
+  chords.forEach(([a,b])=>line(g,P(cx,cy,R,pts[a]),P(cx,cy,R,pts[b])));
+  dashed.forEach(n=>line(g,[cx,cy],P(cx,cy,R,pts[n]),{"stroke-dasharray":"4 3",stroke:V("coral")}));
+  for(const n in pts) label(g,cx,cy,R,pts[n],n,13);
+  el("circle",{cx,cy,r:2.6,fill:V("ink")},g);
+  if(extra) extra(g,[cx,cy],R);
+}
+
+const figs={
+  431(s){const pts={A:110,B:170,C:200,D:290,E:20,F:50};
+    circleFig(s,{pts,rays:["A","D","B","C","E","F"],sectors:[["E","F","sector"],["C","D","sector"]],extra:(g,O,R)=>{rightMark(g,O,200,290);txt(g,O[0]+12,O[1]+12,"O");txt(g,...P(O[0],O[1],R*.6,35),"S₁",{class:"lbl"});txt(g,...P(O[0],O[1],R*.55,245),"S₂",{class:"lbl"})}})},
+  432(s){const pts={D:90,A:60,B:0,C:240};
+    circleFig(s,{pts,diam:[0,90,60],extra:(g,O)=>{rightMark(g,O,90,180);angArc(g,O,60,90,22);txt(g,...P(O[0],O[1],32,75),"x",{class:"lbl"});angArc(g,O,240,360,16);txt(g,...P(O[0],O[1],30,300),"4x",{class:"lbl"});txt(g,O[0]-12,O[1]+12,"O")}})},
+  433(s){const pts={D:90,A:60,B:0,C:240,F:180,E:270};
+    circleFig(s,{pts,diam:[0,90,60],sectors:[["B","A","sector2"],["C","B","sector3"]],extra:(g,O,R)=>{rightMark(g,O,90,180);angArc(g,O,60,90,22);txt(g,...P(O[0],O[1],32,75),"x",{class:"lbl"});angArc(g,O,240,360,16);txt(g,...P(O[0],O[1],30,285),"4x",{class:"lbl"});txt(g,O[0]+10,O[1]-10,"O");txt(g,...P(O[0],O[1],R*.6,30),"S₁",{class:"lbl"});txt(g,...P(O[0],O[1],R*.62,320),"S₂",{class:"lbl"})}})},
+  434(s){const cx=140,cy=95,R=80,aB=-15,aA=233;const O=[cx,cy],B=P(cx,cy,R,aB),A=P(cx,cy,R,aA),Pp=P(cx,cy,R*1.6,aA);
+    el("circle",{cx,cy,r:R,fill:"none",stroke:V("ink"),"stroke-width":1.8},s);
+    line(s,O,Pp);line(s,O,B);line(s,Pp,B);el("circle",{cx,cy,r:2.6,fill:V("ink")},s);
+    txt(s,cx,cy-12,"O");txt(s,B[0]+12,B[1],"B");txt(s,A[0]-12,A[1]-4,"A");txt(s,Pp[0]-8,Pp[1]+8,"P");
+    const angPB=Math.atan2(-(B[1]-Pp[1]),B[0]-Pp[0])*180/Math.PI;angArc(s,Pp,angPB,aA-180+360,22,"coral");
+    txt(s,...P(Pp[0],Pp[1],32,(angPB+aA-180)/2),"x",{class:"lbl"});
+    const angBO=Math.atan2(-(O[1]-B[1]),O[0]-B[0])*180/Math.PI,angBP=Math.atan2(-(Pp[1]-B[1]),Pp[0]-B[0])*180/Math.PI;
+    angArc(s,B,angBO,angBP,18,"coral");const angBP2=angBP<angBO?angBP+360:angBP;angArc(s,B,angBO,angBP2,18,"coral");txt(s,...P(B[0],B[1],30,(angBO+angBP2)/2),"y",{class:"lbl"});},
+  435(s){const pts={A:180,D:0,B:215,C:250};
+    circleFig(s,{pts,diam:[0],rays:["B"],chords:[["C","D"],["B","C"],["A","B"]],dashed:["C"],extra:(g,O)=>{txt(g,O[0],O[1]-12,"O");const b=P(...O,90,215),c=P(...O,90,250);txt(g,(b[0]+c[0])/2+16,(b[1]+c[1])/2-4,"7cm")}})},
+  436(s){const pts={A:180,B:0,C:110,D:55};
+    circleFig(s,{pts,diam:[0],rays:["D"],chords:[["A","C"],["C","D"],["B","D"]],dashed:["C"],extra:(g,O)=>{txt(g,O[0],O[1]+13,"O");const c=P(...O,90,110),d=P(...O,90,55);txt(g,(c[0]+d[0])/2,(c[1]+d[1])/2+14,"5cm")}})},
+  437(s){const pts={A:90,B:196.26,C:270,D:-16.26};const poly=["A","B","C","D"];poly.color="sector";
+    circleFig(s,{pts,poly,chords:[["A","B"],["B","C"],["C","D"],["D","A"]],rays:["B"],extra:(g,O)=>{txt(g,O[0]+10,O[1]-10,"O");const a=P(...O,90,90),b=P(...O,90,196.26),c=P(...O,90,270);txt(g,(a[0]+b[0])/2-16,(a[1]+b[1])/2-6,"8cm");txt(g,(b[0]+c[0])/2-14,(b[1]+c[1])/2+10,"6cm");txt(g,(O[0]+b[0])/2,(O[1]+b[1])/2+12,"5cm")}})},
+  438(s){const t=88.85,pts={A:45,B:45+t,D:45-t,C:45-2*t};const poly=["B","A","D","C","O"];poly.color="sector2";
+    circleFig(s,{pts,poly,chords:[["B","A"],["A","D"],["D","C"]],rays:["B","C"],extra:(g,O)=>{txt(g,O[0]+12,O[1],"O");const a=P(...O,90,45),b=P(...O,90,45+t);txt(g,(a[0]+b[0])/2,(a[1]+b[1])/2+13,"7cm");txt(g,(O[0]+b[0])/2-14,(O[1]+b[1])/2+6,"5cm")}})},
+  439(s){const pts={F:110,E:70,C:250,D:290,A:170,B:210};
+    circleFig(s,{pts,diam:[110,70],rays:["A","B"],chords:[["F","E"],["A","B"],["B","C"],["C","D"]],extra:(g,O)=>{txt(g,O[0]+12,O[1]+2,"O");[[70,110],[170,210],[210,250],[250,290]].forEach(([a,b],i)=>{angArc(g,O,a,b,i===0?20:14+i*0,"coral");txt(g,...P(...O,i===0?34:30,(a+b)/2),"40°",{"font-size":11})});const f=P(...O,90,110),e=P(...O,90,70);txt(g,(f[0]+e[0])/2,(f[1]+e[1])/2+12,"4cm")}})},
+  440(s){const pts={G:90,F:75,A:210,B:225,C:240,D:255,E:270};
+    circleFig(s,{pts,diam:[90],rays:["F","A","B","C","D"],extra:(g,O)=>{txt(g,O[0]+12,O[1],"O");angArc(g,O,75,90,30,"coral");txt(g,...P(...O,44,82),"15°",{"font-size":11});angArc(g,O,210,225,24,"coral");txt(g,...P(...O,40,200),"15°",{"font-size":11});angArc(g,O,255,270,24,"coral");txt(g,...P(...O,40,278),"15°",{"font-size":11})}})},
+  441(s){const pts={A:150,D:205,B:60,C:-50};
+    circleFig(s,{pts,rays:["A","D","B","C"],chords:[["B","C"]],extra:(g,O)=>{txt(g,O[0]-4,O[1]-14,"O");angArc(g,O,150,205,16,"coral");angArc(g,O,-50,60,14,"blue")}})},
+  442(s){const pts={A:115,B:70,C:25,D:-20,E:-65,F:235,G:190};
+    circleFig(s,{pts,rays:Object.keys(pts),chords:[["A","B"],["B","C"],["C","D"],["D","E"],["F","G"]],extra:(g,O)=>{txt(g,O[0]+4,O[1]+16,"O");[92.5,47.5,2.5,-42.5,212.5].forEach(d=>el("circle",{cx:P(...O,20,d)[0],cy:P(...O,20,d)[1],r:2.8,fill:"none",stroke:V("coral"),"stroke-width":1.3},g))}})},
+  445(s){const V0=[100,70],half=10;
+    el("path",{d:sectorPath(V0[0],V0[1],160,-half,half),fill:V("sector"),stroke:V("ink"),"stroke-width":1.6},s);
+    el("path",{d:sectorPath(V0[0],V0[1],80,180-half,180+half),fill:V("sector"),stroke:V("ink"),"stroke-width":1.6},s);
+    txt(s,V0[0]+80,V0[1]+30,"12cm");txt(s,V0[0]-40,V0[1]-24,"6cm");txt(s,V0[0]+186,V0[1],"2πcm");
+    el("circle",{cx:V0[0],cy:V0[1],r:2.4,fill:V("ink")},s)}
+};
+document.querySelectorAll("svg[data-fig]").forEach(s=>figs[s.dataset.fig](s));
+
+/* concept figure */
+(function(){const s=document.getElementById("figConcept"),cx=110,cy=120,R=90;
+  el("circle",{cx,cy,r:R,fill:"none",stroke:V("ink"),"stroke-width":1.6},s);
+  el("path",{d:sectorPath(cx,cy,R,0,80),fill:V("amber-bg"),stroke:V("amber"),"stroke-width":1.6},s);
+  el("path",{d:arcPath(cx,cy,R,0,80),fill:"none",stroke:V("coral"),"stroke-width":4},s);
+  angArc(s,[cx,cy],0,80,18);txt(s,...P(cx,cy,30,40),"x°",{class:"lbl"});
+  txt(s,cx+45,cy+12,"r",{class:"lbl"});txt(s,...P(cx,cy,R+16,40),"l",{class:"lbl",fill:V("coral")});
+  txt(s,...P(cx,cy,R*.6,52),"S",{class:"lbl"});txt(s,cx-10,cy+10,"O");el("circle",{cx,cy,r:2.5,fill:V("ink")},s)})();
+
+/* lab */
+const gcd=(a,b)=>b?gcd(b,a%b):a;
+function fr(n,d){const g=gcd(n,d);n/=g;d/=g;return d===1?`${n}`:`${n}/${d}`}
+function piStr(n,d){const f=fr(n,d);return (f==="1"?"":f)+"π"}
+const rS=document.getElementById("rS"),xS=document.getElementById("xS"),lab=document.getElementById("labSvg");
+function drawLab(){const r=+rS.value,x=+xS.value;document.getElementById("rV").textContent=r;document.getElementById("xV").textContent=x+"°";
+  lab.innerHTML="";const cx=130,cy=130,R=10+r*9.5;
+  el("circle",{cx,cy,r:R,fill:"none",stroke:V("line"),"stroke-width":1.4,"stroke-dasharray":"3 3"},lab);
+  el("path",{d:sectorPath(cx,cy,R,0,x),fill:V("amber-bg"),stroke:V("amber"),"stroke-width":1.5},lab);
+  el("path",{d:arcPath(cx,cy,R,0,x),fill:"none",stroke:V("coral"),"stroke-width":4,"stroke-linecap":"round"},lab);
+  line(lab,P(cx,cy,R,0),P(cx,cy,R,x),{stroke:V("blue"),"stroke-width":2,"stroke-dasharray":"5 3"});
+  el("circle",{cx,cy,r:2.5,fill:V("ink")},lab);
+  document.getElementById("oFrac").textContent=fr(x,360);
+  document.getElementById("oL").textContent=`2π·${r}·${fr(x,360)} = ${piStr(r*x,180)}`;
+  document.getElementById("oS").textContent=`π·${r*r}·${fr(x,360)} = ${piStr(r*r*x,360)}`;
+  document.getElementById("oH").textContent=`½·${r}·${piStr(r*x,180)} = ${piStr(r*r*x,360)} ✓`;
+  const ch=2*r*Math.sin(rad(x/2));document.getElementById("oC").textContent="≈ "+ch.toFixed(2).replace(".",",");
+}
+let prev=null;
+function setStatus(t){document.getElementById("labStatus").textContent=t}
+rS.oninput=()=>{drawLab();setStatus("")};xS.oninput=()=>{drawLab();setStatus("")};
+document.getElementById("b60").onclick=()=>{xS.value=60;drawLab();setStatus("60° = 1/6 круга: дуга и площадь — 1/6 от целого.")};
+document.getElementById("b90").onclick=()=>{xS.value=90;drawLab();setStatus("90° = 1/4 круга.")};
+document.getElementById("bDbl").onclick=()=>{const r=+rS.value,x=+xS.value;if(x*2>355){setStatus("Уменьши угол — удвоить уже нельзя.");return}
+  const c1=2*r*Math.sin(rad(x/2));xS.value=x*2;drawLab();const c2=2*r*Math.sin(rad(x));
+  setStatus(`Дуга и площадь стали ×2. А хорда: ${c1.toFixed(2).replace(".",",")} → ${c2.toFixed(2).replace(".",",")} (×${(c2/c1).toFixed(2).replace(".",",")}, не ×2!)`)};
+drawLab();
+</script>
+
+</body></html>

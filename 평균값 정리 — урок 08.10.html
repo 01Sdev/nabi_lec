@@ -1,0 +1,608 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>평균값 정리 — урок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, словарь сверху, разделы идут по порядку урока; интерактивный график в центре. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* секущая, основной акцент */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* касательная */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;
+  --amber-soft:#fbf2e0;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding:0 16px}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(28px,6vw,44px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.m .up{font-style:normal}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.big{font-size:1.35em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+
+/* header */
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+/* vocabulary */
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+/* boxes */
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.75}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px;color:var(--ink)}
+.theorem .label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.formula{display:flex;justify-content:center;padding:6px 0;font-size:22px}
+.analogy{background:var(--amber-soft);border-left:0}
+.analogy .label{color:var(--amber);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px;color:var(--blue)}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:14px;color:var(--muted)}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+/* widget */
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--coral);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px}
+.ro-sec{background:var(--blue-soft)}
+.ro-tan{background:var(--coral-soft)}
+.ro-st{background:var(--bg);border:1px solid var(--line)}
+.ro-st.hit{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+
+/* problems */
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+
+/* summary table */
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip kr">미적분1</span>
+    <span class="chip kr">II 미분 › 2 도함수의 활용</span>
+    <span class="chip">учебник, стр. 82–83</span>
+  </div>
+  <h1><span class="kr">평균값 정리</span><br>Теорема о среднем значении</h1>
+  <p class="lead">Сегодня две теоремы: сначала <span class="kr">롤의 정리</span> (теорема Ролля), потом <span class="kr">평균값 정리</span> (теорема Лагранжа о среднем значении). Обе говорят об одном: если функция «гладкая», то где-то на графике обязательно найдётся касательная с нужным наклоном.</p>
+</header>
+
+<!-- ===== словарь ===== -->
+<section id="vocab">
+  <div class="head">
+    <span class="sec-num">0 · <span class="kr">단어장</span></span>
+    <h2>Словарик: корейские слова из учебника</h2>
+  </div>
+  <p>Эти слова встречаются в каждой задаче. Посмотри на них сначала, тогда текст учебника будет читаться легко.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">함수</span><span class="r">функция</span></div>
+    <div class="term"><span class="k">닫힌구간 [a, b]</span><span class="r">отрезок (замкнутый промежуток)</span><span class="n">концы a и b входят: a ≤ x ≤ b</span></div>
+    <div class="term"><span class="k">열린구간 (a, b)</span><span class="r">интервал (открытый промежуток)</span><span class="n">концы не входят: a &lt; x &lt; b</span></div>
+    <div class="term"><span class="k">연속이다</span><span class="r">непрерывна</span><span class="n">график рисуется, не отрывая ручку от бумаги</span></div>
+    <div class="term"><span class="k">미분가능하다</span><span class="r">дифференцируема</span><span class="n">в каждой точке есть производная; график без острых углов</span></div>
+    <div class="term"><span class="k">접선</span><span class="r">касательная</span></div>
+    <div class="term"><span class="k">기울기</span><span class="r">наклон, угловой коэффициент</span></div>
+    <div class="term"><span class="k">평균변화율</span><span class="r">средняя скорость изменения</span><span class="n">наклон прямой через две точки графика</span></div>
+    <div class="term"><span class="k">미분계수 f′(c)</span><span class="r">производная в точке c</span><span class="n">наклон касательной в точке c</span></div>
+    <div class="term"><span class="k">도함수 f′(x)</span><span class="r">производная (как функция)</span></div>
+    <div class="term"><span class="k">두 점을 지나는 직선</span><span class="r">прямая через две точки (секущая)</span></div>
+    <div class="term"><span class="k">평행하다</span><span class="r">параллельна</span></div>
+    <div class="term"><span class="k">x축</span><span class="r">ось x</span></div>
+    <div class="term"><span class="k">적어도 하나 존재한다</span><span class="r">существует хотя бы одно</span><span class="n">может быть одно, два или больше, но не ноль</span></div>
+    <div class="term"><span class="k">만족시키는 c</span><span class="r">c, удовлетворяющее (условию)</span></div>
+    <div class="term"><span class="k">다항함수</span><span class="r">многочлен (полиномиальная функция)</span><span class="n">всегда непрерывен и дифференцируем везде</span></div>
+    <div class="term"><span class="k">실수 / 상수</span><span class="r">действительное число / константа</span></div>
+    <div class="term"><span class="k">개수 / 값</span><span class="r">количество / значение</span></div>
+  </div>
+</section>
+
+<!-- ===== разминка ===== -->
+<section id="warmup">
+  <div class="head">
+    <span class="sec-num">1 · <span class="kr">복습</span> (повторение)</span>
+    <h2>Разминка: два вида наклона</h2>
+  </div>
+  <p>Перед теоремами вспомним два понятия. Вся тема держится на них.</p>
+  <div class="cond">
+    <div>
+      <span class="n" style="color:var(--blue)">СИНЯЯ ЛИНИЯ</span>
+      <strong><span class="kr">평균변화율</span> = средняя скорость</strong>
+      <p>Берём две точки графика <span class="m">(a, f(a))</span> и <span class="m">(b, f(b))</span> и проводим через них прямую. Её наклон:</p>
+      <p class="formula" style="font-size:19px"><span class="m"><span class="frac"><span>f(b) − f(a)</span><span>b − a</span></span></span></p>
+      <p>Это как «в среднем за всю поездку».</p>
+    </div>
+    <div>
+      <span class="n" style="color:var(--coral)">КРАСНАЯ ЛИНИЯ</span>
+      <strong><span class="kr">미분계수</span> = мгновенная скорость</strong>
+      <p>Берём одну точку <span class="m">c</span> и проводим <span class="kr">접선</span> (касательную). Её наклон равен <span class="m">f′(c)</span>.</p>
+      <p>Это как «что показывает спидометр прямо сейчас».</p>
+    </div>
+  </div>
+  <p>Теорема о среднем значении соединяет эти две линии: <strong>где-то средняя скорость обязательно совпадает с мгновенной</strong>.</p>
+</section>
+
+<!-- ===== Ролль ===== -->
+<section id="rolle">
+  <div class="head">
+    <span class="sec-num">2 · <span class="kr">롤의 정리</span></span>
+    <h2>Теорема Ролля: что поднялось, должно где-то остановиться</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Пример из жизни</span>
+    <p>Ты подбрасываешь мяч вверх и ловишь его на той же высоте, с которой бросил. Мяч летел вверх, потом вниз. Значит, был момент на самой верхней точке, когда мяч <strong>на мгновение замер</strong>: его вертикальная скорость была равна нулю.</p>
+    <p>Или прогулка в горах: ты вышел из деревни и вернулся в ту же деревню (та же высота). Где-то на пути была вершина холма или дно оврага, где дорога была <strong>ровной, горизонтальной</strong>.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Теорема из учебника</span>
+    <p class="tk">함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속이고 열린구간 <span class="m">(a, b)</span>에서 미분가능할 때, <span class="m">f(a) = f(b)</span>이면 <span class="m">f′(c) = 0</span>인 <span class="m">c</span>가 열린구간 <span class="m">(a, b)</span>에 적어도 하나 존재한다.</p>
+    <p class="tr"><strong>По-русски:</strong> если функция <span class="m">f(x)</span> непрерывна на отрезке <span class="m">[a, b]</span>, дифференцируема на интервале <span class="m">(a, b)</span> и <span class="m">f(a) = f(b)</span>, то на интервале <span class="m">(a, b)</span> существует хотя бы одно число <span class="m">c</span>, для которого <span class="m">f′(c) = 0</span>.</p>
+  </div>
+
+  <div class="fig-row">
+    <figure>
+      <svg id="figRolle" viewBox="0 0 340 220" role="img" aria-label="График с одинаковой высотой на концах и двумя горизонтальными касательными"></svg>
+      <figcaption>Концы на одной высоте. В точках <span class="m">c₁</span> (вершина) и <span class="m">c₂</span> (впадина) касательная горизонтальна, то есть <span class="kr">x축에 평행</span> (параллельна оси x).</figcaption>
+    </figure>
+    <div class="box" style="background:var(--blue-soft)">
+      <strong>Что значит <span class="m">f′(c) = 0</span> на картинке?</strong>
+      <p>Наклон касательной равен нулю, значит касательная лежит горизонтально. В учебнике это написано так: <span class="kr">x축과 평행한 접선을 갖는 점</span> (точка, в которой касательная параллельна оси x).</p>
+      <p>Таких точек может быть несколько. Теорема обещает только, что <strong>хотя бы одна</strong> есть.</p>
+    </div>
+  </div>
+
+  <h3>Три условия: проверяем по очереди</h3>
+  <div class="cond">
+    <div><span class="n">УСЛОВИЕ 1</span><strong class="kr">[a, b]에서 연속</strong><p>Непрерывна на отрезке, вместе с концами. Нет разрывов и «дырок»: график рисуется одной линией.</p></div>
+    <div><span class="n">УСЛОВИЕ 2</span><strong class="kr">(a, b)에서 미분가능</strong><p>Дифференцируема внутри. Нет острых углов и изломов: график плавный.</p></div>
+    <div><span class="n">УСЛОВИЕ 3</span><strong class="kr">f(a) = f(b)</strong><p>Значения на концах одинаковы: начало и конец на одной высоте.</p></div>
+  </div>
+  <p>Хорошая новость: <span class="kr">다항함수</span> (многочлены, например <span class="m">x² − x</span> или <span class="m">x³ − 9x + 2</span>) всегда непрерывны и дифференцируемы. Для них проверяем только условие 3.</p>
+
+  <div class="box ex">
+    <span class="label">Пример из учебника · <span class="kr">예시</span></span>
+    <p>Для функции <span class="m">f(x) = x² − x</span> на отрезке <span class="m">[−1, 2]</span> найдём <span class="m">c</span>, удовлетворяющее теореме Ролля.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1. Условия 1 и 2:</span> многочлен, значит непрерывна и дифференцируема ✓</span>
+      <span><span class="ok">Шаг 2. Условие 3:</span> f(−1) = 1 + 1 = 2,&nbsp; f(2) = 4 − 2 = 2&nbsp; → равны ✓</span>
+      <span><span class="ok">Шаг 3. Производная:</span> f′(x) = 2x − 1</span>
+      <span><span class="ok">Шаг 4. Решаем f′(c) = 0:</span> 2c − 1 = 0&nbsp; → &nbsp;c = <span class="frac"><span>1</span><span>2</span></span></span>
+      <span><span class="ok">Шаг 5. Проверка:</span> ½ лежит в (−1, 2) ✓</span>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Осторожно · <span class="kr">주의</span></span>
+    <div class="fig-row">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <p>Если функция <strong>не дифференцируема</strong> внутри, теорема может не работать.</p>
+        <p>Пример: <span class="m">f(x) = |x|</span> на <span class="m">[−1, 1]</span>. Она непрерывна, и <span class="m">f(−1) = f(1) = 1</span>. Но в точке <span class="m">x = 0</span> у графика острый угол, как у буквы V или у крыши дома. Там нет касательной, а слева и справа наклон −1 и +1. Горизонтальной касательной нигде нет.</p>
+        <p>Мяч, который резко отскочил от пола, тоже не «зависает»: у него в момент удара скорость меняется скачком.</p>
+      </div>
+      <svg id="figAbs" viewBox="0 0 260 170" role="img" aria-label="График модуля x с острым углом в нуле"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Лагранж ===== -->
+<section id="mvt">
+  <div class="head">
+    <span class="sec-num">3 · <span class="kr">평균값 정리</span></span>
+    <h2>Теорема о среднем значении: спидометр не обманешь</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Пример из жизни: камеры на трассе</span>
+    <p>На корейских трассах есть <span class="kr">구간 단속</span>: камера фотографирует машину в начале участка и в конце. Допустим, участок 20 км, а ты проехал его за 10 минут. Средняя скорость: 20 км за ⅙ часа = <strong>120 км/ч</strong>. Ограничение 100 км/ч, и тебе приходит штраф.</p>
+    <p>Водитель спорит: «Я ни разу не ехал 120!». Математика отвечает: если средняя скорость 120, то <strong>хотя бы в один момент спидометр показывал ровно 120</strong>. Иногда ты ехал медленнее, иногда быстрее, а при плавном изменении скорость обязательно «прошла» через 120.</p>
+    <p>Средняя скорость за весь путь = синяя прямая. Показание спидометра в момент <span class="m">c</span> = красная касательная. Теорема говорит: в какой-то момент они равны.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Теорема из учебника</span>
+    <p class="tk">함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속이고 열린구간 <span class="m">(a, b)</span>에서 미분가능할 때,</p>
+    <div class="formula"><span class="m big"><span class="frac"><span>f(b) − f(a)</span><span>b − a</span></span> = f′(c)</span></div>
+    <p class="tk">인 <span class="m">c</span>가 열린구간 <span class="m">(a, b)</span>에 적어도 하나 존재한다.</p>
+    <p class="tr"><strong>По-русски:</strong> если функция <span class="m">f(x)</span> непрерывна на отрезке <span class="m">[a, b]</span> и дифференцируема на интервале <span class="m">(a, b)</span>, то на интервале <span class="m">(a, b)</span> существует хотя бы одно <span class="m">c</span>, для которого средняя скорость изменения на всём отрезке равна производной в точке <span class="m">c</span>.</p>
+  </div>
+
+  <p><strong>Как читать формулу:</strong> слева наклон синей прямой через концы графика (<span class="kr">평균변화율</span>). Справа наклон красной касательной в точке <span class="m">c</span> (<span class="kr">미분계수</span>). Одинаковый наклон значит, что прямые <strong>параллельны</strong> (<span class="kr">평행</span>).</p>
+
+  <div class="box" style="background:var(--blue-soft)">
+    <strong>Смысл на картинке (<span class="kr">참고 ①</span>)</strong>
+    <p class="kr" style="font-size:16px">평균값 정리는 곡선 <span class="m">y = f(x)</span> 위의 두 점 <span class="m">(a, f(a))</span>, <span class="m">(b, f(b))</span>를 지나는 직선에 평행한 접선을 갖는 점이 열린구간 <span class="m">(a, b)</span>에 적어도 하나 존재함을 의미한다.</p>
+    <p>Соедини концы графика прямой. Теперь двигай эту прямую параллельно, как линейку по столу, пока она не <strong>коснётся</strong> кривой. Точка касания и есть <span class="m">c</span>.</p>
+  </div>
+
+  <!-- interactive -->
+  <div class="lab" id="lab">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;align-items:center">
+      <strong>Попробуй сам: двигай точку c</strong>
+      <div class="controls">
+        <button id="modeMvt" aria-pressed="true">평균값 정리</button>
+        <button id="modeRolle" aria-pressed="false">롤의 정리 (наклонить)</button>
+      </div>
+    </div>
+    <svg id="labSvg" viewBox="0 0 640 360" aria-label="Интерактивный график: кривая, секущая и касательная"></svg>
+    <div class="controls">
+      <label for="cSlider" class="m">c =</label>
+      <input type="range" id="cSlider" min="0.02" max="3.98" step="0.005" value="2">
+      <button id="snap1">найти c₁</button>
+      <button id="snap2">найти c₂</button>
+    </div>
+    <div class="readout">
+      <div class="ro-sec">Наклон синей прямой<br><b id="roSec">0.60</b></div>
+      <div class="ro-tan">Наклон касательной f′(c)<br><b id="roTan">–</b></div>
+      <div class="ro-st" id="roSt">Двигай ползунок, пока наклоны не совпадут</div>
+    </div>
+    <p style="font-size:15px;color:var(--muted)">Нажми «<span class="kr">롤의 정리</span>»: та же кривая наклонится так, что концы окажутся на одной высоте. Синяя прямая станет горизонтальной, а точки <span class="m">c</span> останутся на тех же местах. Это и есть <span class="kr">참고 ②</span>.</p>
+  </div>
+
+  <div class="box" style="background:var(--green-soft)">
+    <strong>Ролль и Лагранж: родственники (<span class="kr">참고 ②</span>)</strong>
+    <p class="kr" style="font-size:16px">평균값 정리에서 <span class="m">f(a) = f(b)</span>인 경우가 롤의 정리이다.</p>
+    <p>Если в теореме о среднем значении концы на одной высоте, то <span class="m">f(b) − f(a) = 0</span>, и дробь слева равна 0. Получается <span class="m">f′(c) = 0</span>, то есть теорема Ролля. <strong>Теорема Ролля — частный случай</strong> теоремы о среднем значении. А теорема о среднем значении — это теорема Ролля, на которую посмотрели, наклонив голову.</p>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример из учебника · <span class="kr">예시</span></span>
+    <p>Для функции <span class="m">f(x) = x² − x</span> на отрезке <span class="m">[0, 2]</span> найдём <span class="m">c</span>, удовлетворяющее теореме о среднем значении.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1. Условия:</span> многочлен, значит непрерывна и дифференцируема ✓</span>
+      <span><span class="ok">Шаг 2. Средняя скорость:</span> f(0) = 0,&nbsp; f(2) = 2 &nbsp;→&nbsp; <span class="frac"><span>2 − 0</span><span>2 − 0</span></span> = 1</span>
+      <span><span class="ok">Шаг 3. Производная:</span> f′(x) = 2x − 1</span>
+      <span><span class="ok">Шаг 4. Приравниваем:</span> 2c − 1 = 1&nbsp; → &nbsp;2c = 2&nbsp; → &nbsp;c = 1</span>
+      <span><span class="ok">Шаг 5. Проверка:</span> 1 лежит в (0, 2) ✓</span>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Осторожно · <span class="kr">주의</span></span>
+    <p>Как и с теоремой Ролля: если функция <span class="kr">열린구간 (a, b)에서 미분가능하지 않으면</span> (не дифференцируема на интервале), теорема о среднем значении может не выполняться. Пример тот же: острый угол у <span class="m">|x|</span>.</p>
+  </div>
+</section>
+
+<!-- ===== алгоритм ===== -->
+<section id="recipe">
+  <div class="head">
+    <span class="sec-num">4 · <span class="kr">풀이 순서</span></span>
+    <h2>Как решать задачи: рецепт</h2>
+  </div>
+  <div class="box ex" style="border-color:var(--blue)">
+    <ol class="steps">
+      <li><strong>Проверь условия.</strong> Многочлен? Тогда условия непрерывности и дифференцируемости выполнены автоматически. Для Ролля ещё проверь <span class="m">f(a) = f(b)</span>.</li>
+      <li><strong>Посчитай левую часть.</strong> Ролль: она равна 0. Лагранж: <span class="m"><span class="frac"><span>f(b) − f(a)</span><span>b − a</span></span></span>.</li>
+      <li><strong>Найди производную</strong> <span class="m">f′(x)</span>.</li>
+      <li><strong>Реши уравнение</strong> <span class="m">f′(c) =</span> (число из шага 2).</li>
+      <li><strong>Выбрось лишние корни.</strong> Оставь только те <span class="m">c</span>, которые лежат строго внутри интервала <span class="m">(a, b)</span>. Концы <span class="m">a</span> и <span class="m">b</span> не подходят!</li>
+    </ol>
+  </div>
+  <p>Шаг 5 забывают чаще всего. Слово <span class="kr">열린구간</span> в теореме означает, что <span class="m">c</span> не может равняться <span class="m">a</span> или <span class="m">b</span>.</p>
+</section>
+
+<!-- ===== задачи ===== -->
+<section id="practice">
+  <div class="head">
+    <span class="sec-num">5 · <span class="kr">개념 이해</span> (стр. 83)</span>
+    <h2>Задачи из учебника</h2>
+  </div>
+  <p>Сначала попробуй решить сам. Если застрял, открой подсказку. Решение открывай в конце.</p>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">292</span><span class="lvl">하 · лёгкая</span></div>
+    <p class="kr" style="font-size:16px">함수 <span class="m">f(x) = x³ − 9x + 2</span>에 대하여 닫힌구간 <span class="m">[0, 3]</span>에서 롤의 정리를 만족시키는 실수 <span class="m">c</span>의 개수를 구하시오.</p>
+    <p><strong>Перевод:</strong> для функции <span class="m">f(x) = x³ − 9x + 2</span> на отрезке <span class="m">[0, 3]</span> найдите количество действительных чисел <span class="m">c</span>, удовлетворяющих теореме Ролля.</p>
+    <details><summary>Подсказка</summary><p>Реши <span class="m">f′(c) = 0</span>. Получится два корня. Оба ли лежат в интервале <span class="m">(0, 3)</span>?</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>f(0) = 2,&nbsp; f(3) = 27 − 27 + 2 = 2 &nbsp;→ равны ✓</span>
+        <span>f′(x) = 3x² − 9</span>
+        <span>3c² − 9 = 0 &nbsp;→&nbsp; c² = 3 &nbsp;→&nbsp; c = √3 или c = −√3</span>
+        <span>√3 ≈ 1,73 лежит в (0, 3) ✓ &nbsp;&nbsp; −√3 не лежит ✗</span>
+      </div>
+      <p>Ответ: <span class="answer">1</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">293</span><span class="lvl">하 · лёгкая</span></div>
+    <p class="kr" style="font-size:16px">함수 <span class="m">f(x) = −x² + 5x</span>에 대하여 닫힌구간 <span class="m">[0, 3]</span>에서 평균값 정리를 만족시키는 실수 <span class="m">c</span>의 값은?</p>
+    <p><strong>Перевод:</strong> для функции <span class="m">f(x) = −x² + 5x</span> на отрезке <span class="m">[0, 3]</span> найдите значение <span class="m">c</span>, удовлетворяющее теореме о среднем значении.</p>
+    <div class="opts"><span>① 1</span><span>② 3/2</span><span>③ 2</span><span>④ 5/2</span><span>⑤ 3</span></div>
+    <details><summary>Подсказка</summary><p>Сначала найди среднюю скорость: <span class="m">(f(3) − f(0)) / (3 − 0)</span>.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>f(0) = 0,&nbsp; f(3) = −9 + 15 = 6 &nbsp;→&nbsp; <span class="frac"><span>6 − 0</span><span>3 − 0</span></span> = 2</span>
+        <span>f′(x) = −2x + 5</span>
+        <span>−2c + 5 = 2 &nbsp;→&nbsp; c = <span class="frac"><span>3</span><span>2</span></span> &nbsp;(лежит в (0, 3) ✓)</span>
+      </div>
+      <p>Ответ: <span class="answer">② 3/2</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">294</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr" style="font-size:16px">함수 <span class="m">f(x) = x³ + x² − x</span>에 대하여 <span class="m">g(x) = f′(x)</span>라 할 때, 함수 <span class="m">g(x)</span>에 대하여 닫힌구간 <span class="m">[0, 1]</span>에서 평균값 정리를 만족시키는 상수 <span class="m">c</span>의 값은?</p>
+    <p><strong>Перевод:</strong> для функции <span class="m">f(x) = x³ + x² − x</span> положим <span class="m">g(x) = f′(x)</span>. Найдите константу <span class="m">c</span>, удовлетворяющую теореме о среднем значении для функции <span class="m">g(x)</span> на отрезке <span class="m">[0, 1]</span>.</p>
+    <div class="opts"><span>① 1/5</span><span>② 1/4</span><span>③ 1/3</span><span>④ 1/2</span><span>⑤ 2/3</span></div>
+    <details><summary>Подсказка</summary><p>Ловушка: теорему применяем не к <span class="m">f</span>, а к <span class="m">g</span>. Сначала найди <span class="m">g(x)</span>, потом <span class="m">g′(x)</span>.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>g(x) = f′(x) = 3x² + 2x − 1</span>
+        <span>g(0) = −1,&nbsp; g(1) = 3 + 2 − 1 = 4 &nbsp;→&nbsp; <span class="frac"><span>4 − (−1)</span><span>1 − 0</span></span> = 5</span>
+        <span>g′(x) = 6x + 2</span>
+        <span>6c + 2 = 5 &nbsp;→&nbsp; c = <span class="frac"><span>1</span><span>2</span></span> &nbsp;(лежит в (0, 1) ✓)</span>
+      </div>
+      <p>Ответ: <span class="answer">④ 1/2</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">295</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr" style="font-size:16px">함수 <span class="m">y = f(x)</span>의 그래프가 다음 그림과 같을 때, 닫힌구간 <span class="m">[−2, 8]</span>에서 평균값 정리를 만족시키는 상수 <span class="m">c</span>의 개수는?</p>
+    <p><strong>Перевод:</strong> график функции <span class="m">y = f(x)</span> показан на рисунке. Сколько констант <span class="m">c</span> удовлетворяют теореме о среднем значении на отрезке <span class="m">[−2, 8]</span>?</p>
+    <figure><svg id="fig295" viewBox="0 0 420 230" role="img" aria-label="График к задаче 295"></svg><figcaption>Рисунок к задаче (перерисован по учебнику).</figcaption></figure>
+    <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+    <details><summary>Подсказка</summary><p>Формул нет, значит работаем «линейкой». Соедини точки графика при <span class="m">x = −2</span> и <span class="m">x = 8</span>. Потом двигай эту прямую параллельно и считай, сколько раз она касается кривой между −2 и 8.</p></details>
+    <details><summary>Решение</summary>
+      <p>Синяя прямая идёт от высокой точки при <span class="m">x = −2</span> к низкой при <span class="m">x = 8</span>, значит её наклон отрицательный (прямая идёт вниз). Ищем места, где кривая идёт вниз с таким же наклоном:</p>
+      <ul class="plain">
+        <li>На спуске от первой вершины ко впадине наклон сначала становится всё круче, потом снова пологим. Нужный наклон встречается <strong>два раза</strong>.</li>
+        <li>На подъёме ко второй вершине кривая идёт вверх, наклон положительный: <strong>ни разу</strong>.</li>
+        <li>На спуске от второй вершины до <span class="m">x = 8</span> кривая падает круто: нужный наклон встречается <strong>один раз</strong>.</li>
+      </ul>
+      <p>Ответ: 2 + 1 = <span class="answer">③ 3</span>. На рисунке красные касательные параллельны синей прямой.</p>
+      <button id="show295" aria-pressed="false">Показать касательные на рисунке</button>
+    </details>
+  </div>
+</section>
+
+<!-- ===== итог ===== -->
+<section id="summary">
+  <div class="head">
+    <span class="sec-num">6 · <span class="kr">정리</span> (итог)</span>
+    <h2>Шпаргалка</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th></th><th><span class="kr">롤의 정리</span><br>Теорема Ролля</th><th><span class="kr">평균값 정리</span><br>Теорема о среднем значении</th></tr></thead>
+      <tbody>
+        <tr><td>Условия</td><td><span class="kr">[a,b] 연속</span>, <span class="kr">(a,b) 미분가능</span>, <span class="m">f(a) = f(b)</span></td><td><span class="kr">[a,b] 연속</span>, <span class="kr">(a,b) 미분가능</span></td></tr>
+        <tr><td>Вывод</td><td><span class="m">f′(c) = 0</span></td><td><span class="m"><span class="frac"><span>f(b) − f(a)</span><span>b − a</span></span> = f′(c)</span></td></tr>
+        <tr><td>На картинке</td><td>касательная параллельна оси x</td><td>касательная параллельна прямой через концы</td></tr>
+        <tr><td>Из жизни</td><td>мяч на вершине замирает</td><td>камера <span class="kr">구간 단속</span>: средняя скорость = спидометр</td></tr>
+        <tr><td>Где c</td><td colspan="2">строго внутри: <span class="m">a &lt; c &lt; b</span>; таких <span class="m">c</span> может быть несколько</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Частые ошибки</span>
+    <ul class="plain">
+      <li>Оставили корень, который не лежит в <span class="m">(a, b)</span> или равен концу.</li>
+      <li>В задаче вроде 294 применили теорему не к той функции.</li>
+      <li>Забыли проверить <span class="m">f(a) = f(b)</span> для теоремы Ролля.</li>
+      <li>Применили теорему к функции с острым углом (например, с модулем).</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Материал по учебнику NaBi School <span class="kr">미적분1</span>, стр. 82–83.</footer>
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T)};}
+  function path(f,a,b,M,n=160){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",grid:"var(--grid)",line:"var(--line)"};
+  function axes(svg,M,x0,x1,y0,y1){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},svg);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},svg);
+    el("text",{x:M.X(x1)-4,y:M.Y(0)+16,fill:C.muted,"font-size":13,"text-anchor":"end"},svg,"x");
+    el("text",{x:M.X(0)+6,y:M.Y(y1)+12,fill:C.muted,"font-size":13},svg,"y");
+    el("text",{x:M.X(0)-6,y:M.Y(0)+15,fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"},svg,"O");
+  }
+
+  /* --- Rolle static figure --- */
+  (function(){
+    const s=document.getElementById("figRolle");
+    const f=x=>1.6+0.55*Math.sin((x-1)*Math.PI/1.6); // a=1,b=4.2 -> f(1)=1.6, f(4.2)=1.6
+    const a=1,b=4.2;
+    const M=mapper(-0.4,5,-0.2,2.6,10,330,10,200);
+    axes(s,M,-0.4,5,-0.2,2.6);
+    el("path",{d:path(f,a-0.25,b+0.15,M),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    el("line",{x1:M.X(-0.4),y1:M.Y(f(a)),x2:M.X(b),y2:M.Y(f(a)),stroke:C.muted,"stroke-dasharray":"3 4"},s);
+    [[a+0.8,"c₁"],[a+2.4,"c₂"]].forEach(([c,l])=>{
+      const y=f(c);
+      el("line",{x1:M.X(c-0.45),y1:M.Y(y),x2:M.X(c+0.45),y2:M.Y(y),stroke:C.coral,"stroke-width":2.5},s);
+      el("line",{x1:M.X(c),y1:M.Y(y),x2:M.X(c),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 4"},s);
+      el("text",{x:M.X(c),y:M.Y(0)+16,fill:C.coral,"font-size":13,"text-anchor":"middle"},s,l);
+    });
+    [a,b].forEach((x,i)=>{
+      el("circle",{cx:M.X(x),cy:M.Y(f(x)),r:4,fill:C.ink},s);
+      el("line",{x1:M.X(x),y1:M.Y(f(x)),x2:M.X(x),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 4"},s);
+      el("text",{x:M.X(x),y:M.Y(0)+16,fill:C.ink,"font-size":13,"text-anchor":"middle"},s,i?"b":"a");
+    });
+    el("text",{x:M.X(0)+6,y:M.Y(f(a))-6,fill:C.muted,"font-size":12},s,"f(a) = f(b)");
+  })();
+
+  /* --- |x| figure --- */
+  (function(){
+    const s=document.getElementById("figAbs");
+    const M=mapper(-1.6,1.6,-0.25,1.5,10,250,10,160);
+    axes(s,M,-1.6,1.6,-0.25,1.5);
+    el("path",{d:`M${M.X(-1.4)},${M.Y(1.4)}L${M.X(0)},${M.Y(0)}L${M.X(1.4)},${M.Y(1.4)}`,fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    el("line",{x1:M.X(-1),y1:M.Y(1),x2:M.X(1),y2:M.Y(1),stroke:C.muted,"stroke-dasharray":"3 4"},s);
+    [-1,1].forEach(x=>{el("circle",{cx:M.X(x),cy:M.Y(1),r:4,fill:C.ink},s);el("text",{x:M.X(x),y:M.Y(0)+16,fill:C.ink,"font-size":12,"text-anchor":"middle","font-style":"normal"},s,x);});
+    el("circle",{cx:M.X(0),cy:M.Y(0),r:9,fill:"none",stroke:C.coral,"stroke-width":2},s);
+    el("text",{x:M.X(0.18),y:M.Y(0.05),fill:C.coral,"font-size":12,"font-style":"normal","font-family":"Golos Text, sans-serif"},s,"острый угол");
+    el("text",{x:M.X(1.42),y:M.Y(1.42)-4,fill:C.ink,"font-size":13,"text-anchor":"end"},s,"y = |x|");
+  })();
+
+  /* --- interactive lab --- */
+  const svg=document.getElementById("labSvg");
+  const a=0,b=4;
+  const F=x=>0.25*x*x*x-1.5*x*x+2.6*x+1;
+  const dF=x=>0.75*x*x-3*x+2.6;
+  const secSlope=(F(b)-F(a))/(b-a); // 0.6
+  const roots=[2-Math.sqrt(4/3),2+Math.sqrt(4/3)];
+  let rolle=false;
+  const f=x=>rolle?F(x)-secSlope*x:F(x);
+  const df=x=>rolle?dF(x)-secSlope:dF(x);
+  const s2=()=>rolle?0:secSlope;
+  const slider=document.getElementById("cSlider");
+
+  function draw(){
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    const y0=-0.3,y1=rolle?2.3:3.9;
+    const M=mapper(-0.5,4.6,y0,y1,20,625,15,325);
+    for(let gx=0;gx<=4;gx++)el("line",{x1:M.X(gx),y1:M.Y(y0),x2:M.X(gx),y2:M.Y(y1),stroke:C.grid},svg);
+    axes(svg,M,-0.5,4.6,y0,y1);
+    const c=parseFloat(slider.value);
+    // secant (extended)
+    const sl=s2(),ya=f(a);
+    const ext=0.4;
+    el("line",{x1:M.X(a-ext),y1:M.Y(ya-sl*ext),x2:M.X(b+ext),y2:M.Y(ya+sl*(b-a+ext)),stroke:C.blue,"stroke-width":2.2,"stroke-dasharray":"7 5"},svg);
+    // curve
+    el("path",{d:path(f,a-0.15,b+0.12,M),fill:"none",stroke:C.ink,"stroke-width":2.6},svg);
+    // endpoints
+    [[a,"a"],[b,"b"]].forEach(([x,l])=>{
+      el("line",{x1:M.X(x),y1:M.Y(f(x)),x2:M.X(x),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 4"},svg);
+      el("circle",{cx:M.X(x),cy:M.Y(f(x)),r:5,fill:C.blue},svg);
+      el("text",{x:M.X(x),y:M.Y(0)+18,fill:C.ink,"font-size":15,"text-anchor":"middle"},svg,l);
+    });
+    // tangent
+    const yc=f(c),m=df(c),w=0.9;
+    const hit=Math.abs(m-sl)<0.025;
+    el("line",{x1:M.X(c-w),y1:M.Y(yc-m*w),x2:M.X(c+w),y2:M.Y(yc+m*w),stroke:C.coral,"stroke-width":hit?4:2.6,"stroke-linecap":"round"},svg);
+    el("line",{x1:M.X(c),y1:M.Y(yc),x2:M.X(c),y2:M.Y(0),stroke:C.coral,"stroke-dasharray":"3 4"},svg);
+    el("circle",{cx:M.X(c),cy:M.Y(yc),r:7,fill:C.coral},svg);
+    el("text",{x:M.X(c),y:M.Y(0)+18,fill:C.coral,"font-size":15,"text-anchor":"middle"},svg,"c");
+    // legend
+    el("text",{x:M.X(-0.4),y:28,fill:C.blue,"font-size":14,"font-style":"normal","font-family":"Golos Text, sans-serif"},svg,rolle?"— — прямая через концы (горизонтальна)":"— — прямая через концы");
+    el("text",{x:M.X(-0.4),y:48,fill:C.coral,"font-size":14,"font-style":"normal","font-family":"Golos Text, sans-serif"},svg,"—— касательная в точке c");
+    document.getElementById("roSec").textContent=sl.toFixed(2);
+    document.getElementById("roTan").textContent=m.toFixed(2);
+    const st=document.getElementById("roSt");
+    st.classList.toggle("hit",hit);
+    st.textContent=hit?(rolle?"Есть! f′(c) = 0, касательная горизонтальна":"Есть! Наклоны равны, прямые параллельны"):(m>sl?"Касательная круче. Двигай дальше":"Касательная положе. Двигай дальше");
+  }
+  slider.addEventListener("input",draw);
+  document.getElementById("snap1").onclick=()=>{slider.value=roots[0];draw();};
+  document.getElementById("snap2").onclick=()=>{slider.value=roots[1];draw();};
+  const bM=document.getElementById("modeMvt"),bR=document.getElementById("modeRolle");
+  bM.onclick=()=>{rolle=false;bM.setAttribute("aria-pressed","true");bR.setAttribute("aria-pressed","false");draw();};
+  bR.onclick=()=>{rolle=true;bR.setAttribute("aria-pressed","true");bM.setAttribute("aria-pressed","false");draw();};
+  draw();
+
+  /* --- problem 295 figure --- */
+  const s95=document.getElementById("fig295");
+  // quartic-ish shape: zeros near -3, 1.5, 5, 8.6; peaks ~ -0.8 and ~6.6
+  const g=x=>-0.016*(x+3.1)*(x-1.6)*(x-5)*(x-8.3);
+  const dg=x=>{const h=1e-4;return (g(x+h)-g(x-h))/(2*h);};
+  const M5=mapper(-4,10,-2.6,6,10,410,10,220);
+  axes(s95,M5,-4,10,-2.6,6);
+  el("path",{d:path(g,-3.35,8.7,M5,200),fill:"none",stroke:C.ink,"stroke-width":2.2},s95);
+  [-2,8].forEach(x=>{
+    el("line",{x1:M5.X(x),y1:M5.Y(g(x)),x2:M5.X(x),y2:M5.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s95);
+    el("text",{x:M5.X(x),y:M5.Y(0)+15,fill:C.ink,"font-size":12,"text-anchor":"middle","font-style":"normal"},s95,x);
+  });
+  el("text",{x:M5.X(9.6),y:M5.Y(4.4),fill:C.ink,"font-size":13,"text-anchor":"end"},s95,"y = f(x)");
+  const extra=el("g",{visibility:"hidden"},s95);
+  const sl95=(g(8)-g(-2))/10;
+  el("line",{x1:M5.X(-2),y1:M5.Y(g(-2)),x2:M5.X(8),y2:M5.Y(g(8)),stroke:C.blue,"stroke-width":2,"stroke-dasharray":"6 4"},extra);
+  // find tangency points numerically
+  const pts=[];let prev=dg(-1.99)-sl95;
+  for(let x=-1.99;x<=7.99;x+=0.01){const v=dg(x)-sl95;if(prev*v<0)pts.push(x);prev=v;}
+  pts.forEach(c=>{const y=g(c),w=1.3;
+    el("line",{x1:M5.X(c-w),y1:M5.Y(y-sl95*w),x2:M5.X(c+w),y2:M5.Y(y+sl95*w),stroke:C.coral,"stroke-width":2.4},extra);
+    el("circle",{cx:M5.X(c),cy:M5.Y(y),r:4,fill:C.coral},extra);});
+  const b95=document.getElementById("show295");
+  b95.onclick=()=>{const on=b95.getAttribute("aria-pressed")!=="true";b95.setAttribute("aria-pressed",String(on));extra.setAttribute("visibility",on?"visible":"hidden");b95.textContent=on?"Скрыть касательные":"Показать касательные на рисунке";};
+})();
+</script>
+
+</body></html>
