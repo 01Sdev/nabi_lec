@@ -1,0 +1,454 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>원과 부채꼴 483–500 · подсказки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column; review toolbox (T1–T8) on top, problem cards below link back to it */
+:root{
+  --bg:#F5F7FB; --surface:#FFFFFF; --sunk:#EDF0F7; --line:#D8DDEA;
+  --ink:#16203A; --muted:#5A6482;
+  --blue:#2F5BD3; --blue-soft:#E6ECFB;
+  --coral:#D4472F; --coral-soft:#FBE9E5;
+  --green:#1C7F55; --green-soft:#E2F3EA;
+  --amber:#A86F06; --amber-soft:#FBF1DA;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141F; --surface:#181E2D; --sunk:#1F2738; --line:#2E3850;
+  --ink:#E7EAF3; --muted:#9BA4BE;
+  --blue:#7C9BF2; --blue-soft:#1F2A4A;
+  --coral:#F08A74; --coral-soft:#3A221E;
+  --green:#5FCB98; --green-soft:#16302A;
+  --amber:#E2B252; --amber-soft:#33291A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141F; --surface:#181E2D; --sunk:#1F2738; --line:#2E3850;
+  --ink:#E7EAF3; --muted:#9BA4BE;
+  --blue:#7C9BF2; --blue-soft:#1F2A4A;
+  --coral:#F08A74; --coral-soft:#3A221E;
+  --green:#5FCB98; --green-soft:#16302A;
+  --amber:#E2B252; --amber-soft:#33291A; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;padding:0 16px}
+.wrap{max-width:820px;margin:0 auto;padding-block:32px 72px}
+.kr{font-family:var(--f-kr)}
+.m{font-family:var(--f-math);font-style:italic}
+.n{font-family:var(--f-math)}
+.seg{font-family:var(--f-math);border-top:1.5px solid currentColor;padding-top:1px}
+.arc{font-family:var(--f-math);position:relative;display:inline-block}
+.arc::before{content:"";position:absolute;left:8%;right:8%;top:-3px;height:6px;border:1.5px solid currentColor;border-bottom:0;border-radius:50% 50% 0 0/100% 100% 0 0}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-family:var(--f-math);font-size:.9em;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 3px}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+
+/* header */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--sunk);color:var(--muted);font-family:var(--f-kr)}
+h1{font-family:var(--f-disp);font-weight:700;font-size:clamp(26px,5vw,38px);line-height:1.2;margin:0 0 8px;text-wrap:balance}
+h1 small{display:block;font-family:var(--f-body);font-weight:500;font-size:.5em;color:var(--muted);margin-top:6px}
+.lead{max-width:62ch;color:var(--muted);margin:0}
+h2{font-family:var(--f-disp);font-weight:500;font-size:20px;margin:48px 0 6px;text-wrap:balance}
+h2 .idx{color:var(--muted);margin-right:8px}
+.sub{color:var(--muted);margin:0 0 18px;max-width:62ch}
+
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:24px 0 0;padding:0;list-style:none;counter-reset:s}
+.howto li{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;counter-increment:s}
+.howto li::before{content:counter(s);font-family:var(--f-disp);color:var(--coral);margin-right:8px}
+
+.progress{margin-top:18px;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.bar{flex:1;min-width:140px;height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--green);transition:width .3s}
+
+/* glossary */
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.g{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-width:0}
+.g b{font-family:var(--f-kr);font-weight:700;display:block}
+.g span{font-size:13px;color:var(--muted)}
+
+/* toolbox */
+.tools{display:grid;gap:12px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;scroll-margin-top:16px}
+.tool:target{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+.tool header{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tid{font-family:var(--f-disp);font-size:13px;color:var(--amber);background:var(--amber-soft);border-radius:6px;padding:2px 8px}
+.tool h3{margin:0;font-size:17px}
+.tool h3 .kr{font-weight:700}
+.tool p{margin:8px 0 0}
+.rule{margin-top:10px;background:var(--sunk);border-radius:8px;padding:10px 12px;font-size:15px}
+.ref{margin-top:10px;font-size:13.5px;color:var(--muted)}
+.ref b{color:var(--ink);font-weight:600}
+.used{margin-top:6px;font-size:13.5px;color:var(--muted)}
+.used a{display:inline-block;margin:2px 4px 0 0;padding:1px 8px;border-radius:6px;background:var(--blue-soft);text-decoration:none;font-variant-numeric:tabular-nums}
+
+/* problems */
+.part{font-family:var(--f-kr);font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin:28px 0 10px;display:flex;gap:10px;align-items:center}
+.part::after{content:"";flex:1;height:1px;background:var(--line)}
+.p{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:14px;scroll-margin-top:16px}
+.p.done{border-color:var(--green)}
+.p:target{box-shadow:0 0 0 3px var(--blue-soft)}
+.ph{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pn{font-family:var(--f-disp);font-weight:700;font-size:24px;color:var(--blue);font-variant-numeric:tabular-nums}
+.lvl{font-family:var(--f-kr);font-size:12px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--sunk);color:var(--muted)}
+.lvl.hi{background:var(--coral-soft);color:var(--coral)}
+.pg{font-size:13px;color:var(--muted)}
+.chk{margin-left:auto;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:6px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--green)}
+.orig{font-family:var(--f-kr);margin:12px 0 4px;font-weight:500}
+.tr{margin:0;color:var(--muted);font-size:15px}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px;margin:8px 0 0;font-family:var(--f-kr);font-size:15px}
+.fig{font-size:13px;color:var(--muted);margin-top:6px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.tag{font-size:13px;text-decoration:none;padding:2px 9px;border-radius:6px;background:var(--amber-soft);color:var(--amber);font-weight:500}
+.tag.sim{background:var(--blue-soft);color:var(--blue)}
+details{margin-top:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:15px;list-style:none;display:flex;align-items:center;gap:8px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";font-family:var(--f-disp);width:16px;color:var(--muted)}
+details[open] summary::before{content:"–"}
+details.h1 summary{color:var(--coral)}
+details.h2 summary{color:var(--coral)}
+details.ans summary{color:var(--green)}
+details>div{padding:0 14px 12px 38px}
+details>div p{margin:0 0 6px}
+.answer{font-family:var(--f-math);font-size:18px;color:var(--green)}
+
+/* cheat sheet */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+.mist{padding-left:20px;margin:14px 0 0}
+.mist li{margin-bottom:8px}
+.mist b{color:var(--coral)}
+footer{margin-top:48px;font-size:13px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="chips">
+    <span class="chip">중1 수학</span>
+    <span class="chip">II 평면도형의 성질 › 2 원과 부채꼴</span>
+    <span class="chip">응용 도전 · 단원 마무리</span>
+    <span class="chip">стр. 161–165</span>
+  </div>
+  <h1>원과 부채꼴: задачи 483–500<small>Подсказки и что повторить перед каждой задачей</small></h1>
+  <p class="lead">Здесь нет готовых решений. К каждой задаче есть две подсказки, ответ для самопроверки и ссылки на темы (유형) в учебнике, которые надо повторить. Сначала посмотри «Инструменты»: почти все задачи решаются ими.</p>
+  <ol class="howto">
+    <li>Прочитай условие на корейском. Непонятные слова ищи в словаре ниже.</li>
+    <li>Посмотри теги: какие инструменты нужны. Повтори их.</li>
+    <li>Открой подсказку 1. Попробуй сам.</li>
+    <li>Застрял? Подсказка 2. Потом сверь ответ.</li>
+  </ol>
+  <div class="progress"><span id="cnt">Решено: 0 из 18</span><div class="bar"><i id="barfill"></i></div></div>
+</header>
+
+<h2><span class="idx">0</span>단어장 · словарь</h2>
+<p class="sub">Слова, которые встречаются в задачах 483–500.</p>
+<div class="gloss">
+  <div class="g"><b>원</b><span>круг / окружность</span></div>
+  <div class="g"><b>반지름</b><span>радиус</span></div>
+  <div class="g"><b>지름</b><span>диаметр</span></div>
+  <div class="g"><b>호</b><span>дуга (обозначение <span class="arc">AB</span>)</span></div>
+  <div class="g"><b>현</b><span>хорда (отрезок <span class="seg">AB</span>)</span></div>
+  <div class="g"><b>부채꼴</b><span>сектор («веер»)</span></div>
+  <div class="g"><b>활꼴</b><span>сегмент («лук»): хорда + дуга</span></div>
+  <div class="g"><b>중심각</b><span>центральный угол</span></div>
+  <div class="g"><b>원주 / 둘레</b><span>длина окружности</span></div>
+  <div class="g"><b>넓이</b><span>площадь</span></div>
+  <div class="g"><b>평행 (∥)</b><span>параллельно</span></div>
+  <div class="g"><b>수직 (⊥)</b><span>перпендикулярно</span></div>
+  <div class="g"><b>엇각</b><span>накрест лежащие углы</span></div>
+  <div class="g"><b>동위각</b><span>соответственные углы</span></div>
+  <div class="g"><b>맞꼭지각</b><span>вертикальные углы</span></div>
+  <div class="g"><b>이등변삼각형</b><span>равнобедренный треугольник</span></div>
+  <div class="g"><b>정삼각형</b><span>равносторонний треугольник</span></div>
+  <div class="g"><b>외각</b><span>внешний угол</span></div>
+  <div class="g"><b>연장선</b><span>продолжение (линии)</span></div>
+  <div class="g"><b>교점</b><span>точка пересечения</span></div>
+  <div class="g"><b>정비례한다</b><span>прямо пропорционально</span></div>
+  <div class="g"><b>합동</b><span>равные (фигуры)</span></div>
+  <div class="g"><b>보조선</b><span>вспомогательная линия</span></div>
+  <div class="g"><b>옳지 않은 것</b><span>неверное утверждение</span></div>
+</div>
+
+<h2 id="tools"><span class="idx">1</span>Инструменты · что повторить</h2>
+<p class="sub">Восемь приёмов, на которых держатся все задачи. В каждой карточке есть ссылка на страницу учебника и список задач, где приём нужен.</p>
+<div class="tools">
+
+  <article class="tool" id="t1"><header><span class="tid">T1</span><h3><span class="kr">반지름은 모두 같다</span> → <span class="kr">이등변삼각형</span></h3></header>
+    <p>Все радиусы одного круга равны. Если у треугольника две вершины на окружности, а третья в центре O, он равнобедренный: углы при основании равны.</p>
+    <div class="rule"><span class="seg">OA</span> = <span class="seg">OB</span> ⇒ ∠<span class="m">OAB</span> = ∠<span class="m">OBA</span></div>
+    <div class="ref">Повторить: <b>개념 стр. 134</b> (원, 현, 부채꼴) · главная идея задачи <b>419</b>.</div>
+    <div class="used" data-tool="t1"></div></article>
+
+  <article class="tool" id="t2"><header><span class="tid">T2</span><h3><span class="kr">엇각 · 동위각 · 맞꼭지각</span></h3></header>
+    <p>Если две прямые параллельны, секущая даёт равные углы: накрест лежащие (엇각, буква Z) и соответственные (동위각, буква F). Вертикальные углы (맞꼭지각, при пересечении двух прямых) равны всегда, параллельность не нужна.</p>
+    <div class="rule">∥ + секущая ⇒ 엇각 равны, 동위각 равны · пересечение ⇒ 맞꼭지각 равны</div>
+    <div class="ref">Повторить: <b>유형 71</b> стр. 142 (평행선이 주어진 경우) · <b>유형 72</b> стр. 143 · разобранная задача <b>425</b>.</div>
+    <div class="used" data-tool="t2"></div></article>
+
+  <article class="tool" id="t3"><header><span class="tid">T3</span><h3><span class="kr">삼각형의 외각</span> = сумма двух других углов</h3></header>
+    <p>Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним. Сумма углов треугольника равна 180°. Это из прошлой главы «다각형».</p>
+    <div class="rule">∠(외각) = ∠<span class="m">a</span> + ∠<span class="m">b</span> · ∠<span class="m">a</span> + ∠<span class="m">b</span> + ∠<span class="m">c</span> = 180°</div>
+    <div class="ref">Повторить: <b>유형 73</b> стр. 144 (지름과 현의 연장선).</div>
+    <div class="used" data-tool="t3"></div></article>
+
+  <article class="tool" id="t4"><header><span class="tid">T4</span><h3><span class="kr">정삼각형</span> → все углы 60°</h3></header>
+    <p>Если хорда равна радиусу, то у треугольника с вершиной O все три стороны равны. Значит, каждый угол 60°. Обратно: равнобедренный треугольник с углом 60° между радиусами равносторонний.</p>
+    <div class="rule"><span class="seg">AB</span> = <span class="seg">OA</span> = <span class="seg">OB</span> ⇔ ∠<span class="m">AOB</span> = 60°</div>
+    <div class="ref">Повторить: свойства треугольников (1학기) · <b>개념 стр. 134</b>.</div>
+    <div class="used" data-tool="t4"></div></article>
+
+  <article class="tool" id="t5"><header><span class="tid">T5</span><h3><span class="kr">중심각 ∝ 호의 길이 · 넓이</span></h3></header>
+    <p>В одном круге длина дуги и площадь сектора прямо пропорциональны (정비례) центральному углу. Угол в 3 раза больше, значит дуга в 3 раза длиннее. Равные дуги дают равные центральные углы.</p>
+    <div class="rule">∠<span class="m">x</span> : ∠<span class="m">y</span> = <span class="arc">AB</span> : <span class="arc">CD</span> = (넓이) : (넓이)</div>
+    <div class="ref">Повторить: <b>개념 стр. 134</b> (부채꼴의 성질 (1)) · <b>유형 69, 70</b> стр. 139–140 · <b>유형 74</b> стр. 145.</div>
+    <div class="used" data-tool="t5"></div></article>
+
+  <article class="tool" id="t6"><header><span class="tid">T6</span><h3><span class="kr">현의 길이</span>: равны, но <u>не</u> пропорциональны</h3></header>
+    <p>Равные центральные углы дают равные хорды. Но если угол вдвое больше, хорда <b>не</b> вдвое длиннее. Самая длинная хорда — диаметр.</p>
+    <div class="rule">∠ равны ⇒ <span class="kr">현</span> равны · <span class="kr">현의 길이는 중심각의 크기에 정비례하지 않는다</span></div>
+    <div class="ref">Повторить: <b>개념 стр. 134</b> (부채꼴의 성질 (2)) · <b>유형 75, 76</b> стр. 146–147.</div>
+    <div class="used" data-tool="t6"></div></article>
+
+  <article class="tool" id="t7"><header><span class="tid">T7</span><h3>Формулы круга и сектора</h3></header>
+    <p>Радиус <span class="m">r</span>, центральный угол <span class="m">x</span>°.</p>
+    <div class="rule">
+      <span class="kr">둘레</span> <span class="m">l</span> = 2π<span class="m">r</span> · <span class="kr">넓이</span> <span class="m">S</span> = π<span class="m">r</span>²<br>
+      <span class="kr">부채꼴</span>: <span class="m">l</span> = 2π<span class="m">r</span> × <span class="fr"><span class="m">x</span><span>360</span></span>,
+      <span class="m">S</span> = π<span class="m">r</span>² × <span class="fr"><span class="m">x</span><span>360</span></span>,
+      <span class="m">S</span> = <span class="fr"><span>1</span><span>2</span></span><span class="m">rl</span></div>
+    <div class="ref">Повторить: <b>개념 стр. 137</b> · <b>유형 77</b> стр. 149.</div>
+    <div class="used" data-tool="t7"></div></article>
+
+  <article class="tool" id="t8"><header><span class="tid">T8</span><h3>Весь круг = 360°, прямая = 180°</h3></header>
+    <p>Центральные углы вокруг O в сумме дают 360°. Углы на диаметре (по одну сторону) дают 180°. Если дуги даны «частями», сложи части и раздели 360° на их число.</p>
+    <div class="rule">дуги 1 : 4 : 15 ⇒ 20 частей = 360° ⇒ 1 часть = 18°</div>
+    <div class="ref">Повторить: <b>유형 70</b> стр. 140.</div>
+    <div class="used" data-tool="t8"></div></article>
+</div>
+
+<h2 id="probs"><span class="idx">2</span>Задачи</h2>
+<p class="sub">Рисунки смотри в учебнике на указанной странице. Отметь «решено», и задача станет зелёной (отметки хранятся только в этом браузере).</p>
+
+<div class="part">응용 도전 · стр. 161–163</div>
+
+<article class="p" id="p483" data-tools="t1 t4"><div class="ph"><span class="pn">483</span><span class="lvl hi">상</span><span class="pg">стр. 161 · без рисунка</span><label class="chk"><input type="checkbox" id="c483">решено</label></div>
+  <p class="orig">원 O에서 부채꼴 AOB의 반지름의 길이와 현 AB의 길이가 같고, 부채꼴 BOC의 반지름의 길이와 현 BC의 길이가 같을 때, 부채꼴 AOC의 중심각의 크기를 구하시오.</p>
+  <p class="tr">В секторе AOB радиус равен хорде AB, в секторе BOC радиус равен хорде BC. Найди центральный угол сектора AOC.</p>
+  <div class="tags"><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t4">T4 정삼각형</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Нарисуй сам: центр O, точки A, B, C подряд на окружности. Какие стороны у треугольника OAB? Какие из них равны?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p><span class="seg">OA</span> = <span class="seg">OB</span> = <span class="seg">AB</span>, значит △OAB 정삼각형 и ∠AOB = 60°. С △OBC то же самое. Осталось сложить два угла.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">120°</p></div></details></article>
+
+<article class="p" id="p484" data-tools="t1 t5 t8"><div class="ph"><span class="pn">484</span><span class="lvl hi">상</span><span class="pg">стр. 161</span><label class="chk"><input type="checkbox" id="c484">решено</label></div>
+  <p class="orig">다음 그림의 원 O에서 <span class="arc">AB</span> = <span class="arc">AC</span>이고 ∠ACO = 20°일 때, ∠BOC의 크기는?</p>
+  <p class="tr">Дуги AB и AC равны, ∠ACO = 20°. Найди ∠BOC.</p>
+  <div class="opts"><span>① 75°</span><span>② 80°</span><span>③ 85°</span><span>④ 90°</span><span>⑤ 95°</span></div>
+  <div class="tags"><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag" href="#t8">T8 360°</a><a class="tag sim" href="#t2">как 유형 72: соединить O с точкой</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Проведи 보조선 <span class="seg">OA</span>. Посмотри на △AOC: какие стороны в нём радиусы?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>△AOC равнобедренный, значит ∠OAC = 20°, а ∠AOC = 180° − 40°. Дуги AB и AC равны, поэтому ∠AOB = ∠AOC. Три угла вокруг O дают 360°.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">② 80°</p></div></details></article>
+
+<article class="p" id="p485" data-tools="t5 t1 t2"><div class="ph"><span class="pn">485</span><span class="lvl hi">상</span><span class="pg">стр. 161</span><label class="chk"><input type="checkbox" id="c485">решено</label></div>
+  <p class="orig">다음 그림에서 <span class="seg">AB</span>는 원 O의 지름이고, <span class="seg">AB</span> ⊥ <span class="seg">CF</span>, <span class="arc">BD</span>가 원주의 <span class="fr"><span>2</span><span>5</span></span>일 때, ∠CED의 크기를 구하시오.</p>
+  <p class="tr">AB — диаметр, AB ⊥ CF, дуга BD составляет 2/5 окружности. Найди ∠CED (E — пересечение CF и BD).</p>
+  <div class="tags"><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t2">T2 맞꼭지각</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>«2/5 окружности» значит, что центральный угол ∠BOD = 360° × <span class="fr"><span>2</span><span>5</span></span>. Найди его.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>△OBD равнобедренный (OB = OD), найди ∠OBD. Затем △EFB прямоугольный (∠EFB = 90°), найди ∠BEF. ∠CED и ∠BEF — 맞꼭지각.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">72°</p></div></details></article>
+
+<article class="p" id="p486" data-tools="t2 t1 t5"><div class="ph"><span class="pn">486</span><span class="lvl hi">상</span><span class="pg">стр. 161</span><label class="chk"><input type="checkbox" id="c486">решено</label></div>
+  <p class="orig">다음 그림과 같은 원 O에서 반지름 OA와 직선 BC가 평행하고 <span class="arc">BC</span> : <span class="arc">ACB</span> = 4 : 5이다. ∠OBC의 크기를 구하시오.</p>
+  <p class="tr">Радиус OA параллелен прямой BC, дуга BC : дуга ACB = 4 : 5. Найди ∠OBC.</p>
+  <div class="tags"><a class="tag" href="#t2">T2 엇각</a><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag sim" href="#t2">похожа на 419 (유형 71)</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Дуга ACB состоит из дуг AC и CB. Если BC = 4 части, а ACB = 5 частей, то сколько частей в AC? Обозначь ∠AOC = <span class="m">x</span>; тогда ∠BOC = ?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Дальше как в 419: OA ∥ BC даёт ∠OCB = ∠AOC (엇각), △OBC равнобедренный даёт ∠OBC = ∠OCB. Сумма углов △OBC = 180°.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">30°</p></div></details></article>
+
+<article class="p" id="p487" data-tools="t2 t1"><div class="ph"><span class="pn">487</span><span class="lvl">중</span><span class="pg">стр. 161</span><label class="chk"><input type="checkbox" id="c487">решено</label></div>
+  <p class="orig">다음 그림과 같이 <span class="seg">BC</span> ∥ <span class="seg">AO</span>이고, ∠AOB = 40°일 때, ∠BOC와 ∠OBC의 크기의 차를 구하시오.</p>
+  <p class="tr">BC ∥ AO, ∠AOB = 40°. Найди разность ∠BOC и ∠OBC.</p>
+  <div class="tags"><a class="tag" href="#t2">T2 엇각</a><a class="tag" href="#t1">T1 радиусы</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Секущая OB пересекает параллельные AO и BC. Какой угол при B равен ∠AOB?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>∠OBC = ∠AOB (엇각). Проведи OC: △OBC равнобедренный, ∠OCB = ∠OBC. Найди ∠BOC из суммы 180°, потом вычти.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">60°</p></div></details></article>
+
+<article class="p" id="p488" data-tools="t1 t3 t4 t5"><div class="ph"><span class="pn">488</span><span class="lvl hi">상</span><span class="pg">стр. 162</span><label class="chk"><input type="checkbox" id="c488">решено</label></div>
+  <p class="orig">다음 그림의 원 O에서 점 P는 BA와 DC의 교점이고, ∠P = 30°, <span class="seg">OC</span> = <span class="seg">CP</span> = <span class="seg">CD</span>, <span class="arc">BD</span> = 12 cm일 때, <span class="arc">AC</span>의 길이를 구하시오.</p>
+  <p class="tr">P — точка пересечения продолжений BA и DC, ∠P = 30°, OC = CP = CD, дуга BD = 12 см. Найди длину дуги AC.</p>
+  <div class="tags"><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t3">T3 외각</a><a class="tag" href="#t4">T4 정삼각형</a><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag sim" href="#t3">как 유형 73, стр. 144</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>В △CPO стороны CP и CO равны. Значит, ∠COP = ∠P = 30°. А ∠COP — это и есть ∠AOC (A лежит на прямой PO). Теперь найди ∠OCD как 외각 △CPO.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>OC = CD = OD, поэтому △OCD 정삼각형 и ∠ODC = 60°. ∠BOD — 외각 △ODP при O: ∠BOD = ∠P + ∠ODP. Затем пропорция ∠AOC : ∠BOD = <span class="arc">AC</span> : 12.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">4 cm</p></div></details></article>
+
+<article class="p" id="p489" data-tools="t7 t8"><div class="ph"><span class="pn">489</span><span class="lvl hi">상</span><span class="pg">стр. 162 · 2010 고1 학력평가</span><label class="chk"><input type="checkbox" id="c489">решено</label></div>
+  <p class="orig">두 점 A, B를 지름의 양 끝으로 하고 반지름의 길이가 10인 원 O 위를 움직이는 두 점 P, Q가 있다. 두 선분 OP, OQ는 각각 선분 OA, OB에서 동시에 출발하여 점 O를 중심으로 시계 방향으로 회전한다. 각각 일정한 속도로 한 바퀴 도는 데 선분 OP는 30초, OQ는 60초 걸린다. 원의 내부가 처음에는 흰색이나, 두 선분 OP, OQ가 회전하면서 지나간 부분은 흰색은 검은색으로, 검은색은 흰색으로 바뀐다. 두 선분 OP, OQ가 출발한 지 800초 후의 검은색 부분의 넓이가 <span class="fr"><span class="m">q</span><span class="m">p</span></span>π (<span class="m">p</span>와 <span class="m">q</span>는 서로소인 자연수)일 때, <span class="m">p</span>+<span class="m">q</span>의 값을 구하시오.</p>
+  <p class="tr">Круг радиуса 10, AB — диаметр. Отрезки OP и OQ одновременно стартуют от OA и OB и вращаются по часовой стрелке: OP делает оборот за 30 с, OQ — за 60 с. Сначала круг белый. Где проходит отрезок, цвет меняется: белое → чёрное, чёрное → белое. Через 800 с площадь чёрной части равна (q/p)π, где p и q — взаимно простые (서로소) натуральные числа. Найди p + q.</p>
+  <div class="tags"><a class="tag" href="#t7">T7 площадь сектора</a><a class="tag" href="#t8">T8 360°</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>800 секунд не рисуют. Ищи закономерность (규칙성): нарисуй круг через 30, 60, 90, 120 с. Когда картинка снова станет полностью белой?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Через 120 с всё как в начале. 800 = 120 × 6 + 80, значит достаточно нарисовать момент 80 с. За 80 с OP поворачивается на 80/30 оборота, OQ на 80/60 оборота; найди, где они стоят, и закрась. Площадь сектора = 100π × <span class="fr"><span>угол</span><span>360</span></span>.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">103</p></div></details></article>
+
+<article class="p" id="p490" data-tools="t1 t4"><div class="ph"><span class="pn">490</span><span class="lvl hi">상</span><span class="pg">стр. 162 · без рисунка</span><label class="chk"><input type="checkbox" id="c490">решено</label></div>
+  <p class="orig">반지름이 6 cm인 원 O에서 원 위의 두 점 A, B에 대하여 ∠AOB = 60°일 때, <span class="seg">AB</span>의 길이를 구하시오.</p>
+  <p class="tr">Радиус 6 см, ∠AOB = 60°. Найди длину отрезка (хорды) AB.</p>
+  <div class="tags"><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t4">T4 정삼각형</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Внимание: над AB черта, а не дуга. Нужна длина хорды, а не дуги, так что формула дуги здесь не нужна.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>△AOB равнобедренный с углом 60° при вершине. Чему равны два других угла? Какой тогда это треугольник?</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">6 cm</p></div></details></article>
+
+<article class="p" id="p491" data-tools="t5 t6"><div class="ph"><span class="pn">491</span><span class="lvl">중</span><span class="pg">стр. 163</span><label class="chk"><input type="checkbox" id="c491">решено</label></div>
+  <p class="orig">다음 보기 중에서 옳지 <u>않은</u> 것의 개수는?</p>
+  <p class="tr">Сколько <b>неверных</b> утверждений?</p>
+  <div class="rule kr" style="margin-top:8px">
+    ㉠ 한 원에서 같은 크기의 중심각에 대한 부채꼴의 넓이는 같다.<br>
+    ㉡ 한 원에서 부채꼴의 현의 길이는 중심각의 크기에 정비례한다.<br>
+    ㉢ 한 원에서 가장 길이가 긴 호는 지름이다.<br>
+    ㉣ 한 원에서 부채꼴의 중심각의 크기가 같은 현의 길이는 같다.<br>
+    ㉤ 한 원에서 부채꼴의 호의 길이는 중심각의 크기에 정비례한다.</div>
+  <div class="opts"><span>① 1개</span><span>② 2개</span><span>③ 3개</span><span>④ 4개</span><span>⑤ 5개</span></div>
+  <div class="tags"><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag" href="#t6">T6 хорда</a><a class="tag sim" href="#t6">유형 76, стр. 147</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Переведи каждое: ㉠ площадь, ㉡ хорда пропорциональна, ㉢ «самая длинная <b>дуга</b> — диаметр», ㉣ хорды при равных углах, ㉤ дуга пропорциональна. Сверь с карточками T5 и T6.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Смотри на слово <span class="kr">현</span> или <span class="kr">호</span>. Пропорциональны только дуга и площадь. И диаметр — это 현, а не 호.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">② 2개</p></div></details></article>
+
+<article class="p" id="p492" data-tools="t7"><div class="ph"><span class="pn">492</span><span class="lvl">중</span><span class="pg">стр. 163</span><label class="chk"><input type="checkbox" id="c492">решено</label></div>
+  <p class="orig">다음 그림에서 두 원 A, B는 합동이다. 원 A의 둘레의 길이가 14π cm일 때, 원 B의 넓이는?</p>
+  <p class="tr">Круги A и B равны (합동). Длина окружности A равна 14π см. Найди площадь круга B.</p>
+  <div class="opts"><span>① 35π cm²</span><span>② 42π cm²</span><span>③ 49π cm²</span><span>④ 56π cm²</span><span>⑤ 63π cm²</span></div>
+  <div class="tags"><a class="tag" href="#t7">T7 формулы</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>합동 значит, что радиусы одинаковые. Найди радиус из 2π<span class="m">r</span> = 14π.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Подставь <span class="m">r</span> в <span class="m">S</span> = π<span class="m">r</span>².</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">③ 49π cm²</p></div></details></article>
+
+<div class="part">단원 마무리 · стр. 164–165</div>
+
+<article class="p" id="p493" data-tools="t6"><div class="ph"><span class="pn">493</span><span class="lvl">중</span><span class="pg">стр. 164 · без рисунка</span><label class="chk"><input type="checkbox" id="c493">решено</label></div>
+  <p class="orig">반지름의 길이가 15 cm인 원에서 길이가 가장 긴 현의 길이를 <span class="m">a</span> cm, 부채꼴과 활꼴이 같아지는 중심각의 크기를 <span class="m">b</span>°라 할 때, <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오.</p>
+  <p class="tr">Радиус 15 см. Самая длинная хорда равна a см. При центральном угле b° сектор и сегмент совпадают. Найди a + b.</p>
+  <div class="tags"><a class="tag" href="#t6">T6 хорда</a><a class="tag sim" href="#t6">개념 стр. 134 (활꼴)</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Какая хорда самая длинная? Она проходит через центр.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Сектор (2 радиуса + дуга) и сегмент (хорда + дуга) совпадают, когда два радиуса сливаются в одну хорду, то есть в диаметр. Какая это фигура и какой у неё угол?</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">210</p></div></details></article>
+
+<article class="p" id="p494" data-tools="t5"><div class="ph"><span class="pn">494</span><span class="lvl">중</span><span class="pg">стр. 164</span><label class="chk"><input type="checkbox" id="c494">решено</label></div>
+  <p class="orig">다음 그림의 원 O에서 <span class="m">a</span>의 값과 ∠<span class="m">x</span>의 크기는?</p>
+  <p class="tr">По рисунку: угол 30° даёт дугу 3 см, угол <span class="m">x</span> даёт 9 см, угол 120° даёт дугу <span class="m">a</span>. Найди <span class="m">a</span> и ∠<span class="m">x</span>.</p>
+  <div class="opts"><span>① <span class="m">a</span>=12 cm, ∠<span class="m">x</span>=90°</span><span>② 9 cm, 70°</span><span>③ 8 cm, 60°</span><span>④ 6 cm, 45°</span><span>⑤ 4.5 cm, 30°</span></div>
+  <div class="tags"><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag sim" href="#t5">유형 69, стр. 139</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Опорная пара: 30° ↔ 3 см. Во сколько раз 120° больше 30°?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>30 : 120 = 3 : <span class="m">a</span> и 30 : <span class="m">x</span> = 3 : 9.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">① <span class="m">a</span> = 12 cm, ∠<span class="m">x</span> = 90°</p></div></details></article>
+
+<article class="p" id="p495" data-tools="t5 t8"><div class="ph"><span class="pn">495</span><span class="lvl">중</span><span class="pg">стр. 164</span><label class="chk"><input type="checkbox" id="c495">решено</label></div>
+  <p class="orig">다음 그림에서 <span class="arc">BC</span>의 길이는 <span class="arc">AB</span>의 4배이고 <span class="arc">ADC</span>의 길이는 <span class="arc">ABC</span>의 3배이다. ∠BOC의 크기는?</p>
+  <p class="tr">Дуга BC в 4 раза длиннее дуги AB, а дуга ADC в 3 раза длиннее дуги ABC. Найди ∠BOC.</p>
+  <div class="opts"><span>① 36°</span><span>② 54°</span><span>③ 72°</span><span>④ 90°</span><span>⑤ 108°</span></div>
+  <div class="tags"><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag" href="#t8">T8 360°</a><a class="tag sim" href="#t8">유형 70, стр. 140</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Считай дуги частями: AB = 1 часть, BC = 4 части. Сколько частей в ABC? А в ADC?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>ABC + ADC — это весь круг, 360°. Сложи все части, найди, сколько градусов в одной, и умножь на число частей BC.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">③ 72°</p></div></details></article>
+
+<article class="p" id="p496" data-tools="t4 t2 t5"><div class="ph"><span class="pn">496</span><span class="lvl">중</span><span class="pg">стр. 164</span><label class="chk"><input type="checkbox" id="c496">решено</label></div>
+  <p class="orig">다음 그림과 같은 원 O에서 <span class="seg">AB</span> ∥ <span class="seg">CO</span>, <span class="seg">AB</span> = <span class="seg">AO</span>, <span class="arc">AB</span> = 5일 때, <span class="arc">AC</span>의 길이를 구하시오.</p>
+  <p class="tr">AB ∥ CO, хорда AB равна AO, дуга AB = 5. Найди длину дуги AC.</p>
+  <div class="tags"><a class="tag" href="#t4">T4 정삼각형</a><a class="tag" href="#t2">T2 엇각</a><a class="tag" href="#t5">T5 угол ∝ дуга</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>AB = AO, а AO = BO как радиусы. Какой треугольник AOB? Чему равны его углы?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>Секущая AO пересекает параллельные AB и CO, поэтому ∠AOC = ∠BAO (엇각). Сравни ∠AOC и ∠AOB: если углы равны, дуги тоже равны.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">5</p></div></details></article>
+
+<article class="p" id="p497" data-tools="t2 t1"><div class="ph"><span class="pn">497</span><span class="lvl">중</span><span class="pg">стр. 164</span><label class="chk"><input type="checkbox" id="c497">решено</label></div>
+  <p class="orig">다음 그림에서 <span class="seg">CF</span>는 원 O의 지름이고 <span class="seg">AF</span> ∥ <span class="seg">BE</span> ∥ <span class="seg">CD</span>일 때, 다음 중 ∠BOC의 크기와 <u>다른</u> 하나는?</p>
+  <p class="tr">CF — диаметр, AF ∥ BE ∥ CD. Какой угол <b>не</b> равен ∠BOC?</p>
+  <div class="opts"><span>① ∠AFO</span><span>② ∠ODC</span><span>③ ∠OCD</span><span>④ ∠EOF</span><span>⑤ ∠COD</span></div>
+  <div class="tags"><a class="tag" href="#t2">T2 엇각 · 동위각 · 맞꼭지각</a><a class="tag" href="#t1">T1 радиусы</a><a class="tag sim" href="#t2">та же схема, что 425</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Обозначь ∠BOC = <span class="m">x</span> и проверь каждый вариант. Для каждого угла спроси: это 동위각, 엇각 или 맞꼭지각 к ∠BOC?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>∠AFO — 동위각, ∠OCD — 엇각, ∠EOF — 맞꼭지각. △OCD равнобедренный, значит ∠ODC = ∠OCD. А чему тогда равен третий угол △OCD?</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">⑤ ∠COD</p></div></details></article>
+
+<article class="p" id="p498" data-tools="t1 t3"><div class="ph"><span class="pn">498</span><span class="lvl">중</span><span class="pg">стр. 165</span><label class="chk"><input type="checkbox" id="c498">решено</label></div>
+  <p class="orig">아래의 그림과 같이 원 O의 지름 AB의 연장선과 현 CD의 연장선의 교점을 P라 하자. <span class="seg">DO</span> = <span class="seg">DP</span>, ∠OCD = 40°일 때, ∠AOC의 크기를 구하시오.</p>
+  <p class="tr">P — точка пересечения продолжений диаметра AB и хорды CD. DO = DP, ∠OCD = 40°. Найди ∠AOC.</p>
+  <div class="tags"><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t3">T3 외각</a><a class="tag sim" href="#t3">유형 73, стр. 144</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Здесь два равнобедренных треугольника: △OCD (OC = OD, радиусы) и △DOP (DO = DP). Начни с △OCD: чему равен ∠ODC?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>∠ODC — 외각 △DOP, поэтому ∠DOP + ∠DPO = 40°, и эти углы равны. A, O, P лежат на одной прямой: ∠AOC + ∠COD + ∠DOP = 180°.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">60°</p></div></details></article>
+
+<article class="p" id="p499" data-tools="t5 t7"><div class="ph"><span class="pn">499</span><span class="lvl">중</span><span class="pg">стр. 165</span><label class="chk"><input type="checkbox" id="c499">решено</label></div>
+  <p class="orig">다음 그림에서 색칠한 부분의 부채꼴에 대하여 중심각의 크기는 A°, 넓이는 Bπ cm²라 할 때, A+B의 값을 구하면?</p>
+  <p class="tr">По рисунку: радиус 6 см, угол 30° даёт дугу <span class="m">a</span> см, закрашенный сектор имеет дугу 4<span class="m">a</span> см. Его центральный угол A°, площадь Bπ см². Найди A + B.</p>
+  <div class="opts"><span>① 120</span><span>② 125</span><span>③ 127</span><span>④ 132</span><span>⑤ 137</span></div>
+  <div class="tags"><a class="tag" href="#t5">T5 угол ∝ дуга</a><a class="tag" href="#t7">T7 площадь сектора</a><a class="tag sim" href="#t7">유형 74, стр. 145</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Дуга 4<span class="m">a</span> в 4 раза длиннее дуги <span class="m">a</span>. Значит, угол тоже в 4 раза больше 30°.</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p><span class="m">S</span> = π · 6² × <span class="fr"><span>A</span><span>360</span></span>. Число перед π и есть B.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">④ 132</p></div></details></article>
+
+<article class="p" id="p500" data-tools="t2 t1 t6"><div class="ph"><span class="pn">500</span><span class="lvl">중</span><span class="pg">стр. 165</span><label class="chk"><input type="checkbox" id="c500">решено</label></div>
+  <p class="orig">다음 그림과 같이 <span class="seg">AC</span> ∥ <span class="seg">OD</span>, <span class="seg">BD</span> = 5 cm일 때, <span class="seg">CD</span>의 길이를 구하시오.</p>
+  <p class="tr">AB — диаметр, AC ∥ OD, хорда BD = 5 см. Найди длину хорды CD.</p>
+  <div class="tags"><a class="tag" href="#t2">T2 동위각 · 엇각</a><a class="tag" href="#t1">T1 радиусы</a><a class="tag" href="#t6">T6 равные хорды</a></div>
+  <details class="h1"><summary>Подсказка 1</summary><div><p>Проведи 보조선 <span class="seg">OC</span>. Обозначь ∠BOD = <span class="m">a</span>. Прямая AB пересекает параллельные AC и OD: какой угол при A равен <span class="m">a</span>?</p></div></details>
+  <details class="h2"><summary>Подсказка 2</summary><div><p>∠OAC = <span class="m">a</span> (동위각). △AOC равнобедренный, значит ∠OCA = <span class="m">a</span>. Секущая OC: ∠DOC = ∠OCA (엇각). Значит, ∠COD = ∠DOB, и по T6 хорды CD и BD равны.</p></div></details>
+  <details class="ans"><summary>Проверить ответ</summary><div><p class="answer">5 cm</p></div></details></article>
+
+<h2><span class="idx">3</span>Шпаргалка</h2>
+<div class="tbl"><table>
+  <thead><tr><th>Что дано</th><th>Первое действие</th><th>Задачи</th></tr></thead>
+  <tbody>
+    <tr><td>Параллельные отрезки (∥)</td><td>Найти секущую, отметить 엇각 / 동위각</td><td>486, 487, 496, 497, 500</td></tr>
+    <tr><td>Центр O и точки на окружности</td><td>Провести радиусы, искать 이등변삼각형</td><td>484, 487, 498, 500</td></tr>
+    <tr><td>Хорда = радиус</td><td>정삼각형, угол 60°</td><td>483, 488, 490, 496</td></tr>
+    <tr><td>Продолжения линий, точка P снаружи</td><td>외각 треугольника</td><td>488, 498</td></tr>
+    <tr><td>Дуги «в N раз» или в отношении</td><td>Части → 360° → угол</td><td>485, 486, 494, 495, 499</td></tr>
+    <tr><td>Нужна площадь или длина окружности</td><td>Формулы T7</td><td>489, 492, 499</td></tr>
+  </tbody>
+</table></div>
+<ul class="mist">
+  <li><b>Черта или дуга?</b> <span class="seg">AB</span> — хорда (현), <span class="arc">AB</span> — дуга (호). В 490 и 500 спрашивают хорду.</li>
+  <li><b>Хорда не пропорциональна углу.</b> Пропорциональны только дуга и площадь (491).</li>
+  <li><b>Дуга ACB длиннее BC.</b> В 486 и 495 большая дуга содержит маленькую, вычти или сложи части.</li>
+  <li><b>Не забудь 보조선.</b> В 484 и 500 без радиуса OA / OC задача не решается.</li>
+</ul>
+
+<footer>По учебнику NaBi, 중1 «원과 부채꼴», стр. 161–165. Номера страниц ведут к учебнику; рисунки задач смотри там.</footer>
+</div>
+
+<script>
+(function(){
+  var probs=[].slice.call(document.querySelectorAll('.p'));
+  // back-links from tools to problems
+  document.querySelectorAll('.used').forEach(function(box){
+    var t=box.getAttribute('data-tool');
+    var list=probs.filter(function(p){return (' '+p.dataset.tools+' ').indexOf(' '+t+' ')>-1});
+    if(!list.length)return;
+    box.appendChild(document.createTextNode('Нужен в задачах: '));
+    list.forEach(function(p){var a=document.createElement('a');a.href='#'+p.id;a.textContent=p.id.slice(1);box.appendChild(a)});
+  });
+  // solved checkboxes
+  var KEY='nabi-m1-483-500';
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+  function update(){
+    var n=0;
+    probs.forEach(function(p){var c=p.querySelector('input');p.classList.toggle('done',c.checked);if(c.checked)n++});
+    document.getElementById('cnt').textContent='Решено: '+n+' из '+probs.length;
+    document.getElementById('barfill').style.width=(n/probs.length*100)+'%';
+  }
+  probs.forEach(function(p){
+    var c=p.querySelector('input');
+    c.checked=!!saved[p.id];
+    c.addEventListener('change',function(){saved[p.id]=c.checked;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(e){}update()});
+  });
+  update();
+})();
+</script>
+
+</body></html>
