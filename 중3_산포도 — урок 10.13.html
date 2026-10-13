@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>산포도 — урок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column (~780px); concept → lab → transforms → recipe → problem cards → cheat sheet */
+:root{
+  --bg:#f2f4f7; --card:#ffffff; --ink:#18202d; --muted:#5a6476; --line:#d5dbe5;
+  --blue:#2c6bd6; --blue-bg:#e6eefb;
+  --coral:#dc4f3a; --coral-bg:#fce8e4;
+  --green:#178f62; --green-bg:#e0f3ea;
+  --amber:#b97c0b; --amber-bg:#fdf2da;
+  --violet:#6a4fd0; --violet-bg:#ece8fb;
+  --chip:#e9edf3;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-ko:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f131a; --card:#171d27; --ink:#e5e9f1; --muted:#97a1b4; --line:#2b3342;
+  --blue:#74a2f2; --blue-bg:#172339; --coral:#f27c66; --coral-bg:#341d19;
+  --green:#4fc496; --green-bg:#132a21; --amber:#e4ad44; --amber-bg:#2b2413;
+  --violet:#a693f2; --violet-bg:#221c3a; --chip:#222a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f131a; --card:#171d27; --ink:#e5e9f1; --muted:#97a1b4; --line:#2b3342;
+  --blue:#74a2f2; --blue-bg:#172339; --coral:#f27c66; --coral-bg:#341d19;
+  --green:#4fc496; --green-bg:#132a21; --amber:#e4ad44; --amber-bg:#2b2413;
+  --violet:#a693f2; --violet-bg:#221c3a; --chip:#222a37; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);padding-inline:16px;padding-block:24px 64px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(26px,5vw,38px)/1.2 var(--f-disp);letter-spacing:-.01em}
+h1 .ko{display:block;font-family:var(--f-ko);font-weight:700}
+h1 .ru{display:block;font-size:.55em;font-weight:500;color:var(--muted);margin-top:6px}
+h2{font:700 22px/1.3 var(--f-disp);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font-size:14px;color:var(--blue);letter-spacing:.06em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+.ko,[lang=ko]{font-family:var(--f-ko)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--chip);border-radius:999px;padding:3px 10px;font-size:13px;color:var(--muted)}
+.lead{font-size:17px;color:var(--muted);max-width:65ch}
+section{display:flex;flex-direction:column;gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box.amber{background:var(--amber-bg);border-color:transparent}
+.box.coral{background:var(--coral-bg);border-color:transparent}
+.box.green{background:var(--green-bg);border-color:transparent}
+.box.blue{background:var(--blue-bg);border-color:transparent}
+.tag{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.amber .tag{color:var(--amber)} .coral .tag{color:var(--coral)} .green .tag{color:var(--green)} .blue .tag{color:var(--blue)}
+.tag.plain{color:var(--muted)}
+.m,.f{font-family:var(--f-math)}
+.f{white-space:nowrap}
+.orig{font-family:var(--f-ko);font-size:16.5px;line-height:1.75}
+.tr{color:var(--muted);font-size:15px;border-top:1px dashed var(--line);padding-top:8px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-family:var(--f-math);font-size:.85em;line-height:1.1;margin:0 2px}
+.fr span:first-child{border-bottom:1px solid currentColor;padding:0 2px}
+.c-blue{color:var(--blue);font-weight:600}.c-coral{color:var(--coral);font-weight:600}.c-green{color:var(--green);font-weight:600}.c-violet{color:var(--violet);font-weight:600}
+/* vocab */
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vc b{font-family:var(--f-ko);font-size:17px}
+.vc i{font-style:normal;color:var(--blue);font-weight:600;font-size:14px}
+.vc span{font-size:13px;color:var(--muted);line-height:1.4}
+/* figures */
+figure{margin:0;display:flex;flex-direction:column;gap:6px;align-items:center}
+figure svg{max-width:100%;height:auto;display:block}
+figcaption{font-size:13.5px;color:var(--muted);text-align:center;max-width:60ch}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.two>*{min-width:0}
+svg .ink{stroke:var(--ink);fill:none;stroke-width:1.6}
+svg .faint{stroke:var(--muted);fill:none;stroke-width:1.1;stroke-dasharray:4 4}
+svg .tan{stroke:var(--coral);fill:none;stroke-width:2.4}
+svg .ch{stroke:var(--blue);fill:none;stroke-width:2}
+svg .gr{stroke:var(--green);fill:none;stroke-width:2}
+svg .pt{fill:var(--ink)}
+svg .lbl{fill:var(--ink);font:15px var(--f-math)}
+svg .val{font:600 13px var(--f-body)}
+svg .w-coral{fill:var(--coral-bg);stroke:var(--coral);stroke-width:1.4}
+svg .w-blue{fill:var(--blue-bg);stroke:var(--blue);stroke-width:1.4}
+svg .w-green{fill:var(--green-bg);stroke:var(--green);stroke-width:1.4}
+svg .w-violet{fill:var(--violet-bg);stroke:var(--violet);stroke-width:1.4}
+svg .w-ink{fill:none;stroke:var(--ink);stroke-width:1.2}
+svg .t-coral{fill:var(--coral)} svg .t-blue{fill:var(--blue)} svg .t-green{fill:var(--green)} svg .t-violet{fill:var(--violet)} svg .t-ink{fill:var(--ink)}
+/* steps */
+ol.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+ol.steps li::before{content:counter(s);font:700 12px/22px var(--f-disp);width:22px;height:22px;text-align:center;border-radius:50%;background:var(--ink);color:var(--bg)}
+ol.steps li>div{min-width:0}
+.warn{background:var(--coral-bg);border-radius:8px;padding:8px 12px;font-size:15px}
+/* lab */
+.lab{background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:640px){.lab{grid-template-columns:1fr}}
+.lab .ctrl{display:flex;flex-direction:column;gap:12px}
+.lab label{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.read{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:15px;align-items:baseline}
+.read b{font:600 22px var(--f-math);font-variant-numeric:tabular-nums;text-align:right}
+.status{font-weight:600;padding:8px 12px;border-radius:8px;background:var(--green-bg);color:var(--green)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:500 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* problems */
+.group-h{display:flex;align-items:center;gap:10px;margin-top:6px}
+.group-h b{font:700 15px var(--f-ko);padding:4px 12px;border-radius:999px;background:var(--ink);color:var(--bg)}
+.group-h span{color:var(--muted);font-size:14px}
+.prob{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.prob.rep{border:1.5px solid var(--green)}
+.ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pn{font:700 22px var(--f-disp);color:var(--blue)}
+.lv{font:500 12px var(--f-ko);background:var(--chip);color:var(--muted);padding:2px 9px;border-radius:999px}
+.rp{font-size:12px;font-weight:600;background:var(--green-bg);color:var(--green);padding:2px 9px;border-radius:999px}
+.choices{display:flex;flex-wrap:wrap;gap:4px 18px;font-family:var(--f-math)}
+.choices.col{flex-direction:column}
+details{border-top:1px solid var(--line);padding-top:8px}
+details+details{border-top:none;padding-top:0}
+summary{cursor:pointer;font-weight:600;font-size:15px;padding:4px 0;color:var(--blue)}
+details.sol summary{color:var(--green)}
+details>div{padding:6px 0 4px;display:flex;flex-direction:column;gap:8px}
+.ans{font-weight:700;color:var(--green)}
+.figwrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.figwrap svg{max-width:min(100%,340px)}
+.small{font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+.tbl{overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:13px}
+ul.mist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<style>
+/* stats additions */
+.sq{white-space:nowrap;font-family:var(--f-math)}
+.sq>span{border-top:1px solid currentColor;padding:0 2px;margin-left:1px}
+.dtw{overflow-x:auto;max-width:100%}
+table.dt{min-width:0;width:auto;font-size:14.5px;font-variant-numeric:tabular-nums}
+table.dt th,table.dt td{border:1px solid var(--line);padding:5px 10px;text-align:center;vertical-align:middle;white-space:nowrap}
+table.dt th{background:var(--chip);color:var(--ink);font-family:var(--f-ko);font-size:13.5px}
+table.dt td{font-family:var(--f-math)}
+.databox{border:1px solid var(--line);border-radius:8px;padding:10px 14px;text-align:center;font-family:var(--f-math);font-size:17px;letter-spacing:.02em}
+.bogi{border:1px solid var(--line);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;font-family:var(--f-ko);font-size:15px}
+.bogi>b{font-size:13px;color:var(--muted);font-weight:600}
+.formula{font-family:var(--f-ko);font-size:17px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:4px 0}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.cmp>div{border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cmp .lo{background:var(--green-bg)} .cmp .hi{background:var(--coral-bg)}
+.cmp h3{font-size:15px}
+.cmp ul{margin:0;padding-left:18px;font-family:var(--f-ko);font-size:15px}
+.log{font-size:14px;color:var(--muted);min-height:1.6em}
+.lab .read b{font-size:20px}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:12px">
+  <div class="chips"><span class="chip">중등수학3(하)</span><span class="chip">III 통계 › 1 대푯값과 산포도</span><span class="chip">стр. 71–78 · № 170–197</span></div>
+  <h1><span class="ko">산포도 · 분산과 표준편차</span><span class="ru">Разброс данных: дисперсия и стандартное отклонение</span></h1>
+  <p class="lead">Среднее (평균) говорит, где «центр» данных. Но два класса с одинаковым средним могут быть совсем разными: в одном все получили около 70, в другом половина 40, половина 100. Насколько данные разбросаны вокруг среднего, показывает 산포도. Сегодня считаем его двумя числами: 분산 и 표준편차.</p>
+</header>
+
+<!-- 0 vocab -->
+<section>
+  <h2><span class="num">0</span>단어장 · Словарь</h2>
+  <p class="small">Эти слова встречаются в условиях задач. Читай их по-корейски, как на экзамене.</p>
+  <div class="vocab" id="vocab"></div>
+</section>
+
+<!-- 1 warm-up -->
+<section>
+  <h2><span class="num">1</span>복습 · Разминка</h2>
+  <div class="two">
+    <div class="box">
+      <span class="tag plain">평균 · среднее</span>
+      <div class="formula">(평균) = <span class="fr"><span>(변량의 총합)</span><span>(변량의 개수)</span></span></div>
+      <p>Пример: 7, 9, 8, 10, 6 → <span class="f">40 ÷ 5 = 8</span>.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">제곱 · 제곱근 · квадрат и корень</span>
+      <p><span class="f">(−3)² = 9</span> — квадрат отрицательного числа <b>положительный</b>.</p>
+      <p><span class="f"><span class="sq">√<span>16</span></span> = 4</span>, <span class="f"><span class="sq">√<span>6</span></span></span> оставляем как есть. «음이 아닌 제곱근» = корень, который ≥ 0.</p>
+    </div>
+  </div>
+  <div class="box">
+    <span class="tag plain">대푯값 · что было до этого</span>
+    <p>Среднее, медиана (중앙값), мода (최빈값) — это 대푯값: одно число, которое «представляет» все данные. 산포도 — второе число: насколько данные <b>далеко</b> от этого представителя.</p>
+  </div>
+</section>
+
+<!-- 2 concept: 산포도 -->
+<section>
+  <h2><span class="num">2</span>산포도 · Что такое разброс</h2>
+
+  <div class="box amber">
+    <span class="tag">Аналогия из жизни</span>
+    <p>Тренер выбирает баскетболиста на финал. Оба игрока в среднем набирают <b>20 очков</b>.</p>
+    <p>Игрок A: 19, 20, 21, 20, 20. Игрок B: 5, 35, 10, 30, 20.</p>
+    <p>Среднее одинаковое, но A стабилен, а B — лотерея. Тренер возьмёт A. Число, которое показывает эту «стабильность», и есть 산포도: у A он маленький, у B большой.</p>
+  </div>
+
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">산포도는 자료의 변량이 흩어져 있는 정도를 하나의 수로 나타낸 값으로 분산, 표준편차가 있다.</p>
+    <p class="tr">산포도 (разброс) — одно число, показывающее, насколько значения данных разбросаны. Его виды: 분산 (дисперсия) и 표준편차 (стандартное отклонение).</p>
+  </div>
+
+  <figure>
+    <svg id="f-ab"></svg>
+    <figcaption>Задача 175: у A и B одинаковое среднее 8 (синяя линия). Точки B стоят дальше от линии — разброс больше.</figcaption>
+  </figure>
+
+  <h3>Шаг 1. 편차 · отклонение</h3>
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">(1) 편차 : 각 변량에서 평균을 뺀 값<br>⇨ (편차) = (변량) − (평균)<br>① 편차의 총합은 항상 0이다.<br>② 변량이 평균보다 크면 그 편차는 양수이고, 평균보다 작으면 그 편차는 음수이다.</p>
+    <p class="tr">Отклонение = значение − среднее. ① Сумма отклонений <b>всегда равна 0</b>. ② Если значение больше среднего, отклонение положительное (양수), если меньше — отрицательное (음수).</p>
+  </div>
+  <div class="box amber">
+    <span class="tag">Почему сумма всегда 0 · качели</span>
+    <p>Представь качели-доску, на которой стоят гири в точках 7, 9, 8, 10, 6. Среднее 8 — это точка, где доска <b>уравновешена</b>. «Тянут влево» отклонения −1 и −2, «тянут вправо» +1 и +2. Они гасят друг друга: <span class="f">−1 + 1 + 0 + 2 − 2 = 0</span>.</p>
+    <p>Поэтому сумма отклонений не годится как мера разброса: она всегда 0. Зато это свойство помогает найти неизвестное отклонение <span class="m">x</span> (задачи 173, 180, 183, 193, 194).</p>
+  </div>
+
+  <h3>Шаг 2. 분산 · дисперсия</h3>
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">(2) 분산 : 각 편차의 제곱의 평균</p>
+    <div class="formula">⇨ (분산) = <span class="fr"><span>{(편차)²의 총합}</span><span>(변량의 개수)</span></span></div>
+    <p class="tr">Дисперсия — среднее значение квадратов отклонений. Возводим в квадрат, чтобы минусы исчезли и отклонения не гасили друг друга. Далёкие точки после квадрата «весят» ещё больше.</p>
+  </div>
+
+  <h3>Шаг 3. 표준편차 · стандартное отклонение</h3>
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">(3) 표준편차 : 분산의 음이 아닌 제곱근<br>⇨ (표준편차) = <span class="sq">√<span>(분산)</span></span></p>
+    <p class="tr">Стандартное отклонение — неотрицательный квадратный корень из дисперсии. Зачем корень? Если данные в баллах (점), то дисперсия в «баллах²». Корень возвращает обычные единицы: 점, kg, 시간. Поэтому в ответах у 표준편차 пишут единицы, а у 분산 — нет.</p>
+  </div>
+
+  <div class="box green">
+    <span class="tag">Пример · 예시 (задача 175, ученик B)</span>
+    <p>Данные: 7, 9, 8, 10, 6.</p>
+    <ol class="steps">
+      <li><div>평균: <span class="f">(7 + 9 + 8 + 10 + 6) ÷ 5 = 40 ÷ 5 = 8</span></div></li>
+      <li><div>편차 (значение − 8): <span class="f">−1, 1, 0, 2, −2</span>. Проверка: сумма <span class="f">= 0</span> ✓</div></li>
+      <li><div>(편차)²: <span class="f">1, 1, 0, 4, 4</span>, сумма <span class="f">= 10</span></div></li>
+      <li><div>분산: <span class="f">10 ÷ 5 = 2</span></div></li>
+      <li><div>표준편차: <span class="f"><span class="sq">√<span>2</span></span></span></div></li>
+    </ol>
+    <p>Для A (8, 9, 8, 7, 8): отклонения 0, 1, 0, −1, 0 → 분산 <span class="f">2 ÷ 5 = 0.4</span>. У B разброс больше ✓</p>
+  </div>
+
+  <div class="box coral">
+    <span class="tag">Осторожно · 주의</span>
+    <p>Делим на <b>количество значений</b> (변량의 개수), а не на «количество − 1» (так иногда делают в вузе, но не в нашем учебнике).</p>
+    <p>Не забудь последний шаг: если спрашивают 표준편차, нужно взять корень из 분산. Ошибка «ответил дисперсией вместо отклонения» — самая частая.</p>
+  </div>
+</section>
+
+<!-- 3 lab -->
+<section>
+  <h2><span class="num">3</span>실험실 · Лаборатория</h2>
+  <p>Двигай 5 значений. Смотри, как меняются отклонения (полоски от синей линии среднего), 분산 и 표준편차. Потом нажми «всем +3» и «всё ×2»: это правило из раздела 4.</p>
+  <div class="lab">
+    <figure><svg id="lab"></svg></figure>
+    <div class="ctrl">
+      <div id="sliders" style="display:flex;flex-direction:column;gap:6px"></div>
+      <div class="read">
+        <span>평균 <span class="small">среднее</span></span><b id="rM" style="color:var(--blue)">—</b>
+        <span>편차의 총합 <span class="small">сумма откл.</span></span><b id="rS">—</b>
+        <span>(편차)²의 총합</span><b id="rQ">—</b>
+        <span>분산 <span class="small">дисперсия</span></span><b id="rV" style="color:var(--violet)">—</b>
+        <span>표준편차 <span class="small">ст. откл.</span></span><b id="rD" style="color:var(--coral)">—</b>
+      </div>
+      <div class="btns">
+        <button id="bPlus" type="button">всем +3</button>
+        <button id="bMinus" type="button">всем −3</button>
+        <button id="bTimes" type="button">всё ×2</button>
+        <button id="bA" type="button">175: ученик A</button>
+        <button id="bB" type="button">175: ученик B</button>
+      </div>
+      <p class="log" id="log" aria-live="polite">Попробуй сделать все значения одинаковыми. Чему тогда равен 분산?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 transformed -->
+<section>
+  <h2><span class="num">4</span>변화된 변량의 평균과 표준편차 · Если все значения изменить</h2>
+  <div class="box amber">
+    <span class="tag">Аналогия</span>
+    <p><b>+b:</b> учитель добавил всему классу 5 бонусных баллов. Средний балл вырос на 5. А расстояния между учениками не изменились: кто отставал на 10 баллов, так и отстаёт на 10. Разброс тот же.</p>
+    <p><b>×a:</b> результаты перевели из 10-балльной шкалы в 20-балльную (всё ×2). Теперь и среднее ×2, и все расстояния ×2. Значит 표준편차 ×2, а 분산 (там квадрат) ×4.</p>
+  </div>
+
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig"><span class="m">n</span>개의 변량 <span class="m">x</span><sub>1</sub>, <span class="m">x</span><sub>2</sub>, …, <span class="m">x<sub>n</sub></span>의 평균이 <span class="m">m</span>, 표준편차가 <span class="m">s</span>일 때, <span class="m">n</span>개의 변량 <span class="m">ax</span><sub>1</sub>+<span class="m">b</span>, …, <span class="m">ax<sub>n</sub></span>+<span class="m">b</span>에 대하여 (단, <span class="m">a</span>, <span class="m">b</span>는 상수)<br>
+    (1) (평균) = <span class="f"><span class="m">am</span> + <span class="m">b</span></span><br>
+    (2) (분산) = <span class="f"><span class="m">a</span>²<span class="m">s</span>²</span><br>
+    (3) (표준편차) = <span class="f"><span class="sq">√<span><span class="m">a</span>²<span class="m">s</span>²</span></span> = |<span class="m">a</span>|<span class="m">s</span></span></p>
+    <p class="tr">Если каждое значение умножить на a и прибавить b (a, b — постоянные, 상수), то среднее станет am + b, дисперсия a²s², стандартное отклонение |a|s.</p>
+    <p class="orig" style="font-size:15px">참고: 각 변량에 일정한 수를 더하거나 빼는 것은 분산과 표준편차에 영향을 주지 않는다.</p>
+    <p class="tr">Прибавление или вычитание одного и того же числа ко всем значениям не влияет на дисперсию и стандартное отклонение.</p>
+  </div>
+
+  <figure>
+    <svg id="f-tr"></svg>
+    <figcaption>Те же 5 значений: исходные, «+3» (сдвиг вправо, форма та же) и «×2» (растянуты в 2 раза).</figcaption>
+  </figure>
+
+  <div class="box green">
+    <span class="tag">Пример · 예시</span>
+    <p>Среднее 7, стандартное отклонение 2. Что будет у <span class="f">2<span class="m">a</span>, 2<span class="m">b</span>, …</span> и у <span class="f"><span class="m">a</span> − 3, <span class="m">b</span> − 3, …</span>?</p>
+    <ol class="steps">
+      <li><div>×2: 평균 <span class="f">2 × 7 = 14</span>, 표준편차 <span class="f">2 × 2 = 4</span>, 분산 <span class="f">4 × 4 = 16</span>.</div></li>
+      <li><div>−3: 평균 <span class="f">7 − 3 = 4</span>, 표준편차 остаётся <span class="f">2</span>.</div></li>
+    </ol>
+  </div>
+  <div class="box coral">
+    <span class="tag">Осторожно · 주의</span>
+    <p>Корень берётся только из множителя: <span class="f">×(−2)</span> даёт 표준편차 <span class="f">×2</span>, а не ×(−2). Разброс не бывает отрицательным.</p>
+  </div>
+</section>
+
+<!-- 5 analysis -->
+<section>
+  <h2><span class="num">5</span>자료의 분석 · Как читать 표준편차</h2>
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">평균과 표준편차가 주어진 경우 다음을 이용하여 자료를 분석할 수 있다.</p>
+    <div class="cmp">
+      <div class="lo"><h3>(1) 분산 또는 표준편차가 작다</h3><ul><li>변량들이 평균 가까이에 모여 있다.</li><li>변량들 간의 격차가 작다.</li><li>자료의 분포 상태가 고르다.</li></ul><p class="small">Значения собраны около среднего, разница между ними маленькая, распределение ровное (고르다).</p></div>
+      <div class="hi"><h3>(2) 분산 또는 표준편차가 크다</h3><ul><li>변량들이 평균에서 멀리 떨어져 있다.</li><li>변량들 간의 격차가 크다.</li><li>자료의 분포 상태가 고르지 않다.</li></ul><p class="small">Значения далеко от среднего, большая разница, распределение неровное.</p></div>
+    </div>
+  </div>
+  <div class="box coral">
+    <span class="tag">Чего по таблице «среднее + 표준편차» узнать НЕЛЬЗЯ</span>
+    <ul class="mist">
+      <li>сколько учеников в классе (학생 수);</li>
+      <li>у кого самый высокий или низкий балл (가장 높은/낮은 학생);</li>
+      <li>сколько учеников набрали 90 и больше (90점 이상인 학생 수).</li>
+    </ul>
+    <p>В задачах 187–189 такие варианты — ловушки. Ответ на них: «알 수 없다» (узнать нельзя).</p>
+  </div>
+</section>
+
+<!-- recipe -->
+<section>
+  <h2><span class="num">6</span>풀이 순서 · Рецепт решения</h2>
+  <div class="box">
+    <ol class="steps">
+      <li><div><b>평균</b>: сумма ÷ количество. Если даны сразу 편차, этот шаг пропускаем.</div></li>
+      <li><div><b>편차</b> = значение − среднее. Есть неизвестное <span class="m">x</span>? Используй «сумма отклонений = 0».</div></li>
+      <li><div><b>(편차)²</b> каждого, затем сумма.</div></li>
+      <li><div><b>분산</b> = сумма квадратов ÷ количество значений.</div></li>
+      <li><div><b>표준편차</b> = <span class="sq">√<span>분산</span></span>. Проверь, что спрашивают: 분산 или 표준편차.</div></li>
+    </ol>
+    <p class="warn"><b>Где чаще всего ошибаются:</b> шаг 5 (забыли корень) и шаг 4 (поделили не на то число). Второе место — сравнение «고르다»: смотрим на <b>표준편차</b>, а не на среднее.</p>
+  </div>
+</section>
+
+<!-- problems -->
+<section>
+  <h2><span class="num">7</span>교재 문제 · Задачи 170–197</h2>
+  <p class="small">Задачи с зелёной рамкой и меткой «разбор» — ключевые: у них полное решение. В остальных только подсказка, решай сам.</p>
+  <div id="probs" style="display:flex;flex-direction:column;gap:14px"></div>
+</section>
+
+<!-- cheat sheet -->
+<section>
+  <h2><span class="num">8</span>정리 · Шпаргалка</h2>
+  <div class="tbl box" style="padding:6px 8px">
+    <table>
+      <thead><tr><th>Что</th><th>Формула</th><th>Задачи</th></tr></thead>
+      <tbody>
+        <tr><td>편차</td><td>значение − среднее; сумма = 0</td><td>170, 171, 180, 190, 191</td></tr>
+        <tr><td>분산</td><td>(сумма квадратов отклонений) ÷ n</td><td>173, 181, 182, 183, 193</td></tr>
+        <tr><td>표준편차</td><td><span class="sq">√<span>분산</span></span>, с единицами</td><td>172, 176, 192, 194</td></tr>
+        <tr><td><span class="m">ax</span> + <span class="m">b</span></td><td>평균 am + b, 분산 a²s², 표준편차 |a|s</td><td>184, 195</td></tr>
+        <tr><td>Две группы вместе</td><td>сложи суммы (편차)² относительно общего среднего, раздели на общее n</td><td>185, 196</td></tr>
+        <tr><td>Сравнение 고르다</td><td>меньше 표준편차 ⇒ ровнее</td><td>175, 177–179, 186–189, 197</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box coral">
+    <span class="tag">Частые ошибки</span>
+    <ul class="mist">
+      <li>Ответили 분산, когда спрашивали 표준편차 (или наоборот).</li>
+      <li>Забыли возвести отрицательное отклонение в квадрат со знаком: <span class="f">(−3)² = 9</span>, а не −9.</li>
+      <li>Думают, что «+5 всем» увеличивает 표준편차. Нет, только среднее.</li>
+      <li>По среднему и 표준편차 пытаются узнать число учеников или лучший балл.</li>
+      <li>Объединяя две группы, просто берут среднее двух 분산. Так можно только при равных средних и равном числе учеников.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* ---------- helpers ---------- */
+const fr=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+const sq=x=>`<span class="sq">√<span>${x}</span></span>`;
+const fmt=v=>{const r=Math.round(v*100)/100;return (Object.is(r,-0)?0:r).toString().replace('-','−');};
+const NS='http://www.w3.org/2000/svg';
+
+/* ---------- vocab ---------- */
+const VOCAB=[
+ ["산포도","разброс (мера разброса)","насколько данные разбросаны"],
+ ["대푯값","представительное значение","среднее, медиана, мода"],
+ ["평균","среднее","сумма ÷ количество"],
+ ["변량","значение (данные)","каждое число в наборе"],
+ ["자료","данные","весь набор чисел"],
+ ["편차","отклонение","значение − среднее"],
+ ["분산","дисперсия","среднее квадратов отклонений"],
+ ["표준편차","стандартное отклонение","√분산, в единицах данных"],
+ ["제곱 / 제곱근","квадрат / квадратный корень","(−3)² = 9, √9 = 3"],
+ ["음이 아닌","неотрицательный","≥ 0"],
+ ["양수 / 음수","положительное / отрицательное","편차 > 0 / 편차 < 0"],
+ ["총합","общая сумма","(편차)²의 총합 = сумма квадратов"],
+ ["개수","количество","на него делим"],
+ ["흩어져 있다","разбросаны","далеко друг от друга"],
+ ["고르다","ровный, равномерный","маленький 표준편차"],
+ ["격차","разница, разрыв","между значениями"],
+ ["분포","распределение","как расположены данные"],
+ ["상수","постоянная (константа)","a, b в ax + b"],
+ ["옳은 것을 모두 고르면","выбери все верные","может быть несколько"],
+ ["알 수 없다","узнать нельзя","данных не хватает"]
+];
+document.getElementById('vocab').innerHTML=VOCAB.map(v=>`<div class="vc"><b>${v[0]}</b><i>${v[1]}</i><span>${v[2]}</span></div>`).join('');
+
+/* ---------- dot plot ---------- */
+// rows: [{label, data, cls}] ; lo..hi axis
+function dotplot(el,rows,lo,hi,W=560,opt={}){
+  const L=opt.L??70,Rm=opt.R??140,rowH=opt.rowH??46,top=10,H=top+rows.length*rowH+30;
+  const X=v=>L+(v-lo)/(hi-lo)*(W-L-Rm);
+  const o=[];
+  rows.forEach((r,i)=>{
+    const y=top+i*rowH+rowH/2+6;
+    const m=r.data.reduce((a,b)=>a+b,0)/r.data.length;
+    const vr=r.data.reduce((a,b)=>a+(b-m)**2,0)/r.data.length;
+    o.push(`<line x1="${L}" y1="${y}" x2="${W-Rm}" y2="${y}" class="faint"/>`);
+    o.push(`<text x="${L-10}" y="${y}" class="lbl" text-anchor="end" dominant-baseline="central" style="font-family:var(--f-ko);font-size:14px">${r.label}</text>`);
+    o.push(`<line x1="${X(m)}" y1="${y-18}" x2="${X(m)}" y2="${y+10}" class="ch"/>`);
+    const cnt={};
+    r.data.forEach(v=>{const k=cnt[v]=(cnt[v]||0)+1;o.push(`<circle cx="${X(v)}" cy="${y-(k-1)*9}" r="4.5" class="w-${r.cls||'violet'}"/>`);});
+    if(opt.stats!==false)o.push(`<text x="${W-Rm+10}" y="${y}" class="val t-ink" dominant-baseline="central" style="font-weight:500">평균 ${fmt(m)} · 분산 ${fmt(vr)}</text>`);
+  });
+  const yA=top+rows.length*rowH+8;
+  o.push(`<line x1="${L}" y1="${yA}" x2="${W-Rm}" y2="${yA}" class="ink"/>`);
+  const step=opt.step||1;
+  for(let v=lo;v<=hi;v+=step){o.push(`<line x1="${X(v)}" y1="${yA}" x2="${X(v)}" y2="${yA+5}" class="ink"/><text x="${X(v)}" y="${yA+17}" class="lbl" text-anchor="middle" style="font-size:12px">${v}</text>`);}
+  el.setAttribute('viewBox',`0 0 ${W} ${H}`);el.setAttribute('width',W);el.setAttribute('role','img');
+  el.innerHTML=o.join('');
+}
+dotplot(document.getElementById('f-ab'),[{label:'A',data:[8,9,8,7,8],cls:'green'},{label:'B',data:[7,9,8,10,6],cls:'coral'}],5,11,560,{step:1});
+dotplot(document.getElementById('f-tr'),[{label:'x',data:[7,9,8,10,6]},{label:'x + 3',data:[10,12,11,13,9],cls:'blue'},{label:'2x',data:[14,18,16,20,12],cls:'coral'}],4,20,560,{step:2});
+
+/* ---------- lab ---------- */
+(function(){
+  const N=5,LO=0,HI=30;let vals=[7,9,8,10,6];let prev=null;
+  const sl=document.getElementById('sliders');
+  sl.innerHTML=vals.map((v,i)=>`<label for="s${i}" style="flex-direction:row;align-items:center;gap:8px"><span style="width:28px" class="m">x<sub>${i+1}</sub></span><input id="s${i}" type="range" min="${LO}" max="${HI}" step="1" value="${v}"><b id="v${i}" style="width:28px;text-align:right;font-family:var(--f-math);color:var(--ink)">${v}</b></label>`).join('');
+  const svg=document.getElementById('lab');const W=360,L=34,R=16,rowH=34,top=12,H=top+N*rowH+34;
+  const X=v=>L+(v-LO)/(HI-LO)*(W-L-R);
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('width',W);
+  const stats=a=>{const m=a.reduce((s,b)=>s+b,0)/a.length;const q=a.reduce((s,b)=>s+(b-m)**2,0);return{m,q,v:q/a.length,s:Math.sqrt(q/a.length),sum:a.reduce((s,b)=>s+(b-m),0)};};
+  function draw(){
+    const st=stats(vals);const o=[];
+    vals.forEach((v,i)=>{
+      const y=top+i*rowH+rowH/2;const d=v-st.m;
+      o.push(`<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" class="faint"/>`);
+      o.push(`<text x="${L-8}" y="${y}" class="lbl" text-anchor="end" dominant-baseline="central" style="font-size:13px">x${i+1}</text>`);
+      if(Math.abs(d)>1e-9)o.push(`<rect x="${Math.min(X(v),X(st.m))}" y="${y-6}" width="${Math.abs(X(v)-X(st.m))}" height="12" rx="3" class="w-${d>0?'green':'coral'}"/>`);
+      o.push(`<circle cx="${X(v)}" cy="${y}" r="5.5" class="pt"/>`);
+      const tx=d>=0?X(v)+10:X(v)-10;
+      o.push(`<text x="${tx}" y="${y}" class="val ${d>0?'t-green':d<0?'t-coral':'t-ink'}" text-anchor="${d>=0?'start':'end'}" dominant-baseline="central">${d>0?'+':''}${fmt(d)}</text>`);
+    });
+    const yA=top+N*rowH+6;
+    o.push(`<line x1="${X(st.m)}" y1="${top-4}" x2="${X(st.m)}" y2="${yA}" class="ch" style="stroke-width:2.4"/>`);
+    o.push(`<line x1="${L}" y1="${yA}" x2="${W-R}" y2="${yA}" class="ink"/>`);
+    for(let v=LO;v<=HI;v+=5)o.push(`<line x1="${X(v)}" y1="${yA}" x2="${X(v)}" y2="${yA+5}" class="ink"/><text x="${X(v)}" y="${yA+18}" class="lbl" text-anchor="middle" style="font-size:12px">${v}</text>`);
+    svg.innerHTML=o.join('');
+    document.getElementById('rM').textContent=fmt(st.m);
+    document.getElementById('rS').textContent=fmt(st.sum);
+    document.getElementById('rQ').textContent=fmt(st.q);
+    document.getElementById('rV').textContent=fmt(st.v);
+    const sv=Math.round(st.v*100)/100, sr=Math.sqrt(sv);
+    document.getElementById('rD').innerHTML=Number.isInteger(sr)?fmt(sr):`${sq(fmt(st.v))} ≈ ${fmt(st.s)}`;
+    vals.forEach((v,i)=>{document.getElementById('s'+i).value=v;document.getElementById('v'+i).textContent=v;});
+    document.getElementById('bPlus').disabled=Math.max(...vals)>HI-3;
+    document.getElementById('bMinus').disabled=Math.min(...vals)<LO+3;
+    document.getElementById('bTimes').disabled=Math.max(...vals)>HI/2;
+    return st;
+  }
+  const log=document.getElementById('log');
+  function op(f,name){const a=stats(vals);vals=vals.map(f);const b=draw();
+    log.innerHTML=`<b>${name}:</b> 평균 ${fmt(a.m)} → ${fmt(b.m)}, 분산 ${fmt(a.v)} → ${fmt(b.v)}, 표준편차 ${fmt(a.s)} → ${fmt(b.s)}`;}
+  vals.forEach((_,i)=>document.getElementById('s'+i).addEventListener('input',e=>{vals[i]=+e.target.value;const st=draw();
+    log.textContent=st.v===0?'Все значения равны: отклонения все 0, разброса нет, 분산 = 0.':'Сумма отклонений всегда 0 — посмотри на вторую строку.';}));
+  document.getElementById('bPlus').onclick=()=>op(v=>v+3,'всем +3');
+  document.getElementById('bMinus').onclick=()=>op(v=>v-3,'всем −3');
+  document.getElementById('bTimes').onclick=()=>op(v=>v*2,'всё ×2');
+  document.getElementById('bA').onclick=()=>{vals=[8,9,8,7,8];draw();log.textContent='Ученик A из задачи 175: 분산 0.4.';};
+  document.getElementById('bB').onclick=()=>{vals=[7,9,8,10,6];draw();log.textContent='Ученик B из задачи 175: 분산 2. Среднее то же, разброс больше.';};
+  draw();
+})();
+
+/* ---------- problems ---------- */
+const PROBS=[
+ {g:'개념 이해',n:170,lv:'하',ko:'다음 자료에 대하여 편차의 합을 구하시오.',ru:'Найди сумму отклонений для данных.',data:'1, 2, 4, 5, 8',
+  hint:'Считать почти не нужно. Вспомни свойство ① из учебника про сумму отклонений.'},
+ {g:'개념 이해',n:171,lv:'중하',ko:'서준이네 반 학생들의 수학 시험 성적의 평균은 80점이다. 서준이의 수학 시험 성적의 편차가 5점일 때, 서준이의 수학 시험 성적을 구하시오.',ru:'Средний балл класса 80. Отклонение балла Сочжуна равно 5. Найди его балл.',
+  hint:'(편차) = (변량) − (평균): 5 = (балл) − 80.'},
+ {g:'개념 이해',n:172,lv:'하',rep:1,ko:'다음은 5명의 학생의 수학 과목의 수행평가의 결과의 편차를 나타낸 표이다. 이 자료의 표준편차는?',ru:'В таблице — отклонения баллов 5 учеников. Найди стандартное отклонение.',
+  tb:[['이름','진희','태경','경민','민정','효진'],['편차(점)','−1','2','3','−4','0']],
+  ch:[`① ${sq(3)}점`,'② 2점',`③ ${sq(5)}점`,`④ ${sq(6)}점`,`⑤ ${sq(7)}점`],
+  sol:['Отклонения уже даны, среднее искать не нужно. Проверка: <span class="f">−1 + 2 + 3 − 4 + 0 = 0</span> ✓','(편차)²: <span class="f">1, 4, 9, 16, 0</span>, сумма <span class="f">30</span>.','분산 = <span class="f">30 ÷ 5 = 6</span>.',`표준편차 = <span class="f">${sq(6)}</span> (점).`],ans:`④ ${sq(6)}점`},
+ {g:'개념 이해',n:173,lv:'중하',rep:1,ko:'다음은 A, B, C, D, E 5명의 학생들이 가지고 있는 노트의 개수의 편차를 나타낸 것이다. 이때 5명의 학생이 가지고 있는 노트의 개수의 분산은?',ru:'Отклонения числа тетрадей у 5 учеников. Найди дисперсию.',
+  tb:[['학생','A','B','C','D','E'],['편차','−3','−1','2','x','2']],ch:['① 3.1','② 3.2','③ 3.5','④ 3.6','⑤ 3.8'],
+  sol:['Сумма 편차 = 0: <span class="f">−3 + (−1) + 2 + <span class="m">x</span> + 2 = 0</span> ⇒ <span class="f"><span class="m">x</span> = 0</span>.','(편차)²: <span class="f">9, 1, 4, 0, 4</span>, сумма <span class="f">18</span>.','분산 = <span class="f">18 ÷ 5 = 3.6</span>. Корень брать не нужно: спрашивают 분산.'],ans:'④ 3.6'},
+ {g:'개념 이해',n:174,lv:'하',ko:'다음 보기의 과정을 표준편차를 구하는 순서대로 나열할 때, 2번째에 오는 것은?',ru:'Расставь шаги вычисления стандартного отклонения по порядку. Какой шаг второй?',
+  bogi:['ㄱ. 분산을 구한다.','ㄴ. 편차를 구한다.','ㄷ. 자료의 평균을 구한다.','ㄹ. 편차의 제곱을 구한다.','ㅁ. 분산의 음이 아닌 제곱근을 구한다.'],ch:['① ㄱ','② ㄴ','③ ㄷ','④ ㄹ','⑤ ㅁ'],
+  hint:'Посмотри на раздел «풀이 순서». Без среднего не найти отклонения.'},
+ {g:'개념 이해',n:175,lv:'중하',ko:'다음은 A, B 두 명의 학생의 턱걸이 횟수의 기록을 나타낸 표이다. 이 때, 표준편차가 큰 학생을 구하시오.',ru:'Число подтягиваний у A и B за 5 попыток. У кого больше стандартное отклонение?',
+  tb:[['','1회','2회','3회','4회','5회'],['A','8','9','8','7','8'],['B','7','9','8','10','6']],
+  hint:'Эту задачу мы уже разобрали в разделе 2 (и в лаборатории). Средние одинаковые; у кого точки дальше от среднего?'},
+ {g:'개념 이해',n:176,lv:'중하',rep:1,ko:'다음 자료 중에서 표준편차가 가장 큰 것은?',ru:'У какого набора данных наибольшее стандартное отклонение?',
+  ch:['① 1, 5, 1, 5, 1, 5','② 1, 5, 3, 3, 1, 5','③ 4, 2, 4, 2, 4, 2','④ 2, 4, 2, 4, 3, 3','⑤ 3, 3, 3, 3, 3, 3'],col:1,
+  sol:['У всех пяти наборов среднее <span class="f">3</span> (сумма 18, значений 6).','① отклонения все <span class="f">±2</span> → квадраты все 4 → 분산 <span class="f">24 ÷ 6 = 4</span>, 표준편차 <span class="f">2</span>.',`② <span class="f">−2, 2, 0, 0, −2, 2</span> → 분산 <span class="f">16 ÷ 6 = ${fr(8,3)}</span>.`,'③ все <span class="f">±1</span> → 분산 <span class="f">1</span>.',`④ <span class="f">−1, 1, −1, 1, 0, 0</span> → 분산 <span class="f">${fr(2,3)}</span>.`,'⑤ все отклонения 0 → 분산 <span class="f">0</span>.','Можно и без счёта: в ① <b>каждая</b> точка стоит на самом дальнем расстоянии 2 от среднего. <svg data-fig="176"></svg>'],ans:'①'},
+ {g:'개념 이해',n:177,lv:'하',ko:'다음은 두 반 A, B의 수학 성적의 평균과 표준편차를 나타낸 표이다. 두 반 중에서 어느 반의 수학 성적이 더 고른지 말하시오.',ru:'Средние и стандартные отклонения двух классов. В каком классе результаты ровнее?',
+  tb:[['반','학생 수','평균(점)','표준편차(점)'],['A','24','76','14'],['B','25','76','10']],
+  hint:'«더 고르다» = меньше 표준편차. Число учеников здесь не важно.'},
+ {g:'개념 이해',n:178,lv:'중하',ko:'다음은 5개의 도시 A, B, C, D, E에서 8년 동안 오존 농도의 평균과 표준편차를 나타낸 것이다. 5개 도시 중 8년 동안 오존 농도의 변화가 가장 작은 도시를 말하시오.',ru:'Среднее и стандартное отклонение концентрации озона в 5 городах за 8 лет. Где концентрация менялась меньше всего?',
+  tb:[['도시','A','B','C','D','E'],['평균(ppm)','17','25','23','21','19'],['표준편차(ppm)','1.2','2.2','1.7','1.1','1.8']],
+  hint:'«변화가 가장 작다» = значения меньше всего разбросаны = самый маленький 표준편차. Средние — лишняя информация.'},
+ {g:'개념 이해',n:179,lv:'중하',ko:'다음은 A, B, C, D, E 다섯 반에 대한 중간 고사 수학 성적의 평균과 표준편차를 나타낸 표이다. 다섯 반 중 성적이 가장 고른 반은? (단, 각 학급의 학생 수는 모두 같다.)',ru:'Средние и стандартные отклонения пяти классов. В каком классе результаты самые ровные?',
+  tb:[['학급','A','B','C','D','E'],['평균(점)','67','77','65','70','68'],['표준편차(점)','2.1','2','1.3','1.4','1.9']],ch:['① A','② B','③ C','④ D','⑤ E'],
+  hint:'«가장 고른» = самый маленький 표준편차. Не отвлекайся на самое высокое среднее.'},
+ {g:'응용 도전',n:180,lv:'중',rep:1,ko:'다음은 어느 반 학생 6명의 과학 성적의 편차를 나타낸 것이다. 이 자료의 평균이 75점일 때, 편차가 x점인 학생의 과학 성적을 구하시오.',ru:'Отклонения баллов 6 учеников. Среднее 75. Найди балл ученика с отклонением x.',data:'−2, 5, x, 8, −4, −3 (단위: 점)',
+  sol:['Сумма 편차 = 0: <span class="f">−2 + 5 + <span class="m">x</span> + 8 − 4 − 3 = 0</span> ⇒ <span class="f"><span class="m">x</span> + 4 = 0</span> ⇒ <span class="f"><span class="m">x</span> = −4</span>.','Спрашивают не <span class="m">x</span>, а <b>балл</b>: (변량) = (평균) + (편차) = <span class="f">75 + (−4) = 71</span>.'],ans:'71점'},
+ {g:'응용 도전',n:181,lv:'중',ko:'자연수 중 연속하는 세 3의 배수의 분산은?',ru:'Найди дисперсию трёх последовательных натуральных чисел, кратных 3.',ch:['① 3','② 4','③ 5','④ 6','⑤ 7'],
+  hint:'Обозначь числа 3n, 3n + 3, 3n + 6 (или просто возьми 3, 6, 9). Среднее — среднее число, отклонения −3, 0, 3. Ответ не зависит от n.'},
+ {g:'응용 도전',n:182,lv:'중',rep:1,ko:'5개의 변량 2, 3, x, 7, 8의 평균이 5일 때, 분산을 구하시오.',ru:'Среднее пяти значений 2, 3, x, 7, 8 равно 5. Найди дисперсию.',
+  sol:[`Среднее 5: <span class="f">${fr('2 + 3 + <span class="m">x</span> + 7 + 8','5')} = 5</span> ⇒ <span class="f">20 + <span class="m">x</span> = 25</span> ⇒ <span class="f"><span class="m">x</span> = 5</span>.`,'Отклонения: <span class="f">−3, −2, 0, 2, 3</span>.','Квадраты: <span class="f">9, 4, 0, 4, 9</span>, сумма <span class="f">26</span>.','분산 = <span class="f">26 ÷ 5 = 5.2</span>.'],ans:'5.2'},
+ {g:'응용 도전',n:183,lv:'중',rep:1,ko:'변량 5개의 편차가 1, x, −5, y, −1이고 분산이 7일 때, 2xy의 값을 구하시오.',ru:'Отклонения пяти значений: 1, x, −5, y, −1, дисперсия 7. Найди 2xy.',
+  sol:['Сумма отклонений 0: <span class="f">1 + <span class="m">x</span> − 5 + <span class="m">y</span> − 1 = 0</span> ⇒ <span class="f"><span class="m">x</span> + <span class="m">y</span> = 5</span> … ㉠',`분산 7: <span class="f">${fr('1 + <span class="m">x</span>² + 25 + <span class="m">y</span>² + 1','5')} = 7</span> ⇒ <span class="f"><span class="m">x</span>² + <span class="m">y</span>² + 27 = 35</span> ⇒ <span class="f"><span class="m">x</span>² + <span class="m">y</span>² = 8</span> … ㉡`,'Искать <span class="m">x</span> и <span class="m">y</span> по отдельности не нужно. Формула: <span class="f">(<span class="m">x</span> + <span class="m">y</span>)² = <span class="m">x</span>² + <span class="m">y</span>² + 2<span class="m">xy</span></span>.','Подставляем ㉠, ㉡: <span class="f">25 = 8 + 2<span class="m">xy</span></span> ⇒ <span class="f">2<span class="m">xy</span> = 17</span>.'],ans:'17'},
+ {g:'응용 도전',n:184,lv:'중',ko:'20명의 학생의 과학 성적이 각각 3점씩 내려갔을 때, 이들의 과학 성적의 평균과 표준편차는 각각 어떻게 변하는가?',ru:'Баллы 20 учеников по естествознанию уменьшились на 3. Как изменятся среднее и стандартное отклонение?',
+  ch:['① 평균과 표준편차 모두 3점씩 내려간다.','② 평균과 표준편차 모두 변함없다.','③ 평균은 3점 내려가고 표준편차는 변함없다.','④ 평균은 변함없고 표준편차는 3점 내려간다.','⑤ 평균은 3점 올라가고 표준편차는 3점 내려간다.'],col:1,
+  hint:'Это x − 3, то есть a = 1, b = −3. Вспомни аналогию с бонусными баллами (раздел 4) или нажми «всем −3» в лаборатории.'},
+ {g:'응용 도전',n:185,lv:'중',rep:1,ko:'동수와 연희가 한 팀을 이루어서 사격 대회에 출전하였다. 동수와 연희가 각각 5발씩을 쏘았는데 점수의 평균과 분산은 다음과 같았다. 이때 이들이 팀을 이루어 쏜 10발의 점수에 대한 분산을 구하시오.',ru:'Донсу и Ёнхи сделали по 5 выстрелов. Даны среднее и дисперсия у каждого. Найди дисперсию всех 10 выстрелов.',
+  tb:[['','사격 횟수','평균','분산'],['동수','5','6','1.6'],['연희','5','8','6.0']],
+  sol:['Из среднего и дисперсии получаем суммы. Донсу: сумма очков <span class="f">5 × 6 = 30</span>, сумма (편차)² <span class="f">5 × 1.6 = 8</span>. Ёнхи: <span class="f">5 × 8 = 40</span> и <span class="f">5 × 6 = 30</span>.','Общее среднее: <span class="f">(30 + 40) ÷ 10 = 7</span>.','Нужна сумма квадратов отклонений от <b>7</b>, а у Донсу они посчитаны от 6. Каждое отклонение сдвигается на 1: <span class="f">(<span class="m">x</span> − 7)² = (<span class="m">x</span> − 6)² − 2(<span class="m">x</span> − 6) + 1</span>. Сумма средних членов = 0 (сумма отклонений!), поэтому <span class="f">Σ(<span class="m">x</span> − 7)² = 8 + 5 × 1 = 13</span>.','Так же у Ёнхи: <span class="f">Σ(<span class="m">y</span> − 7)² = 30 + 5 × 1 = 35</span>.','분산 = <span class="f">(13 + 35) ÷ 10 = 4.8</span>.','Заметь: просто среднее дисперсий <span class="f">(1.6 + 6) ÷ 2 = 3.8</span> — неверно, потому что центры групп разные.'],ans:'4.8'},
+ {g:'응용 도전',n:186,lv:'중',rep:1,ko:'어느 중학교 3학년 학생 10명이 A, B 두 조로 나누어 수학 시험을 치른 결과가 표와 같았다. 다음 〈보기〉 중에서 옳은 것을 모두 고르면?',ru:'10 учеников разделили на группы A и B. Выбери все верные утверждения.',
+  nh:1,tb:[['A 조(점)','8','7','7','6','7'],['B 조(점)','7','5','8','9','6']],
+  bogi:['ㄱ. A 조와 B 조의 시험 점수의 평균은 같다.',`ㄴ. A 조의 시험 점수의 표준편차는 ${sq(2)}점이다.`,'ㄷ. A 조의 학생들의 수학 실력이 B 조 학생들보다 더 고르다.'],
+  ch:['① ㄱ','② ㄱ, ㄴ','③ ㄱ, ㄷ','④ ㄴ, ㄷ','⑤ ㄱ, ㄴ, ㄷ'],
+  sol:['ㄱ: A = <span class="f">35 ÷ 5 = 7</span>, B = <span class="f">35 ÷ 5 = 7</span> ⇒ равны ✓',`ㄴ: отклонения A: <span class="f">1, 0, 0, −1, 0</span> → 분산 <span class="f">${fr(2,5)}</span> → 표준편차 <span class="f">${sq(fr(2,5))} = ${fr(sq(10),5)}</span> ≠ ${sq(2)} ✗`,`ㄷ: отклонения B: <span class="f">0, −2, 1, 2, −1</span> → 분산 <span class="f">10 ÷ 5 = 2</span>, 표준편차 ${sq(2)}. У A меньше ⇒ A ровнее ✓ (${sq(2)} — это ответ для B, а не для A: ловушка в ㄴ.)`],ans:'③ ㄱ, ㄷ'},
+ {g:'응용 도전',n:187,lv:'중',ko:'아래 표는 어느 중학교 3학년 세 학급의 중간고사 영어 성적을 나타낸 것이다. 다음 보기 중 옳은 것만을 있는 대로 고른 것은? (단, 세 학급의 학생 수는 모두 같다.)',ru:'Средние и стандартные отклонения трёх классов по английскому. Выбери все верные утверждения.',
+  tb:[['','1반','2반','3반'],['평균(점)','84','81','78'],['표준편차(점)','5.6','8.3','7.5']],
+  bogi:['ㄱ. 2반의 학생들의 성적이 가장 넓게 퍼져 있다.','ㄴ. 점수가 90점 이상인 학생은 1반이 가장 많다.','ㄷ. 세 학급 중 성적이 가장 고른 학급은 1반이다.','ㄹ. 영어 성적이 가장 낮은 학생은 3반에 있다.'],
+  ch:['① ㄱ, ㄴ','② ㄱ, ㄷ','③ ㄴ, ㄷ','④ ㄷ, ㄹ','⑤ ㄱ, ㄴ, ㄷ'],
+  hint:'ㄱ и ㄷ проверь по 표준편차 (больше = шире, меньше = ровнее). ㄴ и ㄹ: можно ли это узнать только по среднему и 표준편차? (раздел 5)'},
+ {g:'응용 도전',n:188,lv:'중',ko:'다음 표는 H중학교 3학년 학생들의 1학기 기말고사 영어 시험의 결과이다. 다음 설명 중 옳은 것은?',ru:'Результаты экзамена по английскому в четырёх классах. Какое утверждение верно?',
+  tb:[['','1반','2반','3반','4반'],['평균(점)','59','68','62','61'],['표준편차(점)','6.1','7.3','6.7','5.2']],
+  ch:['① 2반 학생 수가 1반 학생 수보다 많다.','② 4반 학생들의 성적이 가장 고르게 분포되어 있다.','③ 영어 점수가 가장 낮은 학생은 1반에 있다.','④ 95점 이상인 학생이 4반보다 2반에 더 많다.','⑤ 2반에는 30점 미만인 학생은 없다.'],col:1,
+  hint:'Четыре варианта из пяти говорят о том, чего по таблице узнать нельзя (число учеников, самый низкий балл, сколько набрали 95+, есть ли ниже 30). Остаётся один — про 고르다.'},
+ {g:'응용 도전',n:189,lv:'중',ko:'아래 표는 A, B 두 반의 기말고사 성적의 평균과 표준편차를 나타낸 것이다. 다음 설명 중 옳은 것은?',ru:'Среднее и стандартное отклонение двух классов. Какое утверждение верно?',
+  tb:[['학급','평균(점)','표준편차(점)'],['A','72','12.4'],['B','72','9.8']],
+  ch:['① 전체적으로 A반의 성적이 B반의 성적보다 더 높다고 할 수 있다.','② 전체적으로 B반의 성적이 A반의 성적보다 더 높다고 할 수 있다.','③ A반의 성적이 B반의 성적보다 더 고르다고 할 수 있다.','④ B반의 성적이 A반의 성적보다 더 고르다고 할 수 있다.','⑤ A, B 두 반의 성적의 산포도는 같다고 할 수 있다.'],col:1,
+  hint:'Средние равны ⇒ про «выше» сказать нельзя. Ровнее тот класс, где 표준편차 меньше.'},
+ {g:'단원 마무리',n:190,lv:'중하',ko:'다음 자료에 대하여 (편차)²의 총합을 구하시오.',ru:'Найди сумму квадратов отклонений.',data:'1, 3, 5, 7, 9',
+  hint:'Среднее: 25 ÷ 5. Отклонения симметричны: −4, −2, 0, 2, 4. Возведи в квадрат и сложи. Делить на 5 не нужно: спрашивают только сумму.'},
+ {g:'단원 마무리',n:191,lv:'중하',ko:'윤석이네 반 학생들의 몸무게의 평균이 58kg이다. 윤석이의 몸무게의 편차가 5kg일 때, 윤석이의 몸무게는?',ru:'Средний вес в классе 58 кг, отклонение веса Юнсока 5 кг. Найди его вес.',ch:['① 53kg','② 58kg','③ 63kg','④ 68kg','⑤ 73kg'],
+  hint:'Как 171: (편차) = (변량) − (평균), 5 = x − 58.'},
+ {g:'단원 마무리',n:192,lv:'중하',ko:'다음 표는 은지의 일주일 동안 컴퓨터 사용시간을 나타낸 것이다. 컴퓨터 사용시간의 표준편차는?',ru:'Время за компьютером у Ынджи за неделю (в часах). Найди стандартное отклонение.',
+  tb:[['요일','일','월','화','수','목','금','토'],['접속시간','1','3','2','2','1','3','2']],
+  ch:[`① ${fr(sq(7),7)}시간`,`② ${fr('2'+sq(7),7)}시간`,`③ ${fr('3'+sq(7),7)}시간`,`④ ${fr('4'+sq(7),7)}시간`,`⑤ ${fr('5'+sq(7),7)}시간`],
+  hint:`Среднее 14 ÷ 7. Отклонения −1, 1, 0, 0, −1, 1, 0 → 분산 ${fr(4,7)}. Корень: ${sq(fr(4,7))} = ${fr(2,sq(7))}. Избавься от корня в знаменателе (분모의 유리화): умножь сверху и снизу на ${sq(7)}.`},
+ {g:'단원 마무리',n:193,lv:'중하',ko:'다음 표는 어느 모둠 학생들의 수학 성적에 대한 편차이다. 수학 성적의 분산은?',ru:'Отклонения баллов по математике в группе. Найди дисперсию.',
+  tb:[['학생','A','B','C','D','E'],['편차(점)','−6','5','−3','x','3']],ch:['① 1','② 4','③ 9','④ 16','⑤ 18'],
+  hint:'Как 173: сначала x из «сумма отклонений = 0», потом квадраты, сумма и ÷ 5.'},
+ {g:'단원 마무리',n:194,lv:'중',ko:`다음 표는 어느 서점에서 일주일 동안 판매한 책의 수의 편차를 나타낸 것이다. 이 자료의 표준편차가 ${sq(6)}권일 때, xy의 값은?`,ru:'Отклонения числа проданных книг за неделю. Стандартное отклонение √6. Найди xy.',
+  tb:[['요일','일','월','화','수','목','금','토'],['편차(권)','5','−1','x','−3','y','1','1']],ch:['① 1','② 2','③ 3','④ 4','⑤ 5'],
+  hint:`Близнец 183. ㉠ x + y из «сумма = 0». ㉡ 분산 = (${sq(6)})² = 6 ⇒ найди x² + y² (не забудь: значений 7). Потом (x + y)² = x² + y² + 2xy.`},
+ {g:'단원 마무리',n:195,lv:'중',rep:1,ko:'4개의 자료 a, b, c, d의 평균이 7, 표준편차가 2일 때, 2a, 2b, 2c, 2d의 평균과 표준편차를 차례로 구한 것은?',ru:'Среднее a, b, c, d равно 7, стандартное отклонение 2. Найди среднее и стандартное отклонение 2a, 2b, 2c, 2d.',
+  ch:['① 7, 2','② 7, 4','③ 9, 2','④ 14, 2','⑤ 14, 4'],
+  sol:['Каждое значение ×2: это <span class="f"><span class="m">ax</span> + <span class="m">b</span></span> с <span class="f"><span class="m">a</span> = 2, <span class="m">b</span> = 0</span>.','평균: <span class="f">2 × 7 = 14</span>.','표준편차: <span class="f">|2| × 2 = 4</span>. (Через дисперсию: была <span class="f">4</span>, стала <span class="f">2² × 4 = 16</span>, корень <span class="f">4</span>.)','Ловушка ④: 표준편차 тоже растягивается, он не остаётся 2.'],ans:'⑤ 14, 4'},
+ {g:'단원 마무리',n:196,lv:'중',rep:1,ko:'다음 표는 A, B 두 반의 학생 수, 음악 성적의 평균과 표준편차를 나타낸 것이다. 두 반 전체 학생의 음악 성적의 표준편차는?',ru:'Число учеников, средний балл и стандартное отклонение по музыке в двух классах. Найди стандартное отклонение для всех учеников вместе.',
+  tb:[['반','A','B'],['학생 수','10','20'],['평균(점)','8','8'],['표준편차(점)',sq(3),'3']],
+  ch:['① 2점',`② ${sq(5)}점`,`③ ${sq(6)}점`,`④ ${sq(7)}점`,`⑤ 2${sq(2)}점`],
+  sol:['Средние равны (8 и 8) ⇒ общее среднее тоже 8. Отклонения в обеих группах считаются от одного центра, сдвигать не нужно (сравни с 185).',`A: сумма (편차)² = 분산 × n = <span class="f">(${sq(3)})² × 10 = 30</span>.`,'B: <span class="f">3² × 20 = 180</span>.',`Вместе: 분산 = <span class="f">(30 + 180) ÷ 30 = 7</span> ⇒ 표준편차 <span class="f">${sq(7)}</span> 점.`],ans:`④ ${sq(7)}점`},
+ {g:'단원 마무리',n:197,lv:'중하',ko:'다음은 주영이와 대훈이가 5회에 걸쳐 시행한 윗몸일으키기 기록을 조사하여 나타낸 것이다. 주영이와 대훈이 중 누구의 기록이 더 고르다고 할 수 있는지 구하시오.',ru:'Результаты подъёмов туловища у Чуён и Дэхуна за 5 попыток. Чьи результаты ровнее?',
+  tb:[['회','1','2','3','4','5'],['주영(개)','25','24','24','22','25'],['대훈(개)','21','25','27','26','21']],
+  hint:'Посчитай среднее у обоих (подсказка: одинаковое). Потом 분산: у кого меньше, у того ровнее. Можно проверить в лаборатории.'}
+];
+const GROUPS={'개념 이해':'базовые','응용 도전':'применение','단원 마무리':'итог раздела'};
+const FIG={176(el){dotplot(el,[{label:'①',data:[1,5,1,5,1,5],cls:'coral'},{label:'②',data:[1,5,3,3,1,5]},{label:'③',data:[4,2,4,2,4,2]},{label:'④',data:[2,4,2,4,3,3]},{label:'⑤',data:[3,3,3,3,3,3],cls:'green'}],0,6,420,{L:30,R:140,rowH:56,step:1});}};
+(function(){
+  const box=document.getElementById('probs');let cur='';const html=[];
+  const tbl=(t,nh)=>`<div class="dtw"><table class="dt">${t.map((r,i)=>`<tr>${r.map((c,j)=>((i===0&&!nh)||j===0)?`<th>${c}</th>`:`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`;
+  PROBS.forEach(p=>{
+    if(p.g!==cur){cur=p.g;html.push(`<div class="group-h"><b>${p.g}</b><span>${GROUPS[p.g]}</span></div>`);}
+    const ch=p.ch?`<div class="choices${p.col?' col':''}">${p.ch.map(c=>`<span>${c}</span>`).join('')}</div>`:'';
+    const extra=(p.data?`<div class="databox">${p.data}</div>`:'')+(p.tb?tbl(p.tb,p.nh):'')+(p.bogi?`<div class="bogi"><b>〈보기〉</b>${p.bogi.map(b=>`<span>${b}</span>`).join('')}</div>`:'');
+    const body=p.rep
+      ?`<details class="sol"><summary>Решение · 풀이</summary><div><ol class="steps">${p.sol.map(s=>`<li><div>${s}</div></li>`).join('')}</ol><p>Ответ · 정답: <span class="ans">${p.ans}</span></p></div></details>`
+      :`<details><summary>Подсказка · 힌트</summary><div><p>${p.hint}</p></div></details>`;
+    html.push(`<article class="prob${p.rep?' rep':''}" id="p${p.n}"><div class="ph"><span class="pn">${p.n}</span><span class="lv">${p.lv}</span>${p.rep?'<span class="rp">разбор</span>':''}</div>
+      <p class="orig">${p.ko}</p><p class="tr">${p.ru}</p>${extra}${ch}${body}</article>`);
+  });
+  box.innerHTML=html.join('');
+  box.querySelectorAll('svg[data-fig]').forEach(s=>{const f=FIG[s.dataset.fig];if(f)f(s);s.style.maxWidth='100%';s.style.display='block';s.style.marginTop='8px';});
+})();
+</script>
+</body>
+</html>
