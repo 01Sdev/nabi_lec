@@ -1,0 +1,953 @@
+<title>함수의 그래프 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, как в прошлых уроках: словарь → разминка → график (5 шагов + 3 формы + лаборатория) → наибольшее/наименьшее (+ лаборатория) → рецепт → учебник → сборник → шпаргалка. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* 증가, f' > 0 */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* 감소, f' < 0 */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;
+  --amber-soft:#fbf2e0;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding:0 16px}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.6vw,42px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+.up{color:var(--blue);font-weight:600}
+.down{color:var(--coral);font-weight:600}
+
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.8}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px}
+.label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.theorem .label{color:var(--blue)}
+.analogy{background:var(--amber-soft)}
+.analogy .label{color:var(--amber)}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral)}
+.note{background:var(--blue-soft)}
+.note .label{color:var(--blue)}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green)}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figcaption{font-size:14px;color:var(--muted)}
+figure svg{width:100%;height:auto;display:block}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+/* 증감표 */
+.signtbl{overflow-x:auto}
+.signtbl table{min-width:420px}
+.signtbl td,.signtbl th{text-align:center;font-family:var(--f-math);font-size:16px}
+.signtbl th:first-child,.signtbl td:first-child{text-align:left;font-style:italic;background:var(--blue-soft)}
+.arr-up{color:var(--blue);font-size:20px;font-style:normal}
+.arr-dn{color:var(--coral);font-size:20px;font-style:normal}
+.ext{font-family:var(--f-kr);font-size:13px;font-style:normal;color:var(--green);font-weight:700}
+
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--green);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line)}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+.readout .st-up{background:var(--blue-soft);border-color:var(--blue);color:var(--blue);font-weight:600}
+.readout .st-dn{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);font-weight:600}
+.readout .st-hit{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+.readout .st-trap{background:var(--amber-soft);border-color:var(--amber);color:var(--amber);font-weight:600}
+
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.src{font-size:12px;color:var(--muted);font-family:var(--f-kr)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:600}
+.tag.hint{background:var(--amber-soft);color:var(--amber)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+.pk{font-size:16px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+details>div,details>p{margin-bottom:8px}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+.type-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.hint-grid .prob{padding:14px 16px;gap:8px}
+.hint-grid .pnum{font-size:18px}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+body{padding:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cases{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.cases figure svg{max-width:280px;margin:0 auto}
+.opt-figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.opt-figs figure{border:1px solid var(--line);border-radius:8px;padding:4px;background:var(--bg)}
+.readout b{white-space:normal}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip kr">미적분1</span>
+    <span class="chip kr">II 미분 › 2 도함수의 활용</span>
+    <span class="chip">учебник, стр. 86–87</span>
+    <span class="chip">сборник задач, стр. 116–123</span>
+  </div>
+  <h1><span class="kr">함수의 그래프,<br>최댓값과 최솟값</span><br>Как нарисовать график функции. Наибольшее и наименьшее значение</h1>
+  <p class="lead">На прошлом уроке мы по знаку <span class="m">f′(x)</span> находили, где функция растёт и где у неё <span class="kr">극대</span> и <span class="kr">극소</span>. Сегодня соберём всё вместе: нарисуем <strong>весь график</strong> без таблицы из ста точек и научимся находить <strong>самую высокую и самую низкую точку</strong> на отрезке.</p>
+</header>
+
+<!-- ===== 0 словарь ===== -->
+<section id="vocab">
+  <div class="head">
+    <span class="sec-num">0 · <span class="kr">단어장</span></span>
+    <h2>Словарик: корейские слова из учебника</h2>
+  </div>
+  <p>Все эти слова встречаются на стр. 86–87 и в задачах сборника.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">그래프의 개형</span><span class="r">общий вид (эскиз) графика</span><span class="n">не точный чертёж, а форма: где вверх, где вниз, где вершины</span></div>
+    <div class="term"><span class="k">미분가능한 함수</span><span class="r">дифференцируемая функция</span><span class="n">у неё есть производная в каждой точке</span></div>
+    <div class="term"><span class="k">도함수 f′(x)</span><span class="r">производная</span></div>
+    <div class="term"><span class="k">만족시키다</span><span class="r">удовлетворять (условию)</span><span class="n">f′(x)=0을 만족시키는 x = x, при которых f′(x)=0</span></div>
+    <div class="term"><span class="k">좌우에서 부호를 조사하다</span><span class="r">исследовать знак слева и справа</span></div>
+    <div class="term"><span class="k">표로 나타내다</span><span class="r">представить в виде таблицы</span><span class="n">это 증감표 — таблица возрастания и убывания</span></div>
+    <div class="term"><span class="k">극댓값 / 극솟값</span><span class="r">значение максимума / минимума</span><span class="n">высота «вершины» / «ямы»</span></div>
+    <div class="term"><span class="k">좌표축</span><span class="r">оси координат</span><span class="n">ось x и ось y вместе</span></div>
+    <div class="term"><span class="k">교점</span><span class="r">точка пересечения</span></div>
+    <div class="term"><span class="k">y절편</span><span class="r">точка пересечения с осью y</span><span class="n">это просто f(0)</span></div>
+    <div class="term"><span class="k">최고차항의 계수</span><span class="r">старший коэффициент</span><span class="n">у 2x³ − x + 1 это 2</span></div>
+    <div class="term"><span class="k">삼차함수 / 사차함수</span><span class="r">кубическая / функция 4-й степени</span></div>
+    <div class="term"><span class="k">이차방정식</span><span class="r">квадратное уравнение</span><span class="n">у кубической функции f′(x)=0 — всегда квадратное</span></div>
+    <div class="term"><span class="k">서로 다른 두 실근</span><span class="r">два различных действительных корня</span><span class="n">D &gt; 0</span></div>
+    <div class="term"><span class="k">중근</span><span class="r">двойной (кратный) корень</span><span class="n">D = 0</span></div>
+    <div class="term"><span class="k">허근</span><span class="r">мнимые (комплексные) корни</span><span class="n">D &lt; 0, на графике корней нет</span></div>
+    <div class="term"><span class="k">최댓값 / 최솟값</span><span class="r">наибольшее / наименьшее значение</span><span class="n">самая высокая / низкая точка на всём промежутке</span></div>
+    <div class="term"><span class="k">닫힌구간 [a, b]</span><span class="r">отрезок (замкнутый промежуток)</span><span class="n">концы a и b входят</span></div>
+    <div class="term"><span class="k">연속</span><span class="r">непрерывный</span><span class="n">график рисуется без отрыва карандаша</span></div>
+    <div class="term"><span class="k">반드시 ~인 것은 아니다</span><span class="r">не обязательно является ~</span></div>
+    <div class="term"><span class="k">오직 하나의</span><span class="r">единственный, только один</span></div>
+    <div class="term"><span class="k">자연수 / 정수 / 상수</span><span class="r">натуральное / целое число / константа</span></div>
+  </div>
+</section>
+
+<!-- ===== 1 разминка ===== -->
+<section id="warmup">
+  <div class="head">
+    <span class="sec-num">1 · <span class="kr">복습</span></span>
+    <h2>Разминка: что мы уже знаем</h2>
+  </div>
+  <div class="cond">
+    <div><span class="n up">f′(x) &gt; 0</span><p>Касательная смотрит вверх, функция <span class="kr up">증가 ↗</span>.</p></div>
+    <div><span class="n down">f′(x) &lt; 0</span><p>Касательная смотрит вниз, функция <span class="kr down">감소 ↘</span>.</p></div>
+    <div><span class="n">знак <span class="up">+</span> → <span class="down">−</span></span><p>Подъём сменился спуском: <span class="kr">극대</span> (вершина).</p></div>
+    <div><span class="n">знак <span class="down">−</span> → <span class="up">+</span></span><p>Спуск сменился подъёмом: <span class="kr">극소</span> (яма).</p></div>
+  </div>
+  <p>Важно с прошлого урока: <span class="m">f′(a) = 0</span> ещё не значит <span class="kr">극값</span>. Нужна <strong>смена знака</strong>. У <span class="m">y = x³</span> в нуле <span class="m">f′ = 0</span>, но знак не меняется, и вершины нет.</p>
+</section>
+
+<!-- ===== 2 график ===== -->
+<section id="graph">
+  <div class="head">
+    <span class="sec-num">2 · <span class="kr">함수의 그래프</span></span>
+    <h2>Как нарисовать график за 5 шагов</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Представь</span>
+    <p>Ты описываешь другу маршрут в горах. Ты не перечисляешь высоту каждого метра. Ты говоришь: «Сначала подъём до вершины 1 км, потом спуск в долину −3, потом опять долгий подъём». Этого хватает, чтобы представить всю дорогу.</p>
+    <p>С графиком так же: нужны только <strong>повороты</strong> (<span class="kr">극대, 극소</span>), <strong>направление</strong> между ними (↗ или ↘) и пара точек на осях. Всё это даёт производная.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · <span class="kr">함수의 그래프</span></span>
+    <div class="tk">
+      <p>미분가능한 함수 <span class="m">y = f(x)</span>의 그래프의 개형은 다음과 같은 순서로 그리면 편리하다.</p>
+      <p>(i) 도함수 <span class="m">f′(x)</span>를 구한다.<br>
+      (ii) <span class="m">f′(x) = 0</span>을 만족시키는 <span class="m">x</span>의 값을 구한다.<br>
+      (iii) (ii)에서 구한 <span class="m">x</span>의 값의 좌우에서 <span class="m">f′(x)</span>의 부호를 조사하여 함수 <span class="m">f(x)</span>의 증가와 감소를 표로 나타내고, <span class="m">f(x)</span>의 극값을 구한다.<br>
+      (iv) 함수 <span class="m">y = f(x)</span>의 그래프와 좌표축과의 교점을 구한다.<br>
+      (v) (iii), (iv)를 이용하여 함수 <span class="m">y = f(x)</span>의 그래프의 개형을 그린다.</p>
+    </div>
+    <div class="tr">
+      <p>Общий вид графика дифференцируемой функции удобно рисовать в таком порядке:</p>
+      <ol class="steps">
+        <li>Найти производную <span class="m">f′(x)</span>.</li>
+        <li>Найти <span class="m">x</span>, при которых <span class="m">f′(x) = 0</span>.</li>
+        <li>Слева и справа от этих <span class="m">x</span> определить знак <span class="m">f′(x)</span>, записать возрастание/убывание в таблицу (<span class="kr">증감표</span>) и найти экстремумы.</li>
+        <li>Найти точки пересечения графика с осями координат.</li>
+        <li>По шагам 3 и 4 нарисовать общий вид графика.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример · <span class="kr">예시</span></span>
+    <p class="kr">함수 <span class="m">f(x) = x³ − 3x − 1</span>의 그래프의 개형을 그려 보자.</p>
+    <p>Нарисуем эскиз графика <span class="m">f(x) = x³ − 3x − 1</span>.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1.</span> f′(x) = 3x² − 3 = 3(x + 1)(x − 1)</span>
+      <span><span class="ok">Шаг 2.</span> f′(x) = 0 → x = −1 или x = 1</span>
+      <span><span class="ok">Шаг 3.</span> знаки и таблица ниже; 극댓값 f(−1) = −1 + 3 − 1 = 1, 극솟값 f(1) = 1 − 3 − 1 = −3</span>
+      <span><span class="ok">Шаг 4.</span> y절편: f(0) = −1</span>
+      <span><span class="ok">Шаг 5.</span> соединяем: ↗ до (−1, 1), ↘ до (1, −3), снова ↗</span>
+    </div>
+    <div class="fig-row">
+      <div class="signtbl">
+        <table>
+          <tr><th>x</th><th>⋯</th><th>−1</th><th>⋯</th><th>1</th><th>⋯</th></tr>
+          <tr><td>f′(x)</td><td class="up">+</td><td>0</td><td class="down">−</td><td>0</td><td class="up">+</td></tr>
+          <tr><td>f(x)</td><td><span class="arr-up">↗</span></td><td>1<br><span class="ext">극대</span></td><td><span class="arr-dn">↘</span></td><td>−3<br><span class="ext">극소</span></td><td><span class="arr-up">↗</span></td></tr>
+        </table>
+      </div>
+      <figure>
+        <svg id="figEx" viewBox="0 0 300 260" role="img" aria-label="График x³ − 3x − 1 с максимумом в (−1, 1) и минимумом в (1, −3)"></svg>
+        <figcaption>Синие участки: <span class="kr">증가</span>, коралловые: <span class="kr">감소</span>. Зелёные точки: <span class="kr">극대</span> и <span class="kr">극소</span>, серая: <span class="kr">y절편</span>.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <h3>Три формы кубической функции · <span class="kr">참고</span></h3>
+  <div class="box theorem">
+    <span class="label">Учебник · <span class="kr">참고</span></span>
+    <div class="tk"><p>최고차항의 계수가 양수인 삼차함수 <span class="m">f(x)</span>에 대하여 도함수 <span class="m">f′(x)</span>의 그래프의 개형에 따른 <span class="m">f(x)</span>의 그래프는 다음과 같다.</p>
+    <p>① 이차방정식 <span class="m">f′(x)=0</span>이 서로 다른 두 실근 <span class="m">α, β</span>를 갖는 경우<br>② 이차방정식 <span class="m">f′(x)=0</span>이 중근 <span class="m">α</span>를 갖는 경우<br>③ 이차방정식 <span class="m">f′(x)=0</span>이 서로 다른 두 허근을 갖는 경우</p></div>
+    <div class="tr"><p>Для кубической функции с положительным старшим коэффициентом вид графика зависит от того, сколько корней у квадратного уравнения <span class="m">f′(x) = 0</span>: ① два различных действительных корня, ② один двойной корень, ③ два мнимых корня (действительных нет).</p></div>
+  </div>
+
+  <div class="fig-row cases">
+    <figure><svg id="case1" viewBox="0 0 220 300" role="img" aria-label="Случай 1: f′ пересекает ось дважды, у f есть максимум и минимум"></svg><figcaption><b>① D &gt; 0.</b> <span class="m">f′</span> пересекает ось два раза, знак меняется дважды. Есть <span class="kr">극대</span> и <span class="kr">극소</span>.</figcaption></figure>
+    <figure><svg id="case2" viewBox="0 0 220 300" role="img" aria-label="Случай 2: f′ касается оси, у f горизонтальная площадка без экстремума"></svg><figcaption><b>② D = 0.</b> <span class="m">f′</span> касается оси, знак <strong>не</strong> меняется. Горизонтальная «площадка», но <span class="kr">극값</span> нет.</figcaption></figure>
+    <figure><svg id="case3" viewBox="0 0 220 300" role="img" aria-label="Случай 3: f′ выше оси, f всё время возрастает"></svg><figcaption><b>③ D &lt; 0.</b> <span class="m">f′ &gt; 0</span> везде. Функция всё время растёт, <span class="kr">극값</span> нет.</figcaption></figure>
+  </div>
+
+  <div class="box note">
+    <span class="label">Главный вывод для задач</span>
+    <p><strong>Кубическая функция имеет экстремум</strong> (<span class="kr">극값을 갖는다</span>) ⇔ у <span class="m">f′(x) = 0</span> два различных действительных корня ⇔ <span class="m">D &gt; 0</span>.</p>
+    <p><strong>Не имеет экстремума</strong> (<span class="kr">극값을 갖지 않는다</span>) ⇔ <span class="m">D ≤ 0</span>. Не забудь знак «равно»: случай ② тоже без экстремума.</p>
+    <p>Так решаются задачи 302, 303 и 444 из сборника. Попробуй в лаборатории ниже.</p>
+  </div>
+
+  <div class="lab" id="lab1">
+    <div class="head">
+      <span class="label" style="color:var(--green)">Лаборатория 1 · <span class="kr">f′의 근과 f의 모양</span></span>
+      <p>Функция <span class="m">f(x) = x³ − 3px</span>, производная <span class="m">f′(x) = 3x² − 3p</span>. Двигай <span class="m">p</span> и смотри, как парабола <span class="m">f′</span> поднимается над осью и что происходит с вершинами <span class="m">f</span>.</p>
+    </div>
+    <svg id="lab1Svg" viewBox="0 0 640 470" aria-label="Сверху график f, снизу график f′"></svg>
+    <div class="controls">
+      <label for="pSlider">p =</label><span class="m" id="pVal" style="min-width:3.5em">1.00</span>
+      <input type="range" id="pSlider" min="-1" max="1.5" step="0.01" value="1">
+    </div>
+    <div class="controls">
+      <button type="button" data-p="1">① D &gt; 0</button>
+      <button type="button" data-p="0">② D = 0</button>
+      <button type="button" data-p="-0.7">③ D &lt; 0</button>
+    </div>
+    <div class="readout">
+      <div><span><span class="kr">판별식</span> D/4 для 3x² − 3p</span><b id="l1D">9</b></div>
+      <div><span>корни f′(x) = 0</span><b id="l1R">x = ±1</b></div>
+      <div id="l1St" class="st-hit">① два корня: есть 극대 и 극소</div>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Осторожно с 사차함수</span>
+    <p>У функции 4-й степени (<span class="kr">사차함수</span>) с положительным старшим коэффициентом <span class="kr">극소</span> есть всегда (график как «W» или «U»). А <span class="kr">극대</span> появляется только если у <span class="m">f′(x) = 0</span> <strong>три различных</strong> действительных корня. Это задача 305.</p>
+  </div>
+</section>
+
+<!-- ===== 3 max/min ===== -->
+<section id="maxmin">
+  <div class="head">
+    <span class="sec-num">3 · <span class="kr">함수의 최댓값과 최솟값</span></span>
+    <h2>Наибольшее и наименьшее значение на отрезке</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Представь</span>
+    <p>Ты идёшь по горной тропе от точки <span class="m">a</span> до точки <span class="m">b</span>. Где была самая высокая точка за день? Может, на вершине по пути. А может, твой финиш <span class="m">b</span> вообще выше всех вершин, если в конце был долгий подъём.</p>
+    <p>Поэтому кандидатов всегда два вида: <strong>вершины и ямы внутри</strong> и <strong>старт и финиш</strong>. Сравниваешь высоты всех кандидатов, и всё.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · <span class="kr">함수의 최댓값과 최솟값</span></span>
+    <div class="tk"><p>함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속일 때, 주어진 구간에서의<br>극댓값, 극솟값, <span class="m">f(a)</span>, <span class="m">f(b)</span><br>중에서 가장 큰 값이 최댓값이고 가장 작은 값이 최솟값이다.</p></div>
+    <div class="tr"><p>Если <span class="m">f(x)</span> непрерывна на отрезке <span class="m">[a, b]</span>, то среди значений максимумов, минимумов (внутри отрезка), <span class="m">f(a)</span> и <span class="m">f(b)</span> самое большое — наибольшее значение (<span class="kr">최댓값</span>), самое маленькое — наименьшее (<span class="kr">최솟값</span>).</p></div>
+  </div>
+
+  <div class="fig-row cases">
+    <figure><svg id="mm1" viewBox="0 0 220 220" role="img" aria-label="Наибольшее — максимум, наименьшее — минимум"></svg><figcaption>Повезло: <span class="kr">최댓값 = 극댓값</span>, <span class="kr">최솟값 = 극솟값</span>.</figcaption></figure>
+    <figure><svg id="mm2" viewBox="0 0 220 220" role="img" aria-label="Наибольшее на правом конце"></svg><figcaption>Конец <span class="m">f(b)</span> выше вершины: <span class="kr">최댓값 = f(b)</span>.</figcaption></figure>
+    <figure><svg id="mm3" viewBox="0 0 220 220" role="img" aria-label="Наибольшее и наименьшее на концах"></svg><figcaption>Оба ответа на концах: <span class="kr">최댓값 = f(b)</span>, <span class="kr">최솟값 = f(a)</span>.</figcaption></figure>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание · <span class="kr">주의</span></span>
+    <p class="kr">함수의 극값이 반드시 최댓값과 최솟값이 되는 것은 아니다.</p>
+    <p>Экстремум не обязательно является наибольшим или наименьшим значением. <span class="kr">극대</span> — это вершина только «по соседству». На всём отрезке может найтись точка выше (часто это конец отрезка).</p>
+  </div>
+
+  <div class="box note">
+    <span class="label">Учебник · <span class="kr">참고</span></span>
+    <p class="kr">연속함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 오직 하나의 극값을 가질 때, ① 오직 하나의 극값이 극댓값이면 (극댓값) = (최댓값)이다. ② 오직 하나의 극값이 극솟값이면 (극솟값) = (최솟값)이다.</p>
+    <p>Если на отрезке <strong>только один</strong> экстремум, то: если это максимум, он и есть наибольшее значение; если минимум — наименьшее. Логика: до единственной вершины функция только росла, после — только падала, выше подняться негде.</p>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример</span>
+    <p>Найдём <span class="kr">최댓값</span> и <span class="kr">최솟값</span> функции <span class="m">f(x) = x³ − 3x − 1</span> на <span class="kr">닫힌구간</span> <span class="m">[−2, 3]</span>.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1.</span> f′(x) = 3(x + 1)(x − 1) = 0 → x = −1, 1. Обе точки внутри [−2, 3] ✓</span>
+      <span><span class="ok">Шаг 2.</span> кандидаты: f(−2) = −8 + 6 − 1 = −3,  f(−1) = 1,  f(1) = −3,  f(3) = 27 − 9 − 1 = 17</span>
+      <span><span class="ok">Шаг 3.</span> 최댓값 = 17 (на конце x = 3),  최솟값 = −3 (при x = −2 и x = 1)</span>
+    </div>
+    <p>Заметь: <span class="kr">극댓값</span> 1 здесь <strong>не</strong> наибольшее значение. Это и есть <span class="kr">주의</span> из учебника.</p>
+  </div>
+
+  <div class="lab" id="lab2">
+    <div class="head">
+      <span class="label" style="color:var(--green)">Лаборатория 2 · <span class="kr">최댓값·최솟값 찾기</span></span>
+      <p>Та же <span class="m">f(x) = x³ − 3x − 1</span>. Двигай концы отрезка <span class="m">a</span> и <span class="m">b</span> и смотри, кто побеждает: вершина или конец.</p>
+    </div>
+    <svg id="lab2Svg" viewBox="0 0 640 360" aria-label="График f на отрезке [a, b] с отмеченными наибольшим и наименьшим значением"></svg>
+    <div class="controls"><label for="aSlider">a =</label><span class="m" id="aVal" style="min-width:3.5em">−2</span><input type="range" id="aSlider" min="-2.4" max="2.2" step="0.05" value="-2"></div>
+    <div class="controls"><label for="bSlider">b =</label><span class="m" id="bVal" style="min-width:3.5em">2.5</span><input type="range" id="bSlider" min="-2.2" max="2.6" step="0.05" value="2.5"></div>
+    <div class="controls">
+      <button type="button" data-ab="-1.5,1.5">[−1.5, 1.5]</button>
+      <button type="button" data-ab="-2,2.5">[−2, 2.5]</button>
+      <button type="button" data-ab="0,2">[0, 2]</button>
+      <button type="button" data-ab="-2.4,0.5">[−2.4, 0.5]</button>
+    </div>
+    <div class="readout">
+      <div><span>кандидаты</span><b id="l2C" style="font-size:16px;white-space:normal">…</b></div>
+      <div class="st-up"><span><span class="kr">최댓값</span></span><b id="l2M">…</b></div>
+      <div class="st-dn"><span><span class="kr">최솟값</span></span><b id="l2m">…</b></div>
+    </div>
+    <p id="l2St" class="kr" style="font-size:15px"></p>
+  </div>
+</section>
+
+<!-- ===== 4 рецепт ===== -->
+<section id="recipe">
+  <div class="head">
+    <span class="sec-num">4 · <span class="kr">풀이 순서</span></span>
+    <h2>Рецепт решения</h2>
+  </div>
+  <div class="cond">
+    <div>
+      <span class="n">Тип A · <span class="kr">극값을 갖는 조건</span></span>
+      <ol class="steps">
+        <li>Найди <span class="m">f′(x)</span>, для кубической это квадратный трёхчлен.</li>
+        <li>«<span class="kr">극값을 갖는다</span>» → <span class="m">D &gt; 0</span>.</li>
+        <li>«<span class="kr">극값을 갖지 않는다</span>» → <span class="m">D ≤ 0</span>.</li>
+        <li>Реши неравенство для параметра. Проверь, что спрашивают: <span class="kr">자연수</span>, <span class="kr">정수</span>, <span class="kr">최솟값</span>…</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n">Тип B · <span class="kr">닫힌구간에서 최대·최소</span></span>
+      <ol class="steps">
+        <li>Найди корни <span class="m">f′(x) = 0</span>.</li>
+        <li><strong style="color:var(--coral)">Оставь только корни внутри [a, b]!</strong></li>
+        <li>Посчитай <span class="m">f</span> в этих корнях <strong>и</strong> в концах <span class="m">a</span>, <span class="m">b</span>.</li>
+        <li>Самое большое = <span class="kr">최댓값</span>, самое маленькое = <span class="kr">최솟값</span>.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="box warn">
+    <span class="label">Чаще всего ошибаются</span>
+    <ul class="plain">
+      <li>Забывают посчитать значения на концах <span class="m">f(a)</span>, <span class="m">f(b)</span>.</li>
+      <li>Берут корень <span class="m">f′ = 0</span>, который лежит <strong>вне</strong> отрезка.</li>
+      <li>Пишут <span class="m">D &lt; 0</span> вместо <span class="m">D ≤ 0</span> в задачах «<span class="kr">극값을 갖지 않도록</span>».</li>
+      <li>Путают <span class="kr">극댓값</span> (локальная вершина) и <span class="kr">최댓값</span> (самая высокая точка на всём отрезке).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 5 учебник ===== -->
+<section id="practice">
+  <div class="head">
+    <span class="sec-num">5 · <span class="kr">개념 이해</span> (учебник, стр. 87)</span>
+    <h2>Задачи из учебника</h2>
+  </div>
+  <p>Сначала попробуй сам. Открой подсказку, если застрял, и только потом решение.</p>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">301</span><span class="lvl">중하</span></div>
+    <p class="kr pk">사차함수 <span class="m">y = f(x)</span>의 도함수 <span class="m">y = f′(x)</span>의 그래프가 그림과 같을 때, 함수 <span class="m">y = f(x)</span>의 그래프가 될 수 있는 것은?</p>
+    <p><strong>Перевод:</strong> дан график производной <span class="m">y = f′(x)</span> функции 4-й степени. Какой из графиков может быть графиком <span class="m">y = f(x)</span>?</p>
+    <figure>
+      <svg id="fig301" viewBox="0 0 400 220" role="img" aria-label="График f′: касается оси в a, наибольшее значение в b, пересекает ось в c"></svg>
+      <figcaption>График <span class="m">f′</span> перерисован по учебнику: касается оси в <span class="m">a</span>, выше всего в <span class="m">b</span>, пересекает ось в <span class="m">c</span>. <button type="button" id="show301">Показать знаки f′</button></figcaption>
+    </figure>
+    <div class="opt-figs" id="opts301"></div>
+    <p style="font-size:14px;color:var(--muted)">Варианты нарисованы по форме, как в учебнике, но не в точности.</p>
+    <details><summary>Подсказка</summary><p>Читай по графику <span class="m">f′</span> только <strong>знак</strong>: где он выше оси, где ниже. В точке <span class="m">a</span> график касается оси. Меняется ли там знак? Что происходит в точке <span class="m">b</span>, где <span class="m">f′</span> самая большая?</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> x &lt; c (кроме x = a): f′ &gt; 0 → f возрастает</span>
+        <span><span class="ok">Шаг 2.</span> x = a: f′ = 0, но знак + → + не меняется → 극값 нет, только горизонтальная «площадка»</span>
+        <span><span class="ok">Шаг 3.</span> x = c: знак + → − → 극대 в c; после c функция убывает</span>
+        <span><span class="ok">Шаг 4.</span> x = b: f′ наибольшая → здесь график f растёт круче всего</span>
+      </div>
+      <p>Нужен график: площадка в <span class="m">a</span>, подъём, вершина в <span class="m">c</span>, потом спуск. ① и ② имеют вершину в <span class="m">b</span>, ③ — вершину в <span class="m">b</span>, ⑤ — яму в <span class="m">a</span>. Подходит только ④.</p>
+      <p>Ответ: <span class="answer">④</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">302</span><span class="lvl">중하</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = x³ + 3ax² + (6a + 9)x − 7</span>이 극값을 갖도록 하는 자연수 <span class="m">a</span>의 최솟값은?</p>
+    <p><strong>Перевод:</strong> найдите наименьшее натуральное <span class="m">a</span>, при котором функция имеет экстремум.</p>
+    <div class="opts"><span>① 2</span><span>② 3</span><span>③ 4</span><span>④ 5</span><span>⑤ 6</span></div>
+    <details><summary>Подсказка</summary><p>Кубическая функция имеет <span class="kr">극값</span> ⇔ у <span class="m">f′(x) = 0</span> два различных корня ⇔ <span class="m">D &gt; 0</span>.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 3x² + 6ax + (6a + 9)</span>
+        <span><span class="ok">Шаг 2.</span> D/4 = (3a)² − 3(6a + 9) = 9a² − 18a − 27 &gt; 0</span>
+        <span><span class="ok">Шаг 3.</span> a² − 2a − 3 &gt; 0 → (a − 3)(a + 1) &gt; 0 → a &lt; −1 или a &gt; 3</span>
+        <span><span class="ok">Шаг 4.</span> наименьшее натуральное: a = 4 (a = 3 не подходит, там D = 0)</span>
+      </div>
+      <p>Ответ: <span class="answer">③ 4</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">303</span><span class="lvl">중하</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = x³ + ax² + (a² − 8a)x + 1</span>이 극값을 갖지 않도록 하는 모든 실수 <span class="m">a</span>의 값의 범위가 <span class="m">a ≤ α</span> 또는 <span class="m">a ≥ β</span>일 때, <span class="m">α + β</span>의 값은?</p>
+    <p><strong>Перевод:</strong> функция <strong>не</strong> имеет экстремумов при <span class="m">a ≤ α</span> или <span class="m">a ≥ β</span>. Найдите <span class="m">α + β</span>.</p>
+    <div class="opts"><span>① 10</span><span>② 11</span><span>③ 12</span><span>④ 13</span><span>⑤ 14</span></div>
+    <details><summary>Подсказка</summary><p>«<span class="kr">극값을 갖지 않는다</span>» → <span class="m">D ≤ 0</span>. Со знаком «равно».</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 3x² + 2ax + (a² − 8a)</span>
+        <span><span class="ok">Шаг 2.</span> D/4 = a² − 3(a² − 8a) = −2a² + 24a ≤ 0</span>
+        <span><span class="ok">Шаг 3.</span> a² − 12a ≥ 0 → a(a − 12) ≥ 0 → a ≤ 0 или a ≥ 12</span>
+        <span><span class="ok">Шаг 4.</span> α = 0, β = 12 → α + β = 12</span>
+      </div>
+      <p>Ответ: <span class="answer">③ 12</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">304</span><span class="lvl">중하</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = x³ + (k − 3)x² + (2 − k)x − 3</span>이 <span class="m">0 &lt; x &lt; 1</span>에서 극댓값을 갖고, <span class="m">1 &lt; x &lt; 2</span>에서 극솟값을 갖도록 하는 실수 <span class="m">k</span>의 값의 범위가 <span class="m">a &lt; k &lt; b</span>이다. 이때 <span class="m">a + b</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> функция имеет максимум на <span class="m">(0, 1)</span> и минимум на <span class="m">(1, 2)</span> при <span class="m">a &lt; k &lt; b</span>. Найдите <span class="m">a + b</span>.</p>
+    <details><summary>Подсказка</summary><p>У кубической с положительным старшим коэффициентом сначала идёт <span class="kr">극대</span> (знак <span class="m">f′</span>: + → −), потом <span class="kr">극소</span> (− → +). Значит, парабола <span class="m">f′</span> должна быть: <span class="m">f′(0) &gt; 0</span>, <span class="m">f′(1) &lt; 0</span>, <span class="m">f′(2) &gt; 0</span>.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 3x² + 2(k − 3)x + (2 − k)</span>
+        <span><span class="ok">Шаг 2.</span> f′(0) = 2 − k &gt; 0 → k &lt; 2</span>
+        <span><span class="ok">Шаг 3.</span> f′(1) = 3 + 2k − 6 + 2 − k = k − 1 &lt; 0 → k &lt; 1</span>
+        <span><span class="ok">Шаг 4.</span> f′(2) = 12 + 4k − 12 + 2 − k = 3k + 2 &gt; 0 → k &gt; −2/3</span>
+        <span><span class="ok">Шаг 5.</span> вместе: −2/3 &lt; k &lt; 1 → a + b = −2/3 + 1 = 1/3</span>
+      </div>
+      <p>Ответ: <span class="answer">1/3</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">305</span><span class="lvl">중하</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = 2x⁴ + ax³ + 5x²</span>이 극댓값을 갖도록 하는 자연수 <span class="m">a</span>의 최솟값은?</p>
+    <p><strong>Перевод:</strong> найдите наименьшее натуральное <span class="m">a</span>, при котором функция имеет <strong>максимум</strong>.</p>
+    <div class="opts"><span>① 5</span><span>② 6</span><span>③ 7</span><span>④ 8</span><span>⑤ 9</span></div>
+    <details><summary>Подсказка</summary><p>Это <span class="kr">사차함수</span>. Вынеси <span class="m">x</span> из <span class="m">f′(x)</span>. <span class="kr">극대</span> будет, только если у <span class="m">f′(x) = 0</span> три различных корня.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 8x³ + 3ax² + 10x = x(8x² + 3ax + 10)</span>
+        <span><span class="ok">Шаг 2.</span> один корень x = 0; нужны ещё два различных корня у 8x² + 3ax + 10, не равных 0</span>
+        <span><span class="ok">Шаг 3.</span> 0 не корень (10 ≠ 0) ✓;  D = 9a² − 320 &gt; 0 → a² &gt; 35.5…</span>
+        <span><span class="ok">Шаг 4.</span> a = 5: 25 ✗,  a = 6: 36 &gt; 35.5 ✓</span>
+      </div>
+      <p>При <span class="m">a = 6</span> корни <span class="m">f′</span>: −1.25, −1, 0. Знаки: − | + | − | +, значит в <span class="m">x = −1</span> есть <span class="kr">극대</span>.</p>
+      <p>Ответ: <span class="answer">② 6</span></p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 6 сборник ===== -->
+<section id="workbook">
+  <div class="head">
+    <span class="sec-num">6 · <span class="kr">문제집</span> (сборник, стр. 116–123)</span>
+    <h2>Задачи из сборника: тренировка</h2>
+  </div>
+  <p>В сборнике задачи из настоящих экзаменов (<span class="kr">모의고사</span>, <span class="kr">수능</span>). Я выбрал те, что подходят к этой теме по уровню. Для ключевых задач есть полное решение, для остальных только подсказка: дальше решай сам.</p>
+
+  <div class="type-h"><h3>Тип A · <span class="kr">도함수의 그래프, 극값 조건</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">443</span><span class="lvl">중 · средняя</span><span class="tag">ключевая задача</span><span class="src">2011년 7월 고3 10번</span></div>
+    <p class="kr pk">그림은 삼차함수 <span class="m">f(x)</span>의 도함수 <span class="m">f′(x)</span>의 그래프이다. 함수 <span class="m">f(x)</span>에 대한 설명 중 &lt;보기&gt;에서 옳은 것만을 있는 대로 고른 것은?</p>
+    <p><strong>Перевод:</strong> на рисунке график производной <span class="m">f′(x)</span> кубической функции. Выберите все верные утверждения.</p>
+    <figure>
+      <svg id="fig443" viewBox="0 0 400 200" role="img" aria-label="Парабола f′ ветвями вниз, касается оси x в точке 2"></svg>
+      <figcaption>Перерисовано: парабола ветвями вниз, касается оси <span class="m">x</span> в точке <span class="m">x = 2</span>.</figcaption>
+    </figure>
+    <div class="kr" style="display:flex;flex-direction:column;gap:4px">
+      <span>ㄱ. 함수 <span class="m">f(x)</span>는 <span class="m">x = 0</span>에서 감소상태에 있다. <span style="color:var(--muted)">(при x = 0 функция убывает)</span></span>
+      <span>ㄴ. 함수 <span class="m">f(x)</span>는 <span class="m">x = 2</span>에서 극댓값을 갖는다. <span style="color:var(--muted)">(в x = 2 есть максимум)</span></span>
+      <span>ㄷ. 함수 <span class="m">y = f(x)</span>의 그래프는 <span class="m">x</span>축과 오직 한 점에서 만난다. <span style="color:var(--muted)">(график пересекает ось x ровно в одной точке)</span></span>
+    </div>
+    <div class="opts"><span>① ㄱ</span><span>② ㄴ</span><span>③ ㄱ, ㄷ</span><span>④ ㄴ, ㄷ</span><span>⑤ ㄱ, ㄴ, ㄷ</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> по графику: f′(x) ≤ 0 везде, f′ = 0 только при x = 2</span>
+        <span><span class="ok">ㄱ.</span> f′(0) &lt; 0 → при x = 0 убывает ✓</span>
+        <span><span class="ok">ㄴ.</span> в x = 2 знак − → −, не меняется → 극값 нет ✗ (это случай ② «площадка»)</span>
+        <span><span class="ok">ㄷ.</span> f всё время убывает, а кубическая идёт от +∞ к −∞ → ось x пересекает ровно один раз ✓</span>
+      </div>
+      <p>Это зеркальная версия случая ② из <span class="kr">참고</span>: там <span class="m">f′ ≥ 0</span>, здесь <span class="m">f′ ≤ 0</span>.</p>
+      <p>Ответ: <span class="answer">③ ㄱ, ㄷ</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">444</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x³ + ax² + (a² − 4a)x + 3</span>이 극값을 갖도록 하는 모든 정수 <span class="m">a</span>의 개수는?</p>
+      <p style="font-size:15px">Сколько целых <span class="m">a</span>, при которых есть экстремум?</p>
+      <div class="opts"><span>① 5</span><span>② 6</span><span>③ 7</span><span>④ 8</span><span>⑤ 9</span></div>
+      <details><summary>Подсказка</summary><p>Как 302, но со строгим <span class="m">D/4 &gt; 0</span>. Получится промежуток <span class="m">0 &lt; a &lt; …</span>, концы не входят. Посчитай целые внутри.</p></details>
+    </div>
+  </div>
+
+  <div class="type-h"><h3>Тип B · <span class="kr">닫힌구간에서 최댓값·최솟값</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">450</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2017년 6월 고3 10번</span></div>
+    <p class="kr pk">닫힌구간 <span class="m">[−1, 3]</span>에서 함수 <span class="m">f(x) = x³ − 3x + 5</span>의 최솟값은?</p>
+    <p><strong>Перевод:</strong> найдите наименьшее значение функции <span class="m">f(x) = x³ − 3x + 5</span> на отрезке <span class="m">[−1, 3]</span>.</p>
+    <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 3x² − 3 = 3(x + 1)(x − 1) → x = −1, 1</span>
+        <span><span class="ok">Шаг 2.</span> x = −1 — это сам конец отрезка, x = 1 — внутри ✓</span>
+        <span><span class="ok">Шаг 3.</span> f(−1) = −1 + 3 + 5 = 7,  f(1) = 1 − 3 + 5 = 3,  f(3) = 27 − 9 + 5 = 23</span>
+        <span><span class="ok">Шаг 4.</span> наименьшее: 3 (при x = 1)</span>
+      </div>
+      <p>Внутри отрезка только один экстремум (<span class="kr">극소</span> в <span class="m">x = 1</span>), поэтому по <span class="kr">참고</span> он сразу и есть <span class="kr">최솟값</span>. Кстати, <span class="kr">최댓값</span> = 23 на конце.</p>
+      <p>Ответ: <span class="answer">③ 3</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">449</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">구간 <span class="m">[−2, 0]</span>에서 함수 <span class="m">f(x) = x³ − 3x² − 9x + 8</span>의 최댓값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Корни <span class="m">f′ = 0</span>: <span class="m">x = −1</span> и <span class="m">x = 3</span>. Какой из них вне отрезка? Сравни <span class="m">f(−2)</span>, <span class="m">f(−1)</span>, <span class="m">f(0)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">452</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">닫힌 구간 <span class="m">[−1, 3]</span>에서 함수 <span class="m">f(x) = x³ − 6x² + 9x + 6</span>의 최댓값은?</p>
+      <div class="opts"><span>① 6</span><span>② 7</span><span>③ 8</span><span>④ 9</span><span>⑤ 10</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">f′(x) = 3(x − 1)(x − 3)</span>. Кандидаты: <span class="m">x = −1, 1, 3</span>. Здесь <span class="m">x = 3</span> и корень, и конец.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">454</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">구간 <span class="m">[−1, 1]</span>에서 함수 <span class="m">f(x) = x³ + 3x² + 10</span>의 최댓값과 최솟값의 합을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">f′(x) = 3x(x + 2)</span>. Корень <span class="m">−2</span> выбрасываем. Внутри только <span class="m">x = 0</span> (<span class="kr">극소</span>). Сложи наибольшее и наименьшее.</p></details>
+    </div>
+  </div>
+
+  <div class="type-h"><h3>Тип C · <span class="kr">최댓값·최솟값이 주어질 때 상수 구하기</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">459</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2026년 7월 고3 19번</span></div>
+    <p class="kr pk">닫힌구간 <span class="m">[0, 3]</span>에서 정의된 함수 <span class="m">f(x) = x³ − 12x + k</span>의 최댓값이 40일 때, 최솟값을 구하시오. (단, <span class="m">k</span>는 상수이다.)</p>
+    <p><strong>Перевод:</strong> на отрезке <span class="m">[0, 3]</span> наибольшее значение функции <span class="m">f(x) = x³ − 12x + k</span> равно 40. Найдите наименьшее значение (<span class="m">k</span> — константа).</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 3x² − 12 = 3(x + 2)(x − 2) → внутри [0, 3] только x = 2</span>
+        <span><span class="ok">Шаг 2.</span> кандидаты: f(0) = k,  f(2) = 8 − 24 + k = k − 16,  f(3) = 27 − 36 + k = k − 9</span>
+        <span><span class="ok">Шаг 3.</span> наибольшее из них k → k = 40</span>
+        <span><span class="ok">Шаг 4.</span> наименьшее k − 16 = 24</span>
+      </div>
+      <p>Идея типа C: <span class="m">k</span> просто сдвигает весь график вверх-вниз. Сначала сравни кандидатов «с <span class="m">k</span>», потом подставь условие.</p>
+      <p>Ответ: <span class="answer">24</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">455</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">닫힌구간 <span class="m">[0, 3]</span>에서 함수 <span class="m">f(x) = x³ − 6x² + 9x + a</span>의 최댓값이 12일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 2</span><span>② 4</span><span>③ 6</span><span>④ 8</span><span>⑤ 10</span></div>
+      <details><summary>Подсказка</summary><p>Как 459. Кандидаты <span class="m">f(0), f(1), f(3)</span>, все вида «число + a».</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">462</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">닫힌 구간 <span class="m">[−2, 2]</span>에서 정의된 함수 <span class="m">f(x) = −x³ + 3x² + a</span>의 최솟값이 −4일 때, 최댓값은?</p>
+      <div class="opts"><span>① 16</span><span>② 18</span><span>③ 20</span><span>④ 22</span><span>⑤ 24</span></div>
+      <details><summary>Подсказка</summary><p>Старший коэффициент отрицательный. <span class="m">f′ = −3x(x − 2)</span>. Сравни <span class="m">f(−2), f(0), f(2)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">463</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">닫힌 구간 <span class="m">[1, 4]</span>에서 함수 <span class="m">f(x) = x³ − 3x² + a</span>의 최댓값을 <span class="m">M</span>, 최솟값을 <span class="m">m</span>이라 하자. <span class="m">M + m = 20</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p>Корень <span class="m">x = 0</span> вне отрезка. Кандидаты <span class="m">x = 1, 2, 4</span>. Получишь уравнение вида <span class="m">… + 2a = 20</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">458</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">닫힌구간 <span class="m">[1, 3]</span>에서 함수 <span class="m">f(x) = 2x³ − 3x² − 12x + a</span>가 최댓값 <span class="m">M</span>, 최솟값 4를 가질 때, <span class="m">M</span>의 값은?</p>
+      <div class="opts"><span>① 13</span><span>② 14</span><span>③ 15</span><span>④ 16</span><span>⑤ 17</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">f′(x) = 6(x − 2)(x + 1)</span>. Внутри только <span class="m">x = 2</span>, это <span class="kr">극소</span>, значит по <span class="kr">참고</span> он и есть <span class="kr">최솟값</span>.</p></details>
+    </div>
+  </div>
+
+  <div class="type-h"><h3>Тип D · <span class="kr">활용</span> (задача из жизни)</h3></div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">467</span><span class="lvl">중</span><span class="tag hint">подсказка</span><span class="src">2011년 4월 고3 28번</span></div>
+      <p class="kr">가로 12 cm, 세로 6 cm인 직사각형 종이의 네 모퉁이에서 크기가 같은 정사각형을 잘라 내고 접어서 뚜껑이 없는 상자를 만든다. 부피의 최댓값을 <span class="m">M</span> cm³라 할 때, <span class="frac"><span>√3</span><span>3</span></span><span class="m">M</span>의 값을 구하시오.</p>
+      <p style="font-size:15px">Из листа 12 × 6 вырезают по углам одинаковые квадраты и складывают коробку без крышки. Найдите <span class="m">(√3/3)·M</span>, где <span class="m">M</span> — наибольший объём.</p>
+      <details><summary>Подсказка</summary><p>Сторона квадрата <span class="m">x</span>, тогда <span class="m">V = x(12 − 2x)(6 − 2x)</span>, и <span class="m">0 &lt; x &lt; 3</span>. Найди корень <span class="m">V′ = 0</span> внутри этого промежутка. Он единственный, значит это и есть максимум.</p></details>
+    </div>
+  </div>
+  <p style="font-size:15px;color:var(--muted)">Остальные задачи этих страниц (435–442, 445, 446, 448, 453, 456, 457, 460, 461, 464–466) уровня <span class="kr">상</span>. Вернёмся к ним, когда эта тема станет лёгкой.</p>
+</section>
+
+<!-- ===== 7 шпаргалка ===== -->
+<section id="summary">
+  <div class="head">
+    <span class="sec-num">7 · <span class="kr">정리</span></span>
+    <h2>Шпаргалка</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th>Корни <span class="m">f′(x) = 0</span> (кубическая, старший коэф. &gt; 0)</th><th><span class="m">D</span></th><th>График <span class="m">f</span></th><th><span class="kr">극값</span></th></tr>
+      <tr><td><span class="kr">서로 다른 두 실근</span> α, β</td><td class="m">D &gt; 0</td><td>↗ вершина ↘ яма ↗</td><td>есть <span class="kr">극대</span> и <span class="kr">극소</span></td></tr>
+      <tr><td><span class="kr">중근</span> α</td><td class="m">D = 0</td><td>↗ площадка ↗</td><td>нет</td></tr>
+      <tr><td><span class="kr">허근</span> (действительных нет)</td><td class="m">D &lt; 0</td><td>всё время ↗</td><td>нет</td></tr>
+    </table>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <tr><th></th><th><span class="kr">극댓값 / 극솟값</span></th><th><span class="kr">최댓값 / 최솟값</span></th></tr>
+      <tr><td>Что это</td><td>вершина / яма «по соседству»</td><td>самая высокая / низкая точка на всём отрезке</td></tr>
+      <tr><td>Где искать</td><td>где <span class="m">f′</span> меняет знак</td><td>экстремумы внутри <span class="m">[a, b]</span> + концы <span class="m">f(a), f(b)</span></td></tr>
+      <tr><td>Сколько</td><td>может быть несколько</td><td>одно наибольшее и одно наименьшее значение</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>По учебнику NaBi School 미적분1, стр. 86–87, и сборнику задач, стр. 116–123. Рисунки перерисованы, форма как в учебнике, масштаб может отличаться.</footer>
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T),L,R,T,B};}
+  function path(f,a,b,M,n=200){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",grid:"var(--grid)",blueSoft:"var(--blue-soft)",coralSoft:"var(--coral-soft)",paper:"var(--paper)"};
+  const SANS="Golos Text, Noto Sans KR, sans-serif";
+  let clipN=0;
+  function clip(svg,M){const id="clp"+(clipN++);const d=el("defs",{},svg);const c=el("clipPath",{id},d);el("rect",{x:M.L,y:M.T,width:M.R-M.L,height:M.B-M.T},c);return el("g",{"clip-path":`url(#${id})`},svg);}
+  function axes(svg,M,x0,x1,y0,y1,o=true){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},svg);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},svg);
+    el("text",{x:M.X(x1)-4,y:M.Y(0)+16,fill:C.muted,"font-size":13,"text-anchor":"end"},svg,"x");
+    el("text",{x:M.X(0)+6,y:M.Y(y1)+12,fill:C.muted,"font-size":13},svg,"y");
+    if(o)el("text",{x:M.X(0)-6,y:M.Y(0)+15,fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"},svg,"O");
+  }
+  function lab(svg,x,y,t,col,opts={}){return el("text",Object.assign({x,y,fill:col||C.ink,"font-size":13},opts),svg,t);}
+  function klab(svg,x,y,t,col,anchor="middle"){return el("text",{x,y,fill:col,"font-size":13,"text-anchor":anchor,"font-style":"normal","font-family":SANS,"font-weight":700},svg,t);}
+  const fmt=v=>{const r=Math.round(v*100)/100;return (Object.is(r,-0)?0:r).toString().replace("-","−");};
+
+  /* ---------- example x^3-3x-1 ---------- */
+  (function(){
+    const s=document.getElementById("figEx"),f=x=>x*x*x-3*x-1;
+    const M=mapper(-2.4,2.5,-4,2.8,20,290,12,248);
+    axes(s,M,-2.4,2.5,-4,2.8);
+    const g=clip(s,M);
+    [[-2.1,-1,C.blue],[-1,1,C.coral],[1,2.3,C.blue]].forEach(([a,b,c])=>el("path",{d:path(f,a,b,M,80),fill:"none",stroke:c,"stroke-width":2.8},g));
+    [[-1,1,"극대",-12],[1,-3,"극소",22]].forEach(([x,y,t,dy])=>{
+      el("line",{x1:M.X(x),y1:M.Y(y),x2:M.X(x),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);
+      el("line",{x1:M.X(0),y1:M.Y(y),x2:M.X(x),y2:M.Y(y),stroke:C.muted,"stroke-dasharray":"3 3"},s);
+      el("circle",{cx:M.X(x),cy:M.Y(y),r:5,fill:C.green},s);
+      klab(s,M.X(x)+(x<0?-4:16),M.Y(y)+dy,t,C.green);
+      lab(s,M.X(x),M.Y(0)+(x<0?16:-6),x<0?"−1":"1",C.ink,{"text-anchor":"middle"});
+      lab(s,M.X(0)+(x<0?6:-6),M.Y(y)+4,y>0?"1":"−3",C.ink,{"text-anchor":x<0?"start":"end"});
+    });
+    el("circle",{cx:M.X(0),cy:M.Y(-1),r:4,fill:C.muted},s);
+    lab(s,M.X(0)+6,M.Y(-1)+14,"−1",C.muted);
+    lab(s,M.X(2.3),M.Y(-2.6),"y = f(x)",C.ink,{"text-anchor":"end"});
+  })();
+
+  /* ---------- three cubic cases ---------- */
+  function caseFig(id,p){
+    const s=document.getElementById(id);
+    const fp=x=>x*x-p, f=x=>x*x*x/3-p*x;
+    const T=mapper(-1.9,1.9,-1.3,2.4,10,210,24,140);
+    const B=mapper(-1.9,1.9,-1.5,1.5,10,210,170,292);
+    // f' panel
+    el("line",{x1:T.L,y1:T.Y(0),x2:T.R,y2:T.Y(0),stroke:C.muted},s);
+    const gt=clip(s,T);
+    let up="",dn="";const n=120;
+    for(let i=0;i<=n;i++){const x=-1.9+3.8*i/n,v=fp(x);up+=(i?"L":"M")+T.X(x).toFixed(1)+","+T.Y(Math.max(v,0)).toFixed(1);dn+=(i?"L":"M")+T.X(x).toFixed(1)+","+T.Y(Math.min(v,0)).toFixed(1);}
+    el("path",{d:up+`L${T.R},${T.Y(0)}L${T.L},${T.Y(0)}Z`,fill:C.blueSoft,stroke:"none"},gt);
+    el("path",{d:dn+`L${T.R},${T.Y(0)}L${T.L},${T.Y(0)}Z`,fill:C.coralSoft,stroke:"none"},gt);
+    el("path",{d:path(fp,-1.9,1.9,T,80),fill:"none",stroke:C.ink,"stroke-width":2.2},gt);
+    lab(s,T.R-4,T.T-8,"y = f′(x)",C.ink,{"text-anchor":"end"});
+    lab(s,T.X(-1.5),T.Y(0)-6,"+",C.blue,{"font-style":"normal","font-size":16});
+    lab(s,T.X(1.4),T.Y(0)-6,"+",C.blue,{"font-style":"normal","font-size":16});
+    if(p>0)lab(s,T.X(0),T.Y(0)+16,"−",C.coral,{"font-style":"normal","font-size":16,"text-anchor":"middle"});
+    // f panel
+    el("line",{x1:B.L,y1:B.Y(0),x2:B.R,y2:B.Y(0),stroke:C.muted,"stroke-opacity":.5},s);
+    const gb=clip(s,B);
+    const roots=p>0?[-Math.sqrt(p),Math.sqrt(p)]:(p===0?[0]:[]);
+    const cuts=[-1.9,...roots,1.9];
+    for(let i=0;i<cuts.length-1;i++){const m=(cuts[i]+cuts[i+1])/2;el("path",{d:path(f,cuts[i],cuts[i+1],B,60),fill:"none",stroke:fp(m)>=0?C.blue:C.coral,"stroke-width":2.6},gb);}
+    lab(s,B.R-4,B.B-4,"y = f(x)",C.ink,{"text-anchor":"end"});
+    const names=p>0?["α","β"]:["α"];
+    roots.forEach((r,i)=>{
+      el("line",{x1:T.X(r),y1:T.Y(0),x2:B.X(r),y2:B.Y(f(r)),stroke:C.muted,"stroke-dasharray":"3 3"},s);
+      lab(s,T.X(r)+4,T.Y(0)+14,names[i],C.ink);
+      el("circle",{cx:B.X(r),cy:B.Y(f(r)),r:4,fill:p>0?C.green:C.muted},s);
+      if(p>0)klab(s,B.X(r),B.Y(f(r))+(i?20:-10),i?"극소":"극대",C.green);
+    });
+  }
+  caseFig("case1",1);caseFig("case2",0);caseFig("case3",-0.5);
+
+  /* ---------- Lab 1 ---------- */
+  (function(){
+    const s=document.getElementById("lab1Svg"),sl=document.getElementById("pSlider");
+    const TF=mapper(-2.4,2.4,-4.5,4.5,30,620,14,226);
+    const TD=mapper(-2.4,2.4,-5,9,30,620,256,458);
+    function draw(){
+      let p=parseFloat(sl.value);if(Math.abs(p)<0.005)p=0;
+      document.getElementById("pVal").textContent=fmt(p);
+      s.textContent="";
+      const f=x=>x*x*x-3*p*x, fp=x=>3*x*x-3*p;
+      const roots=p>0?[-Math.sqrt(p),Math.sqrt(p)]:(p===0?[0]:[]);
+      const cuts=[-2.4,...roots,2.4];
+      for(let i=0;i<cuts.length-1;i++){
+        const m=(cuts[i]+cuts[i+1])/2,pos=fp(m)>0;
+        [TF,TD].forEach(M=>el("rect",{x:M.X(cuts[i]),y:M.T,width:M.X(cuts[i+1])-M.X(cuts[i]),height:M.B-M.T,fill:pos?C.blueSoft:C.coralSoft,opacity:.7},s));
+      }
+      [TF,TD].forEach(M=>{
+        el("line",{x1:M.L,y1:M.Y(0),x2:M.R,y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},s);
+        el("line",{x1:M.X(0),y1:M.T,x2:M.X(0),y2:M.B,stroke:C.muted,"stroke-width":1.2},s);
+      });
+      klab(s,TF.L+6,TF.T+16,"y = f(x)",C.ink,"start");
+      klab(s,TD.L+6,TD.T+16,"y = f′(x)",C.ink,"start");
+      const g1=clip(s,TF),g2=clip(s,TD);
+      for(let i=0;i<cuts.length-1;i++){const m=(cuts[i]+cuts[i+1])/2;el("path",{d:path(f,cuts[i],cuts[i+1],TF,80),fill:"none",stroke:fp(m)>0?C.blue:C.coral,"stroke-width":3},g1);}
+      el("path",{d:path(fp,-2.4,2.4,TD,120),fill:"none",stroke:C.ink,"stroke-width":2.6},g2);
+      roots.forEach((r,i)=>{
+        el("line",{x1:TD.X(r),y1:TD.Y(0),x2:TF.X(r),y2:TF.Y(f(r)),stroke:C.muted,"stroke-dasharray":"4 4"},s);
+        el("circle",{cx:TD.X(r),cy:TD.Y(0),r:5,fill:C.ink},s);
+        el("circle",{cx:TF.X(r),cy:TF.Y(f(r)),r:6,fill:p>0?C.green:C.muted},s);
+        const t=p>0?(i?"극소":"극대"):"площадка, не 극값";
+        klab(s,TF.X(r)+(p>0?0:10),TF.Y(f(r))+(p>0?(i?24:-12):-12),t,p>0?C.green:C.muted,p>0?"middle":"start");
+      });
+      const D=9*p;
+      document.getElementById("l1D").textContent=fmt(D);
+      document.getElementById("l1R").textContent=p>0?"x = ±"+fmt(Math.sqrt(p)):(p===0?"x = 0 (중근)":"нет (허근)");
+      const st=document.getElementById("l1St");
+      if(p>0){st.className="st-hit";st.textContent="① D > 0: знак f′ меняется дважды → есть 극대 и 극소";}
+      else if(p===0){st.className="st-trap";st.textContent="② D = 0: f′ касается оси, знак не меняется → 극값 нет";}
+      else{st.className="st-up";st.textContent="③ D < 0: f′ > 0 везде → всё время 증가, 극값 нет";}
+    }
+    sl.addEventListener("input",draw);
+    document.querySelectorAll("#lab1 [data-p]").forEach(b=>b.addEventListener("click",()=>{sl.value=b.dataset.p;draw();}));
+    draw();
+  })();
+
+  /* ---------- max/min static figs ---------- */
+  function mmFig(id,a,b){
+    const s=document.getElementById(id),g=x=>x*x*x-3*x;
+    const M=mapper(-2.5,2.6,-4.6,6,22,212,12,206);
+    el("line",{x1:M.L,y1:M.Y(-4.4),x2:M.R,y2:M.Y(-4.4),stroke:C.muted},s);
+    el("line",{x1:M.X(-2.4),y1:M.T,x2:M.X(-2.4),y2:M.B,stroke:C.muted},s);
+    el("rect",{x:M.X(a),y:M.T,width:M.X(b)-M.X(a),height:M.Y(-4.4)-M.T,fill:C.grid},s);
+    el("path",{d:path(g,a,b,M,100),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    const cand=[[a,"a"],[b,"b"],[-1,""],[1,""]].map(([x,n])=>({x,n,y:g(x)}));
+    const mx=cand.reduce((p,c)=>c.y>p.y?c:p),mn=cand.reduce((p,c)=>c.y<p.y?c:p);
+    [[a,"a"],[b,"b"]].forEach(([x,n])=>{el("line",{x1:M.X(x),y1:M.Y(g(x)),x2:M.X(x),y2:M.Y(-4.4),stroke:C.muted,"stroke-dasharray":"3 3"},s);lab(s,M.X(x),M.Y(-4.4)+14,n,C.ink,{"text-anchor":"middle"});el("circle",{cx:M.X(x),cy:M.Y(g(x)),r:3.5,fill:C.ink},s);});
+    klab(s,M.X(-1)+30,M.Y(2)-2,"극대",C.muted);klab(s,M.X(1),M.Y(-2)+18,"극소",C.muted);
+    el("circle",{cx:M.X(mx.x),cy:M.Y(mx.y),r:6,fill:C.blue},s);
+    el("circle",{cx:M.X(mn.x),cy:M.Y(mn.y),r:6,fill:C.coral},s);
+    el("line",{x1:M.X(-2.4),y1:M.Y(mx.y),x2:M.X(mx.x),y2:M.Y(mx.y),stroke:C.blue,"stroke-dasharray":"3 3"},s);
+    el("line",{x1:M.X(-2.4),y1:M.Y(mn.y),x2:M.X(mn.x),y2:M.Y(mn.y),stroke:C.coral,"stroke-dasharray":"3 3"},s);
+    klab(s,M.X(-2.4)+4,M.Y(mx.y)-5,"최댓값",C.blue,"start");
+    klab(s,M.X(-2.4)+(mn.y<-3.5?16:4),M.Y(mn.y)+(mn.y<-3.5?-8:16),"최솟값",C.coral,"start");
+  }
+  mmFig("mm1",-1.6,1.9);mmFig("mm2",-1.3,2.3);mmFig("mm3",-2.2,2.3);
+
+  /* ---------- Lab 2 ---------- */
+  (function(){
+    const s=document.getElementById("lab2Svg"),A=document.getElementById("aSlider"),Bs=document.getElementById("bSlider");
+    const f=x=>x*x*x-3*x-1;
+    const M=mapper(-2.7,2.85,-8.5,10,24,620,14,344);
+    function draw(src){
+      let a=parseFloat(A.value),b=parseFloat(Bs.value);
+      if(b-a<0.2){if(src==="a"){b=Math.min(2.6,a+0.2);Bs.value=b;}else{a=Math.max(-2.4,b-0.2);A.value=a;}}
+      a=parseFloat(A.value);b=parseFloat(Bs.value);
+      document.getElementById("aVal").textContent=fmt(a);document.getElementById("bVal").textContent=fmt(b);
+      s.textContent="";
+      el("rect",{x:M.X(a),y:M.T,width:M.X(b)-M.X(a),height:M.B-M.T,fill:C.grid},s);
+      axes(s,M,-2.7,2.85,-8.5,10);
+      [-2,-1,1,2].forEach(t=>{el("line",{x1:M.X(t),y1:M.Y(0)-3,x2:M.X(t),y2:M.Y(0)+3,stroke:C.muted},s);lab(s,M.X(t),M.Y(0)+16,fmt(t),C.muted,{"text-anchor":"middle"});});
+      const g=clip(s,M);
+      el("path",{d:path(f,-2.7,2.85,M,160),fill:"none",stroke:C.muted,"stroke-width":1.5,"stroke-dasharray":"5 5"},g);
+      el("path",{d:path(f,a,b,M,160),fill:"none",stroke:C.ink,"stroke-width":3},g);
+      const cand=[{x:a,n:"a",k:"конец a"},{x:b,n:"b",k:"конец b"}];
+      if(-1>a&&-1<b)cand.push({x:-1,n:"",k:"극대 x = −1"});
+      if(1>a&&1<b)cand.push({x:1,n:"",k:"극소 x = 1"});
+      cand.forEach(c=>c.y=f(c.x));
+      const hi=Math.max(...cand.map(c=>c.y)),lo=Math.min(...cand.map(c=>c.y));
+      const eps=1e-6,mx=cand.filter(c=>c.y>hi-eps),mn=cand.filter(c=>c.y<lo+eps);
+      cand.forEach(c=>{
+        el("line",{x1:M.X(c.x),y1:M.Y(c.y),x2:M.X(c.x),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 4"},s);
+        el("circle",{cx:M.X(c.x),cy:M.Y(c.y),r:4.5,fill:C.ink},s);
+        if(c.n)lab(s,M.X(c.x),M.Y(0)+34,c.n,C.ink,{"text-anchor":"middle","font-size":15,"font-weight":600});
+      });
+      mx.forEach(c=>{el("circle",{cx:M.X(c.x),cy:M.Y(c.y),r:8,fill:"none",stroke:C.blue,"stroke-width":3},s);klab(s,M.X(c.x),M.Y(c.y)-14,"최댓값 "+fmt(c.y),C.blue);});
+      mn.forEach(c=>{el("circle",{cx:M.X(c.x),cy:M.Y(c.y),r:8,fill:"none",stroke:C.coral,"stroke-width":3},s);klab(s,M.X(c.x),M.Y(c.y)+24,"최솟값 "+fmt(c.y),C.coral);});
+      document.getElementById("l2C").textContent=cand.slice().sort((p,q)=>p.x-q.x).map(c=>`f(${fmt(c.x)}) = ${fmt(c.y)}`).join(",  ");
+      document.getElementById("l2M").textContent=fmt(hi);
+      document.getElementById("l2m").textContent=fmt(lo);
+      let t="Наибольшее: "+mx.map(c=>c.k).join(" и ")+". Наименьшее: "+mn.map(c=>c.k).join(" и ")+".";
+      const hasMax=cand.some(c=>c.x===-1),hasMin=cand.some(c=>c.x===1);
+      if(hasMax&&!mx.some(c=>c.x===-1))t+=" Здесь 극댓값 1 не стал 최댓값: конец выше.";
+      if(hasMin&&!mn.some(c=>c.x===1))t+=" Здесь 극솟값 −3 не стал 최솟값: конец ниже.";
+      if(!hasMax&&!hasMin)t+=" Внутри нет экстремумов, функция монотонна: ответы только на концах.";
+      document.getElementById("l2St").textContent=t;
+    }
+    A.addEventListener("input",()=>draw("a"));Bs.addEventListener("input",()=>draw("b"));
+    document.querySelectorAll("#lab2 [data-ab]").forEach(btn=>btn.addEventListener("click",()=>{const [a,b]=btn.dataset.ab.split(",");A.value=a;Bs.value=b;draw();}));
+    draw();
+  })();
+
+  /* ---------- 301 ---------- */
+  (function(){
+    const s=document.getElementById("fig301");
+    const fp=x=>-0.5*(x+1)*(x+1)*(x-2);
+    const M=mapper(-2.3,2.7,-1.7,3.3,20,390,14,206);
+    axes(s,M,-2.3,2.7,-1.7,3.3);
+    const signs=el("g",{},s);signs.style.display="none";
+    el("line",{x1:M.X(-2.3),y1:M.Y(0),x2:M.X(2),y2:M.Y(0),stroke:C.blue,"stroke-width":5,"stroke-opacity":.5},signs);
+    el("line",{x1:M.X(2),y1:M.Y(0),x2:M.X(2.7),y2:M.Y(0),stroke:C.coral,"stroke-width":5,"stroke-opacity":.5},signs);
+    [[-1.8,"+",C.blue],[0.4,"+",C.blue],[2.4,"−",C.coral]].forEach(([x,t,c])=>lab(signs,M.X(x),M.Y(0)-10,t,c,{"font-size":20,"font-style":"normal","text-anchor":"middle","font-weight":700}));
+    klab(signs,M.X(2),M.Y(0)-28,"극대",C.green);
+    klab(signs,M.X(-1),M.Y(0)+36,"знак не меняется",C.muted);
+    const g=clip(s,M);
+    el("path",{d:path(fp,-2.3,2.7,M,160),fill:"none",stroke:C.ink,"stroke-width":2.4},g);
+    el("line",{x1:M.X(1),y1:M.Y(fp(1)),x2:M.X(1),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);
+    [[-1,"a"],[1,"b"],[2,"c"]].forEach(([x,n])=>lab(s,M.X(x)+(x===2?-8:0),M.Y(0)+16,n,C.ink,{"text-anchor":"middle"}));
+    lab(s,M.X(1.2),M.Y(2.9),"y = f′(x)",C.ink);
+    const btn=document.getElementById("show301");
+    btn.setAttribute("aria-pressed","false");
+    btn.addEventListener("click",()=>{const on=signs.style.display==="none";signs.style.display=on?"":"none";btn.setAttribute("aria-pressed",String(on));});
+
+    const opts=[
+      x=>(x>1?3:1)*((x+1)*(x+1)+0.3)*(x-1)*(x-2),
+      x=>(x>1?4:1)*-(x+1)*(x-1)*(x-2),
+      x=>(x>1?20:1)*-(x-1)*(x-2)*(x-2),
+      x=>-(x+1)*(x+1)*(x-2),
+      x=>(x+1)*((x-2)*(x-2)+0.15)
+    ];
+    const wrap=document.getElementById("opts301");
+    opts.forEach((d,i)=>{
+      const fig=document.createElement("figure");
+      const sv=document.createElementNS(NS,"svg");sv.setAttribute("viewBox","0 0 200 130");sv.setAttribute("role","img");sv.setAttribute("aria-label","Вариант "+(i+1));
+      fig.appendChild(sv);wrap.appendChild(fig);
+      const x0=-2,x1=2.6,n=300,xs=[],ys=[];let y=0;
+      for(let k=0;k<=n;k++){const x=x0+(x1-x0)*k/n;if(k){const xm=x-(x1-x0)/n/2;const u=xm-0.5;y+=d(xm)/(1+0.3*u*u*u*u)*(x1-x0)/n;}xs.push(x);ys.push(y);}
+      const lo=Math.min(...ys),hi=Math.max(...ys),ax=(lo+hi)/2-0.15*(hi-lo);
+      const M2=mapper(-2.2,2.8,lo-0.08*(hi-lo),hi+0.12*(hi-lo),8,192,12,122);
+      el("line",{x1:M2.L,y1:M2.Y(ax),x2:M2.R,y2:M2.Y(ax),stroke:C.muted},sv);
+      el("line",{x1:M2.X(0),y1:M2.T,x2:M2.X(0),y2:M2.B,stroke:C.muted},sv);
+      let p="";xs.forEach((x,k)=>p+=(k?"L":"M")+M2.X(x).toFixed(1)+","+M2.Y(ys[k]).toFixed(1));
+      el("path",{d:p,fill:"none",stroke:C.ink,"stroke-width":2},sv);
+      [[-1,"a"],[1,"b"],[2,"c"]].forEach(([x,t])=>{const k=Math.round((x-x0)/(x1-x0)*n);el("line",{x1:M2.X(x),y1:M2.Y(ys[k]),x2:M2.X(x),y2:M2.Y(ax),stroke:C.muted,"stroke-dasharray":"2 3"},sv);lab(sv,M2.X(x)+3,M2.Y(ax)+13,t,C.muted,{"font-size":12});});
+      el("text",{x:10,y:24,fill:C.blue,"font-size":18,"font-style":"normal","font-family":SANS,"font-weight":700},sv,"①②③④⑤"[i]);
+    });
+  })();
+
+  /* ---------- 443 ---------- */
+  (function(){
+    const s=document.getElementById("fig443"),fp=x=>-0.6*(x-2)*(x-2);
+    const M=mapper(-0.9,4.3,-3,0.9,20,390,14,190);
+    axes(s,M,-0.9,4.3,-3,0.9);
+    const g=clip(s,M);
+    el("path",{d:path(fp,0.1,3.9,M,120),fill:"none",stroke:C.ink,"stroke-width":2.4},g);
+    el("circle",{cx:M.X(2),cy:M.Y(0),r:4,fill:C.ink},s);
+    lab(s,M.X(2),M.Y(0)-8,"2",C.ink,{"text-anchor":"middle","font-style":"normal"});
+    lab(s,M.X(3.1),M.Y(-1.5),"y = f′(x)",C.ink);
+  })();
+})();
+</script>

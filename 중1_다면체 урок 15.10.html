@@ -1,0 +1,941 @@
+<title>다면체 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700;800&family=Unbounded:wght@500;700&family=Noto+Serif:ital,wght@1,400;1,600&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь ~760px; секции нумерованы по порядку урока; лаборатории — широкие карточки с SVG слева и пультом справа */
+:root{
+  --bg:#f3f5f8; --paper:#ffffff; --ink:#1b2333; --muted:#5d6779; --line:#d9dee7; --soft:#e9edf3;
+  --prism:#2f6fd6; --prism-bg:#e4edfb;          /* 각기둥 / основание */
+  --pyr:#e0603f; --pyr-bg:#fbe7e1;              /* 각뿔 */
+  --frus:#7a52c7; --frus-bg:#eee7fa;            /* 각뿔대 */
+  --ok:#1f8a5b; --ok-bg:#e1f3ea;                /* пример / ответ */
+  --amb:#c98410; --amb-bg:#fbf0d9;              /* аналогия */
+  --warn:#c4473a; --warn-bg:#fcebe8;            /* осторожно */
+  --face-a:#8fb2ec; --face-b:#f1a58f;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Noto Sans KR",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161f; --paper:#1a202c; --ink:#e7ebf2; --muted:#9aa4b6; --line:#2e3646; --soft:#232a38;
+  --prism:#6ea0f2; --prism-bg:#1d2b45; --pyr:#f08a6c; --pyr-bg:#3a2420; --frus:#a888e6; --frus-bg:#2a2340;
+  --ok:#4cc48d; --ok-bg:#16302a; --amb:#e8b04a; --amb-bg:#33291a; --warn:#ef7d70; --warn-bg:#3a1f1d;
+  --face-a:#3f63a3; --face-b:#a5563f; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161f; --paper:#1a202c; --ink:#e7ebf2; --muted:#9aa4b6; --line:#2e3646; --soft:#232a38;
+  --prism:#6ea0f2; --prism-bg:#1d2b45; --pyr:#f08a6c; --pyr-bg:#3a2420; --frus:#a888e6; --frus-bg:#2a2340;
+  --ok:#4cc48d; --ok-bg:#16302a; --amb:#e8b04a; --amb-bg:#33291a; --warn:#ef7d70; --warn-bg:#3a1f1d;
+  --face-a:#3f63a3; --face-b:#a5563f; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+.kr{font-family:var(--f-kr)}
+.m{font-family:var(--f-math);font-style:italic}
+h1,h2,h3{text-wrap:balance;line-height:1.25;margin:0}
+h1{font:700 clamp(28px,6vw,42px)/1.15 var(--f-disp);letter-spacing:-.01em}
+h2{font:700 22px/1.3 var(--f-disp);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font:500 13px var(--f-disp);color:var(--muted);letter-spacing:.06em}
+h3{font:700 18px/1.35 var(--f-body)}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:500 13px var(--f-kr);padding:4px 10px;border:1px solid var(--line);border-radius:999px;background:var(--paper);color:var(--muted)}
+.lead{font-size:18px;color:var(--muted);max-width:62ch}
+.hero{display:flex;flex-direction:column;gap:14px}
+.hero h1 .ru{display:block;font:500 clamp(17px,3.4vw,21px)/1.3 var(--f-body);color:var(--muted);margin-top:6px}
+
+/* vocab */
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.vc{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vc b{font:700 17px var(--f-kr)}
+.vc i{font-style:normal;color:var(--prism);font-weight:600;font-size:14px}
+.vc span{font-size:13px;color:var(--muted);line-height:1.4}
+
+/* boxes */
+.box{border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.box .tag{font:600 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase}
+.analogy{background:var(--amb-bg)} .analogy .tag{color:var(--amb)}
+.text{background:var(--paper);border:1px solid var(--line)} .text .tag{color:var(--muted)}
+.text .ko{font:500 17px/1.6 var(--f-kr)}
+.text .tr{color:var(--muted);font-size:15px;border-top:1px dashed var(--line);padding-top:8px}
+.warn{background:var(--warn-bg)} .warn .tag{color:var(--warn)}
+.ex{background:var(--ok-bg)} .ex .tag{color:var(--ok)}
+.def-list{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.def-list li{display:flex;flex-direction:column;gap:2px}
+
+.fig{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fig svg{width:100%;height:auto;display:block}
+.cap{font-size:14px;color:var(--muted)}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:560px){.three{grid-template-columns:1fr 1fr}.three>:last-child{grid-column:1/-1;max-width:60%;justify-self:center}}
+.fig-title{font:700 16px var(--f-kr);text-align:center}
+.fig-title small{display:block;font:500 12px var(--f-body);color:var(--muted)}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;min-width:480px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:center;font-size:15px}
+th{font:600 14px var(--f-kr);background:var(--soft)}
+td:first-child,th:first-child{text-align:left;font-family:var(--f-kr);font-weight:600}
+tr:last-child td{border-bottom:0}
+.c-pr{color:var(--prism)} .c-py{color:var(--pyr)} .c-fr{color:var(--frus)} .c-ok{color:var(--ok)}
+
+/* lab */
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:18px}
+@media (max-width:640px){.lab{grid-template-columns:1fr}}
+.lab svg{width:100%;height:auto;touch-action:none;cursor:grab;background:var(--soft);border-radius:12px}
+.panel{display:flex;flex-direction:column;gap:12px;min-width:0}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+button{font:600 14px var(--f-body);border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:8px;padding:7px 12px;cursor:pointer}
+button:hover{border-color:var(--muted)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--prism);outline-offset:2px}
+button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.seg button .kr{font-weight:700}
+.name{font:700 26px var(--f-kr)}
+.name small{font:500 14px var(--f-body);color:var(--muted);display:block}
+input[type=range]{width:100%;accent-color:var(--prism)}
+.counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.cnt{border-radius:10px;padding:8px;background:var(--soft);display:flex;flex-direction:column;align-items:center;gap:0;font-variant-numeric:tabular-nums}
+.cnt b{font:700 28px var(--f-disp)}
+.cnt span{font:600 13px var(--f-kr)}
+.cnt em{font-style:normal;font-size:13px;color:var(--muted)}
+.hint-line{font-size:14px;color:var(--muted)}
+.status{font-weight:600}
+
+/* trainer */
+.trainer{display:flex;flex-direction:column;gap:10px;border-top:1px dashed var(--line);padding-top:12px}
+.trow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.trow label{display:flex;flex-direction:column;font:600 13px var(--f-kr);gap:4px}
+.trow input{font:600 16px var(--f-body);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);width:100%}
+
+/* recipe */
+.recipe{counter-reset:s;display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.recipe li{counter-increment:s;display:grid;grid-template-columns:36px 1fr;gap:10px;align-items:start}
+.recipe li::before{content:counter(s);font:700 16px var(--f-disp);width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);display:grid;place-items:center}
+.recipe li.hot::before{background:var(--warn)}
+.recipe li>div{min-width:0}
+
+/* problems */
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.phead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pno{font:700 22px var(--f-disp);color:var(--prism)}
+.badge{font:600 12px var(--f-kr);padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.badge.rep{background:var(--ok-bg);color:var(--ok)}
+.pq{font:500 17px/1.6 var(--f-kr)}
+.pt{font-size:15px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 18px;font:500 16px var(--f-kr);margin:0;padding:0;list-style:none}
+.cond{border:1px solid var(--line);border-radius:8px;padding:8px 12px;font:500 16px var(--f-kr);background:var(--soft)}
+details{border-radius:10px;border:1px solid var(--line)}
+details>summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+details.h>summary{color:var(--amb)}
+details.s>summary{color:var(--ok)}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.ans{font-weight:700;color:var(--ok)}
+.type{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--line);padding-top:18px}
+.type-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.type-h .tn{font:700 14px var(--f-disp);color:var(--paper);background:var(--pyr);border-radius:6px;padding:2px 8px}
+.type-h b{font:700 18px var(--f-kr)}
+.type-h span{color:var(--muted);font-size:15px}
+.rest{display:flex;flex-direction:column;gap:8px}
+.rest details>summary b{font-family:var(--f-disp);margin-right:6px}
+.mistakes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.pfx{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px}
+.pfx div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:6px;text-align:center;font-variant-numeric:tabular-nums}
+.pfx b{font:700 18px var(--f-kr);display:block}
+.pfx span{font-size:13px;color:var(--muted)}
+svg text{font-family:var(--f-kr)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="chips">
+    <span class="chip">NaBi 중1 · 개념+문제</span>
+    <span class="chip">III 입체도형의 성질 › 1 다면체와 회전체</span>
+    <span class="chip">стр. 167–168, 172–183</span>
+  </div>
+  <h1><span class="kr">다면체</span><span class="ru">Многогранники: призма, пирамида, усечённая пирамида и пять правильных многогранников</span></h1>
+  <p class="lead">Новая глава — объёмные фигуры. Сегодня учимся узнавать многогранник, называть его по-корейски и быстро считать его грани, рёбра и вершины без рисунка.</p>
+</header>
+
+<!-- 0 vocab -->
+<section id="vocab">
+  <h2><span class="num">0</span>Словарь · <span class="kr">단어장</span></h2>
+  <p>Эти слова встречаются в задачах на стр. 168–183. Читай корейское слово вслух — на контрольной оно будет только по-корейски.</p>
+  <div class="vocab">
+    <div class="vc"><b>입체도형</b><i>объёмная фигура</i><span>фигура в пространстве, не на плоскости</span></div>
+    <div class="vc"><b>다면체</b><i>многогранник</i><span>다(много) + 면(грань) + 체(тело)</span></div>
+    <div class="vc"><b>면</b><i>грань</i><span>плоский многоугольник на поверхности</span></div>
+    <div class="vc"><b>모서리</b><i>ребро</i><span>отрезок, где встречаются две грани</span></div>
+    <div class="vc"><b>꼭짓점</b><i>вершина</i><span>точка, где сходятся рёбра</span></div>
+    <div class="vc"><b>다각형</b><i>многоугольник</i><span>삼각형, 사각형, 오각형…</span></div>
+    <div class="vc"><b>밑면</b><i>основание</i><span>«нижняя» грань, по ней даём имя</span></div>
+    <div class="vc"><b>옆면</b><i>боковая грань</i><span>грани сбоку</span></div>
+    <div class="vc"><b>각기둥</b><i>призма</i><span>기둥 = столб, колонна</span></div>
+    <div class="vc"><b>각뿔</b><i>пирамида</i><span>뿔 = рог, остриё</span></div>
+    <div class="vc"><b>각뿔대</b><i>усечённая пирамида</i><span>대 = подставка, «пенёк»</span></div>
+    <div class="vc"><b>높이</b><i>высота</i><span>длина перпендикуляра</span></div>
+    <div class="vc"><b>수선</b><i>перпендикуляр</i><span>линия под прямым углом</span></div>
+    <div class="vc"><b>평행하다</b><i>быть параллельными</i><span>평행한 평면 — параллельная плоскость</span></div>
+    <div class="vc"><b>합동</b><i>равные (конгруэнтные)</i><span>совпадают при наложении</span></div>
+    <div class="vc"><b>직사각형</b><i>прямоугольник</i><span>боковые грани призмы</span></div>
+    <div class="vc"><b>사다리꼴</b><i>трапеция</i><span>боковые грани 각뿔대</span></div>
+    <div class="vc"><b>정다각형</b><i>правильный многоугольник</i><span>все стороны и углы равны</span></div>
+    <div class="vc"><b>정다면체</b><i>правильный многогранник</i><span>정 = правильный</span></div>
+    <div class="vc"><b>전개도</b><i>развёртка</i><span>фигура, «разрезанная» и разложенная</span></div>
+    <div class="vc"><b>겨냥도</b><i>наглядный рисунок</i><span>объёмный рисунок с пунктиром</span></div>
+    <div class="vc"><b>개수</b><i>количество</i><span>면의 개수 = число граней</span></div>
+    <div class="vc"><b>옳지 않은 것</b><i>неверное утверждение</i><span>частый вопрос: найди НЕверное!</span></div>
+    <div class="vc"><b>모두 고르면?</b><i>выбери все</i><span>ответов может быть несколько</span></div>
+  </div>
+</section>
+
+<!-- 1 warm-up -->
+<section id="warm">
+  <h2><span class="num">1</span>Разминка · <span class="kr">숫자와 다각형</span></h2>
+  <p>Почти все названия в этой главе собраны из корейских (китайских) числительных. Если знаешь числа — знаешь названия.</p>
+  <div class="pfx">
+    <div><b>삼</b><span>3</span></div><div><b>사</b><span>4</span></div><div><b>오</b><span>5</span></div>
+    <div><b>육</b><span>6</span></div><div><b>칠</b><span>7</span></div><div><b>팔</b><span>8</span></div>
+    <div><b>구</b><span>9</span></div><div><b>십</b><span>10</span></div><div><b>십이</b><span>12</span></div><div><b>이십</b><span>20</span></div>
+  </div>
+  <div class="box text">
+    <span class="tag">Как собрать слово</span>
+    <p><span class="kr"><b>오</b>각형</span> = 5-угольник &nbsp;→&nbsp; <span class="kr"><b>오</b>각기둥</span> = пятиугольная призма &nbsp;→&nbsp; <span class="kr"><b>칠</b>면체</span> = семигранник (7 граней).</p>
+    <p class="hint-line">Важно: <span class="kr">○각기둥 / ○각뿔 / ○각뿔대</span> — число углов <b>основания</b>. А <span class="kr">○면체</span> — число <b>граней</b>. Это разные числа!</p>
+  </div>
+</section>
+
+<!-- 2 polyhedron -->
+<section id="poly">
+  <h2><span class="num">2</span><span class="kr">다면체</span> · что такое многогранник</h2>
+  <div class="box analogy">
+    <span class="tag">Представь</span>
+    <p>Ты склеиваешь коробку из плоских кусочков картона. Каждый кусок — многоугольник. Если коробка получилась закрытой со всех сторон — это <span class="kr">다면체</span>. Мяч или банку колы так не склеить: у них есть кривая поверхность. Поэтому цилиндр, конус, шар — <b>не</b> многогранники (это <span class="kr">회전체</span>, следующий урок).</p>
+  </div>
+  <div class="box text">
+    <span class="tag">Учебник, стр. 167</span>
+    <ul class="def-list">
+      <li><span class="ko"><b>다면체</b> : 다각형인 면으로만 둘러싸인 입체도형</span><span class="tr">Многогранник — объёмная фигура, со всех сторон ограниченная только гранями-многоугольниками.</span></li>
+      <li><span class="ko">(1) <b>면</b> : 다면체를 둘러싸고 있는 다각형</span><span class="tr">Грань — многоугольник, который ограничивает многогранник.</span></li>
+      <li><span class="ko">(2) <b>모서리</b> : 다면체를 이루는 다각형의 변</span><span class="tr">Ребро — сторона многоугольников, из которых состоит многогранник.</span></li>
+      <li><span class="ko">(3) <b>꼭짓점</b> : 다면체를 이루는 다각형의 꼭짓점</span><span class="tr">Вершина — вершина этих многоугольников.</span></li>
+    </ul>
+  </div>
+  <div class="fig">
+    <svg id="notPoly" viewBox="0 0 600 170" role="img" aria-label="Куб — многогранник; цилиндр, конус и шар — нет"></svg>
+    <p class="cap">Слева — <span class="kr">다면체</span> (только плоские грани). Справа — кривые поверхности, значит <b>не</b> <span class="kr">다면체</span>. Название по числу граней: у куба 6 граней → <span class="kr">육면체</span>.</p>
+  </div>
+</section>
+
+<!-- 3 prism / pyramid / frustum -->
+<section id="kinds">
+  <h2><span class="num">3</span><span class="kr">각기둥, 각뿔, 각뿔대</span></h2>
+  <div class="box analogy">
+    <span class="tag">Из жизни</span>
+    <p><b class="c-pr">각기둥</b> — шестигранный карандаш или коробка из-под обуви: одинаковые «пол» и «потолок», стенки — прямоугольники.</p>
+    <p><b class="c-py">각뿔</b> — египетская пирамида: одно основание, а все боковые стенки-треугольники сходятся в одну верхушку.</p>
+    <p><b class="c-fr">각뿔대</b> — ту же пирамиду ровно срезали ножом параллельно земле и убрали верхушку. Остался «пенёк»: сверху маленькое основание, снизу большое, стенки — трапеции.</p>
+  </div>
+  <div class="box text">
+    <span class="tag">Учебник, стр. 167</span>
+    <ul class="def-list">
+      <li><span class="ko">(1) <b>각기둥</b> : 두 밑면은 서로 평행하면서 합동인 다각형이고, 옆면은 모두 직사각형인 다면체</span><span class="tr">Призма: два основания параллельны и равны, все боковые грани — прямоугольники.</span></li>
+      <li><span class="ko">(2) 각기둥의 높이 : 두 밑면에 수직인 선분의 길이</span><span class="tr">Высота призмы — длина отрезка, перпендикулярного обоим основаниям.</span></li>
+      <li><span class="ko">(3) <b>각뿔</b> : 밑면은 다각형이고, 옆면은 모두 삼각형인 다면체</span><span class="tr">Пирамида: основание — многоугольник, все боковые грани — треугольники.</span></li>
+      <li><span class="ko">(4) 각뿔의 높이 : 각뿔의 꼭짓점에서 밑면에 내린 수선의 발까지의 거리</span><span class="tr">Высота пирамиды — расстояние от вершины до основания перпендикуляра, опущенного на основание.</span></li>
+      <li><span class="ko">(5) <b>각뿔대</b> : 각뿔을 밑면에 평행한 평면으로 자를 때 생기는 두 다면체 중에서 각뿔이 아닌 쪽의 다면체</span><span class="tr">Усечённая пирамида: режем пирамиду плоскостью, параллельной основанию; из двух частей это та, которая <b>не</b> пирамида.</span></li>
+      <li><span class="ko">(6) 각뿔대의 높이 : 두 밑면에 수직인 선분의 길이</span><span class="tr">Высота усечённой пирамиды — длина отрезка, перпендикулярного обоим основаниям.</span></li>
+    </ul>
+  </div>
+  <div class="three">
+    <div class="fig"><svg id="figPrism" viewBox="0 0 220 210" role="img" aria-label="사각기둥"></svg><div class="fig-title c-pr">각기둥<small>призма</small></div></div>
+    <div class="fig"><svg id="figPyr" viewBox="0 0 220 210" role="img" aria-label="사각뿔"></svg><div class="fig-title c-py">각뿔<small>пирамида</small></div></div>
+    <div class="fig"><svg id="figFrus" viewBox="0 0 220 210" role="img" aria-label="사각뿔대"></svg><div class="fig-title c-fr">각뿔대<small>усечённая пирамида</small></div></div>
+  </div>
+  <p class="cap">Голубым закрашены <span class="kr">밑면</span> (основания), остальные — <span class="kr">옆면</span>. Пунктир — невидимые рёбра и <span class="kr">높이</span>. У <span class="kr">각뿔대</span> два основания параллельны, но <b>не</b> равны.</p>
+
+  <div class="box warn">
+    <span class="tag">Осторожно</span>
+    <p>Имя даётся по <b>основанию</b>, а не по боковой грани. У <span class="kr">오각뿔</span> боковые грани — треугольники, а основание — пятиугольник. Поэтому он «пяти-», а не «треугольный».</p>
+  </div>
+
+  <h3>Таблица свойств · <span class="kr">다면체의 성질</span> (참고)</h3>
+  <p>Пусть основание — <span class="m">n</span>-угольник (<span class="kr"><span class="m">n</span>각형</span>).</p>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th class="c-pr"><span class="m">n</span>각기둥</th><th class="c-py"><span class="m">n</span>각뿔</th><th class="c-fr"><span class="m">n</span>각뿔대</th></tr></thead>
+    <tbody>
+      <tr><td>밑면의 모양 <small>(форма основания)</small></td><td><span class="m">n</span>각형</td><td><span class="m">n</span>각형</td><td><span class="m">n</span>각형</td></tr>
+      <tr><td>밑면의 개수 <small>(число оснований)</small></td><td>2</td><td>1</td><td>2</td></tr>
+      <tr><td>옆면의 모양 <small>(боковая грань)</small></td><td>직사각형</td><td>삼각형</td><td>사다리꼴</td></tr>
+      <tr><td>면의 개수 <small>(грани)</small></td><td><span class="m">n</span>+2</td><td><span class="m">n</span>+1</td><td><span class="m">n</span>+2</td></tr>
+      <tr><td>모서리의 개수 <small>(рёбра)</small></td><td>3<span class="m">n</span></td><td>2<span class="m">n</span></td><td>3<span class="m">n</span></td></tr>
+      <tr><td>꼭짓점의 개수 <small>(вершины)</small></td><td>2<span class="m">n</span></td><td><span class="m">n</span>+1</td><td>2<span class="m">n</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="box ex">
+    <span class="tag">Почему так · пример для 오각기둥 (n = 5)</span>
+    <p><b>Шаг 1. Грани.</b> 2 основания + 5 боковых прямоугольников = 5 + 2 = <b>7</b>.</p>
+    <p><b>Шаг 2. Рёбра.</b> 5 на верхнем основании + 5 на нижнем + 5 вертикальных = 3 · 5 = <b>15</b>.</p>
+    <p><b>Шаг 3. Вершины.</b> 5 сверху + 5 снизу = 2 · 5 = <b>10</b>. ✓</p>
+    <p class="hint-line">У <span class="kr">각뿔</span> верхнего основания нет: вместо него одна вершина-острие. Поэтому граней <span class="m">n</span>+1, рёбер 2<span class="m">n</span>, вершин <span class="m">n</span>+1.</p>
+  </div>
+</section>
+
+<!-- 4 LAB -->
+<section id="lab">
+  <h2><span class="num">4</span>Лаборатория · <span class="kr">다면체 실험실</span></h2>
+  <p>Выбери тип и двигай ползунок <span class="m">n</span>. Фигуру можно крутить пальцем или мышкой. Подсвети вершины, рёбра или грани и пересчитай сам — сходится ли с формулой?</p>
+  <div class="lab">
+    <svg id="labSvg" viewBox="0 0 360 330" role="img" aria-label="Вращающийся многогранник"></svg>
+    <div class="panel">
+      <div class="seg" id="labType">
+        <button type="button" data-t="prism" aria-pressed="true"><span class="kr">각기둥</span></button>
+        <button type="button" data-t="pyr" aria-pressed="false"><span class="kr">각뿔</span></button>
+        <button type="button" data-t="frus" aria-pressed="false"><span class="kr">각뿔대</span></button>
+      </div>
+      <div class="name" id="labName">오각기둥<small>пятиугольная призма</small></div>
+      <label class="hint-line" for="labN">Основание: <b id="labNv">5</b>-угольник (<span class="kr" id="labNk">오각형</span>)</label>
+      <input type="range" id="labN" min="3" max="10" value="5">
+      <div class="counts">
+        <div class="cnt"><span>면</span><b id="cF">7</b><em id="fF">n+2</em></div>
+        <div class="cnt"><span>모서리</span><b id="cE">15</b><em id="fE">3n</em></div>
+        <div class="cnt"><span>꼭짓점</span><b id="cV">10</b><em id="fV">2n</em></div>
+      </div>
+      <div class="seg" id="labHl">
+        <button type="button" data-h="f" aria-pressed="false">Грани</button>
+        <button type="button" data-h="e" aria-pressed="false">Рёбра</button>
+        <button type="button" data-h="v" aria-pressed="false">Вершины</button>
+        <button type="button" id="labSpin" aria-pressed="true">Вращать</button>
+      </div>
+      <div class="trainer">
+        <b>Тренажёр: прочитай имя и посчитай</b>
+        <div class="name" id="trName" style="font-size:22px">칠각뿔대</div>
+        <div class="trow">
+          <label for="tF">면<input id="tF" inputmode="numeric" autocomplete="off"></label>
+          <label for="tE">모서리<input id="tE" inputmode="numeric" autocomplete="off"></label>
+          <label for="tV">꼭짓점<input id="tV" inputmode="numeric" autocomplete="off"></label>
+        </div>
+        <div class="seg"><button type="button" id="trCheck">Проверить</button><button type="button" id="trNext">Другая фигура</button><button type="button" id="trShow">Показать в 3D</button></div>
+        <p class="status" id="trMsg" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 regular -->
+<section id="regular">
+  <h2><span class="num">5</span><span class="kr">정다면체</span> · правильные многогранники</h2>
+  <div class="box analogy">
+    <span class="tag">Представь</span>
+    <p>Берёшь одинаковые бумажные плитки и склеиваешь их вокруг одной точки. Если углы плиток вместе дают ровно 360°, они лежат плоско, как кафель на полу, — «уголка» не будет. Чтобы получилась вершина объёмной фигуры, сумма углов должна быть <b>меньше 360°</b>, а плиток — минимум 3. Таких вариантов всего пять. Поэтому правильных многогранников ровно <b>5</b>.</p>
+  </div>
+  <div class="box text">
+    <span class="tag">Учебник, стр. 167</span>
+    <ul class="def-list">
+      <li><span class="ko">(1) <b>정다면체</b> : 각 면이 모두 합동인 정다각형이고, 각 꼭짓점에 모인 면의 개수가 같은 다면체</span><span class="tr">Правильный многогранник: все грани — равные правильные многоугольники, и в каждой вершине сходится одинаковое число граней.</span></li>
+      <li><span class="ko">(2) 정다면체의 종류</span><span class="tr">Виды: 정사면체, 정육면체, 정팔면체, 정십이면체, 정이십면체 — ни одного больше.</span></li>
+    </ul>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Плитка (угол)</th><th>3 в вершине</th><th>4 в вершине</th><th>5 в вершине</th><th>6 в вершине</th></tr></thead>
+    <tbody>
+      <tr><td>정삼각형 (60°)</td><td class="c-ok">180° ✓ 정사면체</td><td class="c-ok">240° ✓ 정팔면체</td><td class="c-ok">300° ✓ 정이십면체</td><td class="c-py">360° ✗ плоско</td></tr>
+      <tr><td>정사각형 (90°)</td><td class="c-ok">270° ✓ 정육면체</td><td class="c-py">360° ✗</td><td>—</td><td>—</td></tr>
+      <tr><td>정오각형 (108°)</td><td class="c-ok">324° ✓ 정십이면체</td><td class="c-py">432° ✗</td><td>—</td><td>—</td></tr>
+      <tr><td>정육각형 (120°)</td><td class="c-py">360° ✗ плоско</td><td>—</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="cap">Вывод: грани бывают только <span class="kr">정삼각형, 정사각형, 정오각형</span>. В одной вершине сходится 3, 4 или 5 граней — никогда 6.</p>
+
+  <div class="lab">
+    <svg id="platSvg" viewBox="0 0 360 330" role="img" aria-label="Правильный многогранник"></svg>
+    <div class="panel">
+      <div class="seg" id="platSel">
+        <button type="button" data-p="0" aria-pressed="true"><span class="kr">정사면체</span></button>
+        <button type="button" data-p="1" aria-pressed="false"><span class="kr">정육면체</span></button>
+        <button type="button" data-p="2" aria-pressed="false"><span class="kr">정팔면체</span></button>
+        <button type="button" data-p="3" aria-pressed="false"><span class="kr">정십이면체</span></button>
+        <button type="button" data-p="4" aria-pressed="false"><span class="kr">정이십면체</span></button>
+      </div>
+      <div class="name" id="platName">정사면체<small>тетраэдр</small></div>
+      <p id="platInfo"></p>
+      <div class="counts">
+        <div class="cnt"><span>면</span><b id="pF">4</b></div>
+        <div class="cnt"><span>모서리</span><b id="pE">6</b></div>
+        <div class="cnt"><span>꼭짓점</span><b id="pV">4</b></div>
+      </div>
+      <div class="seg" id="platHl">
+        <button type="button" data-h="v" aria-pressed="false">Вершины</button>
+        <button type="button" id="platSpin" aria-pressed="true">Вращать</button>
+      </div>
+      <p class="hint-line">Запоминалка: у <span class="kr">정육면체</span> и <span class="kr">정팔면체</span> числа граней и вершин меняются местами (6↔8), рёбер по 12. Так же <span class="kr">정십이면체</span> ↔ <span class="kr">정이십면체</span> (12↔20), рёбер по 30.</p>
+    </div>
+  </div>
+
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>정사면체</th><th>정육면체</th><th>정팔면체</th><th>정십이면체</th><th>정이십면체</th></tr></thead>
+    <tbody>
+      <tr><td>면의 모양</td><td>정삼각형</td><td>정사각형</td><td>정삼각형</td><td>정오각형</td><td>정삼각형</td></tr>
+      <tr><td>한 꼭짓점에 모인 면의 개수</td><td>3</td><td>3</td><td>4</td><td>3</td><td>5</td></tr>
+      <tr><td>꼭짓점의 개수</td><td>4</td><td>8</td><td>6</td><td>20</td><td>12</td></tr>
+      <tr><td>모서리의 개수</td><td>6</td><td>12</td><td>12</td><td>30</td><td>30</td></tr>
+      <tr><td>면의 개수</td><td>4</td><td>6</td><td>8</td><td>12</td><td>20</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box warn">
+    <span class="tag">Осторожно</span>
+    <p>Имя <span class="kr">정○면체</span> — по числу <b>граней</b>: <span class="kr">정팔면체</span> = 8 граней, хотя грани — треугольники. Не путай с <span class="kr">팔각기둥</span>, где «8» — это углы основания.</p>
+  </div>
+</section>
+
+<!-- 6 recipe -->
+<section id="recipe">
+  <h2><span class="num">6</span>Рецепт решения · <span class="kr">풀이 순서</span></h2>
+  <ol class="recipe">
+    <li><div><b>Узнай тип по боковым граням (<span class="kr">옆면</span>).</b> <span class="kr">직사각형</span> → 각기둥, <span class="kr">삼각형</span> → 각뿔, <span class="kr">사다리꼴</span> → 각뿔대. Если «두 밑면이 평행하고 합동» — это призма.</div></li>
+    <li><div><b>Найди <span class="m">n</span> по имени основания.</b> <span class="kr">칠각뿔대</span> → <span class="m">n</span> = 7.</div></li>
+    <li class="hot"><div><b>Подставь в правильную формулу.</b> Самая частая ошибка — вершины пирамиды: <span class="m">n</span>+1, а не 2<span class="m">n</span> и не <span class="m">n</span>.</div></li>
+    <li><div><b>Обратная задача:</b> дано число (например, 모서리 21) → составь уравнение (3<span class="m">n</span> = 21) → <span class="m">n</span> = 7 → назови фигуру.</div></li>
+  </ol>
+</section>
+
+<!-- 7 problems -->
+<section id="problems">
+  <h2><span class="num">7</span>Задачи · <span class="kr">개념 이해</span> (стр. 168)</h2>
+  <p>Задачи с пометкой «대표» разобраны полностью. Для остальных — только подсказка: реши сам по учебнику.</p>
+
+  <article class="prob">
+    <div class="phead"><span class="pno">501</span><span class="badge">중하</span><span class="badge rep">대표 · разбор</span></div>
+    <p class="pq">다음 입체도형 중 다면체가 <u>아닌</u> 것의 개수를 구하시오.</p>
+    <p class="pt">Сколько среди этих фигур НЕ многогранников?</p>
+    <div class="cond">원뿔대, 정사면체, 직육면체, 삼각기둥, 반구</div>
+    <details class="h"><summary>Подсказка</summary><div><p>Ищи фигуры с кривой поверхностью. 원(круг) в названии — сигнал.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <ol class="steps">
+        <li><span class="kr">원뿔대</span> (усечённый конус) — основания круги, бок кривой → не 다면체.</li>
+        <li><span class="kr">정사면체, 직육면체, 삼각기둥</span> — только плоские многоугольные грани → 다면체.</li>
+        <li><span class="kr">반구</span> (полушарие) — кривая поверхность → не 다면체.</li>
+      </ol>
+      <p class="ans">Ответ: 2개</p></div></details>
+  </article>
+
+  <article class="prob">
+    <div class="phead"><span class="pno">504</span><span class="badge">중하</span><span class="badge rep">대표 · разбор</span></div>
+    <p class="pq">다음 중 꼭짓점의 개수가 10개인 다면체를 <u>모두</u> 고르면?</p>
+    <p class="pt">Выбери все многогранники, у которых 10 вершин.</p>
+    <ul class="opts"><li>① 칠각뿔</li><li>② 오각뿔대</li><li>③ 사각기둥</li><li>④ 팔각기둥</li><li>⑤ 구각뿔</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Вершины: 기둥·뿔대 → 2<span class="m">n</span>, 뿔 → <span class="m">n</span>+1.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <ol class="steps">
+        <li>① 칠각뿔: <span class="m">n</span>=7 → 7+1 = 8</li>
+        <li>② 오각뿔대: <span class="m">n</span>=5 → 2·5 = <b>10</b> ✓</li>
+        <li>③ 사각기둥: <span class="m">n</span>=4 → 2·4 = 8</li>
+        <li>④ 팔각기둥: <span class="m">n</span>=8 → 2·8 = 16</li>
+        <li>⑤ 구각뿔: <span class="m">n</span>=9 → 9+1 = <b>10</b> ✓</li>
+      </ol>
+      <p class="ans">Ответ: ②, ⑤</p></div></details>
+  </article>
+
+  <div class="rest">
+    <details class="h"><summary><b>502</b> 면이 5개인 다면체 (грани = 5)</summary><div><p>Посчитай грани у каждого: 뿔 → <span class="m">n</span>+1, 기둥·뿔대 → <span class="m">n</span>+2. Какой даёт ровно 5?</p></div></details>
+    <details class="h"><summary><b>503</b> 모서리가 8개 (рёбра = 8)</summary><div><p>Рёбра: 뿔 → 2<span class="m">n</span>, 기둥·뿔대 → 3<span class="m">n</span>. 8 не делится на 3, значит ищи среди 뿔: 2<span class="m">n</span> = 8.</p></div></details>
+    <details class="h"><summary><b>505</b> 모서리가 21개인 각뿔대의 밑면 (основание)</summary><div><p>У 각뿔대 рёбер 3<span class="m">n</span>. Реши 3<span class="m">n</span> = 21 и назови <span class="m">n</span>-угольник по-корейски.</p></div></details>
+  </div>
+</section>
+
+<section id="practice">
+  <h2><span class="num">8</span>Тренировка · <span class="kr">유형 연습</span> (стр. 172–183)</h2>
+  <p>В каждом типе один <span class="kr">대표 유제</span> разобран, остальные задачи — с подсказкой.</p>
+
+  <!-- 85 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">85</span><b>다면체의 면의 개수</b><span>число граней</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">511</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 면의 개수가 가장 적은 입체도형은?</p>
+      <p class="pt">У какой фигуры меньше всего граней?</p>
+      <ul class="opts"><li>① 사각기둥</li><li>② 육각뿔대</li><li>③ 육각기둥</li><li>④ 오각뿔대</li><li>⑤ 육각뿔</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>① 4+2 = 6</li><li>② 6+2 = 8</li><li>③ 6+2 = 8</li><li>④ 5+2 = 7</li><li>⑤ 6+1 = 7</li></ol>
+        <p class="ans">Ответ: ① 사각기둥 (6)</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>512</b> 면의 개수가 가장 많은 것</summary><div><p>Как в 511, но ищи максимум. 직육면체 — это 사각기둥.</p></div></details>
+      <details class="h"><summary><b>513</b> 면의 개수가 다른 하나</summary><div><p>Посчитай все пять; четыре совпадут. 정육면체 = 6 граней.</p></div></details>
+      <details class="h"><summary><b>514</b> 면의 개수가 가장 많은 것</summary><div><p>Формулы <span class="m">n</span>+2 и <span class="m">n</span>+1. Большее <span class="m">n</span> у 기둥/뿔대 обычно выигрывает.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 86 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">86</span><b>다면체의 모서리의 개수</b><span>число рёбер</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">515</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 모서리의 수가 <u>다른</u> 다면체는?</p>
+      <p class="pt">У какого многогранника другое число рёбер?</p>
+      <ul class="opts"><li>① 십각기둥</li><li>② 십오각뿔</li><li>③ 십오각뿔대</li><li>④ 정십이면체</li><li>⑤ 정이십면체</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>① 3·10 = 30</li><li>② 2·15 = 30</li><li>③ 3·15 = <b>45</b></li><li>④ 정십이면체 — 30 (таблица)</li><li>⑤ 정이십면체 — 30</li></ol>
+        <p class="ans">Ответ: ③</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>516</b> 모서리의 개수가 나머지와 다른 것</summary><div><p>정육면체, 정팔면체 — по 12 рёбер. Сравни остальные с 12.</p></div></details>
+      <details class="h"><summary><b>517</b> 모서리의 개수가 잘못 짝지어진 것</summary><div><p>잘못 = неправильно. Проверь каждую пару; у 뿔 рёбер 2<span class="m">n</span>, не 3<span class="m">n</span>.</p></div></details>
+      <details class="h"><summary><b>518</b> 오각기둥과 모서리 개수가 같은 것</summary><div><p>Сначала 오각기둥: 3·5. Потом ищи такое же число.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 87 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">87</span><b>다면체의 꼭짓점의 개수</b><span>число вершин</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">519</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 다면체와 그 꼭짓점의 개수가 바르게 짝 지어진 것은?</p>
+      <p class="pt">Где многогранник и число его вершин указаны правильно?</p>
+      <ul class="opts"><li>① 육각기둥: 6</li><li>② 사각뿔: 8</li><li>③ 오각뿔대: 15</li><li>④ 칠각뿔대: 7</li><li>⑤ 사각기둥: 8</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>① 2·6 = 12, не 6 ✗</li><li>② 4+1 = 5, не 8 ✗</li><li>③ 2·5 = 10, не 15 ✗</li><li>④ 2·7 = 14, не 7 ✗</li><li>⑤ 2·4 = 8 ✓</li></ol>
+        <p class="ans">Ответ: ⑤</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>520</b> 잘못 짝지어진 것</summary><div><p>Подвох — у пирамиды. 칠각뿔: <span class="m">n</span>+1 = ?</p></div></details>
+      <details class="h"><summary><b>521</b> 꼭짓점이 가장 많은 것</summary><div><p>Посчитай: 2<span class="m">n</span> у 기둥/뿔대, <span class="m">n</span>+1 у 뿔. Даже 십각뿔 проигрывает 육각뿔대.</p></div></details>
+      <details class="h"><summary><b>522</b> 꼭짓점이 가장 적은 것</summary><div><p>Пирамиды «экономят» вершины. Сравни 오각뿔 и 육각뿔.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 88 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">88</span><b>면, 모서리, 꼭짓점의 개수의 활용</b><span>обратная задача: найти n</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">523</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">모서리의 개수와 면의 개수의 합이 42인 각기둥의 밑면의 모양은?</p>
+      <p class="pt">Сумма числа рёбер и граней призмы равна 42. Какой формы основание?</p>
+      <ul class="opts"><li>① 오각형</li><li>② 칠각형</li><li>③ 팔각형</li><li>④ 구각형</li><li>⑤ 십각형</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>Пусть это <span class="m">n</span>각기둥.</li><li>모서리 3<span class="m">n</span>, 면 <span class="m">n</span>+2 → 3<span class="m">n</span> + <span class="m">n</span> + 2 = 42</li><li>4<span class="m">n</span> = 40 → <span class="m">n</span> = 10</li><li>Проверка: 30 + 12 = 42 ✓</li></ol>
+        <p class="ans">Ответ: ⑤ 십각형</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>524</b> 각뿔대: 모서리 + 면 = 34</summary><div><p>У 각뿔대 формулы такие же, как у 각기둥: 3<span class="m">n</span> + (<span class="m">n</span>+2) = 34.</p></div></details>
+      <details class="h"><summary><b>525</b> 각뿔대의 이름 (сумма тоже 34)</summary><div><p>То же уравнение, что в 524, но ответ — название фигуры (<span class="m">n</span>각뿔대).</p></div></details>
+      <details class="h"><summary><b>526</b> <span class="m">n</span>각뿔: 모서리 + 꼭짓점 = 25 → 면?</summary><div><p>2<span class="m">n</span> + (<span class="m">n</span>+1) = 25. Найди <span class="m">n</span>, а спрашивают число <b>граней</b> (<span class="m">n</span>+1).</p></div></details>
+    </div>
+  </div>
+
+  <!-- 89 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">89</span><b>다면체의 옆면의 모양</b><span>форма боковых граней</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">527</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 다면체와 그 옆면의 모양이 바르게 짝 지어진 것은?</p>
+      <p class="pt">Где многогранник и форма его боковой грани указаны правильно?</p>
+      <ul class="opts"><li>① 사각기둥 − 삼각형</li><li>② 오각뿔 − 이등변삼각형</li><li>③ 육각기둥 − 평행사변형</li><li>④ 칠각뿔대 − 사다리꼴</li><li>⑤ 오각뿔대 − 직사각형</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>기둥 → 직사각형, 뿔 → 삼각형, 뿔대 → 사다리꼴 (учебник).</li><li>① и ③ — у призмы прямоугольники ✗. ⑤ — у 뿔대 трапеции ✗.</li><li>② — по определению боковые грани 각뿔 просто <span class="kr">삼각형</span>; равнобедренными (이등변) они быть не обязаны ✗.</li><li>④ 칠각뿔대 − 사다리꼴 ✓</li></ol>
+        <p class="ans">Ответ: ④</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>528</b> 옆면을 잘못 짝지은 것</summary><div><p>Ищи 뿔대 с треугольником — это ловушка.</p></div></details>
+      <details class="h"><summary><b>529</b> 옳은 것</summary><div><p>Только одна пара совпадает с правилом «기둥–직사각형 / 뿔–삼각형 / 뿔대–사다리꼴».</p></div></details>
+      <details class="h"><summary><b>530</b> 옳지 않은 것</summary><div><p>정육면체 — это тоже призма, её боковые грани 정사각형 (частный случай). Ищи другую ошибку.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 90 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">90</span><b>다면체의 이해</b><span>верно / неверно</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">531</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 설명 중 옳지 <u>않은</u> 것은?</p>
+      <p class="pt">Какое утверждение неверно?</p>
+      <ul class="opts" style="flex-direction:column"><li>① 원뿔의 전개도에서 옆면은 부채꼴이다.</li><li>② 각뿔대의 두 밑면은 서로 평행하다.</li><li>③ <span class="m">n</span>각뿔의 면의 개수는 (<span class="m">n</span>+2)이다.</li><li>④ <span class="m">n</span>각뿔대의 모서리의 개수는 3<span class="m">n</span>이다.</li><li>⑤ 각뿔은 꼭짓점의 개수와 면의 개수가 같다.</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>① Развёртка боковой поверхности конуса — сектор (부채꼴) ✓.</li><li>② По определению 각뿔대 ✓.</li><li>③ У пирамиды одно основание: граней <span class="m">n</span>+1, а не <span class="m">n</span>+2 ✗.</li><li>④ 3<span class="m">n</span> ✓.</li><li>⑤ Вершин <span class="m">n</span>+1, граней <span class="m">n</span>+1 — равны ✓.</li></ol>
+        <p class="ans">Ответ: ③</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>532</b> 옳지 않은 것</summary><div><p>Перечитай п. «Осторожно» в разделе 3: по какой грани даётся имя 각뿔?</p></div></details>
+      <details class="h"><summary><b>533</b> 각뿔대에 대한 설명, 옳지 않은 것</summary><div><p>Два основания 각뿔대 параллельны — а равны ли они (합동)?</p></div></details>
+      <details class="h"><summary><b>534</b> 각뿔에 대한 설명, 옳지 않은 것</summary><div><p>Посчитай рёбра 육각뿔: 2<span class="m">n</span>.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 91 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">91</span><b>조건을 만족시키는 다면체 찾기</b><span>найти фигуру по условиям</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">535</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 조건을 모두 만족하는 입체도형은?</p>
+      <p class="pt">Найди фигуру, удовлетворяющую всем условиям.</p>
+      <div class="cond">(가) 십면체이다. (나) 두 밑면이 서로 평행하다. (다) 옆면의 모양이 사다리꼴이다.</div>
+      <ul class="opts"><li>① 삼각뿔대</li><li>② 사각뿔대</li><li>③ 육각뿔대</li><li>④ 칠각뿔대</li><li>⑤ 팔각뿔대</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>(다) трапеции → <span class="kr">각뿔대</span> (тип).</li><li>(가) 십면체 = 10 граней → <span class="m">n</span>+2 = 10 → <span class="m">n</span> = 8.</li></ol>
+        <p class="ans">Ответ: ⑤ 팔각뿔대</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>536</b> 옆면 직사각형, 밑면의 모서리 10</summary><div><p>Прямоугольники + равные параллельные основания → 각기둥. «밑면의 모서리» — стороны основания: это и есть <span class="m">n</span>.</p></div></details>
+      <details class="h"><summary><b>537</b> 모서리 27개 → 꼭짓점?</summary><div><p>Сначала тип (два равных параллельных основания), потом 3<span class="m">n</span> = 27, потом вершины 2<span class="m">n</span>.</p></div></details>
+      <details class="h"><summary><b>538</b> 옆면 삼각형, 꼭짓점 6개</summary><div><p>Треугольники → 각뿔. Вершины <span class="m">n</span>+1 = 6.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 92 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">92</span><b>정다면체의 이해</b><span>грани и вершины правильных многогранников</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">539</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 정다면체에 대한 설명으로 옳지 <u>않은</u> 것은?</p>
+      <ul class="opts" style="flex-direction:column"><li>① 각 면이 모두 합동인 정다각형이다.</li><li>② 정다면체의 종류는 모두 다섯 가지이다.</li><li>③ 하나의 정사면체에서 각 꼭짓점에 모이는 면의 개수는 모두 같다.</li><li>④ 한 꼭짓점에 모이는 면의 개수가 6인 것도 있다.</li><li>⑤ 정다면체의 한 면이 될 수 있는 것은 정삼각형, 정사각형, 정오각형의 세 가지뿐이다.</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>①②③⑤ — это определение и таблица из раздела 5 ✓.</li><li>④ Шесть 정삼각형 в вершине дают 6·60° = 360° — лежат плоско, вершины нет ✗.</li></ol>
+        <p class="ans">Ответ: ④</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>540</b> 옳지 않은 것 2개</summary><div><p>Сверь с таблицей: какие грани у 정이십면체? Сколько граней в вершине у 정팔면체?</p></div></details>
+      <details class="h"><summary><b>541</b> 옳지 않은 것</summary><div><p>Тот же факт, что в 539 ④.</p></div></details>
+      <details class="h"><summary><b>542</b> 옳은 것</summary><div><p>Сумма углов в вершине должна быть меньше <b>360°</b>, а не 180°. Какие три многогранника состоят из 정삼각형?</p></div></details>
+    </div>
+  </div>
+
+  <!-- 93 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">93</span><b>정다면체의 면, 모서리, 꼭짓점의 개수</b><span>счёт у правильных</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">543</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">한 면의 모양이 정오각형인 정다면체의 면의 개수를 구하시오.</p>
+      <p class="pt">Грань — правильный пятиугольник. Сколько граней у этого многогранника?</p>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>Из 정오각형 состоит только <span class="kr">정십이면체</span>.</li><li>Имя = число граней: 십이 = 12.</li></ol>
+        <p class="ans">Ответ: 12</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>544</b> 면이 정사각형 → 면의 개수</summary><div><p>Из квадратов — только один правильный многогранник.</p></div></details>
+      <details class="h"><summary><b>545</b> 정<span class="m">n</span>면체: 모서리 = 정사면체×2, 꼭짓점 = 정사면체+2</summary><div><p>У 정사면체 рёбер 6, вершин 4. Значит ищем 12 рёбер и 6 вершин — найди в таблице.</p></div></details>
+      <details class="h"><summary><b>546</b> 대화 (диалог) → 모서리</summary><div><p>«옆면 삼각형» → 각뿔. Вершин на 1 меньше, чем у 삼각기둥 (6). Найди <span class="m">n</span> из <span class="m">n</span>+1, потом рёбра 2<span class="m">n</span>.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 94 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">94</span><b>정다면체의 전개도</b><span>развёртки</span></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">547</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">각 면에 1부터 6까지의 숫자가 하나씩 쓰인 정육면체의 전개도이다. 이 정육면체의 한 꼭짓점에서 만나는 세 면에 쓰인 수의 합이 될 수 <u>없는</u> 것은?</p>
+      <p class="pt">Развёртка кубика с числами 1–6. Какой суммы НЕ может быть у трёх граней, сходящихся в одной вершине?</p>
+      <div class="fig"><svg id="net547" viewBox="0 0 300 200" role="img" aria-label="Развёртка куба"></svg>
+        <div class="seg"><button type="button" id="net547btn" aria-pressed="false">Раскрасить противоположные грани</button></div>
+        <p class="cap">Рисунок перерисован по учебнику.</p></div>
+      <ul class="opts"><li>① 7</li><li>② 9</li><li>③ 10</li><li>④ 12</li><li>⑤ 13</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>Противоположные грани (마주 보는 면) в одной вершине не встречаются. В развёртке они идут «через одну»: <b>1 и 6</b>, <b>3 и 2</b>, <b>5 и 4</b>.</li><li>В вершине — по одной грани из каждой пары: {1 или 6} + {3 или 2} + {5 или 4}.</li><li>Возможные суммы: 1+2+4 = 7, 1+3+5 = 9, 6+2+4 = 12, 6+3+4 = 13, … Посчитай все 8: получится 7, 8, 9, 12, 13, 14.</li><li>10 нигде не получается.</li></ol>
+        <p class="ans">Ответ: ③ 10</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>548</b> 주사위 전개도 (развёртка кубика)</summary><div><p>Найди противоположные грани в развёртке. В вариантах ответа противоположные грани не могут быть видны одновременно.</p></div></details>
+      <details class="h"><summary><b>549</b> 꼭짓점 A와 겹치는 점</summary><div><p>Это 정사면체 из 4 треугольников. В каждой вершине тетраэдра сходятся 3 грани. Точка A лежит в двух треугольниках — найди точку, которая «добавит» третий.</p></div></details>
+      <details class="h"><summary><b>550</b> 면 FGHI와 평행한 면</summary><div><p>Параллельная грань = противоположная. В полосе из квадратов противоположные — «через один».</p></div></details>
+    </div>
+  </div>
+
+  <!-- 95 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">95</span><b>각 면의 한가운데 점을 연결하여 만든 입체도형</b><span>центры граней</span></div>
+    <div class="box text"><span class="tag">Правило</span><p class="kr">(바깥쪽 정다면체의 면의 개수) = (안쪽 정다면체의 꼭짓점의 개수)</p><p class="tr">Каждая грань снаружи даёт одну вершину внутри. 정육면체 ↔ 정팔면체, 정십이면체 ↔ 정이십면체, 정사면체 → 정사면체.</p></div>
+    <article class="prob">
+      <div class="phead"><span class="pno">551</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 정팔면체의 각 면의 한가운데에 있는 점을 연결하여 만들어지는 입체도형의 면은 몇 개인가?</p>
+      <p class="pt">Соединили центры граней октаэдра. Сколько граней у новой фигуры?</p>
+      <ul class="opts"><li>① 4개</li><li>② 6개</li><li>③ 8개</li><li>④ 12개</li><li>⑤ 16개</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>정팔면체 — 8 граней → внутри 8 вершин.</li><li>Правильный многогранник с 8 вершинами — <span class="kr">정육면체</span>.</li><li>Граней у него 6.</li></ol>
+        <p class="ans">Ответ: ② 6개</p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>552</b> 정육면체 → 면의 개수</summary><div><p>6 граней → 6 вершин → какой многогранник? Сколько у него граней?</p></div></details>
+      <details class="h"><summary><b>553</b> 정이십면체 → 모서리</summary><div><p>20 вершин внутри → 정십이면체. Рёбра — из таблицы.</p></div></details>
+      <details class="h"><summary><b>554</b> 정육면체 → 모서리</summary><div><p>Внутри получится 정팔면체. Сколько у него рёбер?</p></div></details>
+    </div>
+  </div>
+
+  <!-- 96 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">96</span><b>정다면체의 단면</b><span>сечение куба</span></div>
+    <p>Сечение (<span class="kr">단면</span>) куба плоскостью бывает <span class="kr">삼각형, 사각형, 오각형, 육각형</span>.</p>
+    <article class="prob">
+      <div class="phead"><span class="pno">555</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 그림은 정육면체이다. 세 점 A, C, H를 지나는 평면으로 자를 때 생기는 단면의 모양은?</p>
+      <p class="pt">Куб режут плоскостью через A, C, H. Какой формы сечение?</p>
+      <div class="fig"><svg id="cube555" viewBox="0 0 300 240" role="img" aria-label="Куб ABCD-EFGH"></svg>
+        <div class="seg"><button type="button" id="cube555btn" aria-pressed="false">Показать сечение</button></div>
+        <p class="cap">Рисунок перерисован по учебнику.</p></div>
+      <ul class="opts"><li>① 정삼각형</li><li>② 직각삼각형</li><li>③ 정사각형</li><li>④ 직사각형</li><li>⑤ 정사각형이 아닌 마름모</li></ul>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps"><li>AC — диагональ верхней грани, CH — диагональ правой грани, AH — диагональ задней грани.</li><li>Все грани куба — равные квадраты, значит их диагонали равны: AC = CH = AH.</li><li>Три равные стороны → правильный треугольник.</li></ol>
+        <p class="ans">Ответ: ① 정삼각형</p></div></details>
+    </article>
+  </div>
+</section>
+
+<!-- 9 cheat -->
+<section id="cheat">
+  <h2><span class="num">9</span>Шпаргалка · <span class="kr">정리</span></h2>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>면</th><th>모서리</th><th>꼭짓점</th><th>옆면</th></tr></thead>
+    <tbody>
+      <tr><td class="c-pr"><span class="m">n</span>각기둥</td><td><span class="m">n</span>+2</td><td>3<span class="m">n</span></td><td>2<span class="m">n</span></td><td>직사각형</td></tr>
+      <tr><td class="c-py"><span class="m">n</span>각뿔</td><td><span class="m">n</span>+1</td><td>2<span class="m">n</span></td><td><span class="m">n</span>+1</td><td>삼각형</td></tr>
+      <tr><td class="c-fr"><span class="m">n</span>각뿔대</td><td><span class="m">n</span>+2</td><td>3<span class="m">n</span></td><td>2<span class="m">n</span></td><td>사다리꼴</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box warn">
+    <span class="tag">Частые ошибки</span>
+    <ul class="mistakes">
+      <li>Вершины пирамиды считают как 2<span class="m">n</span>. Правильно: <span class="m">n</span>+1.</li>
+      <li>Путают <span class="kr">팔각기둥</span> (8 углов основания) и <span class="kr">팔면체</span> (8 граней).</li>
+      <li>Думают, что у <span class="kr">각뿔대</span> основания равны (합동). Они только параллельны.</li>
+      <li>Пропускают слово <span class="kr">아닌 / 않은 / 잘못</span> в вопросе — и выбирают верное вместо неверного.</li>
+      <li>Записывают в многогранники <span class="kr">원기둥, 원뿔, 원뿔대, 구, 반구</span>. У них кривые поверхности.</li>
+      <li>Думают, что правильных многогранников бывает больше пяти или что в вершине могут сойтись 6 граней.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e};
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],dot=(a,b)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2],
+ cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],len=a=>Math.hypot(a[0],a[1],a[2]);
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* convex hull faces from points */
+function hull(P){
+  const n=P.length,eps=1e-6,faces=[],seen=new Set();
+  for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)for(let k=j+1;k<n;k++){
+    let nr=cross(sub(P[j],P[i]),sub(P[k],P[i]));const L=len(nr);if(L<1e-9)continue;
+    nr=nr.map(x=>x/L);const d=dot(nr,P[i]);let pos=0,neg=0;const on=[];
+    for(let m=0;m<n;m++){const s=dot(nr,P[m])-d;if(s>eps)pos++;else if(s<-eps)neg++;else on.push(m)}
+    if(pos&&neg)continue;const key=on.join(",");if(seen.has(key))continue;seen.add(key);
+    if(pos>0)nr=nr.map(x=>-x);
+    const c=[0,0,0];on.forEach(m=>{c[0]+=P[m][0];c[1]+=P[m][1];c[2]+=P[m][2]});c.forEach((_,q)=>c[q]/=on.length);
+    let u=sub(P[on[0]],c);u=u.map(x=>x/len(u));const v=cross(nr,u);
+    const ord=on.slice().sort((a,b)=>{const pa=sub(P[a],c),pb=sub(P[b],c);return Math.atan2(dot(pa,v),dot(pa,u))-Math.atan2(dot(pb,v),dot(pb,u))});
+    faces.push({v:ord,n:nr,c});
+  }
+  const em=new Map();
+  faces.forEach((f,fi)=>f.v.forEach((a,q)=>{const b=f.v[(q+1)%f.v.length];const key=Math.min(a,b)+"-"+Math.max(a,b);if(!em.has(key))em.set(key,{a:Math.min(a,b),b:Math.max(a,b),f:[]});em.get(key).f.push(fi)}));
+  return {P,faces,edges:[...em.values()]};
+}
+function ring(n,r,y,off){const a=[];for(let k=0;k<n;k++){const t=2*Math.PI*k/n+off;a.push([r*Math.cos(t),y,r*Math.sin(t)])}return a}
+function build(type,n){
+  const off=Math.PI/2+Math.PI/n;
+  if(type==="prism")return hull([...ring(n,1,-.62,off),...ring(n,1,.62,off)]);
+  if(type==="pyr")return hull([...ring(n,1.05,-.6,off),[0,.85,0]]);
+  return hull([...ring(n,1.05,-.55,off),...ring(n,.55,.55,off)]);
+}
+function project(p,yaw,pitch){
+  const x1=p[0]*Math.cos(yaw)+p[2]*Math.sin(yaw),z1=-p[0]*Math.sin(yaw)+p[2]*Math.cos(yaw);
+  const y2=p[1]*Math.cos(pitch)-z1*Math.sin(pitch),z2=p[1]*Math.sin(pitch)+z1*Math.cos(pitch);
+  return [x1,y2,z2];
+}
+const isBase=f=>Math.abs(f.n[1])>.999;
+/* render solid into svg */
+function render(svg,S,o){
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  const vb=o.vb||svg.viewBox.baseVal,cx=(o.ox||0)+vb.width/2,cy=vb.height/2+(o.dy||0),s=o.scale;
+  const Q=S.P.map(p=>{const r=project(p,o.yaw,o.pitch);return [cx+s*r[0],cy-s*r[1],r[2]]});
+  const vis=S.faces.map(f=>project(f.n,o.yaw,o.pitch)[2]>1e-6);
+  const g=el("g",{},svg);
+  // hidden edges
+  S.edges.forEach(e=>{if(!vis[e.f[0]]&&!vis[e.f[1]])el("line",{x1:Q[e.a][0],y1:Q[e.a][1],x2:Q[e.b][0],y2:Q[e.b][1],style:`stroke:${o.hl==="e"?"var(--pyr)":"var(--muted)"};stroke-width:${o.hl==="e"?2:1.3};stroke-dasharray:4 4;opacity:.75`},g)});
+  if(o.extraBack)o.extraBack(g,Q);
+  // faces
+  let fnum=0;
+  S.faces.forEach((f,i)=>{
+    if(!vis[i])return;
+    const rn=project(f.n,o.yaw,o.pitch);const light=Math.max(0,.35*rn[0]+.6*rn[1]+.7*rn[2]);
+    const base=o.colorBase&&isBase(f);
+    const fill=o.faceFill?o.faceFill(f):(base?"var(--face-a)":"var(--face-b)");
+    el("polygon",{points:f.v.map(k=>Q[k][0]+","+Q[k][1]).join(" "),style:`fill:${fill};fill-opacity:${(o.hl==="f"?.55:.25)+.45*light};stroke:none`},g);
+  });
+  S.edges.forEach(e=>{if(vis[e.f[0]]||vis[e.f[1]])el("line",{x1:Q[e.a][0],y1:Q[e.a][1],x2:Q[e.b][0],y2:Q[e.b][1],style:`stroke:${o.hl==="e"?"var(--pyr)":"var(--ink)"};stroke-width:${o.hl==="e"?3:1.6};stroke-linejoin:round`},g)});
+  if(o.hl==="f"){S.faces.forEach((f,i)=>{if(!vis[i])return;fnum++;const c=project(f.c,o.yaw,o.pitch);const t=el("text",{x:cx+s*c[0],y:cy-s*c[1]+5,"text-anchor":"middle",style:"font:700 15px var(--f-body);fill:var(--ink)"},g);t.textContent=fnum})}
+  if(o.hl==="v"){Q.forEach((q,i)=>{const hidden=S.faces.every((f,fi)=>!f.v.includes(i)||!vis[fi]);el("circle",{cx:q[0],cy:q[1],r:5.5,style:`fill:${hidden?"var(--paper)":"var(--prism)"};stroke:var(--prism);stroke-width:2`},g)})}
+  if(o.extra)o.extra(g,Q,cx,cy,s);
+}
+function label(g,x,y,txt,col,anchor){const t=el("text",{x,y,"text-anchor":anchor||"middle",style:`font:700 13px var(--f-kr);fill:${col}`},g);t.textContent=txt;return t}
+
+/* concept figures */
+function concept(id,type){
+  const S=build(type,4),svg=document.getElementById(id),yaw=-.35,pitch=.38;
+  render(svg,S,{yaw,pitch,scale:72,dy:4,colorBase:true,extra:(g,Q,cx,cy,s)=>{
+    const P=(p)=>{const r=project(p,yaw,pitch);return [cx+s*r[0],cy-s*r[1]]};
+    let top,bot;
+    if(type==="prism"){top=[0,.62,0];bot=[0,-.62,0]}else if(type==="pyr"){top=[0,.85,0];bot=[0,-.6,0]}else{top=[0,.55,0];bot=[0,-.55,0]}
+    const a=P(top),b=P(bot);
+    el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],style:"stroke:var(--pyr);stroke-width:2;stroke-dasharray:5 4"},g);
+    label(g,(a[0]+b[0])/2+6,(a[1]+b[1])/2+4,"높이","var(--pyr)","start");
+    const maxY=Math.max(...Q.map(q=>q[1]));label(g,cx-42,maxY+18,"밑면","var(--prism)");
+    if(type!=="pyr"){const tl=P(top);label(g,tl[0]-30,tl[1]-2,"밑면","var(--prism)")}
+    // side label on a front face
+    const vis=S.faces.filter(f=>!isBase(f)&&project(f.n,yaw,pitch)[2]>0);
+    const f=vis.sort((x,y)=>project(y.n,yaw,pitch)[0]-project(x.n,yaw,pitch)[0])[0];
+    const c=P(f.c);label(g,c[0]+4,c[1]+18,"옆면","var(--ink)");
+  }});
+}
+concept("figPrism","prism");concept("figPyr","pyr");concept("figFrus","frus");
+
+/* not-polyhedra strip */
+(function(){
+  const svg=document.getElementById("notPoly");
+  const cube=hull([[-1,-1,-1],[1,-1,-1],[-1,1,-1],[1,1,-1],[-1,-1,1],[1,-1,1],[-1,1,1],[1,1,1]]);
+  const g0=el("g",{},svg);
+  render(g0,cube,{yaw:-.5,pitch:.42,scale:34,dy:-6,vb:{width:150,height:170}});
+  const tx=(x,y,s,c)=>{const t=el("text",{x,y,"text-anchor":"middle",style:`font:700 13px var(--f-kr);fill:${c}`},svg);t.textContent=s};
+  tx(75,160,"직육면체 ✓","var(--ok)");
+  el("line",{x1:150,y1:20,x2:150,y2:150,style:"stroke:var(--line);stroke-width:1"},svg);
+  const st="fill:var(--soft);stroke:var(--ink);stroke-width:1.6";
+  // cylinder
+  el("rect",{x:190,y:45,width:70,height:80,style:"fill:var(--soft);stroke:none"},svg);
+  el("ellipse",{cx:225,cy:125,rx:35,ry:10,style:st},svg);
+  el("rect",{x:190,y:45,width:70,height:80,style:"fill:var(--soft);stroke:none"},svg);
+  el("line",{x1:190,y1:45,x2:190,y2:125,style:"stroke:var(--ink);stroke-width:1.6"},svg);
+  el("line",{x1:260,y1:45,x2:260,y2:125,style:"stroke:var(--ink);stroke-width:1.6"},svg);
+  el("ellipse",{cx:225,cy:45,rx:35,ry:10,style:st},svg);
+  tx(225,160,"원기둥 ✗","var(--warn)");
+  // cone
+  el("polygon",{points:"335,30 300,125 370,125",style:"fill:var(--soft);stroke:none"},svg);
+  el("ellipse",{cx:335,cy:125,rx:35,ry:10,style:st},svg);
+  el("line",{x1:335,y1:30,x2:300,y2:125,style:"stroke:var(--ink);stroke-width:1.6"},svg);
+  el("line",{x1:335,y1:30,x2:370,y2:125,style:"stroke:var(--ink);stroke-width:1.6"},svg);
+  tx(335,160,"원뿔 ✗","var(--warn)");
+  // sphere
+  el("circle",{cx:445,cy:85,r:42,style:st},svg);
+  el("ellipse",{cx:445,cy:85,rx:42,ry:12,style:"fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 4"},svg);
+  tx(445,160,"구 ✗","var(--warn)");
+  // hemisphere
+  el("path",{d:"M 505 95 A 40 40 0 0 0 585 95 Z",style:st},svg);
+  el("ellipse",{cx:545,cy:95,rx:40,ry:11,style:st},svg);
+  tx(545,160,"반구 ✗","var(--warn)");
+})();
+
+/* LAB */
+const KN={3:"삼",4:"사",5:"오",6:"육",7:"칠",8:"팔",9:"구",10:"십"};
+const RU={3:"треугольн",4:"четырёхугольн",5:"пятиугольн",6:"шестиугольн",7:"семиугольн",8:"восьмиугольн",9:"девятиугольн",10:"десятиугольн"};
+const TN={prism:"각기둥",pyr:"각뿔",frus:"각뿔대"};
+const TR={prism:n=>RU[n]+"ая призма",pyr:n=>RU[n]+"ая пирамида",frus:n=>"усечённая "+RU[n]+"ая пирамида"};
+const FORM={prism:["n+2","3n","2n"],pyr:["n+1","2n","n+1"],frus:["n+2","3n","2n"]};
+const calc=(t,n)=>t==="pyr"?[n+1,2*n,n+1]:[n+2,3*n,2*n];
+const lab={type:"prism",n:5,yaw:-.4,pitch:.42,hl:null,spin:!reduce};
+const labSvg=document.getElementById("labSvg");
+let labS=build("prism",5);
+function drawLab(){render(labSvg,labS,{yaw:lab.yaw,pitch:lab.pitch,scale:100,dy:2,colorBase:true,hl:lab.hl})}
+function updLab(){
+  labS=build(lab.type,lab.n);const n=lab.n;
+  document.getElementById("labName").innerHTML=KN[n]+TN[lab.type]+"<small>"+TR[lab.type](n)+"</small>";
+  document.getElementById("labNv").textContent=n;document.getElementById("labNk").textContent=KN[n]+"각형";
+  const F=labS.faces.length,E=labS.edges.length,V=labS.P.length;
+  document.getElementById("cF").textContent=F;document.getElementById("cE").textContent=E;document.getElementById("cV").textContent=V;
+  const f=FORM[lab.type];
+  document.getElementById("fF").textContent=f[0]+" = "+F;document.getElementById("fE").textContent=f[1]+" = "+E;document.getElementById("fV").textContent=f[2]+" = "+V;
+  drawLab();
+}
+document.getElementById("labN").addEventListener("input",e=>{lab.n=+e.target.value;updLab()});
+document.querySelectorAll("#labType button").forEach(b=>b.addEventListener("click",()=>{lab.type=b.dataset.t;document.querySelectorAll("#labType button").forEach(x=>x.setAttribute("aria-pressed",x===b));updLab()}));
+document.querySelectorAll("#labHl button[data-h]").forEach(b=>b.addEventListener("click",()=>{const on=lab.hl!==b.dataset.h;lab.hl=on?b.dataset.h:null;document.querySelectorAll("#labHl button[data-h]").forEach(x=>x.setAttribute("aria-pressed",on&&x===b));if(lab.hl)lab.spin=false,document.getElementById("labSpin").setAttribute("aria-pressed",false);drawLab()}));
+const spinBtn=document.getElementById("labSpin");spinBtn.setAttribute("aria-pressed",lab.spin);
+spinBtn.addEventListener("click",()=>{lab.spin=!lab.spin;spinBtn.setAttribute("aria-pressed",lab.spin)});
+function dragger(svg,st,redraw){
+  let d=null;
+  svg.addEventListener("pointerdown",e=>{d={x:e.clientX,y:e.clientY,yaw:st.yaw,pitch:st.pitch};svg.setPointerCapture(e.pointerId);st.spin=false;});
+  svg.addEventListener("pointermove",e=>{if(!d)return;st.yaw=d.yaw+(e.clientX-d.x)*.012;st.pitch=Math.max(-.2,Math.min(1.2,d.pitch+(e.clientY-d.y)*.01));redraw()});
+  const up=()=>{d=null};svg.addEventListener("pointerup",up);svg.addEventListener("pointercancel",up);
+}
+dragger(labSvg,lab,()=>{spinBtn.setAttribute("aria-pressed",false);drawLab()});
+
+/* trainer */
+let tr={type:"frus",n:7};
+function newTr(){const ts=["prism","pyr","frus"];let t,n;do{t=ts[Math.floor(Math.random()*3)];n=3+Math.floor(Math.random()*8)}while(t===tr.type&&n===tr.n);tr={type:t,n};
+  document.getElementById("trName").textContent=KN[n]+TN[t];["tF","tE","tV"].forEach(i=>document.getElementById(i).value="");document.getElementById("trMsg").textContent=""}
+document.getElementById("trNext").addEventListener("click",newTr);
+document.getElementById("trCheck").addEventListener("click",()=>{
+  const r=calc(tr.type,tr.n),u=["tF","tE","tV"].map(i=>parseInt(document.getElementById(i).value,10));
+  const nm=["면","모서리","꼭짓점"],bad=[];u.forEach((x,i)=>{if(x!==r[i])bad.push(nm[i])});
+  const m=document.getElementById("trMsg");
+  if(!bad.length){m.textContent="Верно! "+r[0]+" / "+r[1]+" / "+r[2]+" ✓";m.style.color="var(--ok)"}
+  else{m.textContent="Проверь: "+bad.join(", ")+". Подсказка: n = "+tr.n+", формулы "+FORM[tr.type].join(" / ");m.style.color="var(--warn)"}
+});
+document.getElementById("trShow").addEventListener("click",()=>{lab.type=tr.type;lab.n=tr.n;document.getElementById("labN").value=tr.n;
+  document.querySelectorAll("#labType button").forEach(x=>x.setAttribute("aria-pressed",x.dataset.t===tr.type));updLab();labSvg.scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"})});
+
+/* Platonic */
+const ph=(1+Math.sqrt(5))/2;
+function norm(P){const r=Math.max(...P.map(len));return P.map(p=>p.map(x=>x/r))}
+const plat=[
+ {k:"정사면체",ru:"тетраэдр",P:[[1,1,1],[1,-1,-1],[-1,1,-1],[-1,-1,1]],f:"정삼각형",m:3},
+ {k:"정육면체",ru:"куб (гексаэдр)",P:[[-1,-1,-1],[1,-1,-1],[-1,1,-1],[1,1,-1],[-1,-1,1],[1,-1,1],[-1,1,1],[1,1,1]],f:"정사각형",m:3},
+ {k:"정팔면체",ru:"октаэдр",P:[[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]],f:"정삼각형",m:4},
+ {k:"정십이면체",ru:"додекаэдр",P:(()=>{const a=[];for(const x of[-1,1])for(const y of[-1,1])for(const z of[-1,1])a.push([x,y,z]);for(const s of[-1,1])for(const t of[-1,1]){a.push([0,s/ph,t*ph]);a.push([s/ph,t*ph,0]);a.push([s*ph,0,t/ph])}return a})(),f:"정오각형",m:3},
+ {k:"정이십면체",ru:"икосаэдр",P:(()=>{const a=[];for(const s of[-1,1])for(const t of[-1,1]){a.push([0,s,t*ph]);a.push([s,t*ph,0]);a.push([s*ph,0,t])}return a})(),f:"정삼각형",m:5}
+].map(o=>Object.assign(o,{S:hull(norm(o.P))}));
+const pst={i:0,yaw:-.5,pitch:.45,spin:!reduce,hl:null};
+const platSvg=document.getElementById("platSvg");
+function drawPlat(){const o=plat[pst.i];render(platSvg,o.S,{yaw:pst.yaw,pitch:pst.pitch,scale:125,hl:pst.hl,faceFill:()=>"var(--face-a)"})}
+function updPlat(){const o=plat[pst.i];
+  document.getElementById("platName").innerHTML=o.k+"<small>"+o.ru+"</small>";
+  document.getElementById("platInfo").innerHTML="Грани: <b class='kr'>"+o.f+"</b>. В каждой вершине сходится <b>"+o.m+"</b> грани.";
+  document.getElementById("pF").textContent=o.S.faces.length;document.getElementById("pE").textContent=o.S.edges.length;document.getElementById("pV").textContent=o.S.P.length;drawPlat()}
+document.querySelectorAll("#platSel button").forEach(b=>b.addEventListener("click",()=>{pst.i=+b.dataset.p;document.querySelectorAll("#platSel button").forEach(x=>x.setAttribute("aria-pressed",x===b));updPlat()}));
+const pSpin=document.getElementById("platSpin");pSpin.setAttribute("aria-pressed",pst.spin);
+pSpin.addEventListener("click",()=>{pst.spin=!pst.spin;pSpin.setAttribute("aria-pressed",pst.spin)});
+document.querySelector("#platHl button[data-h]").addEventListener("click",e=>{pst.hl=pst.hl?null:"v";e.currentTarget.setAttribute("aria-pressed",!!pst.hl);drawPlat()});
+dragger(platSvg,pst,()=>{pSpin.setAttribute("aria-pressed",false);drawPlat()});
+
+let last=0;function tick(t){const dt=Math.min(50,t-last);last=t;
+  if(lab.spin){lab.yaw+=dt*.0006;drawLab()}if(pst.spin){pst.yaw+=dt*.0006;drawPlat()}requestAnimationFrame(tick)}
+updLab();updPlat();requestAnimationFrame(tick);
+
+/* 547 net */
+(function(){
+  const svg=document.getElementById("net547"),s=56,ox=38,oy=12;
+  const cells=[[2,0,4],[3,0,2],[0,1,1],[1,1,3],[2,1,6],[1,2,5]];
+  const pair={1:"a",6:"a",3:"b",2:"b",5:"c",4:"c"},col={a:"var(--prism-bg)",b:"var(--pyr-bg)",c:"var(--ok-bg)"};
+  const rects=[];
+  cells.forEach(([c,r,v])=>{const R=el("rect",{x:ox+c*s,y:oy+r*s,width:s,height:s,style:"fill:var(--paper);stroke:var(--ink);stroke-width:1.6"},svg);rects.push([R,v]);
+    const t=el("text",{x:ox+c*s+s/2,y:oy+r*s+s/2+7,"text-anchor":"middle",style:"font:700 20px var(--f-body);fill:var(--ink)"},svg);t.textContent=v});
+  const b=document.getElementById("net547btn");
+  b.addEventListener("click",()=>{const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);
+    rects.forEach(([R,v])=>R.style.fill=on?col[pair[v]]:"var(--paper)")});
+})();
+
+/* 555 cube */
+(function(){
+  const svg=document.getElementById("cube555");
+  const L={A:[-1,1,-1],D:[1,1,-1],B:[-1,1,1],C:[1,1,1],E:[-1,-1,-1],H:[1,-1,-1],F:[-1,-1,1],G:[1,-1,1]};
+  const names=Object.keys(L),S=hull(names.map(k=>L[k]));
+  let show=false;const yaw=-.6,pitch=.5;
+  function draw(){render(svg,S,{yaw,pitch,scale:56,dy:0,faceFill:()=>"var(--face-a)",extra:(g,Q)=>{
+    const idx=k=>names.indexOf(k);
+    if(show){const tri=["A","C","H"].map(k=>Q[idx(k)]);el("polygon",{points:tri.map(q=>q[0]+","+q[1]).join(" "),style:"fill:var(--pyr);fill-opacity:.35;stroke:var(--pyr);stroke-width:2.5;stroke-linejoin:round"},g)}
+    const off={A:[-10,-8],D:[10,-6],B:[-14,0],C:[10,12],E:[-14,4],H:[12,4],F:[-14,6],G:[0,18]};
+    names.forEach((k,i)=>{const t=el("text",{x:Q[i][0]+off[k][0],y:Q[i][1]+off[k][1],"text-anchor":"middle",style:"font:600 14px var(--f-math);font-style:italic;fill:var(--ink)"},g);t.textContent=k});
+  }})}
+  draw();const b=document.getElementById("cube555btn");
+  b.addEventListener("click",()=>{show=!show;b.setAttribute("aria-pressed",show);draw()});
+})();
+})();
+</script>
