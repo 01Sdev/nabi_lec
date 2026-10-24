@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>사분위수와 상자그림 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column (~780px); vocab → warm-up → concept (quartiles → box plot) → lab → recipe → problems → cheat sheet */
+:root{
+  --bg:#f2f4f7; --card:#ffffff; --ink:#18202d; --muted:#5a6476; --line:#d5dbe5;
+  --blue:#2c6bd6; --blue-bg:#e6eefb;
+  --coral:#dc4f3a; --coral-bg:#fce8e4;
+  --green:#178f62; --green-bg:#e0f3ea;
+  --amber:#b97c0b; --amber-bg:#fdf2da;
+  --violet:#6a4fd0; --violet-bg:#ece8fb;
+  --chip:#e9edf3;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-ko:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f131a; --card:#171d27; --ink:#e5e9f1; --muted:#97a1b4; --line:#2b3342;
+  --blue:#74a2f2; --blue-bg:#172339; --coral:#f27c66; --coral-bg:#341d19;
+  --green:#4fc496; --green-bg:#132a21; --amber:#e4ad44; --amber-bg:#2b2413;
+  --violet:#a693f2; --violet-bg:#221c3a; --chip:#222a37; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f131a; --card:#171d27; --ink:#e5e9f1; --muted:#97a1b4; --line:#2b3342;
+  --blue:#74a2f2; --blue-bg:#172339; --coral:#f27c66; --coral-bg:#341d19;
+  --green:#4fc496; --green-bg:#132a21; --amber:#e4ad44; --amber-bg:#2b2413;
+  --violet:#a693f2; --violet-bg:#221c3a; --chip:#222a37; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+.wrap{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(26px,5vw,38px)/1.2 var(--f-disp);letter-spacing:-.01em}
+h1 .ko{display:block;font-family:var(--f-ko);font-weight:700}
+h1 .ru{display:block;font-size:.55em;font-weight:500;color:var(--muted);margin-top:6px}
+h2{font:700 22px/1.3 var(--f-disp);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font-size:14px;color:var(--blue);letter-spacing:.06em}
+h3{font-size:18px;font-weight:600}
+p{margin:0}
+.ko,[lang=ko]{font-family:var(--f-ko)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--chip);border-radius:999px;padding:3px 10px;font-size:13px;color:var(--muted)}
+.lead{font-size:17px;color:var(--muted);max-width:65ch}
+section{display:flex;flex-direction:column;gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box.amber{background:var(--amber-bg);border-color:transparent}
+.box.coral{background:var(--coral-bg);border-color:transparent}
+.box.green{background:var(--green-bg);border-color:transparent}
+.box.blue{background:var(--blue-bg);border-color:transparent}
+.tag{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.amber .tag{color:var(--amber)} .coral .tag{color:var(--coral)} .green .tag{color:var(--green)} .blue .tag{color:var(--blue)}
+.tag.plain{color:var(--muted)}
+.m,.f{font-family:var(--f-math)}
+.f{white-space:nowrap}
+.orig{font-family:var(--f-ko);font-size:16.5px;line-height:1.75}
+.tr{color:var(--muted);font-size:15px;border-top:1px dashed var(--line);padding-top:8px}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-family:var(--f-math);font-size:.85em;line-height:1.1;margin:0 2px}
+.fr span:first-child{border-bottom:1px solid currentColor;padding:0 2px}
+.c-blue{color:var(--blue);font-weight:600}.c-coral{color:var(--coral);font-weight:600}.c-green{color:var(--green);font-weight:600}.c-violet{color:var(--violet);font-weight:600}
+/* vocab */
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.vc b{font-family:var(--f-ko);font-size:17px}
+.vc i{font-style:normal;color:var(--blue);font-weight:600;font-size:14px}
+.vc span{font-size:13px;color:var(--muted);line-height:1.4}
+/* figures */
+figure{margin:0;display:flex;flex-direction:column;gap:6px;align-items:center}
+figure svg{max-width:100%;height:auto;display:block}
+figcaption{font-size:13.5px;color:var(--muted);text-align:center;max-width:60ch}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.two>*{min-width:0}
+svg .ink{stroke:var(--ink);fill:none;stroke-width:1.6}
+svg .faint{stroke:var(--muted);fill:none;stroke-width:1.1;stroke-dasharray:4 4}
+svg .tan{stroke:var(--coral);fill:none;stroke-width:2.4}
+svg .ch{stroke:var(--blue);fill:none;stroke-width:2}
+svg .gr{stroke:var(--green);fill:none;stroke-width:2}
+svg .pt{fill:var(--ink)}
+svg .lbl{fill:var(--ink);font:15px var(--f-math)}
+svg .val{font:600 13px var(--f-body)}
+svg .w-coral{fill:var(--coral-bg);stroke:var(--coral);stroke-width:1.4}
+svg .w-blue{fill:var(--blue-bg);stroke:var(--blue);stroke-width:1.4}
+svg .w-green{fill:var(--green-bg);stroke:var(--green);stroke-width:1.4}
+svg .w-violet{fill:var(--violet-bg);stroke:var(--violet);stroke-width:1.4}
+svg .w-ink{fill:none;stroke:var(--ink);stroke-width:1.2}
+svg .t-coral{fill:var(--coral)} svg .t-blue{fill:var(--blue)} svg .t-green{fill:var(--green)} svg .t-violet{fill:var(--violet)} svg .t-ink{fill:var(--ink)}
+/* steps */
+ol.steps{margin:0;padding-left:0;list-style:none;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+ol.steps li::before{content:counter(s);font:700 12px/22px var(--f-disp);width:22px;height:22px;text-align:center;border-radius:50%;background:var(--ink);color:var(--bg)}
+ol.steps li>div{min-width:0}
+.warn{background:var(--coral-bg);border-radius:8px;padding:8px 12px;font-size:15px}
+/* lab */
+.lab{background:var(--card);border:1.5px solid var(--ink);border-radius:14px;padding:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px}
+@media (max-width:640px){.lab{grid-template-columns:1fr}}
+.lab .ctrl{display:flex;flex-direction:column;gap:12px}
+.lab label{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.read{display:grid;grid-template-columns:1fr auto;gap:4px 10px;font-size:15px;align-items:baseline}
+.read b{font:600 22px var(--f-math);font-variant-numeric:tabular-nums;text-align:right}
+.status{font-weight:600;padding:8px 12px;border-radius:8px;background:var(--green-bg);color:var(--green)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font:500 14px var(--f-body);border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:7px 12px;border-radius:8px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+/* problems */
+.group-h{display:flex;align-items:center;gap:10px;margin-top:6px}
+.group-h b{font:700 15px var(--f-ko);padding:4px 12px;border-radius:999px;background:var(--ink);color:var(--bg)}
+.group-h span{color:var(--muted);font-size:14px}
+.prob{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.prob.rep{border:1.5px solid var(--green)}
+.ph{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pn{font:700 22px var(--f-disp);color:var(--blue)}
+.lv{font:500 12px var(--f-ko);background:var(--chip);color:var(--muted);padding:2px 9px;border-radius:999px}
+.rp{font-size:12px;font-weight:600;background:var(--green-bg);color:var(--green);padding:2px 9px;border-radius:999px}
+.choices{display:flex;flex-wrap:wrap;gap:4px 18px;font-family:var(--f-math)}
+.choices.col{flex-direction:column}
+details{border-top:1px solid var(--line);padding-top:8px}
+details+details{border-top:none;padding-top:0}
+summary{cursor:pointer;font-weight:600;font-size:15px;padding:4px 0;color:var(--blue)}
+details.sol summary{color:var(--green)}
+details>div{padding:6px 0 4px;display:flex;flex-direction:column;gap:8px}
+.ans{font-weight:700;color:var(--green)}
+.figwrap{display:flex;flex-direction:column;align-items:center;gap:6px}
+.figwrap svg{max-width:min(100%,340px)}
+.small{font-size:13px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+.tbl{overflow-x:auto}
+th,td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:13px}
+ul.mist{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<style>
+/* quartile additions */
+.databox{border:1px solid var(--line);border-radius:8px;padding:10px 14px;text-align:center;font-family:var(--f-math);font-size:17px;letter-spacing:.02em}
+.formula{font-family:var(--f-ko);font-size:17px;display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:4px 0}
+.rowv{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:flex-start}
+.cv{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:38px}
+.cv>b{font:600 16px/1 var(--f-math);font-variant-numeric:tabular-nums;padding:8px 6px;border-radius:7px;border:1.5px solid var(--line);background:var(--card);min-width:38px;text-align:center;transition:background .2s,border-color .2s}
+.cv>i{font:600 10.5px/1.2 var(--f-ko);font-style:normal;color:var(--muted);min-height:13px;white-space:nowrap}
+.cv.lo>b{background:var(--blue-bg);border-color:var(--blue)}
+.cv.hi>b{background:var(--green-bg);border-color:var(--green)}
+.cv.md>b{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
+.cv.q>b{box-shadow:0 0 0 2.5px var(--violet)}
+.cv.md>i{color:var(--coral)} .cv.q>i{color:var(--violet)}
+.cv.dim>b{opacity:.45}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend s{display:inline-block;width:14px;height:14px;border-radius:4px;border:1.5px solid}
+.five{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;text-align:center}
+.five>div{background:var(--bg);border-radius:8px;padding:8px 4px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.five small{font:500 11.5px/1.25 var(--f-ko);color:var(--muted)}
+.five b{font:600 19px var(--f-math);font-variant-numeric:tabular-nums}
+@media (max-width:460px){.five b{font-size:16px}.five small{font-size:10.5px}}
+.lab{grid-template-columns:1fr}
+.lab input[type=text]{font:16px var(--f-math);padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.stepbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stepbar .log{flex:1 1 220px}
+.ok{color:var(--green);font-weight:600}.no{color:var(--coral);font-weight:600}
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.cmp>div{border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cmp .yes{background:var(--green-bg)} .cmp .nope{background:var(--coral-bg)}
+.cmp h3{font-size:15px}
+.cmp ul{margin:0;padding-left:18px;font-size:15px;display:flex;flex-direction:column;gap:3px}
+svg .bx-blue{fill:var(--blue-bg);stroke:var(--ink);stroke-width:1.5}
+svg .bx-green{fill:var(--green-bg);stroke:var(--ink);stroke-width:1.5}
+svg .bx-coral{fill:var(--coral-bg);stroke:var(--ink);stroke-width:1.5}
+svg .med{stroke:var(--ink);stroke-width:2}
+svg .ann{fill:var(--muted);font:500 12px var(--f-ko)}
+svg .brk{stroke:var(--violet);fill:none;stroke-width:1.4}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:12px">
+  <div class="chips"><span class="chip">중등수학3(하)</span><span class="chip">III 통계 › 2 상관관계 › 사분위수와 상자그림</span><span class="chip">стр. 80–81, 86, 90–91 · № 198–204, 215, 216, 225–228</span></div>
+  <h1><span class="ko">사분위수와 상자그림</span><span class="ru">Квартили и диаграмма «ящик с усами»</span></h1>
+  <p class="lead">Медиана (중앙값) делит данные пополам. Если каждую половину ещё раз разделить пополам, получится четыре равные части. Три точки разреза — это 사분위수. Из них и из самых крайних значений рисуют 상자그림: по одной картинке видно, где середина данных и насколько они разбросаны.</p>
+</header>
+
+<!-- 0 vocab -->
+<section>
+  <h2><span class="num">0</span>단어장 · Словарь</h2>
+  <p class="small">Эти слова встречаются в условиях задач. Читай их по-корейски, как на экзамене.</p>
+  <div class="vocab" id="vocab"></div>
+</section>
+
+<!-- 1 warm-up -->
+<section>
+  <h2><span class="num">1</span>복습 · Разминка: 중앙값</h2>
+  <p>Всё сегодняшнее построено на одном действии: найти медиану. Вспомним два случая.</p>
+  <div class="two">
+    <div class="box">
+      <span class="tag plain">홀수 개 · нечётное количество</span>
+      <p>Сначала <b>크기순으로 나열</b> (по возрастанию). Медиана — значение ровно посередине.</p>
+      <div class="rowv" id="w-odd"></div>
+      <p class="small">7 значений → медиана 4-я по счёту: <span class="f">8</span>.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">짝수 개 · чётное количество</span>
+      <p>Посередине стоят <b>два</b> значения. Медиана — их среднее.</p>
+      <div class="rowv" id="w-even"></div>
+      <p class="small">6 значений → <span class="f">(5 + 9) ÷ 2 = 7</span>. Такого числа в данных может и не быть.</p>
+    </div>
+  </div>
+  <div class="box">
+    <span class="tag plain">Где номер середины</span>
+    <p>Если значений <span class="m">n</span>: при нечётном <span class="m">n</span> медиана стоит на месте <span class="f">(<span class="m">n</span> + 1) ÷ 2</span>; при чётном — среднее значений на местах <span class="f"><span class="m">n</span> ÷ 2</span> и <span class="f"><span class="m">n</span> ÷ 2 + 1</span>. Пример: 19 учеников → 10-й; 12 учеников → среднее 6-го и 7-го.</p>
+  </div>
+</section>
+
+<!-- 2 quartiles -->
+<section>
+  <h2><span class="num">2</span>사분위수 · Квартили</h2>
+
+  <div class="box amber">
+    <span class="tag">Аналогия из жизни</span>
+    <p>Класс выстроился на физкультуре по росту, от самого низкого к самому высокому. Учитель хочет разбить ряд на <b>четыре одинаковые команды</b>. Он ставит три флажка:</p>
+    <p>первый флажок — посередине всего ряда (это медиана). Потом ещё по флажку посередине левой и правой половин. Эти три флажка и есть 사분위수: «точки, которые делят на четыре» (사 = четыре, 분 = делить, 위 = место).</p>
+    <p>Между флажками в каждой команде примерно четверть класса, то есть около 25%.</p>
+  </div>
+
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">(1) 사분위수 : 자료를 작은 값부터 크기순으로 나열하여 4등분하는 위치에 있는 값을 작은 것부터 차례대로 제1사분위수, 제2사분위수, 제3사분위수라 한다. 이때 제2사분위수는 중앙값과 같다.</p>
+    <p class="tr">Квартили: расставляем данные по возрастанию и делим на 4 равные части. Значения в точках деления по порядку называются 제1사분위수 (первый квартиль, Q1), 제2사분위수 (второй, Q2) и 제3사분위수 (третий, Q3). Второй квартиль — это и есть медиана.</p>
+    <p class="orig">(2) 사분위수 범위 : 제3사분위수와 제1사분위수의 차<br>⇨ (사분위수 범위) = (제3사분위수) − (제1사분위수)</p>
+    <p class="tr">Межквартильный размах: разность третьего и первого квартилей. Это ширина «средней половины» данных.</p>
+    <p class="small">В нашем PDF нет страницы с теорией к этому параграфу, поэтому формулировки даны по обычному учебнику. Способ вычисления совпадает с решениями в 정답과 해설 (например, задача 199).</p>
+  </div>
+
+  <h3>Как найти квартили · 사분위수 구하는 방법</h3>
+  <div class="two">
+    <div class="box">
+      <span class="tag plain">Условие 1</span>
+      <p><b>크기순으로 나열</b>. Без этого шага все остальные бессмысленны. В задачах данные почти всегда даны вперемешку.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Условие 2</span>
+      <p>Находим <b>중앙값</b> (= Q2) и делим данные на нижнюю и верхнюю половины.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Условие 3</span>
+      <p>Если значений <b>нечётное</b> число, сама медиана <b>не входит</b> ни в одну половину. Если чётное — половины просто делятся пополам.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Условие 4</span>
+      <p><b>Q1</b> = медиана нижней половины, <b>Q3</b> = медиана верхней половины. Внутри половины снова может быть чётное число значений → берём среднее двух.</p>
+    </div>
+  </div>
+
+  <figure class="box" style="align-items:stretch">
+    <div class="legend"><span><s style="background:var(--blue-bg);border-color:var(--blue)"></s>нижняя половина</span><span><s style="background:var(--coral-bg);border-color:var(--coral)"></s>중앙값</span><span><s style="background:var(--green-bg);border-color:var(--green)"></s>верхняя половина</span><span><s style="border-color:var(--violet);box-shadow:0 0 0 1.5px var(--violet)"></s>Q1 и Q3</span></div>
+    <p class="small" style="margin-top:4px">12 значений (задача 198), чётное число: медиана — среднее 6-го и 7-го, половины по 6.</p>
+    <div class="rowv" id="c-even"></div>
+    <p class="small" style="margin-top:6px">9 значений (задача 199), нечётное число: 5-е значение — медиана, оно не входит в половины по 4.</p>
+    <div class="rowv" id="c-odd"></div>
+    <figcaption>Синие значения — нижняя половина, зелёные — верхняя. Фиолетовая рамка — значения, из которых получается Q1 и Q3.</figcaption>
+  </figure>
+
+  <div class="box green">
+    <span class="tag">Пример · 예시</span>
+    <p>Данные: 12, 3, 9, 5, 10, 4, 8. Найди 사분위수 범위.</p>
+    <ol class="steps">
+      <li><div>크기순으로 나열: <span class="f">3, 4, 5, 8, 9, 10, 12</span> (7 значений, нечётное).</div></li>
+      <li><div>중앙값 = 4-е значение = <span class="f">8</span>.</div></li>
+      <li><div>Нижняя половина <span class="f">3, 4, 5</span> (без 8!) → Q1 = <span class="f">4</span>.</div></li>
+      <li><div>Верхняя половина <span class="f">9, 10, 12</span> → Q3 = <span class="f">10</span>.</div></li>
+      <li><div>사분위수 범위 = <span class="f">10 − 4 = 6</span>. Проверка: между 4 и 10 лежат 4, 5, 8, 9, 10 — середина данных ✓</div></li>
+    </ol>
+  </div>
+
+  <div class="box coral">
+    <span class="tag">Осторожно · 주의</span>
+    <p>Самая частая ошибка: при нечётном количестве оставить медиану внутри половины. В задаче 199 тогда получится Q1 = медиана из 32, 35, 36, 38, 40 = 36, а правильно 35.5. Именно это неверное утверждение и стоит в варианте ③.</p>
+    <p>Квартиль может быть дробным числом, которого нет в данных (28.5 세 в задаче 198). Это нормально.</p>
+  </div>
+</section>
+
+<!-- 3 box plot -->
+<section>
+  <h2><span class="num">3</span>상자그림 · Ящик с усами</h2>
+
+  <div class="box amber">
+    <span class="tag">Аналогия из жизни</span>
+    <p>Представь фото класса с дрона: отдельных лиц не видно, но видно, где стоит толпа. 상자그림 — такое же «фото с высоты». Вместо всех чисел остаются пять ориентиров: самый маленький, три флажка и самый большой.</p>
+    <p>Коробка (상자) — это средняя половина класса, две средние команды. Усы (수염) показывают, куда дотянулись крайние ученики.</p>
+  </div>
+
+  <div class="box">
+    <span class="tag plain">Учебник · 교과서</span>
+    <p class="orig">상자그림 : 자료의 최솟값, 제1사분위수, 중앙값, 제3사분위수, 최댓값을 이용하여 자료의 분포를 나타낸 그림</p>
+    <p class="tr">Диаграмма «ящик с усами» показывает распределение данных с помощью пяти чисел: минимум (최솟값), Q1, медиана (중앙값), Q3, максимум (최댓값).</p>
+    <p class="orig">그리는 방법 ① 수직선 위에 다섯 개의 값을 점으로 표시한다. ② 제1사분위수와 제3사분위수를 양 끝으로 하는 상자를 그리고, 중앙값의 위치에 세로선을 긋는다. ③ 최솟값과 제1사분위수, 제3사분위수와 최댓값을 각각 선분으로 연결한다.</p>
+    <p class="tr">Как рисовать: ① отметь пять чисел на числовой прямой; ② нарисуй прямоугольник от Q1 до Q3 и вертикальную черту на месте медианы; ③ соедини отрезками минимум с Q1 и Q3 с максимумом (это «усы»).</p>
+  </div>
+
+  <figure>
+    <svg id="f-anat"></svg>
+    <figcaption>Задача 201: 19 баллов по математике. Каждый из четырёх отрезков (ус, полкоробки, полкоробки, ус) содержит примерно четверть учеников, даже если отрезки разной длины.</figcaption>
+  </figure>
+
+  <h3>Как читать коробку</h3>
+  <div class="two">
+    <div class="box">
+      <span class="tag plain">Каждая часть ≈ 25%</span>
+      <p>От минимума до Q1, от Q1 до медианы, от медианы до Q3, от Q3 до максимума — в каждой части <b>약 25%</b> данных. Слово «약» (примерно) в ответах важно.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Коробка ≈ 50%</span>
+      <p>От Q1 до Q3 — <b>약 50%</b>. В задачах это «점수가 Q1 이상 Q3 이하인 학생은 전체의 약 50%». Если границы другие (например, от Q1 до максимума), это уже ≈ 75%.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Узко = плотно</span>
+      <p>В каждом отрезке одинаковая доля учеников. Если отрезок короткий, они стоят тесно: <b>구간의 폭이 좁을수록 변량들이 밀집되어 있다</b>. Длинный ус — значения там разбросаны.</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Сравнение групп</span>
+      <p>Несколько ящиков на одной оси сравнивают сразу. Коробка правее ⇒ значения в группе <b>대체로</b> (в целом) больше. Ширина коробки — разброс средней половины.</p>
+    </div>
+  </div>
+
+  <div class="cmp">
+    <div class="yes">
+      <h3>Можно узнать · 알 수 있다</h3>
+      <ul>
+        <li>최솟값, 최댓값 (концы усов)</li>
+        <li>중앙값, Q1, Q3, 사분위수 범위</li>
+        <li>범위 = 최댓값 − 최솟값</li>
+        <li>какая доля примерно попадает в часть: 25%, 50%, 75%</li>
+      </ul>
+    </div>
+    <div class="nope">
+      <h3>Нельзя узнать · 알 수 없다</h3>
+      <ul>
+        <li><b>평균</b> (среднее): медиана — не среднее!</li>
+        <li>сколько всего значений (변량의 개수)</li>
+        <li>сколько учеников получили ровно 90 или 100</li>
+        <li>все значения по отдельности</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="box coral">
+    <span class="tag">Осторожно · 주의</span>
+    <p>В тестах 203, 204, 227 одна и та же ловушка: «평균 점수는 65점이다», а 65 — это медиана. Ответ «нельзя узнать».</p>
+    <p>«Максимум 90» не значит «у 90 баллов один ученик». Их может быть несколько, по картинке этого не видно.</p>
+  </div>
+</section>
+
+<!-- 4 lab -->
+<section>
+  <h2 id="lab-anchor"><span class="num">4</span>실험실 · Лаборатория</h2>
+  <p>Впиши свои числа или выбери данные из задачи. Кнопка «по шагам» проходит весь путь: упорядочить → медиана → половины и квартили → ящик. Потом нажми «выброс»: самое большое значение улетит далеко. Посмотри, что изменится у ящика, а что у среднего.</p>
+  <div class="lab">
+    <div class="ctrl">
+      <label for="labIn">Данные через запятую (3–30 чисел)
+        <input id="labIn" type="text" inputmode="decimal" autocomplete="off" value="26, 32, 35, 30, 28, 33, 27, 29, 34, 31, 29, 36">
+      </label>
+      <div class="btns">
+        <button type="button" data-set="198">198</button>
+        <button type="button" data-set="199">199</button>
+        <button type="button" data-set="201">201</button>
+        <button type="button" data-set="225">225</button>
+        <button type="button" id="bOut">выброс: максимум +40</button>
+      </div>
+      <div class="rowv" id="labChips" aria-live="polite"></div>
+      <div class="stepbar">
+        <button type="button" id="bStep">по шагам ▸</button>
+        <button type="button" id="bAll">показать всё</button>
+        <p class="log" id="labLog" aria-live="polite"></p>
+      </div>
+    </div>
+    <figure><svg id="labBox"></svg></figure>
+    <div class="five" id="labFive"></div>
+    <div class="read" style="grid-template-columns:1fr auto 1fr auto">
+      <span>사분위수 범위</span><b id="rIqr" style="color:var(--violet)">—</b>
+      <span>범위 <span class="small">max − min</span></span><b id="rRng">—</b>
+      <span>평균 <span class="small">для сравнения</span></span><b id="rMean" style="color:var(--blue)">—</b>
+      <span>개수 <span class="small">n</span></span><b id="rN">—</b>
+    </div>
+  </div>
+</section>
+
+<!-- 5 recipe -->
+<section>
+  <h2><span class="num">5</span>풀이 순서 · Рецепт решения</h2>
+  <div class="two">
+    <div class="box">
+      <span class="tag plain">Тип 1. Даны числа → найти квартили</span>
+      <ol class="steps">
+        <li><div>Упорядочь (크기순으로 나열) и посчитай <span class="m">n</span>.</div></li>
+        <li><div>중앙값: середина или среднее двух средних.</div></li>
+        <li><div>Половины. <span class="m">n</span> нечётное ⇒ медиану выбрасываем.</div></li>
+        <li><div>Q1, Q3 = медианы половин. 사분위수 범위 = Q3 − Q1.</div></li>
+      </ol>
+      <p class="warn"><b>Где ошибаются:</b> шаг 1 (забыли упорядочить) и шаг 3 (оставили медиану в половине).</p>
+    </div>
+    <div class="box">
+      <span class="tag plain">Тип 2. Дан 상자그림 → верно/неверно</span>
+      <ol class="steps">
+        <li><div>Выпиши пять чисел с картинки: min, Q1, 중앙값, Q3, max.</div></li>
+        <li><div>Утверждение про 평균 или про число людей ⇒ <b>알 수 없다</b>.</div></li>
+        <li><div>Утверждение «약 ○○%»: сосчитай, сколько четвертинок между границами.</div></li>
+        <li><div>Две группы с одинаковым числом людей: сравни, где стоит одно и то же число в каждой (медиана? Q3?).</div></li>
+      </ol>
+      <p class="warn"><b>Где ошибаются:</b> принимают медиану за среднее и «от Q1 до max» за 50%.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 problems -->
+<section>
+  <h2><span class="num">6</span>교재 문제 · Задачи</h2>
+  <p class="small">Задачи с зелёной рамкой и меткой «разбор» — ключевые: у них полное решение. В остальных только подсказка, решай сам. Ящики перерисованы по учебнику, масштаб может немного отличаться.</p>
+  <div id="probs" style="display:flex;flex-direction:column;gap:14px"></div>
+</section>
+
+<!-- 7 cheat sheet -->
+<section>
+  <h2><span class="num">7</span>정리 · Шпаргалка</h2>
+  <div class="tbl box" style="padding:6px 8px">
+    <table>
+      <thead><tr><th>Что</th><th>Как найти / что значит</th><th>Задачи</th></tr></thead>
+      <tbody>
+        <tr><td>중앙값 (Q2)</td><td>середина упорядоченных данных</td><td>200, 225</td></tr>
+        <tr><td>제1·제3사분위수</td><td>медианы нижней и верхней половины (нечётное <span class="m">n</span> → без медианы)</td><td>198, 199, 200, 201</td></tr>
+        <tr><td>사분위수 범위</td><td>Q3 − Q1, ширина коробки</td><td>198, 199, 225</td></tr>
+        <tr><td>상자그림</td><td>min – Q1 – 중앙값 – Q3 – max, каждая часть ≈ 25%</td><td>201, 202, 226</td></tr>
+        <tr><td>Чтение ящика</td><td>среднее и количество узнать нельзя; Q1…Q3 ≈ 50%</td><td>203, 204, 227</td></tr>
+        <tr><td>«상위 25%»</td><td>значения не меньше Q3</td><td>215</td></tr>
+        <tr><td>Два ящика</td><td>то же число людей ⇒ сравнивай доли (50% против 25%)</td><td>216, 228</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box coral">
+    <span class="tag">Частые ошибки</span>
+    <ul class="mist">
+      <li>Считают квартили по неупорядоченным данным.</li>
+      <li>При нечётном <span class="m">n</span> включают медиану в половины.</li>
+      <li>Называют медиану средним (평균).</li>
+      <li>Думают, что по картинке видно, сколько учеников получили максимальный балл.</li>
+      <li>Длинный ус = «там больше учеников». Нет: учеников там столько же (≈ 25%), просто они разбросаны шире.</li>
+      <li>Путают концы усов: читают Q1 вместо минимума.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+<script>
+/* ---------- helpers ---------- */
+const fmt=v=>{const r=Math.round(v*100)/100;return (Object.is(r,-0)?0:r).toString().replace('-','−');};
+const $=id=>document.getElementById(id);
+
+/* quartiles, textbook method: odd n → median excluded from halves */
+function quart(arr){
+  const s=[...arr].sort((a,b)=>a-b),n=s.length;
+  const midIdx=(i0,len)=>len%2?[i0+(len-1)/2]:[i0+len/2-1,i0+len/2];
+  const val=ix=>ix.reduce((a,i)=>a+s[i],0)/ix.length;
+  const md=midIdx(0,n);
+  const h=Math.floor(n/2);
+  const loR=[0,h-1], hiR=[n%2?h+1:h,n-1];
+  const q1=midIdx(0,h), q3=midIdx(hiR[0],h);
+  return {s,n,md,q1,q3,loR,hiR,min:s[0],max:s[n-1],Q1:val(q1),M:val(md),Q3:val(q3),mean:s.reduce((a,b)=>a+b,0)/n};
+}
+
+/* chips row. stage: 0 raw, 1 sorted, 2 median, 3 halves+Q, 4 all */
+function chips(el,arr,stage=4){
+  if(stage===0){el.innerHTML=arr.map(v=>`<div class="cv"><b>${fmt(v)}</b><i></i></div>`).join('');return;}
+  const q=quart(arr);
+  el.innerHTML=q.s.map((v,i)=>{
+    const cls=[];let tag='';
+    if(stage>=2&&q.md.includes(i)){cls.push('md');tag='중앙값';}
+    if(stage>=3){
+      if(i>=q.loR[0]&&i<=q.loR[1])cls.push('lo');
+      if(i>=q.hiR[0]&&i<=q.hiR[1])cls.push('hi');
+      if(q.q1.includes(i)){cls.push('q');tag='Q1';}
+      if(q.q3.includes(i)){cls.push('q');tag='Q3';}
+      if(q.md.includes(i)&&q.n%2)cls.push('dim');
+    }
+    return `<div class="cv ${cls.join(' ')}"><b>${fmt(v)}</b><i>${tag||(i+1)}</i></div>`;
+  }).join('');
+}
+
+/* box plot. rows:[{label,v:[min,q1,md,q3,max],cls}] */
+function boxplot(el,rows,lo,hi,o={}){
+  const W=o.W??560,L=o.L??(rows.some(r=>r.label)?48:16),R=o.R??22,rowH=o.rowH??52,top=o.annot?54:10;
+  const X=v=>L+(v-lo)/(hi-lo)*(W-L-R);
+  const yA=top+rows.length*rowH+6;
+  const H=yA+(o.annot?96:30);
+  const out=[];
+  rows.forEach((r,i)=>{
+    const yc=top+i*rowH+rowH/2, bh=Math.min(34,rowH-14);
+    const [a,b,c,d,e]=r.v.map(X);
+    if(o.dash!==false)r.v.forEach(v=>out.push(`<line x1="${X(v)}" y1="${yc+(v===r.v[0]||v===r.v[4]?8:bh/2)}" x2="${X(v)}" y2="${yA}" class="faint" style="stroke-dasharray:3 3"/>`));
+    out.push(`<line x1="${a}" y1="${yc}" x2="${b}" y2="${yc}" class="ink"/><line x1="${d}" y1="${yc}" x2="${e}" y2="${yc}" class="ink"/>`);
+    out.push(`<line x1="${a}" y1="${yc-8}" x2="${a}" y2="${yc+8}" class="ink"/><line x1="${e}" y1="${yc-8}" x2="${e}" y2="${yc+8}" class="ink"/>`);
+    out.push(`<rect x="${b}" y="${yc-bh/2}" width="${Math.max(d-b,1)}" height="${bh}" class="bx-${r.cls||'blue'}"/>`);
+    out.push(`<line x1="${c}" y1="${yc-bh/2}" x2="${c}" y2="${yc+bh/2}" class="med"/>`);
+    if(r.label)out.push(`<text x="${L-12}" y="${yc}" class="lbl" text-anchor="end" dominant-baseline="central" style="font-family:var(--f-ko);font-size:14px;font-weight:600">${r.label}</text>`);
+  });
+  out.push(`<line x1="${L}" y1="${yA}" x2="${W-R}" y2="${yA}" class="ink"/>`);
+  const st=o.step??1,lb=o.lab??10;
+  for(let v=lo;v<=hi+1e-9;v+=st){
+    const major=Math.abs(((v-lo)/lb)-Math.round((v-lo)/lb))<1e-9;
+    out.push(`<line x1="${X(v)}" y1="${yA}" x2="${X(v)}" y2="${yA+(major?7:4)}" class="ink" style="stroke-width:1"/>`);
+    if(major)out.push(`<text x="${X(v)}" y="${yA+20}" class="lbl" text-anchor="middle" style="font-size:12.5px">${fmt(v)}</text>`);
+  }
+  if(o.unit)out.push(`<text x="${W-R+14}" y="${yA+20}" class="ann" text-anchor="start">${o.unit}</text>`);
+  if(o.annot){
+    const v=rows[0].v,names=['최솟값','제1사분위수','중앙값','제3사분위수','최댓값'];
+    v.forEach((x,k)=>{const anc=k===0?'start':k===4?'end':'middle';const xx=X(x)+(k===0?-4:k===4?4:0);
+      out.push(`<text x="${xx}" y="16" class="ann" text-anchor="${anc}" style="fill:${k===2?'var(--coral)':k%2?'var(--violet)':'var(--muted)'};font-weight:600">${names[k]}</text>`);
+      out.push(`<text x="${xx}" y="34" class="lbl" text-anchor="${anc}" style="font-size:14px;font-weight:600">${fmt(x)}</text>`);});
+    const yb=yA+36;
+    for(let k=0;k<4;k++){const x1=X(v[k])+2,x2=X(v[k+1])-2,xm=(x1+x2)/2;
+      out.push(`<path d="M${x1} ${yb-6}V${yb}H${x2}V${yb-6}" class="brk"/><text x="${xm}" y="${yb+15}" class="ann" text-anchor="middle" style="fill:var(--violet)">약 25%</text>`);}
+    const y2=yb+40,x1=X(v[1]),x2=X(v[3]);
+    out.push(`<path d="M${x1} ${y2-6}V${y2}H${x2}V${y2-6}" class="brk" style="stroke:var(--ink)"/><text x="${(x1+x2)/2}" y="${y2+16}" class="ann" text-anchor="middle" style="fill:var(--ink)">사분위수 범위 = ${fmt(v[3])} − ${fmt(v[1])} = ${fmt(v[3]-v[1])} (약 50%)</text>`);
+  }
+  el.setAttribute('viewBox',`0 0 ${W} ${H}`);el.setAttribute('width',W);el.setAttribute('role','img');
+  el.innerHTML=out.join('');
+}
+
+/* ---------- vocab ---------- */
+const VOCAB=[
+ ["사분위수","квартиль","делит упорядоченные данные на 4 части"],
+ ["제1사분위수","первый квартиль (Q1)","медиана нижней половины"],
+ ["제2사분위수","второй квартиль (Q2)","= 중앙값"],
+ ["제3사분위수","третий квартиль (Q3)","медиана верхней половины"],
+ ["사분위수 범위","межквартильный размах","Q3 − Q1"],
+ ["상자그림","ящик с усами","рисунок из пяти чисел"],
+ ["중앙값","медиана","значение посередине"],
+ ["최솟값 / 최댓값","минимум / максимум","концы усов"],
+ ["범위","размах","최댓값 − 최솟값"],
+ ["변량","значение (данные)","каждое число в наборе"],
+ ["크기순으로 나열하다","упорядочить по величине","작은 값부터 = по возрастанию"],
+ ["이상 / 이하","не меньше / не больше","≥ / ≤ (включая само число)"],
+ ["전체의 약 50%","примерно 50% от всех","약 = примерно"],
+ ["상위 25%","верхние 25%","лучшая четверть, от Q3 и выше"],
+ ["분포","распределение","как расположены данные"],
+ ["밀집되어 있다","расположены плотно","много значений на узком отрезке"],
+ ["대체로","в целом, в основном","про общую картину"],
+ ["평균","среднее","по 상자그림 узнать нельзя!"],
+ ["옳지 않은 것","неверное утверждение","ищем ошибку"],
+ ["옳은 것을 모두 고르면 (정답 2개)","выбери все верные (2 ответа)","ровно два варианта"]
+];
+$('vocab').innerHTML=VOCAB.map(v=>`<div class="vc"><b>${v[0]}</b><i>${v[1]}</i><span>${v[2]}</span></div>`).join('');
+
+/* ---------- static figures ---------- */
+const DATA={198:[26,32,35,30,28,33,27,29,34,31,29,36],199:[40,36,49,35,41,38,46,32,44],
+ 201:[50,72,58,95,64,80,54,88,76,98,60,70,82,74,90,68,78,92,84],225:[5,1,9,12,18,3,10,8,14,4,11,6,12,13,7,16,4]};
+chips($('w-odd'),[3,4,5,8,9,10,12],2);
+chips($('w-even'),[2,3,5,9,11,14],2);
+chips($('c-even'),DATA[198],4);
+chips($('c-odd'),DATA[199],4);
+boxplot($('f-anat'),[{v:[50,64,76,88,98],cls:'blue'}],50,100,{step:2,lab:10,annot:1,rowH:56,L:24,R:24,unit:''});
+
+/* ---------- lab ---------- */
+(function(){
+  const inp=$('labIn'),log=$('labLog');let stage=4,data=DATA[198].slice();
+  const MSG=['Шаг 1. Данные как в условии, вперемешку.','Шаг 2. 크기순으로 나열: расставили по возрастанию. Под числами — их номера.','Шаг 3. 중앙값 (Q2) посередине.','Шаг 4. Половины: синяя и зелёная. Q1 и Q3 — медианы половин.','Шаг 5. По пяти числам рисуем 상자그림.'];
+  function parse(){
+    const a=inp.value.split(/[,\s;]+/).map(t=>t.replace('−','-')).filter(t=>t!=='').map(Number);
+    if(a.some(x=>!Number.isFinite(x)))return {err:'Есть не число. Пиши только числа через запятую, например: 5, 12, 7.'};
+    if(a.length<3)return {err:'Нужно хотя бы 3 числа.'};
+    if(a.length>30)return {err:'Не больше 30 чисел, иначе не помещается.'};
+    return {a};
+  }
+  function nice(min,max){
+    const span=Math.max(max-min,1);const steps=[1,2,5,10,20,25,50,100];
+    let st=steps.find(s=>span/s<=10)||100;let lo=Math.floor(min/st)*st,hi=Math.ceil(max/st)*st;if(hi===lo)hi+=st;
+    let minor=st>=10?st/5:st>=5?1:st/2;if(minor<1&&Number.isInteger(min)&&Number.isInteger(max))minor=st;
+    return {lo,hi,lab:st,step:minor};
+  }
+  function draw(){
+    const p=parse();
+    if(p.err){log.innerHTML=`<span class="no">${p.err}</span>`;return;}
+    data=p.a;const q=quart(data);
+    chips($('labChips'),data,Math.min(stage,4));
+    const svg=$('labBox');
+    if(stage>=4){const ax=nice(q.min,q.max);boxplot(svg,[{v:[q.min,q.Q1,q.M,q.Q3,q.max],cls:'blue'}],ax.lo,ax.hi,{step:ax.step,lab:ax.lab,rowH:60,L:20,R:20});
+      const xm=20+(q.mean-ax.lo)/(ax.hi-ax.lo)*520;
+      svg.insertAdjacentHTML('beforeend',`<path d="M${xm} 12 l-6 -9 h12 z" style="fill:var(--blue)"/>`);
+    } else {svg.setAttribute('viewBox','0 0 560 60');svg.innerHTML=`<text x="280" y="34" text-anchor="middle" class="ann">상자그림 появится на шаге 5</text>`;}
+    const show=stage>=3;
+    const cells=[['최솟값',q.min,stage>=1],['제1사분위수',q.Q1,show],['중앙값',q.M,stage>=2],['제3사분위수',q.Q3,show],['최댓값',q.max,stage>=1]];
+    $('labFive').innerHTML=cells.map(([k,v,s],i)=>`<div><small>${k}</small><b style="color:${i===2?'var(--coral)':i%2?'var(--violet)':'var(--ink)'}">${s?fmt(v):'?'}</b></div>`).join('');
+    $('rIqr').textContent=show?fmt(q.Q3-q.Q1):'?';
+    $('rRng').textContent=stage>=1?fmt(q.max-q.min):'?';
+    $('rMean').textContent=fmt(q.mean);
+    $('rN').textContent=q.n+(q.n%2?' (нечёт.)':' (чёт.)');
+    if(stage<4)log.textContent=MSG[stage];
+    $('bStep').textContent=stage>=4?'по шагам ▸':'дальше ▸';
+  }
+  inp.addEventListener('input',()=>{stage=4;draw();if(!parse().err)log.textContent='Синий треугольник над ящиком — среднее (평균). Оно не входит в 상자그림.';});
+  document.querySelectorAll('[data-set]').forEach(b=>b.onclick=()=>{inp.value=DATA[b.dataset.set].join(', ');stage=4;draw();log.textContent=`Данные задачи ${b.dataset.set}. Нажми «по шагам», чтобы пройти решение.`;});
+  $('bStep').onclick=()=>{stage=stage>=4?0:stage+1;draw();if(stage===4)log.textContent=MSG[4];};
+  $('bAll').onclick=()=>{stage=4;draw();log.textContent=MSG[4];};
+  $('bOut').onclick=()=>{const p=parse();if(p.err)return;const a=p.a.slice();const i=a.indexOf(Math.max(...a));const q0=quart(a);a[i]+=40;inp.value=a.join(', ');stage=4;draw();const q1=quart(a);
+    log.innerHTML=`Максимум ${fmt(q0.max)} → ${fmt(q1.max)}: вырос только правый ус. Q1, 중앙값, Q3 <span class="ok">не изменились</span>, а 평균 ${fmt(q0.mean)} → <span class="no">${fmt(q1.mean)}</span>. Поэтому 상자그림 «не боится» выбросов.`;};
+  draw();log.textContent='Сейчас данные задачи 198. Синий треугольник над ящиком — среднее (평균) для сравнения.';
+  window.loadLab=n=>{inp.value=DATA[n].join(', ');stage=0;draw();$('lab-anchor').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});};
+})();
+
+/* ---------- problems ---------- */
+const PROBS=[
+ {g:'개념 이해',n:198,lv:'하',rep:1,lab:198,ko:'다음 자료는 어느 영화 동호회 회원 12명의 나이를 조사하여 나타낸 것이다. 사분위수 범위를 구하시오.',ru:'Возраст 12 членов киноклуба. Найди межквартильный размах.',data:'26, 32, 35, 30, 28, 33,<br>27, 29, 34, 31, 29, 36 (단위: 세)',
+  sol:['크기순으로 나열: <span class="f">26, 27, 28, 29, 29, 30 | 31, 32, 33, 34, 35, 36</span>. 12 значений, чётное ⇒ половины по 6.','Q1 = медиана нижней половины <span class="f">26, 27, 28, 29, 29, 30</span> = <span class="f">(28 + 29) ÷ 2 = 28.5</span> (세).','Q3 = медиана верхней половины <span class="f">31, 32, 33, 34, 35, 36</span> = <span class="f">(33 + 34) ÷ 2 = 33.5</span> (세).','사분위수 범위 = <span class="f">33.5 − 28.5 = 5</span> (세). Медиана здесь даже не понадобилась.'],ans:'5세'},
+ {g:'개념 이해',n:199,lv:'중하',rep:1,lab:199,ko:'아래 자료는 달걀 9개의 무게를 조사하여 나타낸 것이다. 다음 중 옳지 않은 것은?',ru:'Вес 9 яиц. Какое утверждение неверно?',data:'40, 36, 49, 35, 41, 38, 46, 32, 44 (단위: g)',
+  ch:['① 최댓값은 49g이다.','② 중앙값은 40g이다.','③ 제1사분위수는 36g이다.','④ 제3사분위수는 45g이다.','⑤ 사분위수 범위는 9.5g이다.'],col:1,
+  sol:['크기순으로 나열: <span class="f">32, 35, 36, 38, <b>40</b>, 41, 44, 46, 49</span>. 9 значений, нечётное.','① максимум 49 ✓. ② медиана — 5-е значение 40 ✓.','Медиану 40 из половин <b>убираем</b>. Нижняя: <span class="f">32, 35, 36, 38</span> ⇒ Q1 = <span class="f">(35 + 36) ÷ 2 = 35.5</span>. Значит ③ «36» ✗.','Верхняя: <span class="f">41, 44, 46, 49</span> ⇒ Q3 = <span class="f">(44 + 46) ÷ 2 = 45</span> ✓ ④.','⑤ <span class="f">45 − 35.5 = 9.5</span> ✓.','36 получается, если ошибочно оставить 40 в нижней половине. Это и есть ловушка.'],ans:'③'},
+ {g:'개념 이해',n:200,lv:'중하',rep:1,ko:'다음은 8개의 변량을 작은 값부터 크기순으로 나열한 것이다. 이 자료의 중앙값이 14일 때, 제3사분위수를 구하시오.',ru:'8 значений уже упорядочены. Медиана 14. Найди третий квартиль.',data:'6, 10, 10, <span class="m">x</span>, 16, 18, <span class="m">x</span> + 8, 25',
+  sol:['8 значений ⇒ медиана — среднее 4-го и 5-го: <span class="f">(<span class="m">x</span> + 16) ÷ 2 = 14</span> ⇒ <span class="f"><span class="m">x</span> + 16 = 28</span> ⇒ <span class="f"><span class="m">x</span> = 12</span>.','Данные: <span class="f">6, 10, 10, 12, 16, 18, 20, 25</span> (порядок не нарушился ✓).','Верхняя половина <span class="f">16, 18, 20, 25</span> ⇒ Q3 = <span class="f">(18 + 20) ÷ 2 = 19</span>.'],ans:'19'},
+ {g:'개념 이해',n:201,lv:'하',rep:1,lab:201,fig:'201',ko:'다음은 하랑이네 반 학생 19명의 수학 점수를 조사하여 나타낸 것이다. 다음 중 이 자료의 상자그림으로 알맞은 것은?',ru:'Баллы 19 учеников по математике. Какой 상자그림 подходит к этим данным?',data:'50, 72, 58, 95, 64, 80, 54, 88, 76, 98,<br>60, 70, 82, 74, 90, 68, 78, 92, 84 (단위: 점)',
+  sol:['크기순으로 나열: <span class="f">50, 54, 58, 60, 64, 68, 70, 72, 74, <b>76</b>, 78, 80, 82, 84, 88, 90, 92, 95, 98</span>.','min = 50, max = 98. 19 значений ⇒ медиана 10-я = <span class="f">76</span>.','Нижняя половина — первые 9 ⇒ Q1 = 5-е = <span class="f">64</span>. Верхняя — с 11-го по 19-е ⇒ Q3 = 15-е = <span class="f">88</span>.','Ищем ящик 50 – 64 – 76 – 88 – 98. ① и ④: Q3 84 ✗. ③: минимум 54 ✗. ⑤: медиана 78 ✗. Остаётся ②.'],ans:'②'},
+ {g:'개념 이해',n:202,lv:'중하',ko:'다음 중 상자그림에 대한 설명으로 옳은 것은?',ru:'Какое утверждение о 상자그림 верно?',
+  ch:['① 제1사분위수, 중앙값, 제3사분위수, 최댓값만을 이용하여 나타낸 그래프이다.','② 자료의 변량의 개수를 알 수 있다.','③ 자료의 평균을 알 수 있다.','④ 구간의 폭이 좁을수록 변량들이 밀집되어 있다.','⑤ 여러 집단의 분포를 한눈에 파악하고 비교할 수 없다.'],col:1,
+  hint:'Сколько чисел нужно для 상자그림? (Пересчитай в ①.) Таблица «можно / нельзя узнать» в разделе 3 отвечает на ② и ③. Вспомни «узко = плотно».'},
+ {g:'개념 이해',n:203,lv:'중하',rep:1,fig:'203',ko:'아래 그림은 우석이네 반 학생들의 수행 평가 점수를 조사하여 나타낸 상자그림이다. 다음 중 옳은 것을 모두 고르면? (정답 2개)',ru:'상자그림 баллов класса Усока. Выбери все верные утверждения (2 ответа).',
+  ch:['① 제1사분위수는 55점이다.','② 평균 점수는 65점이다.','③ 점수가 55점 이상 90점 이하인 학생은 전체의 약 50%이다.','④ 점수가 가장 높은 학생의 점수는 90점이다.','⑤ 점수가 90점인 학생은 1명이다.'],col:1,
+  sol:['Пять чисел с рисунка: min 50, Q1 55, 중앙값 65, Q3 80, max 90.','① Q1 = 55 ✓.','② 65 — медиана, а среднее по ящику узнать нельзя ✗.','③ От 55 (Q1) до 90 (max) — три четвертинки ⇒ ≈ 75%, а не 50% ✗. 50% было бы от 55 до 80.','④ максимум 90 ✓.','⑤ Сколько учеников получили 90, не видно ✗.'],ans:'①, ④'},
+ {g:'개념 이해',n:204,lv:'중하',fig:'204',ko:'아래 그림은 우진이네 반 학생들의 수행 평가 점수를 조사하여 나타낸 상자그림이다. 다음 중 옳은 것을 모두 고르면? (정답 2개)',ru:'상자그림 баллов класса Уджина. Выбери все верные (2 ответа).',
+  ch:['① 평균 점수는 70점이다.','② 제3사분위수는 85점이다.','③ 점수가 100점인 학생은 1명이다.','④ 점수가 가장 낮은 학생의 점수는 50점이다.','⑤ 점수가 50점 이상 85점 이하인 학생은 전체의 약 50%이다.'],col:1,
+  hint:'Близнец 203. Выпиши пять чисел (осторожно: минимум — конец левого уса, а не начало коробки). Потом проверь каждое утверждение по таблице «можно / нельзя».'},
+ {g:'응용 도전',n:215,lv:'중',fig:'215',ko:'다음은 어느 중학교 교내 과학 경시대회에 참가한 학생 27명의 시험 점수를 조사하여 나타낸 상자그림이다. 상위 25% 안에 들려면 시험 점수가 최소 몇 점이어야 하는지 구하시오.',ru:'상자그림 баллов 27 участников олимпиады. Сколько баллов нужно минимум, чтобы попасть в верхние 25%?',
+  hint:'Верхняя четверть — от какого из пяти чисел до максимума? Прочитай это число на оси (мелкие деления по 1 баллу).'},
+ {g:'응용 도전',n:216,lv:'중',rep:1,fig:'216',ko:'아래 그림은 학생 수가 같은 3학년 1반과 2반 학생들이 한 달 동안 교내 운동 시설 이용 횟수를 조사하여 나타낸 상자그림이다. 다음 중 옳은 것은?',ru:'상자그림 числа посещений спортзала за месяц в 1-м и 2-м классах (учеников поровну). Какое утверждение верно?',
+  ch:['① 2반에서 이용 횟수가 9회 이하인 학생은 없다.','② 1반에서 이용 횟수가 가장 많은 학생의 이용 횟수는 26회이다.','③ 이용 횟수가 21회 이상인 학생은 1반이 2반보다 더 많다.','④ 이용 횟수가 가장 적은 학생과 가장 많은 학생의 횟수의 차는 1반보다 2반이 더 크다.','⑤ 2반의 이용 횟수가 1반의 이용 횟수보다 대체로 많다고 할 수 있다.'],col:1,
+  sol:['Пять чисел. 1반: 7, 15, 21, 26, 31. 2반: 5, 9, 13, 21, 29.','① У 2반 минимум 5 ⇒ есть ученики с 9 и меньше ✗.','② Максимум 1반 — 31, а 26 — это Q3 ✗.','③ 21 у 1반 — медиана ⇒ не меньше 21 примерно у <b>50%</b>. У 2반 21 — это Q3 ⇒ примерно <b>25%</b>. Учеников в классах поровну ⇒ в 1반 больше ✓.','④ Размах: 1반 <span class="f">31 − 7 = 24</span>, 2반 <span class="f">29 − 5 = 24</span> — одинаково ✗.','⑤ Ящик 1반 правее ⇒ в целом больше посещений у 1반, а не у 2반 ✗.'],ans:'③'},
+ {g:'단원 마무리',n:225,lv:'중하',lab:225,ko:'다음 자료는 진권이네 반 학생 17명의 통학 시간을 조사하여 나타낸 것이다. 이 자료의 중앙값을 a분, 사분위수 범위를 b분이라 할 때, a − b의 값을 구하시오.',ru:'Время дороги в школу у 17 учеников. Медиана a минут, межквартильный размах b минут. Найди a − b.',data:'5, 1, 9, 12, 18, 3, 10, 8, 14,<br>4, 11, 6, 12, 13, 7, 16, 4 (단위: 분)',
+  hint:'17 — нечётное: медиана 9-я, половины по 8 без неё. Внутри половины 8 значений ⇒ квартиль — среднее 4-го и 5-го. Проверь себя в лаборатории (кнопка ниже).'},
+ {g:'단원 마무리',n:226,lv:'중하',rep:1,fig:'226',ko:'다음 상자그림이 나타내는 자료로 알맞은 것은?',ru:'Каким данным соответствует этот 상자그림?',
+  ch:['① 20, 25, 30, 42, 48, 52, 60, 65, 70, 80','② 20, 28, 35, 42, 48, 52, 60, 65, 70, 80','③ 20, 28, 35, 42, 45, 53, 60, 65, 70, 80','④ 20, 28, 35, 42, 50, 50, 60, 70, 75, 80','⑤ 22, 28, 35, 42, 48, 52, 60, 65, 70, 82'],col:1,
+  sol:['С рисунка: min 20, Q1 35, 중앙값 50, Q3 65, max 80.','Во всех вариантах 10 значений (уже упорядочены). Медиана — среднее 5-го и 6-го; половины по 5 ⇒ Q1 = 3-е, Q3 = 8-е.','⑤: min 22 ✗. ①: 3-е = 30, а нужно 35 ✗.','③: медиана <span class="f">(45 + 53) ÷ 2 = 49</span> ✗. ④: 8-е = 70 ✗.','②: 3-е 35 ✓, медиана <span class="f">(48 + 52) ÷ 2 = 50</span> ✓, 8-е 65 ✓, концы 20 и 80 ✓.'],ans:'②'},
+ {g:'단원 마무리',n:227,lv:'중하',fig:'227',ko:'아래 그림은 지윤이네 반 학생들의 수행 평가 점수를 조사하여 나타낸 상자그림이다. 다음 중 옳은 것을 모두 고르면? (정답 2개)',ru:'상자그림 баллов класса Джиюн. Выбери все верные (2 ответа).',
+  ch:['① 제1사분위수는 45점이다.','② 평균 점수는 60점이다.','③ 점수가 95점인 학생은 1명이다.','④ 점수가 가장 낮은 학생의 점수는 45점이다.','⑤ 점수가 45점 이상 75점 이하인 학생은 전체의 약 50%이다.'],col:1,
+  hint:'Третий близнец 203. Где минимум, а где Q1? Какие утверждения о том, чего не видно на рисунке?'},
+ {g:'단원 마무리',n:228,lv:'중',fig:'228',ko:'아래 그림은 학생 수가 같은 3학년 1반과 2반 학생들이 하루 동안 생성형 인공지능을 이용한 횟수를 조사하여 나타낸 상자그림이다. 다음 중 옳은 것은?',ru:'상자그림 числа обращений к генеративному ИИ за день в 1-м и 2-м классах (учеников поровну). Какое утверждение верно?',
+  ch:['① 1반에서 이용 횟수가 가장 많은 학생의 이용 횟수는 27회이다.','② 2반에서 이용 횟수가 10회 이하인 학생은 없다.','③ 2반의 이용 횟수가 1반의 이용 횟수보다 대체로 많다고 할 수 있다.','④ 이용 횟수가 가장 적은 학생과 가장 많은 학생의 횟수의 차는 1반보다 2반이 더 크다.','⑤ 이용 횟수가 22회 이상인 학생은 1반이 2반보다 더 많다.'],col:1,
+  hint:'Близнец 216 с теми же ловушками в другом порядке. Выпиши пять чисел для каждого класса. Для «22회 이상»: чем является 22 в 1반 и чем в 2반?'}
+];
+const GROUPS={'개념 이해':'базовые','응용 도전':'применение','단원 마무리':'итог раздела'};
+const FIG={
+ '201':el=>boxplot(el,[{label:'①',v:[50,64,76,84,96],cls:'coral'},{label:'②',v:[50,64,76,88,98],cls:'coral'},{label:'③',v:[54,64,76,88,98],cls:'coral'},{label:'④',v:[50,64,76,84,96],cls:'coral'},{label:'⑤',v:[50,64,78,88,98],cls:'coral'}],50,100,{step:2,lab:10,rowH:44,W:520,unit:'(점)',R:40}),
+ '203':el=>boxplot(el,[{v:[50,55,65,80,90]}],50,100,{step:2,lab:10,W:440,R:40,unit:'(점)'}),
+ '204':el=>boxplot(el,[{v:[40,50,70,85,100]}],40,100,{step:2,lab:10,W:440,R:40,unit:'(점)'}),
+ '215':el=>boxplot(el,[{v:[68,75,82,88,96]}],68,96,{step:1,lab:4,W:460,R:40,unit:'(점)'}),
+ '216':el=>boxplot(el,[{label:'1반',v:[7,15,21,26,31],cls:'green'},{label:'2반',v:[5,9,13,21,29],cls:'green'}],0,35,{step:1,lab:5,W:480,R:40,unit:'(회)'}),
+ '226':el=>boxplot(el,[{v:[20,35,50,65,80],cls:'coral'}],20,80,{step:5,lab:15,W:420,R:30}),
+ '227':el=>boxplot(el,[{v:[35,45,60,75,95]}],30,100,{step:2,lab:10,W:440,R:40,unit:'(점)'}),
+ '228':el=>boxplot(el,[{label:'1반',v:[6,14,22,27,32],cls:'green'},{label:'2반',v:[4,10,15,22,30],cls:'green'}],0,35,{step:1,lab:5,W:480,R:40,unit:'(회)'})
+};
+(function(){
+  const box=$('probs');let cur='';const html=[];
+  PROBS.forEach(p=>{
+    if(p.g!==cur){cur=p.g;html.push(`<div class="group-h"><b>${p.g}</b><span>${GROUPS[p.g]}</span></div>`);}
+    const ch=p.ch?`<div class="choices${p.col?' col':''}" lang="ko">${p.ch.map(c=>`<span>${c}</span>`).join('')}</div>`:'';
+    const extra=(p.data?`<div class="databox">${p.data}</div>`:'')+(p.fig?`<div class="figwrap"><svg data-fig="${p.fig}"></svg></div>`:'');
+    const labBtn=p.lab?`<div class="btns"><button type="button" onclick="loadLab(${p.lab})">Открыть в лаборатории</button></div>`:'';
+    const body=p.rep
+      ?`<details class="sol"><summary>Решение · 풀이</summary><div><ol class="steps">${p.sol.map(s=>`<li><div>${s}</div></li>`).join('')}</ol><p>Ответ · 정답: <span class="ans">${p.ans}</span></p></div></details>`
+      :`<details><summary>Подсказка · 힌트</summary><div><p>${p.hint}</p></div></details>`;
+    html.push(`<article class="prob${p.rep?' rep':''}" id="p${p.n}"><div class="ph"><span class="pn">${p.n}</span><span class="lv">${p.lv}</span>${p.rep?'<span class="rp">разбор</span>':''}</div>
+      <p class="orig">${p.ko}</p><p class="tr">${p.ru}</p>${extra}${ch}${labBtn}${body}</article>`);
+  });
+  box.innerHTML=html.join('');
+  box.querySelectorAll('svg[data-fig]').forEach(s=>{FIG[s.dataset.fig](s);s.parentNode.style.width='100%';s.style.maxWidth='100%';});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,908 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>방정식과 부등식에의 활용 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, как в прошлых уроках: словарь → повторение → уравнения → кубическое уравнение → лаборатория → неравенства → рецепт → задачи учебника → сборник → шпаргалка. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* 증가, f' > 0 */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* 감소, f' < 0 */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;
+  --amber-soft:#fbf2e0;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.6vw,42px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+.up{color:var(--blue);font-weight:600}
+.down{color:var(--coral);font-weight:600}
+
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.8}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px}
+.label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.theorem .label{color:var(--blue)}
+.analogy{background:var(--amber-soft)}
+.analogy .label{color:var(--amber)}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral)}
+.note{background:var(--blue-soft)}
+.note .label{color:var(--blue)}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green)}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figcaption{font-size:14px;color:var(--muted)}
+figure svg{width:100%;height:auto;display:block}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+/* 증감표 */
+.signtbl{overflow-x:auto}
+.signtbl table{min-width:420px}
+.signtbl td,.signtbl th{text-align:center;font-family:var(--f-math);font-size:16px}
+.signtbl th:first-child,.signtbl td:first-child{text-align:left;font-style:italic;background:var(--blue-soft)}
+.arr-up{color:var(--blue);font-size:20px;font-style:normal}
+.arr-dn{color:var(--coral);font-size:20px;font-style:normal}
+.ext{font-family:var(--f-kr);font-size:13px;font-style:normal;color:var(--green);font-weight:700}
+
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--green);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line)}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+.readout .st-up{background:var(--blue-soft);border-color:var(--blue);color:var(--blue);font-weight:600}
+.readout .st-dn{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);font-weight:600}
+.readout .st-hit{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:600}
+.readout .st-trap{background:var(--amber-soft);border-color:var(--amber);color:var(--amber);font-weight:600}
+
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.src{font-size:12px;color:var(--muted);font-family:var(--f-kr)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:600}
+.tag.hint{background:var(--amber-soft);color:var(--amber)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+.pk{font-size:16px}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+details>div,details>p{margin-bottom:8px}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+.type-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.hint-grid .prob{padding:14px 16px;gap:8px}
+.hint-grid .pnum{font-size:18px}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<style>
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px}
+.mini figure{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px}
+.mini figcaption{font-size:13px;line-height:1.4}
+.big-rule{font-family:var(--f-math);font-size:19px;text-align:center;padding:6px 0}
+.later{font-size:15px;color:var(--muted)}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip kr">미적분1</span>
+    <span class="chip kr">II 미분 › 2 도함수의 활용</span>
+    <span class="chip">учебник, стр. 88–90</span>
+    <span class="chip">сборник задач, стр. 124–136</span>
+  </div>
+  <h1><span class="kr">방정식과 부등식에의 활용</span><br>Применение производной к уравнениям и неравенствам</h1>
+  <p class="lead">Мы уже умеем рисовать график по производной и находить наибольшее и наименьшее значение. Сегодня этот график работает на нас: по нему считаем, <strong>сколько корней</strong> у уравнения, и проверяем, <strong>всегда ли верно</strong> неравенство.</p>
+</header>
+
+<!-- ===== 0 словарь ===== -->
+<section id="vocab">
+  <div class="head">
+    <span class="sec-num">0 · <span class="kr">단어장</span></span>
+    <h2>Словарик: корейские слова из учебника</h2>
+  </div>
+  <p>Эти слова встречаются на стр. 88–90 и почти в каждой задаче сборника.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">방정식</span><span class="r">уравнение</span></div>
+    <div class="term"><span class="k">부등식</span><span class="r">неравенство</span></div>
+    <div class="term"><span class="k">활용</span><span class="r">применение</span><span class="n">방정식에의 활용 = применение к уравнениям</span></div>
+    <div class="term"><span class="k">실근</span><span class="r">действительный корень</span><span class="n">корень, который виден на графике</span></div>
+    <div class="term"><span class="k">서로 다른 실근의 개수</span><span class="r">число различных действительных корней</span><span class="n">одинаковые корни считаем один раз</span></div>
+    <div class="term"><span class="k">교점</span><span class="r">точка пересечения</span></div>
+    <div class="term"><span class="k">x좌표</span><span class="r">координата x (абсцисса)</span></div>
+    <div class="term"><span class="k">만나다</span><span class="r">пересекаться, встречаться</span><span class="n">세 점에서 만난다 = пересекаются в трёх точках</span></div>
+    <div class="term"><span class="k">삼차방정식</span><span class="r">кубическое уравнение</span></div>
+    <div class="term"><span class="k">중근</span><span class="r">кратный (двойной) корень</span><span class="n">график касается оси x, а не пересекает её</span></div>
+    <div class="term"><span class="k">허근</span><span class="r">мнимый корень</span><span class="n">на графике его не видно</span></div>
+    <div class="term"><span class="k">판별</span><span class="r">определение (вида корней)</span><span class="n">근의 판별 = сколько и каких корней</span></div>
+    <div class="term"><span class="k">극댓값 · 극솟값</span><span class="r">значение максимума · минимума</span></div>
+    <div class="term"><span class="k">성립하다</span><span class="r">выполняться</span></div>
+    <div class="term"><span class="k">항상 성립한다</span><span class="r">выполняется всегда</span></div>
+    <div class="term"><span class="k">모든 실수 x에 대하여</span><span class="r">для всех действительных x</span></div>
+    <div class="term"><span class="k">최솟값 · 최댓값</span><span class="r">наименьшее · наибольшее значение</span></div>
+    <div class="term"><span class="k">~로 놓다</span><span class="r">обозначить, положить</span><span class="n">F(x) = f(x) − g(x)로 놓고 = обозначим …</span></div>
+    <div class="term"><span class="k">보이다</span><span class="r">показать (доказать)</span></div>
+    <div class="term"><span class="k">양수 · 자연수 · 정수</span><span class="r">положительное · натуральное · целое число</span></div>
+    <div class="term"><span class="k">양의 실근</span><span class="r">положительный корень</span><span class="n">считаем только корни x &gt; 0</span></div>
+    <div class="term"><span class="k">값의 합 · 곱</span><span class="r">сумма · произведение значений</span></div>
+  </div>
+</section>
+
+<!-- ===== 1 разминка ===== -->
+<section id="warmup">
+  <div class="head">
+    <span class="sec-num">1 · <span class="kr">복습</span> (повторение)</span>
+    <h2>Разминка: две вещи с прошлого урока</h2>
+  </div>
+  <div class="cond">
+    <div>
+      <span class="n" style="color:var(--blue)">ГРАФИК</span>
+      <strong>Эскиз графика за 4 шага</strong>
+      <ol class="steps">
+        <li><span class="m">f′(x)</span> и его корни</li>
+        <li><span class="kr">증감표</span>: знаки <span class="m">f′</span>, стрелки ↗ ↘</li>
+        <li><span class="kr">극댓값</span> и <span class="kr">극솟값</span>: подставляем в <span class="m">f</span></li>
+        <li>соединяем точки</li>
+      </ol>
+      <p>Сегодня главное: <strong>высоты вершин и ям</strong>.</p>
+    </div>
+    <div>
+      <span class="n" style="color:var(--green)">НАИМЕНЬШЕЕ ЗНАЧЕНИЕ</span>
+      <strong><span class="kr">최솟값</span> на промежутке</strong>
+      <p>Кандидаты: <span class="kr">극솟값</span> внутри промежутка и значения на концах. Берём самое маленькое.</p>
+      <p>На всей прямой у многочлена 4-й степени (старший коэффициент &gt; 0) наименьшее значение равно самому низкому <span class="kr">극솟값</span>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2 уравнения ===== -->
+<section id="equation">
+  <div class="head">
+    <span class="sec-num">2 · <span class="kr">방정식에의 활용</span></span>
+    <h2>Корни уравнения = точки пересечения графиков</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Пример из жизни</span>
+    <p>Представь горную цепь на картинке и уровень воды в озере: горизонтальная линия. Вопрос «в скольких местах вода касается гор?» решается взглядом: смотрим, где линия воды пересекает силуэт гор.</p>
+    <p>Решать уравнение <span class="m">x³ − 3x² − 9x = k</span> по формуле трудно. А нарисовать «горы» <span class="m">y = x³ − 3x² − 9x</span> и «воду» <span class="m">y = k</span> мы уже умеем. Число точек пересечения = число корней.</p>
+  </div>
+
+  <h3>(1) Число действительных корней · <span class="kr">방정식의 실근의 개수</span></h3>
+  <div class="box theorem">
+    <span class="label">Из учебника</span>
+    <p class="tk">① 방정식 <span class="m">f(x) = 0</span>의 실근은 함수 <span class="m">y = f(x)</span>의 그래프와 <span class="m">x</span>축의 교점의 <span class="m">x</span>좌표와 같다.<br>
+    ⇨ 방정식 <span class="m">f(x) = 0</span>의 서로 다른 실근의 개수는 함수 <span class="m">y = f(x)</span>의 그래프와 <span class="m">x</span>축의 교점의 개수와 같다.</p>
+    <p class="tr"><strong>По-русски:</strong> корни уравнения <span class="m">f(x) = 0</span> — это x-координаты точек, где график <span class="m">y = f(x)</span> пересекает ось x. Значит, число различных корней = число точек пересечения графика с осью x.</p>
+    <p class="tk">② 방정식 <span class="m">f(x) = g(x)</span>의 실근은 두 함수 <span class="m">y = f(x)</span>, <span class="m">y = g(x)</span>의 그래프의 교점의 <span class="m">x</span>좌표와 같다.<br>
+    ⇨ 방정식 <span class="m">f(x) = g(x)</span>의 서로 다른 실근의 개수는 두 함수 <span class="m">y = f(x)</span>, <span class="m">y = g(x)</span>의 그래프의 교점의 개수와 같다.</p>
+    <p class="tr"><strong>По-русски:</strong> корни уравнения <span class="m">f(x) = g(x)</span> — это x-координаты точек пересечения двух графиков. Число различных корней = число точек пересечения.</p>
+  </div>
+  <div class="fig-row">
+    <figure><svg id="figRoots" viewBox="0 0 300 200" role="img" aria-label="График f пересекает ось x в трёх точках"></svg><figcaption>①: три точки на оси x, значит у <span class="m">f(x) = 0</span> три корня <span class="m">x₁, x₂, x₃</span>.</figcaption></figure>
+    <figure><svg id="figFG" viewBox="0 0 300 200" role="img" aria-label="Кривая f и прямая g пересекаются в трёх точках"></svg><figcaption>②: кривая и прямая встречаются три раза, значит у <span class="m">f(x) = g(x)</span> три корня.</figcaption></figure>
+  </div>
+  <div class="box note">
+    <span class="label"><span class="kr">참고</span> · заметка</span>
+    <p class="kr">방정식 <span class="m">f(x) = g(x)</span>의 서로 다른 실근의 개수는 함수 <span class="m">y = f(x) − g(x)</span>의 그래프와 <span class="m">x</span>축의 교점의 개수와도 같다.</p>
+    <p>То же число корней можно найти по-другому: перенести всё в одну сторону и смотреть, где <span class="m">y = f(x) − g(x)</span> пересекает ось x.</p>
+  </div>
+
+  <h3>Главный приём: отделить k · <span class="kr">상수 k 분리</span></h3>
+  <p>В задачах почти всегда есть параметр: «при каких <span class="m">k</span> уравнение имеет три корня?». Делаем так:</p>
+  <div class="box ex">
+    <span class="label">Приём · <span class="kr">정리하기</span></span>
+    <div class="calc">
+      <span>x³ − 3x² − 9x − k = 0</span>
+      <span>⇔ x³ − 3x² − 9x = k</span>
+      <span><span class="ok">слева</span> кривая без параметра (её рисуем один раз), <span class="ok">справа</span> горизонтальная прямая y = k</span>
+    </div>
+    <p>Кривая стоит на месте, двигается только прямая <span class="m">y = k</span> вверх-вниз. Число корней меняется, только когда прямая проходит через <span class="kr">극댓값</span> или <span class="kr">극솟값</span>. Попробуй сам в лаборатории ниже.</p>
+  </div>
+</section>
+
+<!-- ===== 3 кубическое ===== -->
+<section id="cubic">
+  <div class="head">
+    <span class="sec-num">3 · <span class="kr">삼차방정식의 근의 판별</span></span>
+    <h2>Кубическое уравнение: смотрим на вершину и яму</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Пример из жизни</span>
+    <p>У графика кубической функции есть одна «вершина» (<span class="kr">극대</span>) и одна «яма» (<span class="kr">극소</span>). Ось x — это уровень моря.</p>
+    <ul class="plain">
+      <li>Вершина над водой, яма под водой: дорога трижды пересекает уровень моря. <strong>Три корня.</strong></li>
+      <li>Яма (или вершина) ровно на уровне моря: дорога в этом месте только касается воды. <strong>Два корня</strong>, один из них двойной.</li>
+      <li>Вершина и яма обе над водой (или обе под водой): дорога пересекает уровень моря один раз. <strong>Один корень.</strong></li>
+    </ul>
+    <p>«По разные стороны от оси» на языке чисел значит: одно число положительное, другое отрицательное. Тогда их <strong>произведение отрицательно</strong>.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Из учебника</span>
+    <p class="tk">삼차함수 <span class="m">f(x)</span>가 극값을 가질 때, 삼차방정식 <span class="m">f(x) = 0</span>의 근은 다음과 같이 극값을 이용하여 판별할 수 있다.<br>
+    ① (극댓값) · (극솟값) &lt; 0 ⇨ 서로 다른 세 실근을 갖는다.<br>
+    ② (극댓값) · (극솟값) = 0 ⇨ 중근과 다른 한 실근을 갖는다. (서로 다른 두 실근을 갖는다.)<br>
+    ③ (극댓값) · (극솟값) &gt; 0 ⇨ 한 실근과 두 허근을 갖는다.</p>
+    <p class="tr"><strong>По-русски:</strong> если у кубической функции есть экстремумы, корни уравнения <span class="m">f(x) = 0</span> определяются по знаку произведения (значение максимума) · (значение минимума):<br>
+    ① &lt; 0 ⇒ три различных действительных корня;<br>
+    ② = 0 ⇒ двойной корень и ещё один корень (то есть два различных корня);<br>
+    ③ &gt; 0 ⇒ один действительный корень и два мнимых.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="label"><span class="kr">주의</span> · внимание</span>
+    <p class="kr">삼차함수 <span class="m">f(x)</span>가 극값을 갖지 않으면 삼차방정식 <span class="m">f(x) = 0</span>은 삼중근을 갖거나 한 실근과 두 허근을 갖는다.</p>
+    <p>Если экстремумов нет (график всё время идёт вверх, как <span class="m">x³</span>), правило с произведением использовать нельзя. Тогда корень один: либо тройной (<span class="kr">삼중근</span>, как у <span class="m">x³ = 0</span>), либо один действительный и два мнимых. Пример: задача 306.</p>
+  </div>
+
+  <div class="box note">
+    <span class="label"><span class="kr">참고</span> · пять картинок из учебника</span>
+    <p>Старший коэффициент положительный, экстремумы есть. Точки на оси x — это корни.</p>
+    <div class="mini" id="cases"></div>
+  </div>
+</section>
+
+<!-- ===== 4 лаборатория ===== -->
+<section id="lab-sec">
+  <div class="head">
+    <span class="sec-num">4 · <span class="kr">실험실</span> (лаборатория)</span>
+    <h2>Двигай уровень воды: сколько корней?</h2>
+  </div>
+  <p>Уравнение <span class="m">x³ − 3x² − 9x − k = 0</span>, оно же <span class="m">x³ − 3x² − 9x = k</span>. Этот же график встретится в задачах 473, 481 и 499. Двигай <span class="m">k</span> и смотри, когда число точек меняется.</p>
+  <div class="lab">
+    <div class="controls">
+      <button id="viewA" aria-pressed="true">Вид 1: кривая и прямая y = k</button>
+      <button id="viewB" aria-pressed="false">Вид 2: y = h(x) − k и ось x</button>
+    </div>
+    <svg id="labSvg" viewBox="0 0 660 380" role="img" aria-label="Интерактивный график: кривая x³ − 3x² − 9x и горизонтальная прямая y = k"></svg>
+    <div class="controls">
+      <label for="kSlider">k =</label>
+      <input type="range" id="kSlider" min="-36" max="12" step="0.5" value="-10">
+    </div>
+    <div class="controls">
+      <button id="k5">k = 5 (<span class="kr">극댓값</span>)</button>
+      <button id="km27">k = −27 (<span class="kr">극솟값</span>)</button>
+      <button id="k0">k = 0</button>
+    </div>
+    <div class="readout">
+      <div>Параметр<b id="rK">−10</b></div>
+      <div>(5 − k)(−27 − k)<b id="rP">…</b></div>
+      <div id="rState">Корней: …</div>
+    </div>
+    <p class="later">В виде 2 кривая опускается на k, и её <span class="kr">극댓값</span> и <span class="kr">극솟값</span> становятся равны <span class="m">5 − k</span> и <span class="m">−27 − k</span>. Их произведение — это правило из учебника. Обрати внимание: картинки «прямая на уровне k» и «кривая опущена на k» показывают одно и то же.</p>
+  </div>
+</section>
+
+<!-- ===== 5 неравенства ===== -->
+<section id="ineq">
+  <div class="head">
+    <span class="sec-num">5 · <span class="kr">부등식에의 활용</span></span>
+    <h2>Неравенство «всегда верно»: проверяем самую низкую точку</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Пример из жизни</span>
+    <p>Нужно доказать, что вся дорога проходит выше уровня моря. Проверять каждый метр не надо. Достаточно найти <strong>самую низкую точку</strong> дороги: если даже она выше моря, то вся дорога выше.</p>
+    <p>Так же с дверью: чтобы все прошли, не сгибаясь, проверяем только самого высокого человека. Для <span class="m">f(x) ≤ 0</span> проверяем <strong>самую высокую точку</strong>.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Из учебника</span>
+    <p class="tk">(1) 함수 <span class="m">f(x)</span>에 대하여 어떤 구간에서 부등식 <span class="m">f(x) ≥ 0</span>이 성립함을 보이려면 그 구간에서 (<span class="m">f(x)</span>의 최솟값) ≥ 0임을 보인다.<br>
+    (2) 함수 <span class="m">f(x)</span>에 대하여 어떤 구간에서 부등식 <span class="m">f(x) ≤ 0</span>이 성립함을 보이려면 그 구간에서 (<span class="m">f(x)</span>의 최댓값) ≤ 0임을 보인다.<br>
+    (3) 두 함수 <span class="m">f(x), g(x)</span>에 대하여 어떤 구간에서 부등식 <span class="m">f(x) ≥ g(x)</span> 또는 <span class="m">f(x) ≤ g(x)</span>가 성립함을 보이려면 <span class="m">F(x) = f(x) − g(x)</span>로 놓고 그 구간에서 <span class="m">F(x) ≥ 0</span> 또는 <span class="m">F(x) ≤ 0</span>임을 보인다.</p>
+    <p class="tr"><strong>По-русски:</strong> (1) чтобы показать, что на промежутке <span class="m">f(x) ≥ 0</span>, показываем: <span class="kr">최솟값</span> ≥ 0. (2) Чтобы показать <span class="m">f(x) ≤ 0</span>, показываем: <span class="kr">최댓값</span> ≤ 0. (3) Для <span class="m">f(x) ≥ g(x)</span> обозначаем <span class="m">F(x) = f(x) − g(x)</span> и доказываем <span class="m">F(x) ≥ 0</span> (или <span class="m">≤ 0</span>).</p>
+  </div>
+
+  <div class="fig-row">
+    <figure><svg id="figMin" viewBox="0 0 300 200" role="img" aria-label="График, самая низкая точка которого выше оси x"></svg><figcaption>(1): самая низкая точка выше оси, значит весь график выше: <span class="m">f(x) ≥ 0</span> для всех x.</figcaption></figure>
+    <figure><svg id="figEnd" viewBox="0 0 300 200" role="img" aria-label="Возрастающая функция на интервале, f(a) не меньше нуля"></svg><figcaption><span class="kr">참고</span> ①: функция возрастает на <span class="m">(a, b)</span>, начинает с <span class="m">f(a) ≥ 0</span>, значит дальше только выше.</figcaption></figure>
+  </div>
+
+  <div class="box note">
+    <span class="label"><span class="kr">참고</span> · через возрастание и убывание</span>
+    <p class="kr">① 함수 <span class="m">f(x)</span>가 구간 <span class="m">(a, b)</span>에서 증가하고, <span class="m">f(x)</span>의 극값이 존재하지 않을 때 ⇨ 이 구간에서 부등식 <span class="m">f(x) &gt; 0</span>이 성립하려면 <span class="m">f(a) ≥ 0</span>이고, 부등식 <span class="m">f(x) &lt; 0</span>이 성립하려면 <span class="m">f(b) ≤ 0</span>이어야 한다.<br>
+    ② 함수 <span class="m">f(x)</span>가 구간 <span class="m">(a, b)</span>에서 감소하고, <span class="m">f(x)</span>의 극값이 존재하지 않을 때 ⇨ 이 구간에서 부등식 <span class="m">f(x) &gt; 0</span>이 성립하려면 <span class="m">f(b) ≥ 0</span>이고, 부등식 <span class="m">f(x) &lt; 0</span>이 성립하려면 <span class="m">f(a) ≤ 0</span>이어야 한다.</p>
+    <p>Если на интервале функция только растёт, самая низкая «точка» — левый конец <span class="m">a</span>, самая высокая — правый конец <span class="m">b</span>. Если только убывает — наоборот. Почему <span class="m">f(a) ≥ 0</span>, а не <span class="m">&gt; 0</span>? Интервал открытый, сама точка <span class="m">a</span> в него не входит, поэтому <span class="m">f(a) = 0</span> допустимо.</p>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример · <span class="kr">예시</span> (составлен для урока)</span>
+    <p class="kr"><span class="m">x ≥ 0</span>일 때, 부등식 <span class="m">x³ − 3x + k ≥ 0</span>이 항상 성립하도록 하는 실수 <span class="m">k</span>의 최솟값을 구하시오.</p>
+    <p>При <span class="m">x ≥ 0</span> неравенство <span class="m">x³ − 3x + k ≥ 0</span> выполняется всегда. Найти наименьшее <span class="m">k</span>.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1.</span> f(x) = x³ − 3x + k, f′(x) = 3x² − 3 = 3(x + 1)(x − 1)</span>
+      <span><span class="ok">Шаг 2.</span> на x ≥ 0: знак − до 1, + после 1 → x = 1 극소</span>
+      <span><span class="ok">Шаг 3.</span> 최솟값 = f(1) = 1 − 3 + k = k − 2 (x = 0 даёт f(0) = k, это больше)</span>
+      <span><span class="ok">Шаг 4.</span> нужно k − 2 ≥ 0 → k ≥ 2</span>
+      <span><span class="ok">Ответ.</span> наименьшее k = 2 ✓ (корень x = −1 не в промежутке x ≥ 0, его не берём)</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6 рецепт ===== -->
+<section id="recipe">
+  <div class="head">
+    <span class="sec-num">6 · <span class="kr">풀이 순서</span></span>
+    <h2>Как решать задачи: три рецепта</h2>
+  </div>
+  <div class="cond">
+    <div>
+      <span class="n" style="color:var(--blue)">ТИП A · <span class="kr">실근의 개수</span></span>
+      <strong>«Уравнение имеет n корней»</strong>
+      <ol class="steps">
+        <li>Перенеси k в одну сторону: <span class="m">h(x) = k</span>.</li>
+        <li>Найди <span class="kr">극댓값</span> и <span class="kr">극솟값</span> функции <span class="m">h</span>.</li>
+        <li>Двигай прямую <span class="m">y = k</span>: 3 точки — строго между; 2 точки — ровно на уровне экстремума.</li>
+        <li>Посчитай целые k (концы не входят!).</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n" style="color:var(--coral)">ТИП B · <span class="kr">두 그래프의 교점</span></span>
+      <strong>«Графики пересекаются в n точках»</strong>
+      <ol class="steps">
+        <li>Приравняй: <span class="m">f(x) = g(x)</span>.</li>
+        <li>Всё с x — в одну сторону, параметр — в другую.</li>
+        <li>Дальше как в типе A.</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n" style="color:var(--green)">ТИП C · <span class="kr">부등식이 항상 성립</span></span>
+      <strong>«Неравенство всегда верно»</strong>
+      <ol class="steps">
+        <li>Сделай <span class="m">F(x) = f(x) − g(x) ≥ 0</span>.</li>
+        <li>Найди <span class="kr">최솟값</span> <span class="m">F</span> на нужном промежутке (экстремумы внутри + концы).</li>
+        <li>Условие: <span class="kr">최솟값</span> ≥ 0.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются чаще всего</span>
+    <ul class="plain">
+      <li>Знак при переносе: <span class="m">x³ − 3x² − 9x + k = 0</span> даёт <span class="m">h(x) = −k</span>, а не <span class="m">k</span> (задача 481).</li>
+      <li>«Два различных корня» — это касание: прямая проходит <strong>ровно</strong> через <span class="kr">극댓값</span> или <span class="kr">극솟값</span>, а не между ними.</li>
+      <li>Для трёх корней концы не входят: <span class="m">−7 &lt; k &lt; 20</span>, а не <span class="m">≤</span>.</li>
+      <li>«<span class="kr">양의 실근</span>» — считаем только корни правее оси y (задача 490).</li>
+      <li>Корень <span class="m">f′</span> вне промежутка или без смены знака (как <span class="m">(x − 2)²</span>) не даёт экстремума (задачи 509, 513).</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 7 задачи учебника ===== -->
+<section id="practice">
+  <div class="head">
+    <span class="sec-num">7 · <span class="kr">개념 이해</span> (учебник, стр. 89–90)</span>
+    <h2>Задачи из учебника</h2>
+  </div>
+  <p>Сначала попробуй сам. Застрял — открой подсказку. Решение открывай в конце.</p>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">306</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk">삼차방정식 <span class="m">x³ − 9 = 9x² − 27x</span>의 서로 다른 실근의 개수를 구하시오.</p>
+    <p><strong>Перевод:</strong> найдите число различных действительных корней кубического уравнения <span class="m">x³ − 9 = 9x² − 27x</span>.</p>
+    <details><summary>Подсказка</summary><p>Перенеси всё влево: <span class="m">f(x) = x³ − 9x² + 27x − 9</span>. Посмотри на <span class="m">f′(x)</span>: есть ли у функции экстремумы?</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>f(x) = x³ − 9x² + 27x − 9</span>
+        <span>f′(x) = 3x² − 18x + 27 = 3(x − 3)² ≥ 0</span>
+        <span>знак f′ не меняется → экстремумов нет, f только возрастает</span>
+        <span>возрастающий график пересекает ось x ровно один раз</span>
+      </div>
+      <p>Это случай из <span class="kr">주의</span>: экстремумов нет. Проверка: <span class="m">f(x) = (x − 3)³ + 18</span>, единственный корень <span class="m">x = 3 − ∛18</span>.</p>
+      <p>Ответ: <span class="answer">1</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">307</span><span class="lvl">중하 · средняя</span><span class="src">2015년 7월 고3 문과 12번 변형</span></div>
+    <p class="kr pk">삼차방정식 <span class="m">x³ − 6x² + 9x + 2 − k = 0</span>이 서로 다른 세 실근을 갖도록 하는 모든 정수 <span class="m">k</span>의 개수는?</p>
+    <p><strong>Перевод:</strong> сколько существует целых <span class="m">k</span>, при которых уравнение <span class="m">x³ − 6x² + 9x + 2 − k = 0</span> имеет три различных действительных корня?</p>
+    <div class="opts"><span>① 2</span><span>② 3</span><span>③ 4</span><span>④ 5</span><span>⑤ 6</span></div>
+    <details><summary>Подсказка</summary><p>Тип A: <span class="m">x³ − 6x² + 9x + 2 = k</span>. Найди высоту вершины и ямы, прямая <span class="m">y = k</span> должна пройти строго между ними.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>h(x) = x³ − 6x² + 9x + 2, h′(x) = 3(x − 1)(x − 3)</span>
+        <span>극댓값 h(1) = 1 − 6 + 9 + 2 = 6, 극솟값 h(3) = 27 − 54 + 27 + 2 = 2</span>
+        <span>три корня ⇔ 2 &lt; k &lt; 6 → k = 3, 4, 5</span>
+      </div>
+      <p>Ответ: <span class="answer">② 3</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">308</span><span class="lvl">중하 · средняя</span><span class="src">2014년 11월 고3 문과 14번</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = x(x + 1)(x − 4)</span>에 대하여 직선 <span class="m">y = 5x + k</span>와 함수 <span class="m">y = f(x)</span>의 그래프가 서로 다른 두 점에서 만날 때, 양수 <span class="m">k</span>의 값은?</p>
+    <p><strong>Перевод:</strong> прямая <span class="m">y = 5x + k</span> и график <span class="m">y = f(x)</span>, где <span class="m">f(x) = x(x + 1)(x − 4)</span>, пересекаются ровно в двух различных точках. Найдите положительное <span class="m">k</span>.</p>
+    <figure><svg id="fig308" viewBox="0 0 420 300" role="img" aria-label="График f(x) = x(x+1)(x−4) к задаче 308"></svg><figcaption>Рисунок перерисован по учебнику, масштаб другой. Нули в −1, 0, 4. После кнопки видно: прямая касается кривой в точке (−1, 0) и пересекает её в (5, 30).</figcaption></figure>
+    <div class="opts"><span>① 5</span><span>② <span class="frac"><span>11</span><span>2</span></span></span><span>③ 6</span><span>④ <span class="frac"><span>13</span><span>2</span></span></span><span>⑤ 7</span></div>
+    <details><summary>Подсказка</summary><p>Тип B: <span class="m">x(x + 1)(x − 4) = 5x + k</span>. Перенеси <span class="m">5x</span> влево, останется <span class="m">h(x) = k</span>. «Две точки» — значит прямая <span class="m">y = k</span> проходит через экстремум.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>f(x) = x³ − 3x² − 4x</span>
+        <span>x³ − 3x² − 4x = 5x + k ⇔ x³ − 3x² − 9x = k</span>
+        <span>h′(x) = 3x² − 6x − 9 = 3(x + 1)(x − 3)</span>
+        <span>극댓값 h(−1) = 5, 극솟값 h(3) = −27</span>
+        <span>две точки ⇔ k = 5 или k = −27 → положительное k = 5</span>
+      </div>
+      <p>Это тот же график, что в лаборатории! При <span class="m">k = 5</span> прямая <span class="m">y = 5x + 5</span> касается кривой в точке <span class="m">(−1, 0)</span> и ещё раз пересекает её при <span class="m">x = 5</span>.</p>
+      <p>Ответ: <span class="answer">① 5</span></p>
+      <button id="show308" aria-pressed="false">Показать прямую y = 5x + 5</button>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">309</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk">모든 실수 <span class="m">x</span>에 대하여 부등식 <span class="m">x⁴ − 4x³ ≥ −4x² + a</span>가 성립하도록 하는 실수 <span class="m">a</span>의 최댓값은?</p>
+    <p><strong>Перевод:</strong> найдите наибольшее <span class="m">a</span>, при котором для всех действительных x выполняется <span class="m">x⁴ − 4x³ ≥ −4x² + a</span>.</p>
+    <div class="opts"><span>① −3</span><span>② −2</span><span>③ −1</span><span>④ 0</span><span>⑤ 1</span></div>
+    <details><summary>Подсказка</summary><p>Тип C: перенеси <span class="m">−4x²</span> влево. Присмотрись: левая часть — полный квадрат.</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>x⁴ − 4x³ + 4x² ≥ a</span>
+        <span>F(x) = x⁴ − 4x³ + 4x² = x²(x − 2)²</span>
+        <span>F′(x) = 4x³ − 12x² + 8x = 4x(x − 1)(x − 2) → 극소 при x = 0 и x = 2</span>
+        <span>최솟값 F = F(0) = F(2) = 0</span>
+        <span>F(x) ≥ a для всех x ⇔ (최솟값 F) ≥ a ⇔ 0 ≥ a</span>
+        <span>a ≤ 0 → 최댓값 a = 0</span>
+      </div>
+      <p>Не путай: спрашивают <strong><span class="kr">a의 최댓값</span></strong>. Чтобы найти его, ищем <strong><span class="kr">최솟값</span> функции F</strong>: число a должно быть не выше самой низкой точки графика. Самое большое такое a и есть эта низкая точка.</p>
+      <p>Ответ: <span class="answer">④ 0</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">310</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk"><span class="m">x ≥ 0</span>에서 부등식 <span class="m">x³ ≥ a(x² − a)</span>가 항상 성립하도록 하는 실수 <span class="m">a</span>의 최댓값은?</p>
+    <p><strong>Перевод:</strong> найдите наибольшее <span class="m">a</span>, при котором при всех <span class="m">x ≥ 0</span> выполняется <span class="m">x³ ≥ a(x² − a)</span>.</p>
+    <div class="opts"><span>① 6</span><span>② <span class="frac"><span>25</span><span>4</span></span></span><span>③ <span class="frac"><span>13</span><span>2</span></span></span><span>④ <span class="frac"><span>27</span><span>4</span></span></span><span>⑤ 7</span></div>
+    <details><summary>Подсказка</summary><p><span class="m">F(x) = x³ − ax² + a²</span>. Ищем максимум <span class="m">a</span>, поэтому думаем об <span class="m">a &gt; 0</span>. Где <span class="kr">극소</span> при <span class="m">x ≥ 0</span>?</p></details>
+    <details><summary>Решение</summary>
+      <div class="calc">
+        <span>F(x) = x³ − ax² + a², F′(x) = 3x² − 2ax = x(3x − 2a)</span>
+        <span>при a &gt; 0 на x ≥ 0: убывает до x = 2a/3, потом возрастает</span>
+        <span>최솟값 = F(2a/3) = 8a³/27 − 4a³/9 + a² = a² − 4a³/27</span>
+        <span>a² − 4a³/27 ≥ 0 ⇔ a²(1 − 4a/27) ≥ 0 ⇔ a ≤ 27/4</span>
+      </div>
+      <p>Ответ: <span class="answer">④ <span class="frac"><span>27</span><span>4</span></span></span></p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 8 сборник ===== -->
+<section id="workbook">
+  <div class="head">
+    <span class="sec-num">8 · <span class="kr">문제집</span> (сборник, стр. 124–136)</span>
+    <h2>Задачи из сборника: тренировка</h2>
+  </div>
+  <p>Для каждого типа есть одна ключевая задача с полным разбором. Остальные решай сам, там только подсказка.</p>
+
+  <div class="type-h"><h3>Тип A · <span class="kr">방정식의 실근의 개수</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">468</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2021년 11월 고3 6번</span></div>
+    <p class="kr pk">방정식 <span class="m">2x³ − 3x² − 12x + k = 0</span>이 서로 다른 세 근을 갖도록 하는 정수 <span class="m">k</span>의 개수는?</p>
+    <p><strong>Перевод:</strong> сколько существует целых <span class="m">k</span>, при которых уравнение <span class="m">2x³ − 3x² − 12x + k = 0</span> имеет три различных корня?</p>
+    <div class="opts"><span>① 20</span><span>② 23</span><span>③ 26</span><span>④ 29</span><span>⑤ 32</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> отделяем k: k = −2x³ + 3x² + 12x = h(x)</span>
+        <span><span class="ok">Шаг 2.</span> h′(x) = −6x² + 6x + 12 = −6(x + 1)(x − 2)</span>
+        <span><span class="ok">Шаг 3.</span> знак: − | −1 | + | 2 | − → x = −1 극소, x = 2 극대</span>
+        <span><span class="ok">Шаг 4.</span> 극솟값 h(−1) = 2 + 3 − 12 = −7, 극댓값 h(2) = −16 + 12 + 24 = 20</span>
+        <span><span class="ok">Шаг 5.</span> три точки ⇔ −7 &lt; k &lt; 20 → целые от −6 до 19: 19 − (−6) + 1 = 26</span>
+      </div>
+      <figure><svg id="fig468" viewBox="0 0 420 260" role="img" aria-label="График h(x) = −2x³ + 3x² + 12x и полоса −7 &lt; k &lt; 20"></svg><figcaption>Зелёная полоса: все положения прямой <span class="m">y = k</span>, при которых три точки пересечения. Старший коэффициент отрицательный, поэтому график «перевёрнут».</figcaption></figure>
+      <p>Почему переносим k влево с минусом? Можно и иначе: <span class="m">2x³ − 3x² − 12x = −k</span>. Тогда <span class="m">−20 &lt; −k &lt; 7</span>, ответ тот же. Главное — не перепутать знак.</p>
+      <p>Ответ: <span class="answer">③ 26</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">473</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">방정식 <span class="m">x³ − 3x² − 9x − k = 0</span>의 서로 다른 실근의 개수가 3이 되도록 하는 정수 <span class="m">k</span>의 최댓값은?</p>
+      <div class="opts"><span>① 2</span><span>② 4</span><span>③ 6</span><span>④ 8</span><span>⑤ 10</span></div>
+      <details><summary>Подсказка</summary><p>Это ровно график из лаборатории. Между какими числами должно быть k? Какое самое большое целое число строго меньше верхней границы?</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">481</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="m">x</span>에 대한 방정식 <span class="m">x³ − 3x² − 9x + k = 0</span>의 서로 다른 실근의 개수가 2가 되도록 하는 모든 실수 <span class="m">k</span>의 값의 합은?</p>
+      <div class="opts"><span>① 13</span><span>② 16</span><span>③ 19</span><span>④ 22</span><span>⑤ 25</span></div>
+      <details><summary>Подсказка</summary><p>Здесь <span class="m">+k</span>, значит <span class="m">x³ − 3x² − 9x = −k</span>. Два корня: <span class="m">−k</span> равно одному из экстремумов. Найди оба k и сложи.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">476</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">방정식 <span class="m">x³ − x² − 8x + k = 0</span>의 서로 다른 실근의 개수가 2일 때, 양수 <span class="m">k</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">h′(x) = 3x² − 2x − 8 = (3x + 4)(x − 2)</span>. Один экстремум «некрасивый» (дробь). Посчитай оба и выбери тот, при котором <span class="m">k &gt; 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">474</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">방정식 <span class="m">3x⁴ − 4x³ − 12x² + k = 0</span>이 서로 다른 4개의 실근을 갖도록 하는 자연수 <span class="m">k</span>의 개수를 구하시오.</p>
+      <details><summary>Подсказка</summary><p>4-я степень: у графика две ямы и одна вершина (<span class="m">x = −1, 0, 2</span>). Четыре точки пересечения — когда прямая выше обеих ям, но ниже вершины.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">490</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">방정식 <span class="m">2x³ − 6x² + k = 0</span>의 서로 다른 양의 실근의 개수가 2가 되도록 하는 정수 <span class="m">k</span>의 개수를 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Нарисуй <span class="m">y = 2x³ − 6x²</span> и смотри только на часть <span class="m">x &gt; 0</span>. Что делает график от <span class="m">x = 0</span> до <span class="m">x = 2</span> и после? Аккуратно посчитай <span class="m">h(2)</span>.</p></details>
+    </div>
+  </div>
+
+  <div class="type-h"><h3>Тип B · <span class="kr">두 그래프의 교점의 개수</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">501</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2023년 6월 고3 8번</span></div>
+    <p class="kr pk">두 곡선 <span class="m">y = 2x² − 1</span>, <span class="m">y = x³ − x² + k</span>가 만나는 점의 개수가 2가 되도록 하는 양수 <span class="m">k</span>의 값은?</p>
+    <p><strong>Перевод:</strong> две кривые <span class="m">y = 2x² − 1</span> и <span class="m">y = x³ − x² + k</span> имеют ровно две общие точки. Найдите положительное <span class="m">k</span>.</p>
+    <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> приравниваем: 2x² − 1 = x³ − x² + k</span>
+        <span><span class="ok">Шаг 2.</span> отделяем k: k = −x³ + 3x² − 1 = h(x)</span>
+        <span><span class="ok">Шаг 3.</span> h′(x) = −3x² + 6x = −3x(x − 2)</span>
+        <span><span class="ok">Шаг 4.</span> знак: − | 0 | + | 2 | − → 극솟값 h(0) = −1, 극댓값 h(2) = −8 + 12 − 1 = 3</span>
+        <span><span class="ok">Шаг 5.</span> две точки ⇔ k = −1 или k = 3 → положительное k = 3</span>
+      </div>
+      <p>Две кривые мы не рисуем вообще. Уравнение превращается в «кривая + горизонтальная прямая», как в типе A.</p>
+      <p>Ответ: <span class="answer">③ 3</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">499</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 3x² − 9x</span>와 직선 <span class="m">y = k</span>가 서로 다른 세 점에서 만나도록 하는 정수 <span class="m">k</span>의 최댓값을 <span class="m">M</span>, 최솟값을 <span class="m">m</span>이라 할 때, <span class="m">M − m</span>의 값은?</p>
+      <div class="opts"><span>① 27</span><span>② 28</span><span>③ 29</span><span>④ 30</span><span>⑤ 31</span></div>
+      <details><summary>Подсказка</summary><p>Снова график лаборатории. Концы промежутка не входят: самое большое и самое маленькое целое — на 1 внутри границ.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">496</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 함수 <span class="m">f(x) = x⁴ − 4x + a</span>, <span class="m">g(x) = −x² + 2x − a</span>의 그래프가 오직 한 점에서 만날 때, <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">x⁴ + x² − 6x = −2a</span>. У этой функции только одна яма (при <span class="m">x = 1</span>). Одна общая точка — прямая <span class="m">y = −2a</span> касается дна ямы.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">502</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 3x² + 2x − 3</span>과 직선 <span class="m">y = 2x + k</span>가 서로 다른 두 점에서만 만나도록 하는 모든 실수 <span class="m">k</span>의 값의 곱을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>После переноса <span class="m">2x</span> сокращается. Два значения k — это два экстремума. Нужно их <strong>произведение</strong>.</p></details>
+    </div>
+  </div>
+
+  <div class="type-h"><h3>Тип C · <span class="kr">부등식이 항상 성립할 조건</span></h3></div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">508</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2022년 3월 고3 19번</span></div>
+    <p class="kr pk">모든 실수 <span class="m">x</span>에 대하여 부등식 <span class="m">3x⁴ − 4x³ − 12x² + k ≥ 0</span>이 항상 성립하도록 하는 실수 <span class="m">k</span>의 최솟값을 구하시오.</p>
+    <p><strong>Перевод:</strong> найдите наименьшее <span class="m">k</span>, при котором неравенство <span class="m">3x⁴ − 4x³ − 12x² + k ≥ 0</span> выполняется для всех действительных x.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f(x) = 3x⁴ − 4x³ − 12x² + k</span>
+        <span><span class="ok">Шаг 2.</span> f′(x) = 12x³ − 12x² − 24x = 12x(x + 1)(x − 2)</span>
+        <span><span class="ok">Шаг 3.</span> знак: − | −1 | + | 0 | − | 2 | + → ямы в x = −1 и x = 2</span>
+        <span><span class="ok">Шаг 4.</span> f(−1) = 3 + 4 − 12 + k = k − 5, f(2) = 48 − 32 − 48 + k = k − 32</span>
+        <span><span class="ok">Шаг 5.</span> самая низкая яма: 최솟값 = k − 32</span>
+        <span><span class="ok">Шаг 6.</span> k − 32 ≥ 0 → k ≥ 32 → наименьшее k = 32</span>
+      </div>
+      <p>Ловушка: ям две. Если взять яму в <span class="m">x = −1</span>, получится <span class="m">k ≥ 5</span>, но тогда в <span class="m">x = 2</span> график уйдёт под ось. Сравни обе ямы.</p>
+      <p>Ответ: <span class="answer">32</span></p>
+    </details>
+  </div>
+
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">509</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">모든 실수 <span class="m">x</span>에 대하여 부등식 <span class="m">x⁴ − 4x³ + 16x + a ≥ 0</span>이 항상 성립하도록 하는 실수 <span class="m">a</span>의 최솟값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">f′(x) = 4(x + 1)(x − 2)²</span>. Меняет ли знак множитель <span class="m">(x − 2)²</span>? Сколько на самом деле ям?</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">513</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 함수 <span class="m">f(x) = x³ − x + 6</span>, <span class="m">g(x) = x² + a</span>가 있다. <span class="m">x ≥ 0</span>인 모든 실수 <span class="m">x</span>에 대하여 부등식 <span class="m">f(x) ≥ g(x)</span>가 성립할 때, 실수 <span class="m">a</span>의 최댓값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">F(x) = x³ − x² − x + 6 − a</span>. Корни <span class="m">F′</span>: <span class="m">−1/3</span> и <span class="m">1</span>. Какой из них лежит в <span class="m">x ≥ 0</span>?</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">515</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 함수 <span class="m">f(x) = x³ + 3x² − k</span>, <span class="m">g(x) = 2x² + 3x − 10</span>에 대하여 부등식 <span class="m">f(x) ≥ 3g(x)</span>가 닫힌구간 <span class="m">[−1, 4]</span>에서 항상 성립하도록 하는 실수 <span class="m">k</span>의 최댓값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Не забудь умножить <span class="m">g</span> на 3. На отрезке <span class="m">[−1, 4]</span> сравни три числа: <span class="m">F(−1)</span>, <span class="kr">극솟값</span> и <span class="m">F(4)</span>.</p></details>
+    </div>
+  </div>
+
+  <p class="later">Ещё для тренировки (<span class="kr">중하·중</span>): 493, 507, 512, 516. Сложные задачи (<span class="kr">상</span>) оставим на потом: 469–472, 475, 477–480, 482–487, 489, 492, 494, 495, 497, 498, 503, 504, 506, 511, 514, 517.</p>
+</section>
+
+<!-- ===== 9 итог ===== -->
+<section id="summary">
+  <div class="head">
+    <span class="sec-num">9 · <span class="kr">정리</span> (итог)</span>
+    <h2>Шпаргалка</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Вопрос в задаче</th><th>Что делаем</th><th>По-корейски</th></tr></thead>
+      <tbody>
+        <tr><td>Сколько корней у <span class="m">f(x) = 0</span>?</td><td>считаем точки пересечения графика с осью x</td><td class="kr">x축과의 교점의 개수</td></tr>
+        <tr><td>Сколько корней у <span class="m">f(x) = g(x)</span>?</td><td>точки пересечения двух графиков, или <span class="m">f − g</span> с осью x</td><td class="kr">두 그래프의 교점의 개수</td></tr>
+        <tr><td>Параметр k в уравнении</td><td>отделяем: <span class="m">h(x) = k</span>, двигаем прямую</td><td class="kr">직선 y = k</td></tr>
+        <tr><td>(<span class="kr">극댓값</span>)·(<span class="kr">극솟값</span>) &lt; 0</td><td>3 различных корня</td><td class="kr">서로 다른 세 실근</td></tr>
+        <tr><td>(<span class="kr">극댓값</span>)·(<span class="kr">극솟값</span>) = 0</td><td>2 различных корня (один двойной)</td><td class="kr">중근과 다른 한 실근</td></tr>
+        <tr><td>(<span class="kr">극댓값</span>)·(<span class="kr">극솟값</span>) &gt; 0</td><td>1 действительный корень</td><td class="kr">한 실근과 두 허근</td></tr>
+        <tr><td><span class="m">f(x) ≥ 0</span> всегда</td><td><span class="kr">최솟값</span> ≥ 0</td><td class="kr">항상 성립</td></tr>
+        <tr><td><span class="m">f(x) ≥ g(x)</span> всегда</td><td><span class="m">F = f − g</span>, <span class="kr">최솟값</span> F ≥ 0</td><td class="kr">F(x) = f(x) − g(x)로 놓고</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Частые ошибки</span>
+    <ul class="plain">
+      <li>Теряют знак, когда переносят <span class="m">+k</span> в другую сторону.</li>
+      <li>Пишут <span class="m">≤</span> для трёх корней: на границе корней уже два.</li>
+      <li>Используют правило произведения, когда экстремумов нет (задача 306).</li>
+      <li>В неравенстве с промежутком берут экстремум вне промежутка или забывают концы.</li>
+      <li>У функции 4-й степени смотрят только на одну яму (задача 508).</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Материал по учебнику NaBi School <span class="kr">미적분1</span>, стр. 88–90, и сборнику задач, стр. 124–136.</footer>
+</div>
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T)};}
+  function path(f,a,b,M,n=200){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",grid:"var(--grid)",blueSoft:"var(--blue-soft)",coralSoft:"var(--coral-soft)"};
+  const SANS="Golos Text, Noto Sans KR, sans-serif";
+  function axes(svg,M,x0,x1,y0,y1){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},svg);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},svg);
+    el("text",{x:M.X(x1)-4,y:M.Y(0)+16,fill:C.muted,"font-size":13,"text-anchor":"end"},svg,"x");
+    el("text",{x:M.X(0)+6,y:M.Y(y1)+12,fill:C.muted,"font-size":13},svg,"y");
+    el("text",{x:M.X(0)-6,y:M.Y(0)+15,fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"},svg,"O");
+  }
+
+  function T(s,x,y,txt,o){const a=Object.assign({x,y,fill:C.ink,"font-size":13},o||{});return el("text",a,s,txt);}
+  const mn=v=>String(v).replace("-","−");
+  function dot(s,x,y,col,r){el("circle",{cx:x,cy:y,r:r||4.5,fill:col},s);}
+  function roots(F,a,b){const out=[];const n=4000;let px=a,pv=F(a);for(let i=1;i<=n;i++){const x=a+(b-a)*i/n,v=F(x);if(pv===0)out.push(px);else if(pv*v<0){let lo=px,hi=x;for(let j=0;j<50;j++){const m=(lo+hi)/2;if(F(lo)*F(m)<=0)hi=m;else lo=m;}out.push((lo+hi)/2);}px=x;pv=v;}return out;}
+
+  /* fig: f(x)=0 roots */
+  (function(){
+    const s=document.getElementById("figRoots");
+    const f=x=>0.55*(x+1.6)*(x-0.4)*(x-2.1);
+    const M=mapper(-2.3,3,-2.4,2.6,14,290,12,190);
+    axes(s,M,-2.3,3,-2.4,2.6);
+    el("path",{d:path(f,-2.05,2.75,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    [[-1.6,"x₁"],[0.4,"x₂"],[2.1,"x₃"]].forEach(([r,l])=>{dot(s,M.X(r),M.Y(0),C.coral);T(s,M.X(r)+(r<0?-14:6),M.Y(0)+17,l,{fill:C.coral});});
+    T(s,M.X(2.75),M.Y(2.3),"y = f(x)",{"text-anchor":"end"});
+  })();
+
+  /* fig: f(x)=g(x) */
+  (function(){
+    const s=document.getElementById("figFG");
+    const f=x=>0.55*(x+1.6)*(x-0.4)*(x-2.1)+0.6, g=x=>-0.35*x+0.9;
+    const M=mapper(-2.3,3,-2.4,2.6,14,290,12,190);
+    axes(s,M,-2.3,3,-2.4,2.6);
+    el("path",{d:path(g,-2.3,3,M),fill:"none",stroke:C.blue,"stroke-width":2.2},s);
+    el("path",{d:path(f,-2.05,2.72,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    roots(x=>f(x)-g(x),-2.3,3).forEach((r,i)=>{el("line",{x1:M.X(r),y1:M.Y(g(r)),x2:M.X(r),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);dot(s,M.X(r),M.Y(g(r)),C.coral);T(s,M.X(r),M.Y(0)+(i===1?-6:16),"x"+["₁","₂","₃"][i],{"text-anchor":"middle",fill:C.coral});});
+    T(s,M.X(2.95),M.Y(-0.75),"y = g(x)",{"text-anchor":"end",fill:C.blue});
+    T(s,M.X(2.6),M.Y(2.35),"y = f(x)",{"text-anchor":"end"});
+  })();
+
+  /* 5 cases */
+  (function(){
+    const box=document.getElementById("cases");
+    const cases=[[0,"① (극댓값)·(극솟값) < 0: три корня"],[2,"② яма на оси: двойной корень + ещё один"],[-2,"② вершина на оси: двойной корень + ещё один"],[3.3,"③ обе точки выше оси: один корень"],[-3.3,"③ обе точки ниже оси: один корень"]];
+    cases.forEach(([c,cap])=>{
+      const fig=document.createElement("figure");
+      const s=document.createElementNS(NS,"svg");s.setAttribute("viewBox","0 0 160 130");s.setAttribute("role","img");s.setAttribute("aria-label",cap);
+      fig.appendChild(s);const fc=document.createElement("figcaption");fc.textContent=cap;fig.appendChild(fc);box.appendChild(fig);
+      const f=x=>x*x*x-3*x+c;
+      const M=mapper(-2.6,2.6,-6,6,6,154,6,124);
+      el("line",{x1:6,y1:M.Y(0),x2:154,y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},s);
+      const a=roots(f,-3,3);const lo=Math.min(-2.35,...a)-0.05,hi=Math.max(2.35,...a)+0.05;
+      let xa=-2.6,xb=2.6;for(let x=-2.6;x<0;x+=0.01){if(Math.abs(f(x))<=6){xa=x;break;}}for(let x=2.6;x>0;x-=0.01){if(Math.abs(f(x))<=6){xb=x;break;}}
+      el("path",{d:path(f,xa,xb,M),fill:"none",stroke:C.ink,"stroke-width":2},s);
+      dot(s,M.X(-1),M.Y(f(-1)),C.blue,3.5);dot(s,M.X(1),M.Y(f(1)),C.green,3.5);
+      const rs=Math.abs(c)===2?[c===2?1:-1,c===2?-2:2]:roots(f,-3,3);
+      rs.forEach(r=>el("circle",{cx:M.X(r),cy:M.Y(0),r:4,fill:"none",stroke:C.coral,"stroke-width":2},s));
+      T(s,M.X(-1),M.Y(f(-1))+(f(-1)>3.5?17:-7),"극대",{"text-anchor":"middle","font-size":10,"font-style":"normal","font-family":SANS,fill:C.blue});
+      T(s,M.X(1),M.Y(f(1))+(f(1)<-3.5?-8:15),"극소",{"text-anchor":"middle","font-size":10,"font-style":"normal","font-family":SANS,fill:C.green});
+    });
+  })();
+
+  /* inequality figures */
+  (function(){
+    const s=document.getElementById("figMin");
+    const f=x=>0.25*(x*x*x*x)-0.9*x*x+0.4*x+1.6;
+    const M=mapper(-2.6,2.6,-0.6,3.4,14,290,12,190);
+    axes(s,M,-2.6,2.6,-0.6,3.4);
+    el("path",{d:path(f,-2.45,2.3,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    let xm=-2,vm=1e9;for(let x=-2.5;x<2.5;x+=0.001){const v=f(x);if(v<vm){vm=v;xm=x;}}
+    el("line",{x1:M.X(xm),y1:M.Y(vm),x2:M.X(xm),y2:M.Y(0),stroke:C.green,"stroke-width":2,"stroke-dasharray":"4 3"},s);
+    dot(s,M.X(xm),M.Y(vm),C.green,5);
+    T(s,M.X(xm)+8,M.Y(vm/2)+4,"최솟값 ≥ 0",{fill:C.green,"font-style":"normal","font-family":SANS,"font-weight":700});
+    T(s,M.X(2.3),M.Y(3.1),"y = f(x)",{"text-anchor":"end"});
+  })();
+  (function(){
+    const s=document.getElementById("figEnd");
+    const f=x=>0.12*(x+0.5)*(x+0.5)+0.05;
+    const M=mapper(-0.6,4.4,-0.6,3.4,14,290,12,190);
+    axes(s,M,-0.6,4.4,-0.6,3.4);
+    const a=0.6,b=3.8;
+    el("rect",{x:M.X(a),y:M.Y(3.3),width:M.X(b)-M.X(a),height:M.Y(0)-M.Y(3.3),fill:C.blueSoft},s);
+    el("path",{d:path(f,-0.4,4.3,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    [[a,"a"],[b,"b"]].forEach(([x,l])=>{el("line",{x1:M.X(x),y1:M.Y(f(x)),x2:M.X(x),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);T(s,M.X(x),M.Y(0)+16,l,{"text-anchor":"middle"});});
+    el("circle",{cx:M.X(a),cy:M.Y(f(a)),r:5,fill:C.paper||"var(--paper)",stroke:C.green,"stroke-width":2},s);
+    T(s,M.X(a)+8,M.Y(f(a))-10,"f(a) ≥ 0",{fill:C.green});
+    T(s,M.X(2.2),M.Y(2.9),"증가 ↗",{fill:C.blue,"font-style":"normal","font-family":SANS,"font-weight":700,"text-anchor":"middle"});
+  })();
+
+  /* lab */
+  const h=x=>x*x*x-3*x*x-9*x;
+  const svg=document.getElementById("labSvg"),sl=document.getElementById("kSlider");
+  let view="A";
+  function draw(){
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    const k=parseFloat(sl.value);
+    const x0=-3.4,x1=5.4,y0=view==="A"?-40:-46,y1=view==="A"?16:48;
+    const M=mapper(x0,x1,y0,y1,34,648,12,350);
+    const step=view==="A"?10:20;
+    for(let gy=Math.ceil(y0/step)*step;gy<=y1;gy+=step){el("line",{x1:M.X(x0),y1:M.Y(gy),x2:M.X(x1),y2:M.Y(gy),stroke:C.grid},svg);if(gy)T(svg,M.X(0)-6,M.Y(gy)+4,mn(gy),{"text-anchor":"end","font-size":11,fill:C.muted,"font-style":"normal"});}
+    for(let gx=-3;gx<=5;gx++){if(gx)T(svg,M.X(gx),M.Y(0)+16,mn(gx),{"text-anchor":"middle","font-size":11,fill:C.muted,"font-style":"normal"});}
+    axes(svg,M,x0,x1,y0,y1);
+    const F=view==="A"?h:(x=>h(x)-k);
+    let xa=x0,xb=x1;for(let x=x0;x<0;x+=0.002){if(F(x)>=y0){xa=x;break;}}for(let x=x1;x>0;x-=0.002){if(F(x)<=y1){xb=x;break;}}
+    const maxV=view==="A"?5:5-k,minV=view==="A"?-27:-27-k;
+    [[ -1,maxV,C.blue,"극댓값 "+mn(maxV)],[3,minV,C.green,"극솟값 "+mn(minV)]].forEach(([x,v,col,lab])=>{
+      el("line",{x1:M.X(x0),y1:M.Y(v),x2:M.X(x1),y2:M.Y(v),stroke:col,"stroke-dasharray":"2 5","stroke-width":1},svg);
+      dot(svg,M.X(x),M.Y(v),col,4);
+      T(svg,M.X(x),M.Y(v)+(x<0?-10:20),lab,{"text-anchor":"middle",fill:col,"font-style":"normal","font-family":SANS,"font-size":12});
+    });
+    el("path",{d:path(F,xa,xb,M,400),fill:"none",stroke:C.ink,"stroke-width":2.6},svg);
+    const lineY=view==="A"?k:0;
+    if(view==="A"){el("line",{x1:M.X(x0),y1:M.Y(k),x2:M.X(x1),y2:M.Y(k),stroke:C.coral,"stroke-width":2.6},svg);T(svg,M.X(x1)-4,M.Y(k)-8,"y = "+mn(k),{"text-anchor":"end",fill:C.coral});}
+    else{el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.coral,"stroke-width":2.6},svg);T(svg,M.X(x0)+6,M.Y(0)-8,"ось x",{"text-anchor":"start",fill:C.coral,"font-style":"normal","font-family":SANS});}
+    let rs;
+    if(Math.abs(k-5)<1e-9)rs=[-1,5];else if(Math.abs(k+27)<1e-9)rs=[-3,3];else rs=roots(x=>h(x)-k,-8,8);
+    rs.forEach(r=>{if(r>=x0&&r<=x1){el("circle",{cx:M.X(r),cy:M.Y(lineY),r:6,fill:C.coral,stroke:"var(--paper)","stroke-width":2},svg);}});
+    T(svg,M.X(x0)+6,24,view==="A"?"y = x³ − 3x² − 9x":"y = x³ − 3x² − 9x − ("+mn(k)+")",{"font-size":14});
+    document.getElementById("rK").textContent=mn(k);
+    const P=(5-k)*(-27-k);
+    document.getElementById("rP").textContent=(Math.abs(P)<1e-9?"0":mn(+P.toFixed(2)))+(P<0?"  < 0":P>0?"  > 0":"  = 0");
+    const st=document.getElementById("rState");
+    const n=rs.length;
+    let msg,cls;
+    if(n===3){msg="3 различных корня: k между −27 и 5";cls="st-hit";}
+    else if(n===2){msg="2 различных корня: касание в экстремуме (중근)";cls="st-trap";}
+    else{msg="1 корень: прямая выше вершины или ниже ямы";cls="st-up";}
+    st.className=cls;st.textContent="Корней: "+msg;
+  }
+  sl.addEventListener("input",draw);
+  [["k5",5],["km27",-27],["k0",0]].forEach(([id,v])=>document.getElementById(id).onclick=()=>{sl.value=v;draw();});
+  function setView(v){view=v;document.getElementById("viewA").setAttribute("aria-pressed",String(v==="A"));document.getElementById("viewB").setAttribute("aria-pressed",String(v==="B"));draw();}
+  document.getElementById("viewA").onclick=()=>setView("A");
+  document.getElementById("viewB").onclick=()=>setView("B");
+  draw();
+
+  /* 308 */
+  let show308=false;
+  function draw308(){
+    const s=document.getElementById("fig308");while(s.firstChild)s.removeChild(s.firstChild);
+    const f=x=>x*(x+1)*(x-4);
+    const x0=-1.8,x1=show308?5.6:4.8,y0=-16,y1=show308?32:8;
+    const M=mapper(x0,x1,y0,y1,20,408,10,290);
+    axes(s,M,x0,x1,y0,y1);
+    let xa=x0,xb=x1;for(let x=x0;x<0;x+=0.002){if(f(x)>=y0){xa=x;break;}}for(let x=x1;x>0;x-=0.002){if(f(x)<=y1){xb=x;break;}}
+    el("path",{d:path(f,xa,xb,M,300),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    [[-1,"−1"],[4,"4"]].forEach(([r,l])=>T(s,M.X(r)+(r<0?-14:8),M.Y(0)+(r<0?-6:16),l,{"font-style":"normal"}));
+    T(s,M.X(3.2),M.Y(-9),"y = f(x)",{});
+    if(show308){
+      const g=x=>5*x+5;
+      el("path",{d:path(g,x0,5.4,M),fill:"none",stroke:C.coral,"stroke-width":2.2},s);
+      dot(s,M.X(-1),M.Y(0),C.coral,5);dot(s,M.X(5),M.Y(30),C.coral,5);
+      T(s,M.X(5)-8,M.Y(30)+4,"(5, 30)",{fill:C.coral,"text-anchor":"end"});
+      T(s,M.X(1.2),M.Y(g(1.2))-8,"y = 5x + 5",{fill:C.coral,"text-anchor":"end"});
+    }
+  }
+  draw308();
+  document.getElementById("show308").onclick=function(){show308=!show308;this.setAttribute("aria-pressed",String(show308));draw308();};
+
+  /* 468 */
+  (function(){
+    const s=document.getElementById("fig468");
+    const f=x=>-2*x*x*x+3*x*x+12*x;
+    const x0=-2.4,x1=3.6,y0=-14,y1=26;
+    const M=mapper(x0,x1,y0,y1,30,408,10,248);
+    el("rect",{x:M.X(x0),y:M.Y(20),width:M.X(x1)-M.X(x0),height:M.Y(-7)-M.Y(20),fill:"var(--green-soft)"},s);
+    axes(s,M,x0,x1,y0,y1);
+    let xa=x0,xb=x1;for(let x=x0;x<0;x+=0.002){if(f(x)<=y1){xa=x;break;}}for(let x=x1;x>0;x-=0.002){if(f(x)>=y0){xb=x;break;}}
+    el("path",{d:path(f,xa,xb,M,300),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    [[20,C.blue,"20 (극댓값)"],[-7,C.green,"−7 (극솟값)"]].forEach(([v,col,l])=>{el("line",{x1:M.X(x0),y1:M.Y(v),x2:M.X(x1),y2:M.Y(v),stroke:col,"stroke-dasharray":"4 4"},s);T(s,M.X(x1)-4,M.Y(v)+(v>0?-6:16),l,{"text-anchor":"end",fill:col,"font-style":"normal","font-family":SANS,"font-size":12});});
+    dot(s,M.X(2),M.Y(20),C.blue);dot(s,M.X(-1),M.Y(-7),C.green);
+    el("line",{x1:M.X(x0),y1:M.Y(6),x2:M.X(x1),y2:M.Y(6),stroke:C.coral,"stroke-width":2},s);
+    roots(x=>f(x)-6,-3,4).forEach(r=>dot(s,M.X(r),M.Y(6),C.coral,4.5));
+    T(s,M.X(x0)+6,M.Y(6)-6,"y = k (например, 6)",{fill:C.coral,"font-style":"normal","font-family":SANS,"font-size":12});
+  })();
+})();
+</script>
+
+</body></html>

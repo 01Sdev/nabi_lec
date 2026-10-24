@@ -1,0 +1,907 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>속도와 가속도 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, как в прошлых уроках: словарь → повторение → скорость/ускорение → направление → лаборатория → скорость изменения → рецепт → задачи учебника → сборник → шпаргалка. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* v > 0, движение вправо, среднее */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* v < 0, движение влево, мгновенное */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;     /* пример, ответ, v = 0 */
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;     /* аналогия */
+  --amber-soft:#fbf2e0;
+  --violet:#7346c2;    /* ускорение */
+  --violet-soft:#f0eafb;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.6vw,42px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25;font-style:italic;font-family:var(--f-math)}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+.pos{color:var(--blue);font-weight:600}
+.neg{color:var(--coral);font-weight:600}
+.acc{color:var(--violet);font-weight:600}
+.zero{color:var(--green);font-weight:600}
+
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.85}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px}
+.label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.theorem .label{color:var(--blue)}
+.analogy{background:var(--amber-soft)}
+.analogy .label{color:var(--amber)}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral)}
+.note{background:var(--blue-soft)}
+.note .label{color:var(--blue)}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green)}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+/* цепочка 위치 → 속도 → 가속도 */
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.chain .node{flex:1 1 150px;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;min-width:0}
+.chain .node .k{font-family:var(--f-kr);font-weight:700}
+.chain .node .r{font-size:14px}
+.chain .n1{background:var(--grid)}
+.chain .n2{background:var(--blue-soft);color:var(--ink)}
+.chain .n3{background:var(--violet-soft)}
+.chain .arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex:0 0 auto;padding:0 4px;text-align:center}
+.chain .arrow b{font-size:22px;color:var(--coral);line-height:1}
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figcaption{font-size:14px;color:var(--muted)}
+figure svg{width:100%;height:auto;display:block}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--green);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line)}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+.status{border-radius:10px;padding:10px 14px;font-weight:600;border:1px solid var(--line);background:var(--bg)}
+.status.st-pos{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+.status.st-neg{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.status.st-hit{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.status.st-trap{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.src{font-size:12px;color:var(--muted);font-family:var(--f-kr)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:600}
+.tag.hint{background:var(--amber-soft);color:var(--amber)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+.pk{font-size:16px;line-height:1.85}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+details>div,details>p,details>figure{margin-bottom:8px}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+.type-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.hint-grid .prob{padding:14px 16px;gap:8px}
+.hint-grid .pnum{font-size:18px}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (max-width:480px){.hint-grid{grid-template-columns:1fr}.chain .arrow{flex-basis:100%;flex-direction:row;gap:6px}.chain .arrow b{transform:rotate(90deg)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip kr">미적분1</span>
+    <span class="chip kr">II 미분 › 2 도함수의 활용</span>
+    <span class="chip">учебник, стр. 91–92</span>
+    <span class="chip">сборник задач, стр. 138–143</span>
+  </div>
+  <h1><span class="kr">속도와 가속도</span><br>Скорость и ускорение</h1>
+  <p class="lead">Точка <span class="m">P</span> едет по прямой. Если знаем, <strong>где</strong> она в каждый момент, производная скажет, <strong>как быстро и куда</strong> она едет. Вторая производная скажет, как меняется сама скорость.</p>
+</header>
+
+<!-- ===== 0 словарь ===== -->
+<section id="vocab">
+  <div class="head">
+    <span class="sec-num">0 · <span class="kr">단어장</span></span>
+    <h2>Словарик: корейские слова из учебника</h2>
+  </div>
+  <p>Эти слова есть на стр. 91–92 и почти в каждой задаче сборника. Читай их по-корейски: на контрольной будет именно так.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">수직선</span><span class="r">числовая прямая</span><span class="n">수직선 위를 움직이는 점 = точка движется по прямой</span></div>
+    <div class="term"><span class="k">시각 <span class="m">t</span></span><span class="r">момент времени t</span><span class="n">시각 = момент; 시간 = промежуток времени</span></div>
+    <div class="term"><span class="k">위치</span><span class="r">положение, координата</span><span class="n"><span class="m">x = f(t)</span></span></div>
+    <div class="term"><span class="k">속도</span><span class="r">скорость (со знаком)</span><span class="n"><span class="m">v = f′(t)</span>, может быть отрицательной</span></div>
+    <div class="term"><span class="k">속력</span><span class="r">модуль скорости</span><span class="n"><span class="m">|v|</span>, всегда ≥ 0, это показывает спидометр</span></div>
+    <div class="term"><span class="k">가속도</span><span class="r">ускорение</span><span class="n"><span class="m">a = v′(t) = f″(t)</span></span></div>
+    <div class="term"><span class="k">가속도의 크기</span><span class="r">модуль ускорения</span><span class="n"><span class="m">|a|</span></span></div>
+    <div class="term"><span class="k">평균 속도</span><span class="r">средняя скорость</span><span class="n">= 평균변화율 функции <span class="m">x = f(t)</span></span></div>
+    <div class="term"><span class="k">평균변화율</span><span class="r">средняя скорость изменения</span><span class="n">наклон секущей</span></div>
+    <div class="term"><span class="k">순간변화율</span><span class="r">мгновенная скорость изменения</span><span class="n">= 미분계수, наклон касательной</span></div>
+    <div class="term"><span class="k">운동 방향</span><span class="r">направление движения</span></div>
+    <div class="term"><span class="k">양의 방향 / 음의 방향</span><span class="r">положительное / отрицательное направление</span><span class="n">вправо / влево по прямой</span></div>
+    <div class="term"><span class="k">운동 방향을 바꾸다</span><span class="r">менять направление (разворачиваться)</span><span class="n">знак <span class="m">v</span> меняется</span></div>
+    <div class="term"><span class="k">정지하다</span><span class="r">останавливаться</span><span class="n"><span class="m">v = 0</span></span></div>
+    <div class="term"><span class="k">원점을 지나다</span><span class="r">проходить через начало координат</span><span class="n">положение <span class="m">x = 0</span></span></div>
+    <div class="term"><span class="k">변화율</span><span class="r">скорость изменения</span><span class="n">길이·넓이·부피의 변화율</span></div>
+    <div class="term"><span class="k">길이 / 넓이 / 부피</span><span class="r">длина / площадь / объём</span></div>
+    <div class="term"><span class="k">정육면체 · 모서리</span><span class="r">куб · ребро</span><span class="n">한 모서리의 길이 = длина ребра</span></div>
+    <div class="term"><span class="k">최고 지점</span><span class="r">самая высокая точка</span><span class="n">в этот момент <span class="m">v = 0</span></span></div>
+    <div class="term"><span class="k">제동을 걸다</span><span class="r">тормозить</span><span class="n">정지할 때까지 = до полной остановки</span></div>
+    <div class="term"><span class="k">쏘아 올리다</span><span class="r">запускать вверх</span><span class="n">지면 = поверхность земли</span></div>
+    <div class="term"><span class="k">-씩 늘어나다</span><span class="r">увеличиваться на … (каждый раз)</span><span class="n">매초 1 cm씩 = каждую секунду на 1 см</span></div>
+  </div>
+</section>
+
+<!-- ===== 1 разминка ===== -->
+<section id="warmup">
+  <div class="head">
+    <span class="sec-num">1 · <span class="kr">복습</span> (разминка)</span>
+    <h2>Секущая и касательная</h2>
+  </div>
+  <p>Всё сегодняшнее держится на одной старой идее: <span class="kr">평균변화율</span> и <span class="kr">미분계수</span>.</p>
+  <figure>
+    <svg id="figWarm" viewBox="0 0 520 250" role="img" aria-label="График x = f(t), синяя секущая и красная касательная"></svg>
+    <figcaption><span class="pos">Синяя секущая</span>: наклон = <span class="kr">평균변화율</span> на <span class="m">[t, t + Δt]</span> = средняя скорость. <span class="neg">Красная касательная</span>: наклон = <span class="kr">미분계수</span> <span class="m">f′(t)</span> = скорость в момент <span class="m">t</span>. Когда <span class="m">Δt → 0</span>, синяя прямая поворачивается к красной.</figcaption>
+  </figure>
+</section>
+
+<!-- ===== 2 скорость и ускорение ===== -->
+<section id="va">
+  <div class="head">
+    <span class="sec-num">2 · <span class="kr">속도와 가속도</span></span>
+    <h2>Положение → скорость → ускорение</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · машина</span>
+    <p>В машине три прибора. <strong>Навигатор</strong> показывает, где ты на дороге: это <span class="kr">위치</span> <span class="m">x</span>. <strong>Спидометр</strong> показывает, как быстро меняется это место: это <span class="kr">속도</span> <span class="m">v</span>. <strong>Педаль газа или тормоза</strong> меняет показания спидометра: это <span class="kr">가속도</span> <span class="m">a</span>.</p>
+    <p>Каждый следующий прибор показывает, как быстро меняется предыдущий. На языке математики «как быстро меняется» = производная.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 91</span>
+    <p class="tk">수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 위치 <span class="m">x</span>를 <span class="m">x = f(t)</span>라 하면, 시각 <span class="m">t</span>에서의 점 P의 속도 <span class="m">v</span>와 가속도 <span class="m">a</span>는 다음과 같다.<br>
+    ① <span class="m">v =</span> <span class="frac"><span>dx</span><span>dt</span></span> <span class="m">= f′(t)</span> &nbsp;&nbsp; ② <span class="m">a =</span> <span class="frac"><span>dv</span><span>dt</span></span></p>
+    <p class="tr">Точка P движется по числовой прямой, её положение в момент <span class="m">t</span> равно <span class="m">x = f(t)</span>. Тогда скорость <span class="m">v</span> и ускорение <span class="m">a</span> в момент <span class="m">t</span>: ① скорость — производная положения; ② ускорение — производная скорости.</p>
+  </div>
+
+  <div class="chain" aria-label="위치 → 속도 → 가속도">
+    <div class="node n1"><span class="k">위치</span><span class="r">положение</span><span class="m">x = f(t)</span></div>
+    <div class="arrow"><b>→</b><span class="kr">t에서의 미분</span></div>
+    <div class="node n2"><span class="k">속도</span><span class="r">скорость</span><span class="m">v = f′(t)</span></div>
+    <div class="arrow"><b>→</b><span class="kr">t에서의 미분</span></div>
+    <div class="node n3"><span class="k">가속도</span><span class="r">ускорение</span><span class="m">a = v′(t)</span></div>
+  </div>
+
+  <div class="box note">
+    <span class="label">참고 · дополнение</span>
+    <ul class="plain">
+      <li><span class="kr">속력</span> = <span class="m">|v|</span>, <span class="kr">가속도의 크기</span> = <span class="m">|a|</span>. Знак убираем.</li>
+      <li><span class="kr">평균 속도</span> от <span class="m">t</span> до <span class="m">t + Δt</span>: <span class="frac"><span>Δx</span><span>Δt</span></span> = <span class="frac"><span>f(t + Δt) − f(t)</span><span>Δt</span></span>. Это <span class="kr">평균변화율</span> функции <span class="m">x = f(t)</span>. Производную здесь <strong>не</strong> берём.</li>
+    </ul>
+  </div>
+
+  <div class="box ex">
+    <span class="label">예시 · пример из учебника</span>
+    <p class="kr">수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 위치가 <span class="m">x(t) = t³ − 4t² − 5t − 2</span>일 때,</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1.</span> v(t) = x′(t) = 3t² − 8t − 5</span>
+      <span><span class="ok">Шаг 2.</span> a(t) = v′(t) = 6t − 8</span>
+      <span><span class="ok">① 속도</span> v(1) = 3 − 8 − 5 = −10</span>
+      <span><span class="ok">② 속력</span> |v(1)| = 10</span>
+      <span><span class="ok">③ 가속도</span> a(1) = 6 − 8 = −2</span>
+      <span><span class="ok">④ 가속도의 크기</span> |a(1)| = 2</span>
+      <span><span class="ok">⑤ 평균 속도</span> (t = 0 → 1): (x(1) − x(0)) / (1 − 0) = (−10 − (−2)) / 1 = −8 ✓</span>
+    </div>
+    <p>Скорость <span class="m">−10</span> значит: точка едет <strong>влево</strong> со скоростью 10. Минус — это направление, а не «маленькая скорость».</p>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание</span>
+    <p>В задаче спросили <span class="kr">속력</span> — пиши <span class="m">|v|</span> (без минуса). Спросили <span class="kr">속도</span> — оставляй знак. И для средней скорости бери сами положения <span class="m">x(1) − x(0)</span>, а не <span class="m">v</span>.</p>
+  </div>
+</section>
+
+<!-- ===== 3 направление ===== -->
+<section id="dir">
+  <div class="head">
+    <span class="sec-num">3 · <span class="kr">속도와 운동 방향</span></span>
+    <h2>Знак скорости = направление</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · мяч вверх</span>
+    <p>Подбрось мяч вертикально. Пока он летит вверх, скорость положительная. Наверху он на мгновение <strong>замирает</strong>: <span class="m">v = 0</span>. Потом летит вниз: скорость отрицательная. Момент <span class="m">v = 0</span>, после которого знак сменился, и есть разворот.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 91</span>
+    <p class="tk">수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 속도 <span class="m">v</span>의 부호에 따른 점 P의 운동 방향은 다음과 같다.<br>
+    ① <span class="m">v &gt; 0</span>이면 점 P는 양의 방향으로 움직인다.<br>
+    ② <span class="m">v &lt; 0</span>이면 점 P는 음의 방향으로 움직인다.<br>
+    ③ <span class="m">v = 0</span>이면 점 P는 운동 방향을 바꾸거나 정지한다.</p>
+    <p class="tr">Направление движения P зависит от знака скорости: ① <span class="m">v &gt; 0</span> — движется в положительную сторону (вправо); ② <span class="m">v &lt; 0</span> — в отрицательную сторону (влево); ③ <span class="m">v = 0</span> — меняет направление или стоит.</p>
+  </div>
+
+  <figure>
+    <svg id="figDir" viewBox="0 0 520 150" role="img" aria-label="Стрелки направления на числовой прямой"></svg>
+    <figcaption>Рисунок учебника: <span class="pos">v &gt; 0 — вправо</span>, <span class="neg">v &lt; 0 — влево</span>, <span class="zero">v = 0 — точка разворота</span>.</figcaption>
+  </figure>
+
+  <div class="cond">
+    <div><span class="n pos">v &gt; 0</span><p>На графике <span class="m">x(t)</span> кривая <strong>поднимается</strong>. Положение растёт.</p></div>
+    <div><span class="n neg">v &lt; 0</span><p>Кривая <span class="m">x(t)</span> <strong>опускается</strong>. Положение уменьшается.</p></div>
+    <div><span class="n zero">v = 0</span><p>Касательная к <span class="m">x(t)</span> горизонтальна. Часто это 극대/극소 графика положения.</p></div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание · главная ловушка</span>
+    <p><span class="kr">운동 방향이 바뀐다</span> — это не просто <span class="m">v = 0</span>. Нужно, чтобы <strong>знак <span class="m">v</span> поменялся</strong> (с + на − или с − на +).</p>
+    <p>Пример: <span class="m">v = 3(t − 1)²</span>. При <span class="m">t = 1</span> скорость 0, но до и после она положительная. Точка на секунду «притормозила» и поехала дальше вправо. Разворота нет. Это <span class="kr">중근</span> (двойной корень) у <span class="m">v</span>.</p>
+    <figure>
+      <svg id="figTrap" viewBox="0 0 520 190" role="img" aria-label="Сравнение: v с простым корнем меняет знак, v с двойным корнем не меняет"></svg>
+      <figcaption>Слева: простой корень, график <span class="m">v</span> пересекает ось — разворот. Справа: двойной корень, график только касается оси — разворота нет.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===== 4 лаборатория ===== -->
+<section id="lab-sec">
+  <div class="head">
+    <span class="sec-num">4 · <span class="kr">실험실</span> (лаборатория)</span>
+    <h2>Веди точку P и поймай разворот</h2>
+  </div>
+  <p>Двигай время <span class="m">t</span>. Сверху — сама точка на прямой и стрелка её скорости. Снизу — график положения <span class="m">x(t)</span> и касательная: её наклон и есть <span class="m">v</span>. Найди моменты, когда точка разворачивается.</p>
+  <div class="lab">
+    <div class="controls" role="group" aria-label="Выбор движения">
+      <button id="modeA" aria-pressed="true">x = t³ − 6t² + 9t</button>
+      <button id="modeB" aria-pressed="false">x = t³ − 3t² + 3t (ловушка)</button>
+    </div>
+    <svg id="labLine" viewBox="0 0 560 90" role="img" aria-label="Точка P на числовой прямой"></svg>
+    <svg id="labGraph" viewBox="0 0 560 260" role="img" aria-label="График положения и касательная"></svg>
+    <div class="controls">
+      <label for="tSlider">t =</label>
+      <input type="range" id="tSlider" min="0" max="4.2" step="0.01" value="0.4">
+      <button id="play">▶ Пуск</button>
+    </div>
+    <div class="controls" id="jumps"></div>
+    <div class="readout">
+      <div>положение <span class="kr">위치</span><b id="rx">x = 0</b></div>
+      <div>скорость <span class="kr">속도</span><b id="rv">v = 0</b></div>
+      <div>ускорение <span class="kr">가속도</span><b id="ra">a = 0</b></div>
+    </div>
+    <div class="status" id="status" aria-live="polite">…</div>
+  </div>
+  <p>Во втором режиме найди момент <span class="m">t = 1</span>: скорость 0, а точка всё равно едет вправо. Это ровно ловушка из задачи 312.</p>
+</section>
+
+<!-- ===== 5 скорость изменения ===== -->
+<section id="rate">
+  <div class="head">
+    <span class="sec-num">5 · <span class="kr">시각에 대한 길이, 넓이, 부피의 변화율</span></span>
+    <h2>Как быстро растёт длина, площадь, объём</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · воздушный шар</span>
+    <p>Надуваешь шарик: каждую секунду радиус чуть больше. Объём растёт, но не равномерно: чем больше шар, тем больше воздуха уходит на тот же прирост радиуса. «Скорость роста объёма в момент <span class="m">t</span>» — это производная <span class="m">V(t)</span> по времени. Та же идея, что со скоростью: вместо положения <span class="m">x</span> теперь длина, площадь или объём.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 91</span>
+    <p class="tk">어떤 물체의 시각 <span class="m">t</span>에서의 길이가 <span class="m">l</span>, 넓이가 <span class="m">S</span>, 부피가 <span class="m">V</span>이고, 시간이 <span class="m">Δt</span>만큼 경과한 후 이 물체의 길이가 <span class="m">Δl</span>만큼, 넓이가 <span class="m">ΔS</span>만큼, 부피가 <span class="m">ΔV</span>만큼 변한다고 하면 시각 <span class="m">t</span>에서의 각각의 변화율은 다음과 같다.<br>
+    (1) 길이의 변화율: <span class="m">lim<sub>Δt→0</sub></span> <span class="frac"><span>Δl</span><span>Δt</span></span> = <span class="frac"><span>dl</span><span>dt</span></span> &nbsp; (2) 넓이의 변화율: <span class="frac"><span>dS</span><span>dt</span></span> &nbsp; (3) 부피의 변화율: <span class="frac"><span>dV</span><span>dt</span></span></p>
+    <p class="tr">Если длина, площадь и объём тела в момент <span class="m">t</span> равны <span class="m">l, S, V</span>, а за время <span class="m">Δt</span> они изменились на <span class="m">Δl, ΔS, ΔV</span>, то скорость изменения в момент <span class="m">t</span> — это предел отношения при <span class="m">Δt → 0</span>, то есть производная по <span class="m">t</span>.</p>
+  </div>
+
+  <figure>
+    <svg id="figCube" viewBox="0 0 520 200" role="img" aria-label="Куб с ребром 1 см и куб с ребром 1 + t"></svg>
+    <figcaption>Куб с ребром 1 см. Каждую секунду ребро растёт на 1 см (<span class="kr">매초 1 cm씩 늘어난다</span>), значит через <span class="m">t</span> секунд ребро <span class="m">l(t) = 1 + t</span>.</figcaption>
+  </figure>
+
+  <div class="box ex">
+    <span class="label">예시 · пример из учебника</span>
+    <p class="kr">한 모서리의 길이가 1 cm인 정육면체의 각 모서리의 길이가 매초 1 cm씩 늘어날 때, <span class="m">t</span>초 후의 이 정육면체의 한 모서리의 길이를 <span class="m">l(t)</span>, 밑면의 넓이를 <span class="m">S(t)</span>, 부피를 <span class="m">V(t)</span>라 하면</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1. Формулы.</span> l(t) = 1 + t,  S(t) = (1 + t)² = t² + 2t + 1,  V(t) = (1 + t)³ = t³ + 3t² + 3t + 1</span>
+      <span><span class="ok">Шаг 2. Производные.</span> l′(t) = 1,  S′(t) = 2t + 2,  V′(t) = 3t² + 6t + 3</span>
+      <span><span class="ok">Шаг 3. t = 1.</span> l′(1) = 1 (cm/초),  S′(1) = 4 (cm²/초),  V′(1) = 3 + 6 + 3 = 12 (cm³/초) ✓</span>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание</span>
+    <ul class="plain">
+      <li>Сначала запиши величину как функцию от <span class="m">t</span>, потом дифференцируй, и только потом подставляй <span class="m">t</span>. Если подставить число раньше, получится константа, а её производная 0.</li>
+      <li>Единицы: длина — cm/초, площадь — cm²/초, объём — cm³/초.</li>
+      <li>Иногда момент дан не временем, а размером («когда ребро станет 3 cm»). Сначала найди <span class="m">t</span>: <span class="m">1 + t = 3 ⇒ t = 2</span>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 6 рецепт ===== -->
+<section id="recipe">
+  <div class="head">
+    <span class="sec-num">6 · <span class="kr">풀이 순서</span> (рецепт)</span>
+    <h2>Как решать: четыре рецепта</h2>
+  </div>
+  <div class="cond">
+    <div><span class="n">A · найти v или a в момент t</span>
+      <ol class="steps"><li><span class="m">v = x′(t)</span></li><li><span class="m">a = v′(t)</span></li><li>подставить <span class="m">t</span></li></ol></div>
+    <div><span class="n">B · «когда v = …», потом найти x</span>
+      <ol class="steps"><li>решить <span class="m">v(t) = …</span></li><li>отбросить <span class="m">t</span> вне условия (<span class="m">t &gt; 0</span>)</li><li>подставить в <strong><span class="m">x(t)</span></strong>, не в <span class="m">v</span></li></ol></div>
+    <div><span class="n">C · <span class="kr">운동 방향이 바뀔 때</span></span>
+      <ol class="steps"><li>разложить <span class="m">v(t)</span> на множители</li><li><strong>проверить смену знака</strong> (двойной корень — не разворот!)</li><li>подставить этот <span class="m">t</span> куда спросили</li></ol></div>
+    <div><span class="n">D · <span class="kr">최고 지점</span> / <span class="kr">정지할 때까지</span></span>
+      <ol class="steps"><li>момент остановки: <span class="m">v = 0</span></li><li>найти <span class="m">t</span></li><li>подставить в положение / высоту</li></ol></div>
+  </div>
+  <div class="box warn"><span class="label">Чаще всего теряют баллы</span><p>В рецепте C — пропускают проверку знака. В рецепте B — подставляют найденный <span class="m">t</span> в <span class="m">v</span>, а спрашивали <span class="kr">위치</span>.</p></div>
+</section>
+
+<!-- ===== 7 задачи учебника ===== -->
+<section id="practice">
+  <div class="head">
+    <span class="sec-num">7 · <span class="kr">개념 이해</span> (учебник, стр. 92)</span>
+    <h2>Задачи из учебника</h2>
+  </div>
+  <p>Сначала попробуй сам. Открой подсказку, если застрял, и разбор — чтобы проверить себя.</p>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">311</span><span class="lvl">하 · лёгкая</span><span class="src">2019년 6월 고3 문과 25번 변형</span></div>
+    <p class="kr pk">수직선 위를 움직이는 점 P의 시각 <span class="m">t (t &gt; 0)</span>에서의 위치 <span class="m">x</span>가 <span class="m">x = t⁴ + 2t² − 5t + 8</span>이다. <span class="m">t = 2</span>에서 점 P의 가속도를 구하시오.</p>
+    <p><strong>Перевод:</strong> положение точки <span class="m">x = t⁴ + 2t² − 5t + 8</span>. Найдите ускорение при <span class="m">t = 2</span>.</p>
+    <details><summary>Подсказка</summary><p>Ускорение — вторая производная положения. Дифференцируй два раза.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc"><span>v = 4t³ + 4t − 5</span><span>a = 12t² + 4</span><span>a(2) = 48 + 4 = 52</span></div>
+      <p>Ответ: <span class="answer">52</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">312</span><span class="lvl">중하 · средняя</span><span class="src">2023년 4월 고3 19번</span></div>
+    <p class="kr pk">수직선 위를 움직이는 점 P의 시각 <span class="m">t (t &gt; 0)</span>에서의 위치 <span class="m">x(t)</span>가 <span class="m">x(t) =</span> <span class="frac"><span>3</span><span>2</span></span><span class="m">t⁴ − 8t³ + 15t² − 12t</span>이다. 점 P의 운동 방향이 바뀌는 순간 점 P의 가속도를 구하시오.</p>
+    <p><strong>Перевод:</strong> найдите ускорение точки в тот момент, когда она меняет направление движения.</p>
+    <details><summary>Подсказка</summary><p>Разложи <span class="m">v(t)</span> на множители. Один из корней двойной — при нём знак не меняется.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> v = 6t³ − 24t² + 30t − 12 = 6(t³ − 4t² + 5t − 2)</span>
+        <span><span class="ok">Шаг 2.</span> t = 1 — корень (1 − 4 + 5 − 2 = 0) → v = 6(t − 1)²(t − 2)</span>
+        <span><span class="ok">Шаг 3.</span> знак v: при t = 1 знак не меняется ( − | 1 | − ), при t = 2 меняется ( − | 2 | + ) → разворот только при t = 2</span>
+        <span><span class="ok">Шаг 4.</span> a = 18t² − 48t + 30,  a(2) = 72 − 96 + 30 = 6</span>
+      </div>
+      <p>Если взять <span class="m">t = 1</span>, получится <span class="m">a(1) = 0</span> — это неправильный ответ-ловушка.</p>
+      <p>Ответ: <span class="answer">6</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">313</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk">직선 궤도를 달리는 열차가 제동을 건 후 <span class="m">t</span>초 동안 움직인 거리를 <span class="m">x</span> m 라 하면 <span class="m">x = 20t − 0.5t²</span>이다. 열차가 제동을 건 후 정지할 때까지 움직인 거리는?</p>
+    <p><strong>Перевод:</strong> поезд начал тормозить; за <span class="m">t</span> секунд он проехал <span class="m">x = 20t − 0.5t²</span> м. Какое расстояние он проедет до полной остановки?</p>
+    <div class="opts"><span>① 140 m</span><span>② 160 m</span><span>③ 180 m</span><span>④ 200 m</span><span>⑤ 220 m</span></div>
+    <details><summary>Подсказка</summary><p>Поезд остановился ⇔ его скорость стала 0. Найди этот момент и подставь в <span class="m">x</span>.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc"><span>v = 20 − t = 0 ⇒ t = 20</span><span>x(20) = 400 − 0.5 · 400 = 400 − 200 = 200</span></div>
+      <p>Ответ: <span class="answer">④ 200 m</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">314</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk">지면에서 처음 속도 36 m/s로 지면과 수직하게 위로 쏘아 올린 로켓의 <span class="m">t</span>초 후 높이를 <span class="m">h</span> m라 하면 <span class="m">h = 36t − 2t²</span>인 관계가 성립한다. 이 로켓이 최고 지점에 도달했을 때 지면으로부터의 높이를 구하시오.</p>
+    <p><strong>Перевод:</strong> ракету запустили вертикально вверх с начальной скоростью 36 м/с; её высота через <span class="m">t</span> секунд <span class="m">h = 36t − 2t²</span> м. Найдите высоту в самой верхней точке.</p>
+    <details><summary>Подсказка</summary><p>Как мяч в аналогии: наверху скорость равна 0.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc"><span>v = h′ = 36 − 4t = 0 ⇒ t = 9</span><span>h(9) = 324 − 162 = 162</span></div>
+      <p>Ответ: <span class="answer">162 m</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">315</span><span class="lvl">중하 · средняя</span></div>
+    <p class="kr pk">수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 위치 <span class="m">x(t)</span>의 그래프가 아래 그림과 같다. 다음 중 점 P가 두 번째로 원점을 지나는 순간의 속도와 그 값이 같은 것은?</p>
+    <p><strong>Перевод:</strong> дан график положения <span class="m">x(t)</span>. Какое из выражений равно скорости точки в момент, когда она <strong>второй раз</strong> проходит через начало координат?</p>
+    <figure>
+      <svg id="fig315" viewBox="0 0 440 260" role="img" aria-label="График x(t) к задаче 315"></svg>
+      <figcaption>Перерисовано по учебнику, форма примерная.</figcaption>
+    </figure>
+    <div class="controls"><button id="btn315" aria-pressed="false">Показать касательную</button></div>
+    <div class="opts"><span>① x(a)</span><span>② x(c)</span><span>③ x(e)</span><span>④ x′(b)</span><span>⑤ x′(d)</span></div>
+    <details><summary>Подсказка</summary><p>«Точка в начале координат» = <span class="m">x(t) = 0</span> = график на оси <span class="m">t</span>. Посчитай пересечения слева направо. Скорость = <span class="m">x′</span>, а не <span class="m">x</span>.</p></details>
+    <details><summary>Разбор</summary>
+      <ul class="plain">
+        <li>График пересекает ось <span class="m">t</span> при <span class="m">t = b</span> (первый раз) и при <span class="m">t = d</span> (второй раз). При <span class="m">t = 0</span> график выше оси, значит в начале точка не в нуле.</li>
+        <li>Скорость в этот момент — <span class="m">x′(d)</span>.</li>
+        <li>①②③ — это положения, не скорости. ④ — скорость при первом проходе.</li>
+      </ul>
+      <p>Ответ: <span class="answer">⑤ x′(d)</span></p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 8 сборник ===== -->
+<section id="workbook">
+  <div class="head">
+    <span class="sec-num">8 · <span class="kr">문제집</span> (сборник, стр. 138–143)</span>
+    <h2>Задачи из сборника: тренировка</h2>
+  </div>
+  <p>Для каждого типа — одна ключевая задача с полным разбором. Остальные решай сам, там только подсказка. Задача 535 совпадает с 312 из учебника.</p>
+
+  <!-- A -->
+  <div class="type-h"><h3>Тип A · <span class="kr">속도·가속도와 위치</span> (рецепты A, B)</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">522</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2013년 7월 고3 문과 11번</span></div>
+    <p class="kr pk">원점을 출발하여 수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 위치는 <span class="m">P(t) = t³ − 9t² + 34t</span>이다. 점 P의 속도가 처음으로 10이 되는 순간 점 P의 위치는?</p>
+    <p><strong>Перевод:</strong> точка выходит из начала координат, её положение <span class="m">P(t) = t³ − 9t² + 34t</span>. Найдите положение точки в момент, когда её скорость <strong>впервые</strong> станет равна 10.</p>
+    <div class="opts"><span>① 38</span><span>② 40</span><span>③ 42</span><span>④ 44</span><span>⑤ 46</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> v = 3t² − 18t + 34</span>
+        <span><span class="ok">Шаг 2.</span> 3t² − 18t + 34 = 10 ⇒ 3t² − 18t + 24 = 0 ⇒ t² − 6t + 8 = 0 ⇒ t = 2 или t = 4</span>
+        <span><span class="ok">Шаг 3.</span> «처음으로» (впервые) ⇒ меньший корень t = 2</span>
+        <span><span class="ok">Шаг 4.</span> положение: P(2) = 8 − 36 + 68 = 40</span>
+      </div>
+      <p>Спрашивают <span class="kr">위치</span>, поэтому подставляем в <span class="m">P(t)</span>, а не в <span class="m">v</span>.</p>
+      <p>Ответ: <span class="answer">② 40</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">531</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">수직선 위를 움직이는 점 P의 시각 <span class="m">t (t &gt; 0)</span>에서의 위치 <span class="m">x</span>가 <span class="m">x = t³ − 5t² + 6t</span>이다. <span class="m">t = 3</span>에서 점 P의 가속도를 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Как задача 311: две производные, потом <span class="m">t = 3</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">518</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">수직선 위를 움직이는 점 P의 시각 <span class="m">t</span>에서의 위치 <span class="m">x</span>가 <span class="m">x = −t² + 4t</span>이다. <span class="m">t = a</span>에서 점 P의 속도가 0일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p>Реши <span class="m">v(a) = 0</span>, где <span class="m">v = x′</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">523</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ − 3t² + at</span> (<span class="m">a</span>는 상수)이다. 점 P의 시각 <span class="m">t = 3</span>에서의 속도가 15일 때, <span class="m">a</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Запиши <span class="m">v(t)</span> с буквой <span class="m">a</span> внутри и составь уравнение <span class="m">v(3) = 15</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">527</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ − 6t² + 5</span>이다. 점 P의 가속도가 0일 때, 점 P의 속도는?</p>
+      <div class="opts"><span>① −12</span><span>② −10</span><span>③ −8</span><span>④ −6</span><span>⑤ −4</span></div>
+      <details><summary>Подсказка</summary><p>Сначала момент из <span class="m">a(t) = 0</span>, потом подставь его в <span class="m">v</span> (не в <span class="m">x</span>!).</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">529</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x</span>가 <span class="m">x = −t² + 6t</span>이다. 점 P의 속도가 2일 때, 점 P의 위치는?</p>
+      <div class="opts"><span>① 8</span><span>② 17/2</span><span>③ 9</span><span>④ 19/2</span><span>⑤ 10</span></div>
+      <details><summary>Подсказка</summary><p>Рецепт B, как в ключевой задаче 522.</p></details>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="type-h"><h3>Тип B · <span class="kr">두 점 P, Q</span> (две точки)</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">520</span><span class="lvl">중 · средняя+</span><span class="tag">ключевая задача</span><span class="src">2025년 10월 고3 9번</span></div>
+    <p class="kr pk">수직선 위를 움직이는 두 점 P, Q의 시각 <span class="m">t (t ≥ 0)</span>에서의 위치가 각각 <span class="m">x₁ = −t³ + 7t² − 10t</span>, <span class="m">x₂ = t² + 2t</span>이다. 두 점 P, Q의 속도가 같아지는 순간 두 점 P, Q 사이의 거리는?</p>
+    <p><strong>Перевод:</strong> положения двух точек P и Q даны формулами. Найдите расстояние между P и Q в момент, когда их скорости равны.</p>
+    <div class="opts"><span>① 6</span><span>② 7</span><span>③ 8</span><span>④ 9</span><span>⑤ 10</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> v₁ = −3t² + 14t − 10,  v₂ = 2t + 2</span>
+        <span><span class="ok">Шаг 2.</span> v₁ = v₂ ⇒ −3t² + 12t − 12 = 0 ⇒ t² − 4t + 4 = 0 ⇒ t = 2</span>
+        <span><span class="ok">Шаг 3.</span> x₁(2) = −8 + 28 − 20 = 0,  x₂(2) = 4 + 4 = 8</span>
+        <span><span class="ok">Шаг 4.</span> расстояние = |x₁ − x₂| = |0 − 8| = 8</span>
+      </div>
+      <p><span class="kr">사이의 거리</span> (расстояние между точками) — всегда модуль разности <strong>положений</strong>.</p>
+      <p>Ответ: <span class="answer">③ 8</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">524</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">x₁ = t³ − 2t² + 3t</span>, <span class="m">x₂ = t² + 12t</span>. 두 점 P, Q의 속도가 같아지는 순간 두 점 P, Q 사이의 거리를 구하시오. (<span class="m">t ≥ 0</span>)</p>
+      <details><summary>Подсказка</summary><p>Получишь два корня. Один отрицательный — условие <span class="m">t ≥ 0</span> его отбрасывает.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">528</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">P(t) =</span> <span class="frac"><span>1</span><span>3</span></span><span class="m">t³ + 4t −</span> <span class="frac"><span>2</span><span>3</span></span>, <span class="m">Q(t) = 2t² − 10</span>. 두 점 P, Q의 속도가 같아지는 순간 두 점 P, Q 사이의 거리를 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Уравнение скоростей — полный квадрат. Дроби в <span class="m">P(2)</span> красиво сокращаются.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">519</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">x₁ = t² + t − 6</span>, <span class="m">x₂ = −t³ + 7t²</span>. 두 점 P, Q의 위치가 같아지는 순간 가속도를 각각 <span class="m">p, q</span>라 할 때, <span class="m">p − q</span>의 값은?</p>
+      <div class="opts"><span>① 24</span><span>② 27</span><span>③ 30</span><span>④ 33</span><span>⑤ 36</span></div>
+      <details><summary>Подсказка</summary><p>Здесь равны <strong>положения</strong>, не скорости. Кубическое уравнение раскладывается группировкой: <span class="m">t²(t − 6) + (t − 6)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">526</span><span class="lvl">상</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">x₁ = t³ − 5t² + 10t</span>, <span class="m">x₂ =</span> <span class="frac"><span>5</span><span>2</span></span><span class="m">t² − 2t − 10</span>. 두 점 P, Q 사이의 거리가 최소가 되는 순간 점 P의 가속도는?</p>
+      <div class="opts"><span>① 8</span><span>② 11</span><span>③ 14</span><span>④ 17</span><span>⑤ 20</span></div>
+      <details><summary>Подсказка</summary><p>Пусть <span class="m">d(t) = x₁ − x₂</span>. Найди 극소 функции <span class="m">d</span> при <span class="m">t ≥ 0</span> и проверь, что там <span class="m">d &gt; 0</span> и это меньше, чем <span class="m">d(0)</span>.</p></details>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="type-h"><h3>Тип C · <span class="kr">운동 방향이 바뀔 때</span> (разворот)</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">536</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2024년 11월 고3 11번</span></div>
+    <p class="kr pk">시각 <span class="m">t = 0</span>일 때 출발하여 수직선 위를 움직이는 점 P의 시각 <span class="m">t (t ≥ 0)</span>에서의 위치 <span class="m">x</span>가 <span class="m">x = t³ −</span> <span class="frac"><span>3</span><span>2</span></span><span class="m">t² − 6t</span>이다. 출발한 후 점 P의 운동방향이 바뀌는 시각에서의 점 P의 가속도는?</p>
+    <p><strong>Перевод:</strong> точка стартует в момент <span class="m">t = 0</span>. Найдите её ускорение в момент, когда после старта она меняет направление.</p>
+    <div class="opts"><span>① 6</span><span>② 9</span><span>③ 12</span><span>④ 15</span><span>⑤ 18</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> v = 3t² − 3t − 6 = 3(t² − t − 2) = 3(t − 2)(t + 1)</span>
+        <span><span class="ok">Шаг 2.</span> корни t = 2 и t = −1; условие t ≥ 0 ⇒ только t = 2</span>
+        <span><span class="ok">Шаг 3.</span> проверка знака: при 0 ≤ t &lt; 2 v &lt; 0, при t &gt; 2 v &gt; 0 — знак сменился ✓</span>
+        <span><span class="ok">Шаг 4.</span> a = 6t − 3,  a(2) = 9</span>
+      </div>
+      <p>Ответ: <span class="answer">② 9</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">534</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ − 12t + k</span> (<span class="m">k</span>는 상수, <span class="m">t &gt; 0</span>). 점 P의 운동 방향이 원점에서 바뀔 때, <span class="m">k</span>의 값은?</p>
+      <div class="opts"><span>① 10</span><span>② 12</span><span>③ 14</span><span>④ 16</span><span>⑤ 18</span></div>
+      <details><summary>Подсказка</summary><p>Два условия на один момент: <span class="m">v(t) = 0</span> (разворот) и <span class="m">x(t) = 0</span> (в начале координат).</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">532</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = 2t³ − kt²</span> (<span class="m">k</span>는 상수). 시각 <span class="m">t = 1</span>에서 점 P가 운동 방향을 바꿀 때, 시각 <span class="m">t = k</span>에서의 점 P의 가속도를 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">v(1) = 0</span> даёт <span class="m">k</span>. Потом считай <span class="m">a(k)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">540</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ + kt² + kt</span> (<span class="m">k</span>는 상수). 시각 <span class="m">t = 1</span>에서 점 P가 운동 방향을 바꿀 때, 시각 <span class="m">t = 2</span>에서 점 P의 가속도는?</p>
+      <div class="opts"><span>① 4</span><span>② 6</span><span>③ 8</span><span>④ 10</span><span>⑤ 12</span></div>
+      <details><summary>Подсказка</summary><p>Та же схема, что 532. После того как нашёл <span class="m">k</span>, убедись, что <span class="m">t = 1</span> — простой корень <span class="m">v</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">539</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ + at² + bt</span> (<span class="m">a, b</span>는 상수). 시각 <span class="m">t = 1</span>에서 점 P가 운동 방향을 바꾸고, 시각 <span class="m">t = 2</span>에서 점 P의 가속도는 0이다. <span class="m">a + b</span>의 값은?</p>
+      <div class="opts"><span>① 3</span><span>② 4</span><span>③ 5</span><span>④ 6</span><span>⑤ 7</span></div>
+      <details><summary>Подсказка</summary><p>Два неизвестных — два уравнения: <span class="m">v(1) = 0</span> и <span class="m">a(2) = 0</span>. Начни со второго: в нём только <span class="m">a</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">533</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">x₁(t) = t³ − 3t² − 24t</span>, <span class="m">x₂(t) = t² − at</span>. 두 점 P, Q의 운동 방향이 시각 <span class="m">t = k</span>에서 동시에 바뀔 때, <span class="m">a + k</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>У P <span class="m">v₁</span> раскладывается без параметров — из него сразу <span class="m">k</span>. Потом <span class="m">v₂(k) = 0</span> даёт <span class="m">a</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">537</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 점 P, Q의 위치 <span class="m">f(t) = 2t² − 2t</span>, <span class="m">g(t) = t² − 8t</span>. 두 점 P와 Q가 서로 반대방향으로 움직이는 시각 <span class="m">t</span>의 범위는?</p>
+      <div class="opts"><span>① ½ &lt; t &lt; 4</span><span>② 1 &lt; t &lt; 5</span><span>③ 2 &lt; t &lt; 5</span><span>④ 3/2 &lt; t &lt; 6</span><span>⑤ 2 &lt; t &lt; 8</span></div>
+      <details><summary>Подсказка</summary><p><span class="kr">반대방향</span> = скорости разных знаков: <span class="m">f′(t) · g′(t) &lt; 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">538</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 P의 위치 <span class="m">x = t³ − 5t² + at + 5</span>. 점 P가 움직이는 방향이 바뀌지 않도록 하는 자연수 <span class="m">a</span>의 최솟값은?</p>
+      <div class="opts"><span>① 9</span><span>② 10</span><span>③ 11</span><span>④ 12</span><span>⑤ 13</span></div>
+      <details><summary>Подсказка</summary><p>Направление не меняется ⇔ квадратичная <span class="m">v(t)</span> не меняет знак ⇔ <span class="m">D ≤ 0</span> (вспомни ловушку с двойным корнем: при <span class="m">D = 0</span> разворота тоже нет).</p></details>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="type-h"><h3>Тип D · <span class="kr">길이·넓이·부피의 변화율</span> и движение в жизни</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">542</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">2006년 10월 고3 이과 12번</span></div>
+    <p class="kr pk">가로와 세로의 길이가 각각 9 cm, 4 cm인 직사각형이 있다. 이 직사각형의 가로와 세로의 길이가 각각 매초 0.2 cm, 0.3 cm씩 늘어난다고 할 때, 이 직사각형이 정사각형이 되는 순간의 넓이의 변화율은 몇 cm²/초인가?</p>
+    <p><strong>Перевод:</strong> прямоугольник 9 см × 4 см. Каждую секунду ширина растёт на 0,2 см, высота — на 0,3 см. Какова скорость изменения площади в момент, когда прямоугольник становится квадратом?</p>
+    <div class="opts"><span>① 9.5</span><span>② 10</span><span>③ 10.5</span><span>④ 11</span><span>⑤ 11.5</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1. Стороны через t.</span> ширина 9 + 0.2t, высота 4 + 0.3t</span>
+        <span><span class="ok">Шаг 2. Момент «квадрат».</span> 9 + 0.2t = 4 + 0.3t ⇒ 0.1t = 5 ⇒ t = 50; сторона 19</span>
+        <span><span class="ok">Шаг 3. Площадь.</span> S(t) = (9 + 0.2t)(4 + 0.3t)</span>
+        <span><span class="ok">Шаг 4. Производная произведения.</span> S′(t) = 0.2(4 + 0.3t) + 0.3(9 + 0.2t)</span>
+        <span><span class="ok">Шаг 5.</span> S′(50) = 0.2 · 19 + 0.3 · 19 = 0.5 · 19 = 9.5</span>
+      </div>
+      <p>Момент дан не временем, а формой («когда станет квадратом»), поэтому сначала находим <span class="m">t</span>.</p>
+      <p>Ответ: <span class="answer">① 9.5</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">543</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">한 변의 길이가 12√3인 정삼각형과 그 정삼각형에 내접하는 원으로 이루어진 도형이 있다. 정삼각형의 각 변의 길이가 매초 3√3씩 늘어남에 따라 원도 정삼각형에 내접하면서 반지름의 길이가 늘어난다. 정삼각형의 한 변의 길이가 24√3이 되는 순간, 원의 넓이의 시간(초)에 대한 변화율이 <span class="m">aπ</span>이다. 상수 <span class="m">a</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Радиус вписанной окружности правильного треугольника со стороной <span class="m">s</span>: <span class="m">r = s / (2√3)</span>. Запиши <span class="m">r(t)</span>, найди <span class="m">t</span> для стороны 24√3, потом производную от <span class="m">πr²</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">521</span><span class="lvl">상</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">그림과 같이 편평한 바닥에 60°로 기울어진 경사면과 반지름의 길이가 0.5 m인 공이 있다. 이 공의 중심은 경사면과 바닥이 만나는 점에서 바닥에 수직으로 높이가 21 m인 위치에 있다. 이 공을 자유낙하시킬 때, <span class="m">t</span>초 후 공의 중심의 높이는 <span class="m">h(t) = 21 − 5t²</span>(m). 공이 경사면과 처음으로 충돌하는 순간, 공의 속도는? (그림은 문제집 140쪽 참고)</p>
+      <div class="opts"><span>① −20</span><span>② −17</span><span>③ −15</span><span>④ −12</span><span>⑤ −10</span> <span>(m/초)</span></div>
+      <details><summary>Подсказка</summary><p>Мяч касается склона, когда расстояние от центра до склона равно радиусу 0,5. Из прямоугольного треугольника с углом 60° найди высоту центра в этот момент (получится целое число), потом <span class="m">t</span> и <span class="m">v = h′(t)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">544</span><span class="lvl">상</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">한 변의 길이가 20인 정사각형 ABCD에서 점 P는 A에서 출발하여 변 AB 위를 매초 2씩 움직여 B까지, 점 Q는 B에서 P와 동시에 출발하여 변 BC 위를 매초 3씩 움직여 C까지 간다. 사각형 DPBQ의 넓이가 정사각형 ABCD의 넓이의 11/20이 되는 순간의 삼각형 PBQ의 넓이의 시간(초)에 대한 순간변화율을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Через <span class="m">t</span> секунд: <span class="m">PB = 20 − 2t</span>, <span class="m">BQ = 3t</span>. Площадь DPBQ = квадрат минус два треугольника у вершины D. Найди <span class="m">t</span>, потом производную площади PBQ.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 9 шпаргалка ===== -->
+<section id="summary">
+  <div class="head">
+    <span class="sec-num">9 · <span class="kr">정리</span> (шпаргалка)</span>
+    <h2>Шпаргалка</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Что спрашивают</th><th>По-корейски</th><th>Что делать</th></tr></thead>
+      <tbody>
+        <tr><td>скорость</td><td class="kr">속도</td><td><span class="m">v = x′(t)</span>, знак оставить</td></tr>
+        <tr><td>модуль скорости</td><td class="kr">속력</td><td><span class="m">|v|</span></td></tr>
+        <tr><td>ускорение</td><td class="kr">가속도</td><td><span class="m">a = v′(t) = x″(t)</span></td></tr>
+        <tr><td>средняя скорость</td><td class="kr">평균 속도</td><td><span class="m">(x(t₂) − x(t₁)) / (t₂ − t₁)</span>, без производной</td></tr>
+        <tr><td>разворот</td><td class="kr">운동 방향이 바뀐다</td><td><span class="m">v = 0</span> <strong>и</strong> знак <span class="m">v</span> меняется</td></tr>
+        <tr><td>остановка, верхняя точка</td><td class="kr">정지 / 최고 지점</td><td><span class="m">v = 0</span>, потом подставить в <span class="m">x</span> или <span class="m">h</span></td></tr>
+        <tr><td>проходит через начало</td><td class="kr">원점을 지난다</td><td><span class="m">x(t) = 0</span></td></tr>
+        <tr><td>противоположные направления</td><td class="kr">서로 반대 방향</td><td><span class="m">v₁ · v₂ &lt; 0</span></td></tr>
+        <tr><td>расстояние между точками</td><td class="kr">두 점 사이의 거리</td><td><span class="m">|x₁ − x₂|</span></td></tr>
+        <tr><td>скорость изменения площади/объёма</td><td class="kr">넓이·부피의 변화율</td><td>записать <span class="m">S(t)</span>, <span class="m">V(t)</span> → производная → подставить <span class="m">t</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Частые ошибки</span>
+    <ul class="plain">
+      <li>Считают <span class="m">v = 0</span> разворотом, не проверив знак (двойной корень).</li>
+      <li>Путают <span class="kr">속도</span> и <span class="kr">속력</span>: −10 и 10.</li>
+      <li>Найденный <span class="m">t</span> подставляют не в ту функцию: спрашивают <span class="kr">위치</span>, а считают <span class="m">v</span>.</li>
+      <li>Забывают условие <span class="m">t &gt; 0</span> или <span class="m">t ≥ 0</span> и оставляют отрицательный корень.</li>
+      <li>На графике <span class="m">x(t)</span> читают высоту вместо наклона: скорость — это наклон.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Материал по учебнику NaBi School <span class="kr">미적분1</span>, стр. 91–92, и сборнику задач, стр. 138–143.</footer>
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T)};}
+  function path(f,a,b,M,n=200){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",violet:"var(--violet)",grid:"var(--grid)",paper:"var(--paper)",line:"var(--line)"};
+  const SANS="Golos Text, Noto Sans KR, sans-serif";
+  function T(s,x,y,txt,o){return el("text",Object.assign({x,y,fill:C.ink,"font-size":13},o||{}),s,txt);}
+  function dot(s,x,y,col,r){return el("circle",{cx:x,cy:y,r:r||4.5,fill:col},s);}
+  function axes(s,M,x0,x1,y0,y1,xl,yl){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},s);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},s);
+    T(s,M.X(x1)-4,M.Y(0)+16,xl||"t",{fill:C.muted,"text-anchor":"end"});
+    T(s,M.X(0)+6,M.Y(y1)+12,yl||"x",{fill:C.muted});
+    T(s,M.X(0)-6,M.Y(0)+15,"O",{fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"});
+  }
+  const fmt=v=>{const r=Math.round(v*100)/100;return (r<0?"−":"")+Math.abs(r).toFixed(2).replace(/\.?0+$/,"");};
+  function arrowHead(s,x,y,dir,col){const w=8;el("path",{d:`M${x},${y} L${x-dir*w},${y-5} L${x-dir*w},${y+5} Z`,fill:col},s);}
+
+  /* разминка */
+  (function(){
+    const s=document.getElementById("figWarm");
+    const f=t=>0.18*t*t*t-1.1*t*t+2.3*t+0.6;
+    const M=mapper(-0.3,5.2,-0.4,3.2,20,500,14,220);
+    axes(s,M,-0.3,5.2,-0.4,3.2);
+    el("path",{d:path(f,0,5,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    const t0=0.9,t1=2.9,sl=(f(t1)-f(t0))/(t1-t0),d=0.54*t0*t0-2.2*t0+2.3;
+    el("line",{x1:M.X(-0.2),y1:M.Y(f(t0)+sl*(-0.2-t0)),x2:M.X(4.6),y2:M.Y(f(t0)+sl*(4.6-t0)),stroke:C.blue,"stroke-width":2},s);
+    el("line",{x1:M.X(0),y1:M.Y(f(t0)-d*t0),x2:M.X(2.2),y2:M.Y(f(t0)+d*(2.2-t0)),stroke:C.coral,"stroke-width":2},s);
+    [t0,t1].forEach(t=>{el("line",{x1:M.X(t),y1:M.Y(f(t)),x2:M.X(t),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);});
+    dot(s,M.X(t0),M.Y(f(t0)),C.coral);dot(s,M.X(t1),M.Y(f(t1)),C.blue);
+    T(s,M.X(t0),M.Y(0)+16,"t",{"text-anchor":"middle"});T(s,M.X(t1),M.Y(0)+16,"t + Δt",{"text-anchor":"middle"});
+    T(s,M.X(5),M.Y(f(5))+4,"x = f(t)",{"text-anchor":"end","dx":-8});
+    T(s,M.X(1.5),M.Y(f(t0)+d*(1.5-t0))-12,"f′(t)",{fill:C.coral});
+    T(s,M.X(4.1),M.Y(f(t0)+sl*(4.1-t0))+18,"Δx / Δt",{fill:C.blue});
+  })();
+
+  /* направление */
+  (function(){
+    const s=document.getElementById("figDir");
+    el("line",{x1:20,y1:70,x2:500,y2:70,stroke:C.muted,"stroke-width":1.4},s);arrowHead(s,505,70,1,C.muted);
+    T(s,500,92,"x",{fill:C.muted,"text-anchor":"end"});
+    dot(s,260,70,C.ink,5);T(s,260,58,"P",{"text-anchor":"middle","font-style":"normal"});
+    el("line",{x1:240,y1:46,x2:80,y2:46,stroke:C.coral,"stroke-width":4},s);arrowHead(s,72,46,-1,C.coral);
+    T(s,160,34,"v < 0",{fill:C.coral,"text-anchor":"middle"});
+    el("line",{x1:280,y1:46,x2:440,y2:46,stroke:C.blue,"stroke-width":4},s);arrowHead(s,448,46,1,C.blue);
+    T(s,360,34,"v > 0",{fill:C.blue,"text-anchor":"middle"});
+    el("path",{d:"M440,98 L280,98 Q262,98 262,110 Q262,122 280,122 L440,122",fill:"none",stroke:C.blue,"stroke-width":4},s);
+    el("path",{d:"M80,98 L240,98 Q258,98 258,110 Q258,122 240,122 L80,122",fill:"none",stroke:C.coral,"stroke-width":4},s);
+    dot(s,260,110,C.green,6);T(s,260,144,"v = 0",{fill:C.green,"text-anchor":"middle"});
+  })();
+
+  /* ловушка двойного корня */
+  (function(){
+    const s=document.getElementById("figTrap");
+    function panel(ox,f,title,col){
+      const M=mapper(-0.2,2.6,-1.6,2.6,ox+14,ox+240,22,170);
+      el("line",{x1:M.X(-0.2),y1:M.Y(0),x2:M.X(2.6),y2:M.Y(0),stroke:C.muted},s);
+      el("line",{x1:M.X(0),y1:M.Y(-1.6),x2:M.X(0),y2:M.Y(2.6),stroke:C.muted},s);
+      T(s,M.X(2.6),M.Y(0)+16,"t",{fill:C.muted,"text-anchor":"end"});T(s,M.X(0)+6,M.Y(2.6)+10,"v",{fill:C.muted});
+      el("path",{d:path(f,0,2.4,M),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+      dot(s,M.X(1),M.Y(0),col,5);T(s,M.X(1),M.Y(0)+18,"1",{"text-anchor":"middle"});
+      T(s,ox+128,14,title,{"text-anchor":"middle","font-style":"normal","font-family":SANS,fill:col,"font-weight":600});
+    }
+    panel(0,t=>1.6*(t-1),"+ → разворот",C.green);
+    panel(262,t=>1.2*(t-1)*(t-1),"двойной корень → нет",C.coral);
+  })();
+
+  /* лаборатория */
+  (function(){
+    const modes={
+      A:{f:t=>t*t*t-6*t*t+9*t,v:t=>3*t*t-12*t+9,a:t=>6*t-12,tmax:4.2,xr:[-0.5,6.5],yr:[-0.6,6.4],stops:[[1,"t = 1"],[3,"t = 3"]],trap:[]},
+      B:{f:t=>t*t*t-3*t*t+3*t,v:t=>3*(t-1)*(t-1),a:t=>6*t-6,tmax:2.4,xr:[-0.5,4.2],yr:[-0.4,4],stops:[[1,"t = 1"]],trap:[1]}
+    };
+    let mode="A",t=0.4,timer=null;
+    const line=document.getElementById("labLine"),g=document.getElementById("labGraph"),sl=document.getElementById("tSlider"),st=document.getElementById("status"),jumps=document.getElementById("jumps"),play=document.getElementById("play");
+    function setJumps(){jumps.textContent="";const m=modes[mode];m.stops.forEach(([v,l])=>{const b=document.createElement("button");b.textContent="Перейти: "+l;b.addEventListener("click",()=>{stop();t=v;sl.value=v;draw();});jumps.appendChild(b);});}
+    function draw(){
+      const m=modes[mode];line.textContent="";g.textContent="";
+      const x=m.f(t),v=m.v(t),a=m.a(t);
+      /* прямая */
+      const L=mapper(m.xr[0],m.xr[1],0,1,24,536,0,1);
+      el("line",{x1:20,y1:56,x2:540,y2:56,stroke:C.muted,"stroke-width":1.4},line);arrowHead(line,546,56,1,C.muted);
+      for(let k=Math.ceil(m.xr[0]);k<=m.xr[1];k++){el("line",{x1:L.X(k),y1:51,x2:L.X(k),y2:61,stroke:C.muted},line);T(line,L.X(k),78,String(k),{"text-anchor":"middle","font-size":12,fill:C.muted,"font-style":"normal"});}
+      const col=Math.abs(v)<0.03?C.green:(v>0?C.blue:C.coral);
+      const px=L.X(x);
+      if(Math.abs(v)>=0.03){const len=Math.max(-150,Math.min(150,v*22));el("line",{x1:px,y1:30,x2:px+len,y2:30,stroke:col,"stroke-width":4},line);arrowHead(line,px+len+(len>0?6:-6),30,len>0?1:-1,col);}
+      T(line,px,22,"P",{"text-anchor":"middle","font-style":"normal","font-weight":600});
+      dot(line,px,56,col,7);
+      /* график */
+      const M=mapper(-0.2,m.tmax+0.2,m.yr[0],m.yr[1],34,544,14,236);
+      el("line",{x1:M.X(-0.2),y1:M.Y(0),x2:M.X(m.tmax+0.2),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},g);
+      el("line",{x1:M.X(0),y1:M.Y(m.yr[0]),x2:M.X(0),y2:M.Y(m.yr[1]),stroke:C.muted,"stroke-width":1.2},g);
+      T(g,M.X(m.tmax+0.2)-2,M.Y(0)+16,"t",{fill:C.muted,"text-anchor":"end"});T(g,M.X(0)+6,M.Y(m.yr[1])+12,"x(t)",{fill:C.muted});
+      for(let k=1;k<=Math.floor(m.tmax);k++){el("line",{x1:M.X(k),y1:M.Y(0)-4,x2:M.X(k),y2:M.Y(0)+4,stroke:C.muted},g);T(g,M.X(k),M.Y(0)+17,String(k),{"text-anchor":"middle","font-size":12,fill:C.muted,"font-style":"normal"});}
+      el("path",{d:path(m.f,0,m.tmax,M),fill:"none",stroke:C.ink,"stroke-width":2.4},g);
+      const w=0.7;el("line",{x1:M.X(t-w),y1:M.Y(x-v*w),x2:M.X(t+w),y2:M.Y(x+v*w),stroke:col,"stroke-width":2.2},g);
+      el("line",{x1:M.X(t),y1:M.Y(x),x2:M.X(t),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},g);
+      el("line",{x1:M.X(0),y1:M.Y(x),x2:M.X(t),y2:M.Y(x),stroke:C.muted,"stroke-dasharray":"3 3"},g);
+      dot(g,M.X(t),M.Y(x),col,6);
+      document.getElementById("rx").textContent="x = "+fmt(x);
+      document.getElementById("rv").textContent="v = "+fmt(v);
+      document.getElementById("ra").textContent="a = "+fmt(a);
+      let cls,txt;
+      if(Math.abs(v)<0.03){
+        if(m.trap.length){cls="st-trap";txt="v = 0, но разворота нет: до и после v > 0. Точка только притормозила (двойной корень).";}
+        else{cls="st-hit";txt="Попал! v = 0 и знак скорости меняется — здесь точка разворачивается (운동 방향이 바뀐다).";}
+      } else if(v>0){cls="st-pos";txt="v > 0: точка едет вправо (양의 방향). Касательная поднимается.";}
+      else {cls="st-neg";txt="v < 0: точка едет влево (음의 방향). Касательная опускается.";}
+      st.className="status "+cls;st.textContent=txt;
+    }
+    function stop(){if(timer){cancelAnimationFrame(timer);timer=null;play.textContent="▶ Пуск";}}
+    play.addEventListener("click",()=>{
+      if(timer){stop();return;}
+      const m=modes[mode];if(t>=m.tmax-0.01)t=0;play.textContent="❚❚ Пауза";
+      let last=performance.now();
+      const step=now=>{t=Math.min(m.tmax,t+(now-last)/1000*0.45);last=now;sl.value=t;draw();if(t<m.tmax)timer=requestAnimationFrame(step);else stop();};
+      timer=requestAnimationFrame(step);
+    });
+    sl.addEventListener("input",()=>{stop();t=+sl.value;draw();});
+    function setMode(k){stop();mode=k;document.getElementById("modeA").setAttribute("aria-pressed",k==="A");document.getElementById("modeB").setAttribute("aria-pressed",k==="B");sl.max=modes[k].tmax;t=Math.min(t,modes[k].tmax);sl.value=t;setJumps();draw();}
+    document.getElementById("modeA").addEventListener("click",()=>setMode("A"));
+    document.getElementById("modeB").addEventListener("click",()=>setMode("B"));
+    setMode("A");
+  })();
+
+  /* куб */
+  (function(){
+    const s=document.getElementById("figCube");
+    function cube(ox,oy,a,lab,col){
+      const dx=a*0.45,dy=a*0.35;
+      const P=[[ox,oy],[ox+a,oy],[ox+a,oy-a],[ox,oy-a]];
+      el("path",{d:`M${ox},${oy-a} L${ox+dx},${oy-a-dy} L${ox+a+dx},${oy-a-dy} L${ox+a},${oy-a} Z`,fill:"var(--blue-soft)",stroke:C.ink,"stroke-width":1.6},s);
+      el("path",{d:`M${ox+a},${oy} L${ox+a+dx},${oy-dy} L${ox+a+dx},${oy-a-dy} L${ox+a},${oy-a} Z`,fill:"var(--grid)",stroke:C.ink,"stroke-width":1.6},s);
+      el("path",{d:"M"+P.map(p=>p.join(",")).join(" L")+" Z",fill:C.paper,stroke:C.ink,"stroke-width":1.6},s);
+      el("line",{x1:ox,y1:oy+10,x2:ox+a,y2:oy+10,stroke:col,"stroke-width":2.5},s);
+      T(s,ox+a/2,oy+28,lab,{"text-anchor":"middle",fill:col});
+    }
+    cube(40,150,40,"1 cm",C.muted);
+    T(s,150,100,"t초 후",{"font-style":"normal","font-family":SANS,fill:C.muted,"text-anchor":"middle"});
+    el("line",{x1:120,y1:110,x2:180,y2:110,stroke:C.muted,"stroke-width":1.5},s);arrowHead(s,186,110,1,C.muted);
+    cube(220,170,110,"l(t) = 1 + t",C.coral);
+    T(s,400,70,"S(t) = (1 + t)²",{fill:C.blue});
+    T(s,400,95,"V(t) = (1 + t)³",{fill:C.ink});
+  })();
+
+  /* 315 */
+  (function(){
+    const s=document.getElementById("fig315");
+    const K=[[0,1.4,3.2],[1,3.3,0],[2,0,-3.9],[2.7,-1.9,0],[3.3,0,3.4],[3.95,1.9,0.55],[4.5,4.8,9]];
+    function f(t){for(let i=0;i<K.length-1;i++){const[a,ya,ma]=K[i],[b,yb,mb]=K[i+1];if(t<=b||i===K.length-2){const h=b-a,u=(t-a)/h,u2=u*u,u3=u2*u;return(2*u3-3*u2+1)*ya+(u3-2*u2+u)*h*ma+(-2*u3+3*u2)*yb+(u3-u2)*h*mb;}}}
+    const M=mapper(-0.3,4.9,-2.6,5.2,20,420,14,246);
+    axes(s,M,-0.3,4.9,-2.6,5.2,"t","x(t)");
+    el("path",{d:path(f,0,4.5,M,300),fill:"none",stroke:C.ink,"stroke-width":2.4},s);
+    [[1,"a"],[2.7,"c"],[3.95,"e"]].forEach(([t,l])=>{el("line",{x1:M.X(t),y1:M.Y(f(t)),x2:M.X(t),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);});
+    T(s,M.X(1),M.Y(0)+17,"a",{"text-anchor":"middle"});
+    T(s,M.X(2)-8,M.Y(0)+17,"b",{"text-anchor":"middle"});
+    T(s,M.X(2.7),M.Y(0)-6,"c",{"text-anchor":"middle"});
+    T(s,M.X(3.3)-8,M.Y(0)-6,"d",{"text-anchor":"middle"});
+    T(s,M.X(3.95),M.Y(0)+17,"e",{"text-anchor":"middle"});
+    const g=el("g",{},s);g.style.display="none";
+    const slope=(f(3.301)-f(3.299))/0.002;
+    el("line",{x1:M.X(2.85),y1:M.Y(slope*(2.85-3.3)),x2:M.X(3.75),y2:M.Y(slope*(3.75-3.3)),stroke:C.blue,"stroke-width":2.2},g);
+    dot(g,M.X(2),M.Y(0),C.muted,4);dot(g,M.X(3.3),M.Y(0),C.blue,5);
+    T(g,M.X(2)-8,M.Y(0)+34,"1-й раз",{fill:C.muted,"font-style":"normal","font-family":SANS,"font-size":12,"text-anchor":"end"});
+    T(g,432,M.Y(-1.6),"2-й раз: наклон = x′(d)",{fill:C.blue,"font-style":"normal","font-family":SANS,"font-size":12,"text-anchor":"end"});
+    const b=document.getElementById("btn315");
+    b.addEventListener("click",()=>{const on=b.getAttribute("aria-pressed")!=="true";b.setAttribute("aria-pressed",on);g.style.display=on?"":"none";b.textContent=on?"Скрыть касательную":"Показать касательную";});
+  })();
+})();
+</script>
+
+</body></html>
