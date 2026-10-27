@@ -1,0 +1,774 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>회전체 유형 연습 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column; the lab (rotate + cut) sits in the middle as the one interactive moment; problems grouped by 유형 below */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --sunk:#E9EEF6; --line:#D5DCE8;
+  --ink:#14203A; --muted:#566281;
+  --blue:#2457C5; --blue-soft:#E3EAFA; --blue-fill:rgba(36,87,197,.16);
+  --coral:#CF4429; --coral-soft:#FBE8E3; --coral-fill:rgba(207,68,41,.38);
+  --green:#1A7B51; --green-soft:#E0F2E8; --green-fill:rgba(26,123,81,.24);
+  --amber:#A86A12; --amber-soft:#FBF0DC;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--f-body)}
+.wrap{max-width:820px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(30px,6vw,44px)/1.15 var(--f-disp);display:flex;flex-direction:column;gap:6px}
+h1 .ru{font:500 clamp(17px,3vw,21px)/1.35 var(--f-body);color:var(--muted)}
+h2{font:700 21px/1.3 var(--f-body);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font:700 14px var(--f-disp);color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:2px 8px}
+h3{font:700 18px/1.35 var(--f-body)}
+p{margin:0}
+.kr,.ko{font-family:var(--f-kr)}
+.m{font:italic 400 1.06em var(--f-math)}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-kr);padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.lead{max-width:62ch;color:var(--ink)}
+.hero{display:flex;flex-direction:column;gap:14px}
+.box{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box .tag{font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.analogy{background:var(--amber-soft)} .analogy .tag{color:var(--amber)}
+.text{background:var(--surface);border:1px solid var(--line)} .text .tag{color:var(--blue)}
+.warn{background:var(--coral-soft)} .warn .tag{color:var(--coral)}
+.ex{background:var(--green-soft)} .ex .tag{color:var(--green)}
+.def-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.def-list li{display:flex;flex-direction:column;gap:2px}
+.def-list .ko{font-weight:500}
+.def-list .tr{color:var(--muted);font-size:15.5px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vocab div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.vocab b{font:700 17px var(--f-kr)}
+.vocab i{font-style:normal;font-weight:600;font-size:14.5px;color:var(--blue)}
+.vocab span{font-size:13.5px;color:var(--muted);line-height:1.4}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0}
+.card b{font:700 16px var(--f-kr)} .card span{font-size:14px;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--f-kr);fill:var(--ink);font-size:13px}
+svg .lbl{font:italic 15px var(--f-math);fill:var(--ink)}
+svg .sm{font-size:11px;fill:var(--muted)}
+.fig{display:flex;flex-direction:column;gap:6px}
+.cap{font-size:14.5px;color:var(--muted)}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:15px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--sunk);font-weight:600}
+td .kr,th .kr{font-weight:500}
+/* lab */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:620px){.lab-grid{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:500 14.5px var(--f-body);border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+.seg.cut button[aria-pressed="true"]{background:var(--coral);border-color:var(--coral)}
+.btn.go{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue)}
+#cutH{accent-color:var(--coral)}
+.readout{background:var(--sunk);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:15.5px;min-height:96px}
+.readout b{font-family:var(--f-kr)}
+.status{font-weight:600;color:var(--coral)}
+.status.ok{color:var(--green)}
+/* problems */
+.type{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--line);padding-top:18px}
+.type-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.type-h .tn{font:700 14px var(--f-disp);color:var(--surface);background:var(--blue);border-radius:6px;padding:2px 8px}
+.type-h b{font:700 18px var(--f-kr)}
+.type-h span{color:var(--muted);font-size:15px}
+.prob{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.phead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pno{font:700 22px var(--f-disp);color:var(--blue)}
+.badge{font:600 12px var(--f-kr);padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.badge.rep{background:var(--green-soft);color:var(--green)}
+.pq{font:500 17px/1.6 var(--f-kr)}
+.pt{font-size:15px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:4px 18px;font:500 16px var(--f-kr);margin:0;padding:0;list-style:none}
+details{border-radius:10px;border:1px solid var(--line)}
+details>summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+details.h>summary{color:var(--amber)}
+details.s>summary{color:var(--green)}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.ans{font-weight:700;color:var(--green)}
+.rest{display:flex;flex-direction:column;gap:8px}
+.rest details>summary b{font-family:var(--f-disp);margin-right:6px;color:var(--ink)}
+.rest details>div .pq{font-size:16px}
+.optfig{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.optfig figure{margin:0;background:var(--sunk);border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.optfig figcaption{font:600 14px var(--f-kr)}
+.mistakes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.figsm{max-width:340px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* --- extra for this lesson: solids of revolution, section lab --- */
+.src{background:var(--surface);border:1.5px solid var(--amber);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.src .tag{font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--amber)}
+.src .ko{font:500 16px/1.6 var(--f-kr)}
+.src ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+.fam4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.fam4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.fam4 .card svg{max-width:150px}
+.recipe{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.recipe li::marker{font-weight:700;color:var(--blue)}
+.hot{background:var(--coral-soft);border-radius:8px;padding:6px 10px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:center}
+@media (max-width:520px){.pair{grid-template-columns:1fr}}
+.pair figure{margin:0;background:var(--sunk);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.pair figure svg{max-width:260px}
+.pair figcaption{font-size:14px;color:var(--muted);text-align:center}
+.optfig svg{max-width:110px}
+.lab-views{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.lab-views figure{margin:0;background:var(--sunk);border-radius:12px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.lab-views figcaption{font-size:13.5px;color:var(--muted)}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.ringbox{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;align-items:center}
+@media (max-width:520px){.ringbox{grid-template-columns:1fr}}
+.ringbox svg{max-width:240px;margin:0 auto}
+.mini td,.mini th{text-align:center}
+.mini td:first-child,.mini th:first-child{text-align:left}
+.ref{font-size:14px;color:var(--muted);font-style:italic}
+.type-h .tn.alt{background:var(--green)}
+.type-h .tn.fin{background:var(--coral)}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="chips">
+    <span class="chip">NaBi school</span>
+    <span class="chip">III 입체도형의 성질 › 1 다면체와 회전체</span>
+    <span class="chip">стр. 185–197 · 유형 97–102 · 559–600</span>
+  </div>
+  <h1>회전체: 축 · 단면 · 전개도<span class="ru">Тела вращения: ось, сечения, развёртки + итоговое повторение</span></h1>
+  <p class="lead">Всё в этой теме держится на одной идее: <b>тело вращения — это плоская фигура, которая крутится вокруг прямой</b>. Если видишь эту фигуру, ты сразу знаешь ось, сечения и развёртку. В конце — задачи <span class="kr">응용 도전</span> и <span class="kr">단원 마무리</span> по многогранникам.</p>
+</header>
+
+<!-- 0 vocab -->
+<section id="vocab">
+  <h2><span class="num">0</span>Словарь · <span class="kr">단어장</span></h2>
+  <p class="muted">Эти слова встречаются в задачах 559–600. На контрольной они будут только по-корейски.</p>
+  <div class="vocab">
+    <div><b>회전체</b><i>тело вращения</i><span>получается, когда плоская фигура делает оборот вокруг прямой</span></div>
+    <div><b>회전축</b><i>ось вращения</i><span>прямая, вокруг которой крутим</span></div>
+    <div><b>1회전 · 한 바퀴</b><i>один полный оборот</i><span>повернуть на 360°</span></div>
+    <div><b>모선</b><i>образующая</i><span>отрезок, который «рисует» боковую поверхность</span></div>
+    <div><b>원기둥</b><i>цилиндр</i><span>крутим прямоугольник</span></div>
+    <div><b>원뿔</b><i>конус</i><span>крутим прямоугольный треугольник</span></div>
+    <div><b>원뿔대</b><i>усечённый конус</i><span>конус со срезанной верхушкой</span></div>
+    <div><b>구 · 반구</b><i>шар · полушар</i><span>крутим полукруг (반원)</span></div>
+    <div><b>단면</b><i>сечение</i><span>фигура, которая видна на месте разреза</span></div>
+    <div><b>자르다 · 잘랐을 때</b><i>резать · когда разрезали</i><span>평면으로 자르다 = разрезать плоскостью</span></div>
+    <div><b>회전축에 수직인 평면</b><i>плоскость ⊥ оси</i><span>режем «поперёк», как колбасу</span></div>
+    <div><b>회전축을 포함하는 평면</b><i>плоскость через ось</i><span>режем «вдоль» точно по центру</span></div>
+    <div><b>선대칭도형</b><i>фигура с осевой симметрией</i><span>левая половина = зеркало правой</span></div>
+    <div><b>대칭축</b><i>ось симметрии</i><span>линия-«зеркало»</span></div>
+    <div><b>합동 · 닮음</b><i>равные · подобные</i><span>합동 = совпадают полностью; 닮음 = та же форма, другой размер</span></div>
+    <div><b>이등변삼각형</b><i>равнобедренный треугольник</i><span>осевое сечение конуса</span></div>
+    <div><b>등변사다리꼴</b><i>равнобедренная трапеция</i><span>осевое сечение усечённого конуса</span></div>
+    <div><b>직사각형 · 원</b><i>прямоугольник · круг</i><span>сечения цилиндра</span></div>
+    <div><b>전개도</b><i>развёртка</i><span>поверхность тела, разложенная на плоскости</span></div>
+    <div><b>부채꼴</b><i>сектор круга</i><span>«кусок пиццы» — бок конуса</span></div>
+    <div><b>반지름 · 넓이</b><i>радиус · площадь</i><span>원의 넓이 = π<span class="m">r</span>²</span></div>
+    <div><b>최댓값</b><i>наибольшее значение</i><span>넓이의 최댓값 = самая большая площадь</span></div>
+    <div><b>원주율</b><i>число π</i><span>원주율은 3으로 계산 = считай π = 3</span></div>
+    <div><b>아닌 것 · 옳지 않은</b><i>НЕ являющееся · неверное</i><span>ищем то, что НЕ подходит!</span></div>
+  </div>
+</section>
+
+<!-- 1 warm-up -->
+<section id="warm">
+  <h2><span class="num">1</span>Разминка: четыре тела вращения</h2>
+  <div class="box analogy">
+    <span class="tag">Представь</span>
+    <p>Приклей бумажный флажок к палочке и быстро покрути палочку между ладонями. Флажок «размажется» в объёмное тело. Палочка — это <span class="kr">회전축</span>, флажок — плоская фигура, а то, что ты видишь, — <span class="kr">회전체</span>. Так же работает гончарный круг: глина крутится вокруг оси, и получается ваза.</p>
+  </div>
+  <div class="fam4">
+    <div class="card"><svg id="w1" aria-label="прямоугольник вращается в цилиндр"></svg><b>원기둥</b><span>крутим <span class="kr">직사각형</span></span></div>
+    <div class="card"><svg id="w2" aria-label="треугольник вращается в конус"></svg><b>원뿔</b><span>крутим <span class="kr">직각삼각형</span></span></div>
+    <div class="card"><svg id="w3" aria-label="трапеция вращается в усечённый конус"></svg><b>원뿔대</b><span>крутим <span class="kr">사다리꼴</span> с двумя прямыми углами</span></div>
+    <div class="card"><svg id="w4" aria-label="полукруг вращается в шар"></svg><b>구</b><span>крутим <span class="kr">반원</span></span></div>
+  </div>
+  <p class="cap">Яркая часть справа от оси — исходная плоская фигура. Бледная часть слева — её зеркальное отражение. Вместе они дают <b>осевое сечение</b> (сечение через ось). Запомни этот приём: <b>осевое сечение = фигура + её зеркало</b>.</p>
+</section>
+
+<!-- 2 lab -->
+<section id="lab">
+  <h2><span class="num">2</span>Лаборатория сечений · <span class="kr">단면</span></h2>
+  <p>Выбери тело и двигай плоскость. Слева тело видно сбоку, коралловая линия — плоскость (мы смотрим на неё «с ребра»). Справа — какое сечение получится. Масштаб одинаковый.</p>
+  <div class="lab">
+    <div class="seg" id="solidSeg" role="group" aria-label="Тело">
+      <button type="button" data-s="cyl" aria-pressed="true">원기둥</button>
+      <button type="button" data-s="cone" aria-pressed="false">원뿔</button>
+      <button type="button" data-s="frus" aria-pressed="false">원뿔대</button>
+      <button type="button" data-s="sph" aria-pressed="false">구</button>
+      <button type="button" data-s="hol" aria-pressed="false">속이 빈 원기둥 (567)</button>
+      <button type="button" data-s="hg" aria-pressed="false">모래시계 (568)</button>
+    </div>
+    <div class="lab-views">
+      <figure><svg id="labSide" viewBox="0 0 300 260" aria-label="вид сбоку"></svg><figcaption>вид сбоку + плоскость</figcaption></figure>
+      <figure><svg id="labCut" viewBox="0 0 300 260" aria-label="сечение"></svg><figcaption>сечение · <span class="kr">단면</span></figcaption></figure>
+    </div>
+    <div class="ctrl"><label for="ang"><span>Наклон плоскости</span><span id="angV">0°</span></label><input type="range" id="ang" min="0" max="90" step="1" value="0"></div>
+    <div class="ctrl"><label for="off"><span>Сдвиг плоскости</span><span id="offV">0</span></label><input type="range" id="off" min="-110" max="110" step="1" value="0"></div>
+    <div class="presets">
+      <button type="button" class="btn" data-p="0,0">⊥ оси (<span class="kr">수직</span>)</button>
+      <button type="button" class="btn" data-p="90,0">через ось (<span class="kr">포함</span>)</button>
+      <button type="button" class="btn" data-p="30,0">наискосок</button>
+      <button type="button" class="btn" data-p="90,45">вдоль, но мимо оси</button>
+    </div>
+    <div class="readout" aria-live="polite"><span id="labName" class="status ok"></span><span id="labNote"></span></div>
+  </div>
+  <div class="box ex">
+    <span class="tag">Что заметить</span>
+    <ul class="mistakes">
+      <li>Наклон 0° (⊥ оси) — <b>всегда круг</b> (<span class="kr">원</span>), у любого тела. У полого цилиндра — кольцо.</li>
+      <li>Наклон 90° и сдвиг 0 (через ось) — фигура + зеркало. Поверни ось вокруг себя — сечение не изменится: все такие сечения <span class="kr">합동</span>.</li>
+      <li>Шар режь как хочешь — всегда круг.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 3 recipe -->
+<section id="recipe">
+  <h2><span class="num">3</span>Рецепт для задач на тела вращения</h2>
+  <ol class="recipe">
+    <li><b>Найди исходную фигуру.</b> Её стороны, прилегающие к оси, становятся основаниями; сторона, параллельная оси, — боковой стенкой цилиндра; наклонная сторона — боком конуса.</li>
+    <li><b>Ось (<span class="kr">유형</span> 97):</b> для <span class="kr">원뿔대</span> осью должна быть сторона, <b>перпендикулярная двум параллельным сторонам</b> трапеции.</li>
+    <li><b>Сечение (<span class="kr">유형</span> 98–99):</b> ⊥ оси → <span class="kr">원</span>; через ось → фигура + зеркало; иначе — представь в лаборатории.</li>
+    <li><b>Площадь сечения (<span class="kr">유형</span> 100):</b> сечение ⊥ оси — круг (или кольцо). Радиус = расстояние от оси до самой дальней точки на этой высоте.</li>
+    <li><b>Развёртка (<span class="kr">유형</span> 101):</b> прямоугольник = цилиндр, <span class="kr">부채꼴</span> = конус, кусок кольца = усечённый конус; кружки = основания.</li>
+    <li class="hot">Прочитай вопрос ещё раз: <span class="kr">아닌 것</span>, <span class="kr">옳지 않은 것</span>, <span class="kr">모두 고르면 (정답 2개)</span>. Больше всего ошибок здесь.</li>
+  </ol>
+  <p class="muted">Задача с меткой <span class="badge rep">대표 유제</span> решена полностью. В остальных только подсказка — реши сам, проверим на уроке.</p>
+</section>
+
+<!-- 97 -->
+<section id="t97">
+  <div class="type">
+    <div class="type-h"><span class="tn">97</span><b>회전축</b><span>Ось вращения · стр. 185–186 · 559–562</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <p class="ko">회전축: 회전체에서 축으로 사용한 직선</p>
+      <p class="ko">참고: 구의 지름은 모두 회전축이 될 수 있으므로 구의 회전축은 무수히 많다.</p>
+      <p class="pt">Ось вращения — прямая, вокруг которой вращали. У шара любой диаметр — ось, поэтому осей у шара бесконечно много (<span class="kr">무수히 많다</span>). Один и тот же прямоугольник даёт разные цилиндры: высокий (ось — длинная сторона) или плоский (ось — короткая).</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">559</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 그림과 같은 도형에서 한 변을 축으로 하여 회전시켜 원뿔대를 만들려고 할 때 회전축으로 해야 할 변은?</p>
+      <p class="pt">Какую сторону взять осью, чтобы получился усечённый конус?</p>
+      <svg id="f559" class="figsm" aria-label="четырёхугольник ABCD"></svg>
+      <ul class="opts"><li>① <span class="m">CD</span></li><li>② <span class="m">AC</span></li><li>③ <span class="m">AD</span></li><li>④ <span class="m">BC</span></li><li>⑤ <span class="m">AB</span></li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>У <span class="kr">원뿔대</span> два круга-основания разного размера. Значит, к оси должны прилегать две <b>параллельные</b> стороны разной длины, и они должны быть <b>перпендикулярны</b> оси.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>Углы при <span class="m">A</span> и <span class="m">D</span> прямые → <span class="m">AB</span> ∥ <span class="m">DC</span>, и обе ⊥ <span class="m">AD</span>.</li>
+          <li>Крутим вокруг <span class="m">AD</span>: <span class="m">AB</span> рисует большой круг, <span class="m">DC</span> — маленький, наклонная <span class="m">BC</span> — боковую поверхность. Это <span class="kr">원뿔대</span> ✓.</li>
+          <li>Проверка остальных: вокруг <span class="m">AB</span> или <span class="m">CD</span> получится «цилиндр + конус»; <span class="m">AC</span> — диагональ, а не сторона; вокруг <span class="m">BC</span> — странное тело.</li>
+        </ol>
+        <div class="pair">
+          <figure><svg id="f559b" aria-label="тело вокруг AD"></svg><figcaption>Повернули рисунок так, чтобы <span class="m">AD</span> стала вертикальной осью</figcaption></figure>
+        </div>
+        <p class="ans">Ответ: ③ <span class="m">AD</span></p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>560</b>подсказка</summary><div><p class="pq">다음 그림과 같은 도형을 한 변을 축으로 하여 회전시켜서 원뿔대를 만들려고 한다. 어떤 변을 회전축으로 하면 되겠는가? ① <span class="m">AB</span> ② <span class="m">BC</span> ③ <span class="m">CD</span> ④ <span class="m">AD</span> ⑤ 만들 수 없다.</p><p class="pt">Та же задача, что 559, только фигура «перевёрнута» (рисунок — стр. 185).</p><p>Подсказка: найди два прямых угла. Сторона между ними — та, что ⊥ двум параллельным сторонам.</p></div></details>
+      <details class="h"><summary><b>561</b>подсказка</summary><div><p class="pq">다음 그림과 같은 직각삼각형 <span class="m">ABC</span>를 보기와 같이 직선을 축으로 하여 회전시켰을 때, 원뿔이 되는 것은 모두 몇 개인가? (∠<span class="m">B</span> = 90°, <span class="m">BD</span> ⊥ <span class="m">AC</span>) ㄱ. 직선 <span class="m">AC</span> ㄴ. 직선 <span class="m">BC</span> ㄷ. 직선 <span class="m">AB</span> ㄹ. 직선 <span class="m">BD</span> &nbsp; ① 0개 ② 1개 ③ 2개 ④ 3개 ⑤ 4개</p><p class="pt">Сколько из этих осей дают конус?</p><p>Подсказка: вокруг катета — точно конус. Вокруг гипотенузы <span class="m">AC</span> — два конуса, склеенные основаниями (это не конус). Самое хитрое — <span class="m">BD</span>: треугольник распадается на два прямоугольных треугольника с прямым углом в <span class="m">D</span>. Каждый даёт конус с вершиной <span class="m">B</span>. Что получится, если один конус спрятан внутри другого?</p></div></details>
+      <details class="h"><summary><b>562</b>подсказка</summary><div><p class="pq">아래 그림은 주어진 평면도형을 한 바퀴 회전시킨 입체도형이다. 다음 중 회전축이 될 수 있는 것은? ① <span class="m">AB</span> ② <span class="m">BC</span> ③ <span class="m">CD</span> ④ <span class="m">DE</span> ⑤ <span class="m">EA</span></p><p class="pt">Получился цилиндр с конической ямкой сверху. Какая сторона была осью? (рисунок — стр. 186)</p><p>Подсказка: остриё ямки лежит <b>на оси</b>. Значит, ось проходит через конец наклонной стороны <span class="m">DE</span> — точку <span class="m">E</span>. Из сторон с буквой <span class="m">E</span> выбери ту, что не наклонная.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 98 -->
+<section id="t98">
+  <div class="type">
+    <div class="type-h"><span class="tn">98</span><b>회전체의 단면의 모양 (1)</b><span>Два главных сечения · стр. 186–187 · 563–566</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <ol class="ko"><li>회전체를 회전축에 수직인 평면으로 자를 때 생기는 단면은 항상 원이다.</li><li>회전체를 회전축을 포함하는 평면으로 자를 때 생기는 단면은 모두 합동이고 회전축에 대하여 선대칭도형이다. — 원기둥: 직사각형, 원뿔: 이등변삼각형, 원뿔대: 사다리꼴, 구: 원</li></ol>
+      <p class="pt">(1) Сечение плоскостью ⊥ оси — <b>всегда круг</b>. (2) Сечения плоскостью через ось все <b>равны</b> (<span class="kr">합동</span>) и симметричны относительно оси: цилиндр → прямоугольник, конус → равнобедренный треугольник, усечённый конус → (равнобедренная) трапеция, шар → круг.</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">563</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 회전축에 수직인 평면으로 잘랐을 때 그 단면이 원이 <u>아닌</u> 것은?</p>
+      <p class="pt">Какое тело при сечении плоскостью ⊥ оси даёт НЕ круг?</p>
+      <ul class="opts"><li>① 원뿔</li><li>② 원기둥</li><li>③ 구</li><li>④ 원뿔대</li><li>⑤ 답이 없다.</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Открой лабораторию, поставь наклон 0° и перебери все тела. Встретится ли хоть раз не круг?</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>Каждая точка исходной фигуры при вращении рисует окружность вокруг оси.</li>
+          <li>Плоскость ⊥ оси «ловит» эти окружности целиком → сечение всегда <span class="kr">원</span>, у <b>любого</b> <span class="kr">회전체</span>.</li>
+          <li>Значит, среди ①–④ нет тела с другим сечением. Ловушка: ученики ищут «подвох» в шаре или конусе, а его нет.</li>
+        </ol>
+        <p class="ans">Ответ: ⑤ 답이 없다 (такого нет)</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>564</b>подсказка</summary><div><p class="pq">다음 중 회전체를 회전축을 포함하는 평면으로 잘랐을 때 그 단면이 이등변삼각형인 것은? ① 원기둥 ② 원뿔 ③ 원뿔대 ④ 반구 ⑤ 구</p><p class="pt">У какого тела осевое сечение — равнобедренный треугольник?</p><p>Подсказка: осевое сечение = фигура + зеркало. Какая фигура, удвоенная зеркалом, даёт треугольник?</p></div></details>
+      <details class="h"><summary><b>565</b>подсказка</summary><div><p class="pq">다음은 회전체와 그 회전체의 축을 포함하는 평면으로 잘랐을 때 생기는 단면의 모양을 짝 지은 것이다. 짝 지은 것으로 옳지 <u>않은</u> 것을 모두 고르면? (정답 2개) ① 구 – 원 ② 반구 – 반원 ③ 원기둥 – 등변사다리꼴 ④ 원뿔 – 이등변삼각형 ⑤ 원뿔대 – 평행사변형</p><p class="pt">Какие пары «тело — осевое сечение» неверны? (2 ответа)</p><p>Подсказка: сверь с рамкой учебника выше. Осевое сечение всегда симметрично относительно оси — а <span class="kr">평행사변형</span> такой симметрии обычно не имеет.</p></div></details>
+      <details class="h"><summary><b>566</b>подсказка</summary><div><p class="pq">회전체를 그 회전축에 수직인 평면으로 자르면 그 잘린 면은 항상 ㉠ 이고, 회전축을 포함하는 평면으로 자르면 그 잘린 면은 모두 ㉡ 이다. ① ㉠ 원, ㉡ 합동 ② ㉠ 원, ㉡ 닮음 ③ ㉠ 삼각형, ㉡ 합동 ④ ㉠ 삼각형, ㉡ 닮음 ⑤ ㉠ 사각형, ㉡ 합동</p><p class="pt">Заполни пропуски ㉠ и ㉡.</p><p>Подсказка: это дословно рамка <span class="kr">유형</span> 98. Помни разницу: <span class="kr">합동</span> — совсем одинаковые, <span class="kr">닮음</span> — только похожие по форме.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 99 -->
+<section id="t99">
+  <div class="type">
+    <div class="type-h"><span class="tn">99</span><b>회전체의 단면의 모양 (2)</b><span>Сечения под любым углом · стр. 187–189 · 567–570</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <p class="ko">원기둥을 한 평면으로 자를 때 생기는 단면의 모양은 다음과 같다. ① 축을 포함 → 직사각형 ② 비스듬히, 밑면까지 → 아치 모양 ③ 축에 수직 → 원 ④ 비스듬히, 옆면만 → 타원</p>
+      <p class="pt">Цилиндр можно резать по-разному: вдоль — прямоугольник; поперёк — круг; наискосок через бок — овал (<span class="kr">타원</span>, эллипс); наискосок с задеванием основания — «арка» (одна сторона прямая, другая кривая). Все четыре случая есть в лаборатории.</p>
+    </div>
+    <div class="box analogy">
+      <span class="tag">Представь</span>
+      <p>Режешь батон колбасы: прямо поперёк — круглый кружок. Наискосок — длинный овальный ломтик, как в бутерброде. Вдоль по центру — прямоугольник. Если резать наискосок у самого края — один край ломтика прямой (это кусочек торца), другой круглый.</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">567</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 그림의 입체도형을 한 평면으로 여러 가지 방향에서 잘랐을 때, 생길 수 있는 단면이 <u>아닌</u> 것은?</p>
+      <p class="pt">Тело — цилиндр с круглой дыркой по центру (как труба). Какое сечение получить НЕЛЬЗЯ?</p>
+      <div class="optfig" id="o567"></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Выбери в лаборатории <span class="kr">속이 빈 원기둥</span> и попробуй получить каждую фигуру. У этого тела все поверхности — плоские круги/кольца и цилиндры. Откуда тут взяться острому углу?</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>① Два прямоугольника — плоскость через ось: стенки трубы слева и справа, дырка посередине. <button type="button" class="btn" data-lab="hol,90,0">показать</button></li>
+          <li>② Один прямоугольник — вдоль, но мимо дырки. <button type="button" class="btn" data-lab="hol,90,55">показать</button></li>
+          <li>③ Арка — наискосок через нижнее основание и стенку трубы. <button type="button" class="btn" data-lab="hol,56,-28">показать</button></li>
+          <li>④ Овальное кольцо — наискосок только через бок. <button type="button" class="btn" data-lab="hol,28,0">показать</button></li>
+          <li>⑤ Треугольник — нужен острый угол, а у трубы нет ни вершины, ни наклонной стенки. Не получится никак.</li>
+        </ol>
+        <p class="ans">Ответ: ⑤ (삼각형은 나올 수 없다)</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>568</b>подсказка</summary><div><p class="pq">다음 그림의 입체도형을 한 평면으로 여러 가지 방향에서 잘랐을 때, 생길 수 있는 단면의 모양이 <u>아닌</u> 것은? (два конуса, сложенные вершинами — «песочные часы»; варианты: ① прямоугольник ② круг ③ овал ④ «бантик» из двух треугольников ⑤ две арки)</p><p class="pt">Какое сечение песочных часов получить нельзя? (рисунок — стр. 188)</p><p>Подсказка: в лаборатории выбери <span class="kr">모래시계</span>. Через ось — «бантик». У этого тела нет ни одной стенки, параллельной оси. Может ли появиться длинная прямая сторона прямоугольника?</p></div></details>
+      <details class="h"><summary><b>569</b>подсказка</summary><div><p class="pq">아래 그림과 같이 원뿔대를 평면으로 잘랐을 때, 다음 중 그 단면의 모양이 <u>아닌</u> 것은? (① маленькая арка ② арка ③ овал ④ трапеция ⑤ прямоугольник)</p><p class="pt">Какое сечение усечённого конуса невозможно? (рисунок — стр. 188)</p><p>Подсказка: стенки <span class="kr">원뿔대</span> наклонные. Через ось — трапеция; вдоль мимо оси — арки; наискосок — овал. Чтобы у сечения были две параллельные боковые стороны, нужны параллельные стенки.</p></div></details>
+      <details class="h"><summary><b>570</b>подсказка</summary><div><p class="pq">다음 그림과 같은 원뿔을 평면 ①, ②, ③, ④, ⑤로 자를 때 생기는 단면의 모양으로 바르게 연결한 것은?</p><p class="pt">Плоскости на рисунке (стр. 189): ① наискосок через бок, ② ⊥ оси, ③ через ось, ④ вертикально мимо оси, ⑤ наклонно через основание. Какая пара «плоскость — сечение» верна?</p><p>Подсказка: проверь каждую в лаборатории (<span class="kr">원뿔</span>). ② — это обязательно <span class="kr">원</span>, ③ — равнобедренный треугольник без кривой. Плоскость, которая задевает основание, даёт фигуру с прямым низом и кривым верхом.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 100 -->
+<section id="t100">
+  <div class="type">
+    <div class="type-h"><span class="tn">100</span><b>회전체의 단면의 넓이와 둘레의 길이</b><span>Площадь сечения · стр. 189–190 · 571–574</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <ol class="ko"><li>회전축에 수직인 평면으로 자를 때 ⇒ 단면은 항상 원이므로 반지름의 길이를 찾아 원의 넓이와 둘레를 구하는 공식을 이용한다.</li><li>회전축을 포함한 평면으로 자를 때 ⇒ 회전시키기 전의 평면도형의 변의 길이를 이용한다.</li></ol>
+      <p class="pt">(1) Сечение ⊥ оси — круг: найди радиус, потом <span class="m">S</span> = π<span class="m">r</span>², <span class="m">l</span> = 2π<span class="m">r</span>. (2) Осевое сечение — используй длины сторон исходной фигуры (удвоив то, что от оси).</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">571</span><span class="badge">중</span><span class="badge rep">대표 유제</span><span class="badge">2018년 3월 고1</span></div>
+      <p class="pq">그림과 같이 삼각형 <span class="m">ABC</span>의 꼭짓점 <span class="m">A</span>, <span class="m">B</span>, <span class="m">C</span>에서 직선 <span class="m">l</span>에 내린 수선의 발을 각각 <span class="m">D</span>, <span class="m">E</span>, <span class="m">F</span>라 할 때, <span class="m">AD</span> = <span class="m">CF</span> = 4, <span class="m">BE</span> = 6이다. 삼각형 <span class="m">ABC</span>를 직선 <span class="m">l</span>을 회전축으로 하여 1회전시킬 때 생기는 회전체를 회전축에 수직인 평면으로 자른 단면의 넓이의 최댓값은?</p>
+      <p class="pt">Расстояния от оси: <span class="m">A</span> и <span class="m">C</span> — по 4, <span class="m">B</span> — 6. Треугольник крутят вокруг <span class="m">l</span>. Найди наибольшую площадь сечения ⊥ оси.</p>
+      <svg id="f571" class="figsm" aria-label="треугольник ABC и ось l"></svg>
+      <ul class="opts"><li>① 14π</li><li>② 16π</li><li>③ 18π</li><li>④ 20π</li><li>⑤ 22π</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Треугольник не касается оси. Значит, внутри тела есть пустота, и сечение — не круг, а <b>кольцо</b>. Площадь кольца = большой круг − маленький круг.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>Сторона <span class="m">AC</span> параллельна оси на расстоянии 4. Она рисует цилиндрическую «дырку» радиуса 4 → внутренний радиус кольца всегда 4.</li>
+          <li>Внешний радиус — расстояние до сторон <span class="m">AB</span> и <span class="m">BC</span>. Он растёт от 4 до 6 и обратно; самый большой — на высоте точки <span class="m">B</span>: 6.</li>
+          <li><span class="m">S</span><sub>max</sub> = π·6² − π·4² = 36π − 16π = 20π.</li>
+        </ol>
+        <div class="ringbox">
+          <svg id="ring571" viewBox="0 0 240 240" aria-label="кольцо-сечение"></svg>
+          <div class="ctrl"><label for="h571"><span>Высота сечения</span><span id="h571v"></span></label><input type="range" id="h571" min="0" max="60" step="1" value="15"><p id="r571" class="readout" style="display:block"></p></div>
+        </div>
+        <p class="ans">Ответ: ④ 20π</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>572</b>подсказка</summary><div><p class="pq">등변사다리꼴 <span class="m">ABCD</span>의 꼭짓점 <span class="m">A</span>, <span class="m">B</span>, <span class="m">C</span>, <span class="m">D</span>에서 직선 <span class="m">l</span>에 내린 수선의 발을 각각 <span class="m">E</span>, <span class="m">F</span>, <span class="m">G</span>, <span class="m">H</span>라 할 때, <span class="m">AE</span> = <span class="m">DH</span> = 5, <span class="m">BF</span> = <span class="m">CG</span> = 7이다. 등변사다리꼴 <span class="m">ABCD</span>를 직선 <span class="m">l</span>을 회전축으로 하여 1회전시킬 때 생기는 회전체를 회전축에 수직인 평면으로 자른 단면의 넓이의 최댓값은? ① 20π ② 22π ③ 24π ④ 26π ⑤ 28π</p><p class="pt">Близнец задачи 571 (рисунок — стр. 190).</p><p>Подсказка: внутренний радиус — расстояние до стороны, параллельной оси (5). Внешний максимальный — 7. Дальше как в 571.</p></div></details>
+      <details class="h"><summary><b>573</b>подсказка</summary><div><p class="pq">다음 그림과 같은 도형을 직선 <span class="m">l</span>을 축으로 하여 1회전시켰다. 이때 생기는 입체도형을 밑면에 평행인 평면으로 잘랐을 때, 넓이가 최대가 되는 단면의 넓이를 구하시오. (단, 원주율은 3으로 계산한다.)</p><svg id="f573" class="figsm" aria-label="фигура для 573 и 574"></svg><p class="pt">Сечение, параллельное основанию (то есть ⊥ оси), с наибольшей площадью. π = 3.</p><p>Подсказка: фигура касается оси, значит сечение — сплошной круг. Найди самое большое расстояние от оси до края фигуры. Не перепутай с длиной наклонной стороны 5 cm!</p></div></details>
+      <details class="h"><summary><b>574</b>подсказка</summary><div><p class="pq">(та же фигура) 이때 생기는 입체도형을 밑면에 평행인 평면으로 잘랐을 때, 넓이가 최대가 되는 단면의 반지름의 길이는? ① 2 cm ② 3 cm ③ 4 cm ④ 5 cm ⑤ 6 cm</p><p class="pt">Тот же рисунок: найди радиус самого большого сечения.</p><p>Подсказка: это первый шаг задачи 573. Радиус = горизонтальное расстояние от оси.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 101 -->
+<section id="t101">
+  <div class="type">
+    <div class="type-h"><span class="tn">101</span><b>회전체의 전개도</b><span>Развёртки · стр. 191–192 · 575–578</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <p class="ko">(1) 원기둥 → 직사각형 + 원 2개 &nbsp; (2) 원뿔 → 부채꼴 + 원 1개 &nbsp; (3) 원뿔대 → 부채꼴의 일부(두 호) + 크기가 다른 원 2개</p>
+      <p class="pt">Бок цилиндра раскатывается в прямоугольник (как этикетка с банки). Бок конуса — в сектор <span class="kr">부채꼴</span> (как бумажный кулёк). Бок усечённого конуса — в «кусок кольца» (как бумажный стаканчик без дна). Кружки — основания: сколько их и одинаковы ли они.</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">575</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 도형을 직선 <span class="m">l</span>을 회전축으로 회전시켰을 때 생기는 회전체의 전개도는?</p>
+      <p class="pt">Найди развёртку тела, которое получится при вращении этой фигуры.</p>
+      <svg id="f575" class="figsm" style="max-width:140px" aria-label="трапеция у оси"></svg>
+      <div class="optfig" id="o575"></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Сначала назови тело. У фигуры две параллельные стороны ⊥ оси разной длины и наклонная сторона.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>Верхняя сторона короткая, нижняя длинная, обе ⊥ оси; третья сторона наклонная → тело <span class="kr">원뿔대</span>.</li>
+          <li>Развёртка <span class="kr">원뿔대</span>: кусок кольца (две дуги) + маленький круг + большой круг.</li>
+          <li>① — конус (сектор, 1 круг). ②③ — у развёртки боковая часть с прямыми краями сверху и снизу: так не бывает, края должны быть дугами. ⑤ — цилиндр.</li>
+        </ol>
+        <p class="ans">Ответ: ④</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>576</b>подсказка</summary><div><p class="pq">다음 그림과 같은 직사각형을 직선 <span class="m">l</span>을 축으로 하여 1회전시킬 때, 생기는 입체도형의 전개도는?</p><p class="pt">Прямоугольник крутят вокруг своей стороны (рисунок — стр. 191).</p><p>Подсказка: получится <span class="kr">원기둥</span>. Ищи прямоугольник и <b>два одинаковых</b> круга.</p></div></details>
+      <details class="h"><summary><b>577</b>подсказка</summary><div><p class="pq">아래 그림은 어느 회전체의 전개도이다. 다음 중 어느 평면도형을 회전시켜서 얻어진 것인가? (развёртка: сектор + прямоугольник + один круг)</p><p class="pt">По развёртке найди исходную фигуру (стр. 192).</p><p>Подсказка: сектор = бок конуса, прямоугольник = бок цилиндра, круг только один → внизу дно цилиндра, а сверху конус. Ищи фигуру «прямоугольник + прямоугольный треугольник сверху», прижатую к оси.</p></div></details>
+      <details class="h"><summary><b>578</b>подсказка</summary><div><p class="pq">아래 그림은 어느 회전체의 전개도이다. 이 전개도로 만들어지는 입체도형은 다음 중 어느 평면도형을 회전시켜서 얻어진 것인가? (два сектора + два куска кольца)</p><p class="pt">Развёртка без кругов: два сектора и две «полоски» (стр. 192).</p><p>Подсказка: два сектора = два конуса (острия сверху и снизу), две полоски = два усечённых конуса, которые встречаются узкими концами («талия»). Значит, контур фигуры: от оси наружу, внутрь к талии, снова наружу, обратно к оси.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- 102 -->
+<section id="t102">
+  <div class="type">
+    <div class="type-h"><span class="tn">102</span><b>회전체의 이해</b><span>Верно / неверно · стр. 193 · 579–582</span></div>
+    <div class="src"><span class="tag">Учебник</span>
+      <ol class="ko"><li>입체도형 — ① 다면체: 다각형인 면으로만 둘러싸인 입체도형 ② 회전체: 평면도형을 회전시킬 때 생기는 도형</li><li>회전체의 성질 — ① 회전축에 수직인 평면으로 자를 때 생기는 단면 ⇒ 원 ② 회전축을 포함하는 평면으로 자를 때 생기는 단면 ⇒ 회전축을 대칭축으로 하는 선대칭도형</li></ol>
+      <p class="pt"><span class="kr">다면체</span> — все грани многоугольники. <span class="kr">회전체</span> — получен вращением. Свойства: ⊥ оси → круг; через ось → симметричная фигура, ось — её ось симметрии.</p>
+    </div>
+    <div class="prob">
+      <div class="phead"><span class="pno">579</span><span class="badge">중</span><span class="badge rep">대표 유제</span></div>
+      <p class="pq">다음 중 회전체에 대한 설명으로 옳지 <u>않은</u> 것은?</p>
+      <p class="pt">Какое утверждение о телах вращения НЕВЕРНО?</p>
+      <ul class="opts" style="flex-direction:column"><li>① 구는 어떤 단면을 잘라도 항상 원이다.</li><li>② 회전축을 포함한 평면으로 자른 단면은 항상 합동이다.</li><li>③ 회전축에 수직인 평면으로 자른 단면은 항상 원이다.</li><li>④ 구의 회전축은 무수히 많다.</li><li>⑤ 원뿔대의 두 밑면은 서로 평행하고, 합동이다.</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Вспомни, как выглядит <span class="kr">원뿔대</span>: верхний круг и нижний круг одинаковые?</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>① Шар режь как угодно — круг ✓ (проверь в лаборатории).</li>
+          <li>② Все осевые сечения <span class="kr">합동</span> ✓ — поворот вокруг оси ничего не меняет.</li>
+          <li>③ Рамка <span class="kr">유형</span> 98 ✓.</li>
+          <li>④ Любой диаметр шара — ось ✓.</li>
+          <li>⑤ Основания <span class="kr">원뿔대</span> параллельны — да, но они <b>разного размера</b>, значит не <span class="kr">합동</span>. ✗</li>
+        </ol>
+        <p class="ans">Ответ: ⑤</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>580</b>подсказка</summary><div><p class="pq">다음 회전체에 대한 설명 중 옳지 <u>않은</u> 것은? ① 구, 원기둥, 원뿔, 원뿔대는 모두 회전체에 속한다. ② 구는 어느 방향으로 잘라도 단면의 모양이 항상 원이다. ③ 회전체의 옆면을 만드는 선분을 모서리라고 한다. ④ 회전체를 회전축을 포함하는 평면으로 자른 단면은 회전축을 대칭축으로 하는 선대칭도형이다. ⑤ 회전체를 회전축에 수직인 평면으로 자른 단면은 항상 원이다.</p><p>Подсказка: проверь названия. Как называется отрезок, который рисует бок тела вращения? (см. словарь). <span class="kr">모서리</span> — это слово из многогранников.</p></div></details>
+      <details class="h"><summary><b>581</b>подсказка</summary><div><p class="pq">회전체에 대한 다음 설명 중 옳지 <u>않은</u> 것은? ① 회전체에서는 원기둥, 원뿔, 원뿔대, 구 등이 있다. ② 구는 어떤 방향으로 잘라도 그 단면은 항상 원이다. ③ 회전체를 회전축에 평행한 평면으로 자른 단면은 항상 원이다. ④ 회전체는 평면도형을 한 직선을 축으로 하여 1회전시킬 때 생기는 입체도형이다. ⑤ 회전체를 회전축으로 포함하는 평면으로 자른 단면은 회전축에 대하여 선대칭도형이다.</p><p>Подсказка: внимательно на одно слово — <span class="kr">수직</span> (⊥) или <span class="kr">평행</span> (∥)? Режь цилиндр в лаборатории параллельно оси: круг вышел?</p></div></details>
+      <details class="h"><summary><b>582</b>подсказка</summary><div><p class="pq">다음 회전체에 대한 설명으로 옳은 것을 모두 고르면? (정답 2개) ① 회전체를 회전축을 포함하는 어느 평면으로 잘라도 그 단면은 모두 합동이다. ② 원기둥을 회전축에 수직인 평면으로 자른 단면은 직사각형이다. ③ 회전체를 회전축을 포함하는 평면으로 잘라보면 그 회전체가 어떤 도형을 회전시킨 것인지 알 수 있다. ④ 원뿔대의 전개도에서 옆면은 사다리꼴이다. ⑤ 구는 회전축이 한 개 있다.</p><p>Подсказка: ищем ВЕРНЫЕ (<span class="kr">옳은</span>), их два. Вспомни: «осевое сечение = фигура + зеркало» — значит, по нему видно исходную фигуру. В развёртке <span class="kr">원뿔대</span> края бока — дуги, а не прямые.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- applied -->
+<section id="ap">
+  <div class="type">
+    <div class="type-h"><span class="tn alt">응용 도전</span><b>Задачи посложнее</b><span>стр. 194–195 · 583–592</span></div>
+    <div class="box text">
+      <span class="tag">Повторим многогранники</span>
+      <p>Эти задачи опираются на прошлый урок. Число в названии — <span class="m">n</span> (углов у основания).</p>
+      <div class="tbl"><table class="mini">
+        <thead><tr><th></th><th><span class="kr">면</span> (грани)</th><th><span class="kr">모서리</span> (рёбра)</th><th><span class="kr">꼭짓점</span> (вершины)</th><th><span class="kr">옆면</span></th></tr></thead>
+        <tbody>
+          <tr><td><span class="m">n</span><span class="kr">각기둥</span></td><td><span class="m">n</span>+2</td><td>3<span class="m">n</span></td><td>2<span class="m">n</span></td><td><span class="kr">직사각형</span></td></tr>
+          <tr><td><span class="m">n</span><span class="kr">각뿔</span></td><td><span class="m">n</span>+1</td><td>2<span class="m">n</span></td><td><span class="m">n</span>+1</td><td><span class="kr">삼각형</span></td></tr>
+          <tr><td><span class="m">n</span><span class="kr">각뿔대</span></td><td><span class="m">n</span>+2</td><td>3<span class="m">n</span></td><td>2<span class="m">n</span></td><td><span class="kr">사다리꼴</span></td></tr>
+        </tbody>
+      </table></div>
+      <p class="pt">Ещё из 1 семестра: у <span class="m">n</span>-угольника <span class="kr">대각선</span> (диагоналей) <span class="m">n</span>(<span class="m">n</span>−3)/2, сумма <span class="kr">내각</span> (внутренних углов) 180°×(<span class="m">n</span>−2). <span class="kr">정사면체</span>: 4 грани, 6 рёбер, 4 вершины; <span class="kr">정팔면체</span>: 8, 12, 6.</p>
+    </div>
+
+    <div class="prob">
+      <div class="phead"><span class="pno">587</span><span class="badge">상</span><span class="badge rep">разбор</span></div>
+      <p class="pq"><span class="m">m</span>각뿔대의 모서리의 개수와 <span class="m">n</span>각기둥의 꼭짓점의 개수의 합이 24개일 때, <span class="m">m</span>+<span class="m">n</span>의 최댓값을 구하시오.</p>
+      <p class="pt">Рёбра <span class="m">m</span>-угольной усечённой пирамиды + вершины <span class="m">n</span>-угольной призмы = 24. Найди наибольшее <span class="m">m</span>+<span class="m">n</span>.</p>
+      <details class="h"><summary>Подсказка</summary><div><p>Запиши уравнение через формулы таблицы. Помни: <span class="m">m</span> и <span class="m">n</span> — целые, не меньше 3 (у основания хотя бы 3 угла).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>Рёбра <span class="m">m</span><span class="kr">각뿔대</span>: 3<span class="m">m</span>. Вершины <span class="m">n</span><span class="kr">각기둥</span>: 2<span class="m">n</span>.</li>
+          <li>3<span class="m">m</span> + 2<span class="m">n</span> = 24, где <span class="m">m</span> ≥ 3, <span class="m">n</span> ≥ 3.</li>
+          <li>2<span class="m">n</span> чётно и 24 чётно → 3<span class="m">m</span> чётно → <span class="m">m</span> чётное. Перебираем: <span class="m">m</span> = 4 → <span class="m">n</span> = 6; <span class="m">m</span> = 6 → <span class="m">n</span> = 3; <span class="m">m</span> = 8 → <span class="m">n</span> = 0 (нельзя).</li>
+          <li><span class="m">m</span>+<span class="m">n</span>: 4+6 = 10 или 6+3 = 9. Наибольшее — 10.</li>
+        </ol>
+        <p class="ans">Ответ: 10</p>
+      </div></details>
+    </div>
+
+    <div class="prob">
+      <div class="phead"><span class="pno">592</span><span class="badge">상</span><span class="badge rep">разбор</span></div>
+      <p class="pq">정육면체 모양의 나무토막이 있다. 이 나무토막의 모든 면에 페인트를 칠한 후 가로, 세로, 높이를 각각 4등분하여 64개의 작은 정육면체 모양의 나무토막으로 잘랐다. 작은 정육면체 모양의 나무토막 중에서 색칠된 면이 2개인 정육면체의 개수를 구하시오.</p>
+      <p class="pt">Покрашенный куб распилили на 4×4×4 = 64 кубика. Сколько кубиков с ровно двумя покрашенными гранями?</p>
+      <details class="h"><summary>Подсказка</summary><div><p>Где лежит кубик — так и красится: в углу большого куба — 3 грани, на ребре (не в углу) — 2, в середине грани — 1, внутри — 0.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <div class="pair"><figure><svg id="f592" aria-label="передняя грань 4 на 4 с числом покрашенных граней"></svg><figcaption>Передняя грань: число = сколько граней покрашено</figcaption></figure></div>
+        <ol class="steps">
+          <li>Два покрашенных грани — у кубиков на <b>рёбрах</b> большого куба, кроме углов.</li>
+          <li>На каждом ребре 4 кубика, из них 2 угловых → остаётся 4 − 2 = 2.</li>
+          <li>У куба 12 рёбер (<span class="kr">모서리</span>) → 2 × 12 = 24.</li>
+        </ol>
+        <p class="ans">Ответ: 24개</p>
+      </div></details>
+    </div>
+
+    <div class="rest">
+      <details class="h"><summary><b>583</b>подсказка</summary><div><p class="pq">다음 중 다면체로만 이루어진 것은? ① 삼각뿔, 사면체, 원기둥 ② 오각기둥, 사각뿔, 원뿔 ③ 육각뿔, 칠각뿔대, 삼각기둥 ④ 사각뿔, 원뿔대, 오각뿔 ⑤ 팔각기둥, 사각뿔, 구</p><p class="pt">Где только многогранники?</p><p>Подсказка: всё со словом <span class="kr">원</span> или <span class="kr">구</span> — тело вращения. Найди набор без них.</p></div></details>
+      <details class="h"><summary><b>584</b>подсказка</summary><div><p class="pq">밑면인 다각형의 대각선의 개수가 27인 각기둥의 면의 수는? ① 9 ② 10 ③ 11 ④ 12 ⑤ 13</p><p>Подсказка: <span class="m">n</span>(<span class="m">n</span>−3)/2 = 27 → <span class="m">n</span>(<span class="m">n</span>−3) = 54. Найди <span class="m">n</span> подбором, потом граней <span class="m">n</span>+2. Не отвечай числом <span class="m">n</span>!</p></div></details>
+      <details class="h"><summary><b>585</b>подсказка</summary><div><p class="pq">다음 입체도형 중 모서리의 수가 가장 많은 입체도형은? ① 정사면체 ② 정사각뿔 ③ 삼각기둥 ④ 사각뿔대 ⑤ 정오각뿔</p><p>Подсказка: <span class="kr">정사각뿔</span> — это просто <span class="kr">사각뿔</span>, <span class="kr">정오각뿔</span> — <span class="kr">오각뿔</span>. Посчитай рёбра всех пяти.</p></div></details>
+      <details class="h"><summary><b>586</b>подсказка</summary><div><p class="pq">밑면의 대각선의 총 수가 5인 각기둥의 꼭짓점의 개수는? ① 10 ② 12 ③ 15 ④ 18 ⑤ 20</p><p>Подсказка: как 584. <span class="m">n</span>(<span class="m">n</span>−3)/2 = 5, потом вершин 2<span class="m">n</span>.</p></div></details>
+      <details class="h"><summary><b>588</b>подсказка</summary><div><p class="pq">다음 중 입체도형과 그 옆면을 이루는 다각형이 잘못 짝 지어진 것은? ① 삼각뿔대 – 사다리꼴 ② 삼각뿔 – 삼각형 ③ 정사각뿔 – 이등변삼각형 ④ 사각기둥 – 직사각형 ⑤ 오각기둥 – 오각형</p><p>Подсказка: <span class="kr">옆면</span> — боковая грань, а не основание. Число в названии говорит про основание.</p></div></details>
+      <details class="h"><summary><b>589</b>подсказка</summary><div><p class="pq">한 모서리의 길이가 1인 정육면체 모양의 나무토막을 가로, 세로, 높이로 각각 6개, 7개, 15개씩 쌓아서 직육면체를 만들었다. 이 직육면체를 어느 한 점에서 보았을 때, 한 면이라도 보이는 정육면체는 최대 몇 개인지 구하시오.</p><p class="pt">Сколько кубиков максимум видно с одной точки?</p><p>Подсказка: с одной точки видно не больше трёх граней коробки (например, перед, бок, верх). Выбери три самые большие разные грани: 6×15, 7×15, 6×7. Сложи. Но кубики на общих рёбрах посчитаны дважды, а угловой — трижды. Вычти лишнее.</p></div></details>
+      <details class="h"><summary><b>590</b>подсказка</summary><div><p class="pq">밑면은 내각의 크기의 합이 720°인 다각형이고 옆면의 모양은 직사각형인 입체도형의 모서리의 개수는? ① 14 ② 16 ③ 18 ④ 20 ⑤ 22</p><p>Подсказка: 180°×(<span class="m">n</span>−2) = 720° → <span class="m">n</span>. Боковые грани прямоугольники → это <span class="kr">각기둥</span>. Рёбер 3<span class="m">n</span>.</p></div></details>
+      <details class="h"><summary><b>591</b>подсказка</summary><div><p class="pq">정다면체 중 평행한 면이 존재하지 않는 것은? ① 정사면체 ② 정육면체 ③ 정팔면체 ④ 정십이면체 ⑤ 정이십면체</p><p>Подсказка: у куба напротив каждой грани есть параллельная грань. У какого правильного тела напротив грани стоит вершина?</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- final -->
+<section id="fin">
+  <div class="type">
+    <div class="type-h"><span class="tn fin">단원 마무리</span><b>Итог главы</b><span>стр. 196–197 · 593–600</span></div>
+    <div class="prob">
+      <div class="phead"><span class="pno">599</span><span class="badge">중</span><span class="badge rep">разбор</span><span class="badge">2009년 3월 고1</span></div>
+      <p class="pq">그림은 어느 입체도형의 전개도이다. 이 입체도형의 모서리의 개수는 <span class="m">a</span>이고, 꼭짓점의 개수는 <span class="m">b</span>이다. <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오.</p>
+      <p class="pt">По развёртке: <span class="m">a</span> — число рёбер, <span class="m">b</span> — число вершин. Найди <span class="m">a</span>+<span class="m">b</span>.</p>
+      <svg id="f599" aria-label="развёртка: 5 прямоугольников и 2 пятиугольника" style="max-width:420px"></svg>
+      <details class="h"><summary>Подсказка</summary><div><p>Посчитай стороны у «домика» сверху — это основание. Сколько прямоугольников в полоске?</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <ol class="steps">
+          <li>«Домик» — пятиугольник (низ, две стенки, два ската крыши). Таких два: сверху и снизу → два одинаковых основания.</li>
+          <li>В полоске 5 прямоугольников — боковые грани. Значит, это <span class="kr">오각기둥</span>, <span class="m">n</span> = 5.</li>
+          <li><span class="m">a</span> = 3<span class="m">n</span> = 15, <span class="m">b</span> = 2<span class="m">n</span> = 10.</li>
+          <li><span class="m">a</span>+<span class="m">b</span> = 25. Не считай рёбра по рисунку развёртки: при склейке края сходятся парами.</li>
+        </ol>
+        <p class="ans">Ответ: 25</p>
+      </div></details>
+    </div>
+    <div class="rest">
+      <details class="h"><summary><b>593</b>подсказка</summary><div><p class="pq">다음 보기의 입체도형 중 다면체인 것은 모두 몇 개인가? ㄱ. 삼각기둥 ㄴ. 원기둥 ㄷ. 삼각뿔 ㄹ. 원뿔 ㅁ. 오각뿔대 ㅂ. 반구 ㅅ. 정팔면체 ㅇ. 구 &nbsp; ① 2개 ② 3개 ③ 4개 ④ 5개 ⑤ 6개</p><p>Подсказка: вычеркни всё с <span class="kr">원</span> и <span class="kr">구</span>. Посчитай, что осталось.</p></div></details>
+      <details class="h"><summary><b>594</b>подсказка</summary><div><p class="pq">다음 다면체 중에서 면의 개수가 가장 많은 것은? ① 정육면체 ② 오각뿔 ③ 육각뿔대 ④ 오각기둥 ⑤ 육각뿔</p><p>Подсказка: грани — <span class="m">n</span>+2 или <span class="m">n</span>+1. <span class="kr">정육면체</span> = 6 граней.</p></div></details>
+      <details class="h"><summary><b>595</b>подсказка</summary><div><p class="pq">다음 중 모서리가 가장 많은 다면체를 고르면? ① 육각뿔 ② 사각기둥 ③ 오각뿔대 ④ 정팔면체 ⑤ 정사면체</p><p>Подсказка: рёбра 3<span class="m">n</span> или 2<span class="m">n</span>; для правильных тел — из таблицы выше.</p></div></details>
+      <details class="h"><summary><b>596</b>подсказка</summary><div><p class="pq">다음 중 꼭짓점의 개수가 나머지와 다른 하나는? ① 사각뿔대 ② 칠각뿔 ③ 사각기둥 ④ 사각뿔 ⑤ 정육면체</p><p>Подсказка: у четырёх получится 8 вершин. <span class="kr">각뿔</span>: <span class="m">n</span>+1.</p></div></details>
+      <details class="h"><summary><b>597</b>подсказка</summary><div><p class="pq">다음 다면체 중 꼭짓점의 개수와 면의 개수가 같은 것을 모두 고르면? (정답 2개) ① 삼각기둥 ② 육각뿔대 ③ 정사면체 ④ 삼각뿔 ⑤ 오각기둥</p><p>Подсказка: у <span class="kr">각뿔</span> вершин <span class="m">n</span>+1 и граней <span class="m">n</span>+1 — всегда поровну. Какие из вариантов — пирамиды (даже если называются иначе)?</p></div></details>
+      <details class="h"><summary><b>598</b>подсказка</summary><div><p class="pq">다음은 다면체와 그 옆면의 모양을 짝 지어 놓은 것이다. 옳은 것은? ① 사각뿔 – 사각형 ② 삼각기둥 – 삼각형 ③ 삼각뿔대 – 사다리꼴 ④ 사각뿔대 – 직사각형 ⑤ 오각기둥 – 사다리꼴</p><p>Подсказка: правило <span class="kr">옆면</span>: 기둥 → 직사각형, 뿔 → 삼각형, 뿔대 → 사다리꼴. Число <span class="m">n</span> не важно.</p></div></details>
+      <details class="h"><summary><b>600</b>подсказка</summary><div><p class="pq">다음 조건을 모두 만족하는 입체도형은? (가) 칠면체이다. (나) 옆면이 모두 삼각형이다. (다) 밑면의 개수는 1개이다. ① 오각기둥 ② 팔각뿔 ③ 육각뿔 ④ 삼각기둥 ⑤ 사각뿔대</p><p>Подсказка: (나) и (다) → это <span class="kr">각뿔</span>. (가) → граней 7 = <span class="m">n</span>+1.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- summary -->
+<section id="sum">
+  <h2><span class="num">4</span>Шпаргалка · <span class="kr">정리</span></h2>
+  <div class="tbl"><table>
+    <thead><tr><th><span class="kr">회전체</span></th><th>Что крутим</th><th>⊥ оси</th><th>Через ось</th><th>Развёртка бока</th></tr></thead>
+    <tbody>
+      <tr><td><span class="kr">원기둥</span></td><td><span class="kr">직사각형</span></td><td><span class="kr">원</span></td><td><span class="kr">직사각형</span></td><td><span class="kr">직사각형</span> + 2 равных круга</td></tr>
+      <tr><td><span class="kr">원뿔</span></td><td><span class="kr">직각삼각형</span></td><td><span class="kr">원</span></td><td><span class="kr">이등변삼각형</span></td><td><span class="kr">부채꼴</span> + 1 круг</td></tr>
+      <tr><td><span class="kr">원뿔대</span></td><td><span class="kr">사다리꼴</span> (2 прямых угла)</td><td><span class="kr">원</span></td><td><span class="kr">등변사다리꼴</span></td><td>кусок кольца + 2 разных круга</td></tr>
+      <tr><td><span class="kr">구</span></td><td><span class="kr">반원</span></td><td><span class="kr">원</span></td><td><span class="kr">원</span></td><td>нет развёртки</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box warn">
+    <span class="tag">Частые ошибки</span>
+    <ul class="mistakes">
+      <li>Писать, что основания <span class="kr">원뿔대</span> <span class="kr">합동</span>. Они параллельны, но разного размера.</li>
+      <li>Путать <span class="kr">수직</span> (⊥) и <span class="kr">평행</span> (∥): круг даёт только плоскость ⊥ оси.</li>
+      <li>Называть образующую <span class="kr">모서리</span>. У тела вращения это <span class="kr">모선</span>.</li>
+      <li>Забыть дырку: если фигура не касается оси, сечение — кольцо, площадь = большой круг − малый.</li>
+      <li>В 584, 586, 590 найти <span class="m">n</span> и остановиться. Спрашивают грани, вершины или рёбра.</li>
+      <li>Пропустить <span class="kr">아닌 / 않은 / 모두 고르면</span>.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+<script>
+(()=>{
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a){if(k==="text")e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;}
+function P(pts,close=true){return pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" ")+(close?" Z":"");}
+const C={ink:"var(--ink)",mut:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",amber:"var(--amber)",line:"var(--line)"};
+const F={blue:"var(--blue-fill)",coral:"var(--coral-fill)",green:"var(--green-fill)",sunk:"var(--sunk)",surf:"var(--surface)"};
+function T(s,x,y,t,cls="lbl",anc="middle"){return el("text",{x,y,text:t,class:cls,"text-anchor":anc},s);}
+function ra(s,x,y,d1,d2,z=7){el("path",{d:`M${x+d1[0]*z} ${y+d1[1]*z} L${x+(d1[0]+d2[0])*z} ${y+(d1[1]+d2[1])*z} L${x+d2[0]*z} ${y+d2[1]*z}`,fill:"none",stroke:C.ink,"stroke-width":1},s);}
+function axis(s,x,y0,y1,lab){el("line",{x1:x,y1:y0,x2:x,y2:y1,stroke:C.ink,"stroke-width":1.2,"stroke-dasharray":"6 4"},s);
+  el("ellipse",{cx:x,cy:y0+10,rx:8,ry:3,fill:"none",stroke:C.ink,"stroke-width":1},s);
+  el("path",{d:`M${x+8} ${y0+10} l-3 -3 M${x+8} ${y0+10} l2 -4`,stroke:C.ink,"stroke-width":1,fill:"none"},s);
+  if(lab)T(s,x,y0-3,lab);}
+
+/* solid of revolution drawn from its half-profile (right of axis) */
+function solidFig(s,prof,o){
+  s.setAttribute("viewBox",o.vb);
+  const X=r=>o.ox+r*o.sc, Y=z=>o.oy-z*o.sc;
+  const R=prof.map(p=>[X(p[0]),Y(p[1])]), L=prof.map(p=>[X(-p[0]),Y(p[1])]);
+  el("path",{d:P(L),fill:F.coral,"fill-opacity":.35,stroke:C.coral,"stroke-opacity":.45,"stroke-width":1.2},s);
+  const zs=prof.map(p=>p[1]), zmax=Math.max(...zs);
+  const ell=(r,z)=>{const rx=r*o.sc,ry=rx*.22,cx=o.ox,cy=Y(z);
+    if(z===zmax){el("ellipse",{cx,cy,rx,ry,fill:"none",stroke:C.coral,"stroke-width":1.2},s);return;}
+    el("path",{d:`M${cx-rx} ${cy} A${rx} ${ry} 0 0 0 ${cx+rx} ${cy}`,fill:"none",stroke:C.coral,"stroke-width":1.2},s);
+    el("path",{d:`M${cx-rx} ${cy} A${rx} ${ry} 0 0 1 ${cx+rx} ${cy}`,fill:"none",stroke:C.coral,"stroke-width":1,"stroke-dasharray":"3 3"},s);};
+  for(let i=0;i<prof.length;i++){const a=prof[i],b=prof[(i+1)%prof.length];if(a[1]===b[1]){const r=Math.max(a[0],b[0]);if(r>0)ell(r,a[1]);}}
+  (o.eq||[]).forEach(z=>{const p=prof.reduce((m,q)=>Math.abs(q[1]-z)<Math.abs(m[1]-z)?q:m);ell(p[0],z);});
+  el("path",{d:P(R),fill:F.coral,stroke:C.coral,"stroke-width":1.8},s);
+  axis(s,o.ox,Y(zmax)-22,Y(Math.min(...zs))+14,o.axl);
+  (o.lab||[]).forEach(l=>T(s,X(l[1])+l[3],Y(l[2])+l[4],l[0]));
+}
+const sph=[];for(let i=0;i<=40;i++){const f=Math.PI*i/40;sph.push([60*Math.sin(f),65-60*Math.cos(f)]);}
+sph.forEach(p=>p[0]=Math.round(p[0]*100)/100);
+const W={vb:"0 0 160 175",ox:80,oy:155,sc:1};
+solidFig($("w1"),[[0,0],[50,0],[50,120],[0,120]],W);
+solidFig($("w2"),[[0,0],[55,0],[0,125]],W);
+solidFig($("w3"),[[0,0],[58,0],[30,115],[0,115]],W);
+solidFig($("w4"),sph,Object.assign({eq:[65]},W));
+
+/* 559 */
+(()=>{const s=$("f559");s.setAttribute("viewBox","0 0 190 165");
+  const A=[50,25],D=[130,25],C2=[130,110],B=[50,140];
+  el("path",{d:P([A,D,C2,B]),fill:F.coral,stroke:C.ink,"stroke-width":1.5},s);
+  ra(s,A[0],A[1],[1,0],[0,1]);ra(s,D[0],D[1],[-1,0],[0,1]);
+  T(s,40,22,"A");T(s,142,22,"D");T(s,142,118,"C");T(s,40,152,"B");})();
+solidFig($("f559b"),[[0,0],[85,0],[115,80],[0,80]],{vb:"0 0 260 150",ox:130,oy:118,sc:.9,lab:[["A",0,80,-18,-4],["D",0,0,-10,16],["B",115,80,8,-4],["C",85,0,8,14]]});
+
+/* 571 */
+const Z571=z=>205-z*28;
+(()=>{const s=$("f571");s.setAttribute("viewBox","0 -14 230 244");
+  const ax=50,u=25,A=[ax+4*u,Z571(0)],B=[ax+6*u,Z571(1.5)],Cc=[ax+4*u,Z571(6)];
+  [[A,"D"],[B,"E"],[Cc,"F"]].forEach(([p,n])=>{el("line",{x1:ax,y1:p[1],x2:p[0],y2:p[1],stroke:C.mut,"stroke-dasharray":"3 3"},s);ra(s,ax,p[1],[1,0],[0,-1],6);T(s,ax+10,p[1]-6,n,"lbl","start");});
+  el("path",{d:P([A,B,Cc]),fill:F.blue,stroke:C.ink,"stroke-width":1.5},s);
+  axis(s,ax,-2,222,"l");
+  T(s,A[0],A[1]+18,"A");T(s,B[0]+12,B[1]+5,"B");T(s,Cc[0]+8,Cc[1]-6,"C");
+  T(s,100,Z571(0)-4,"4","sm");T(s,125,Z571(1.5)-4,"6","sm");T(s,100,Z571(6)-4,"4","sm");})();
+(()=>{const s=$("ring571"),sl=$("h571");
+  function draw(){s.textContent="";const z=sl.value/10;const ro=z<=1.5?4+2*z/1.5:6-2*(z-1.5)/4.5;const k=18,c=120;
+    el("circle",{cx:c,cy:c,r:6*k,fill:"none",stroke:C.line,"stroke-dasharray":"4 4"},s);
+    el("path",{d:`M${c-ro*k} ${c}a${ro*k} ${ro*k} 0 1 0 ${2*ro*k} 0a${ro*k} ${ro*k} 0 1 0 ${-2*ro*k} 0Z M${c-4*k} ${c}a${4*k} ${4*k} 0 1 0 ${8*k} 0a${4*k} ${4*k} 0 1 0 ${-8*k} 0Z`,fill:F.blue,"fill-rule":"evenodd",stroke:C.blue,"stroke-width":1.5},s);
+    el("circle",{cx:c,cy:c,r:2,fill:C.ink},s);
+    el("line",{x1:c,y1:c,x2:c+ro*k,y2:c,stroke:C.coral,"stroke-width":2},s);
+    T(s,c+ro*k/2+10,c-6,ro.toFixed(2).replace(/\.?0+$/,""),"sm");
+    const S=ro*ro-16;const f=v=>(Math.round(v*100)/100).toString();
+    $("h571v").textContent=z===1.5?"на уровне E":(z<1.5?"между D и E":"между E и F");
+    $("r571").innerHTML=`внешний <span class="m">r</span> = ${f(ro)}, внутренний = 4<br><span class="m">S</span> = (${f(ro)}² − 4²)π = <b>${f(S)}π</b>${Math.abs(z-1.5)<1e-9?' <span class="status ok">максимум!</span>':''}`;}
+  sl.addEventListener("input",draw);draw();})();
+
+/* 573 */
+(()=>{const s=$("f573");s.setAttribute("viewBox","0 0 200 175");
+  const ax=150,u=18,Q=(r,z)=>[ax-r*u,155-z*u];
+  el("path",{d:P([Q(0,0),Q(6,0),Q(6,2),Q(3,6),Q(0,6)]),fill:F.green,stroke:C.ink,"stroke-width":1.5},s);
+  ra(s,...Q(6,0),[1,0],[0,-1],6);ra(s,...Q(0,0),[-1,0],[0,-1],6);ra(s,...Q(0,6),[-1,0],[0,1],6);
+  axis(s,ax,26,170,"l");
+  T(s,96,170,"6 cm","sm");T(s,30,124,"2 cm","sm","end");T(s,62,72,"5 cm","sm","end");T(s,123,38,"3 cm","sm");T(s,156,104,"6 cm","sm","start");})();
+
+/* 575 figure + options */
+(()=>{const s=$("f575");s.setAttribute("viewBox","0 0 120 145");
+  el("path",{d:P([[80,35],[58,35],[40,110],[80,110]]),fill:"none",stroke:C.ink,"stroke-width":1.5},s);
+  ra(s,80,35,[-1,0],[0,1],6);ra(s,80,110,[-1,0],[0,-1],6);axis(s,80,14,132,"l");})();
+function opts(box,items){const host=$(box);items.forEach((fn,i)=>{const f=document.createElement("figure");const s=el("svg",{viewBox:"0 0 110 110"});fn(s);f.appendChild(s);const c=document.createElement("figcaption");c.textContent="①②③④⑤"[i];f.appendChild(c);host.appendChild(f);});}
+const st={fill:F.coral,stroke:C.ink,"stroke-width":1.3};
+const pol=(a,r)=>[Math.cos(a*Math.PI/180)*r,Math.sin(a*Math.PI/180)*r];
+function sector(s,cx,cy,R,a0,a1){const p=pol(a0,R),q=pol(a1,R);el("path",Object.assign({d:`M${cx} ${cy}L${cx+p[0]} ${cy+p[1]}A${R} ${R} 0 0 1 ${cx+q[0]} ${cy+q[1]}Z`},st),s);}
+function band(s,cx,cy,R1,R2,a0,a1){const o0=pol(a0,R2),o1=pol(a1,R2),i0=pol(a0,R1),i1=pol(a1,R1);el("path",Object.assign({d:`M${cx+o0[0]} ${cy+o0[1]}A${R2} ${R2} 0 0 1 ${cx+o1[0]} ${cy+o1[1]}L${cx+i1[0]} ${cy+i1[1]}A${R1} ${R1} 0 0 0 ${cx+i0[0]} ${cy+i0[1]}Z`},st),s);}
+const circ=(s,x,y,r)=>el("circle",Object.assign({cx:x,cy:y,r},st),s);
+const poly=(s,pts)=>el("path",Object.assign({d:P(pts)},st),s);
+opts("o575",[
+  s=>{sector(s,55,6,58,60,120);circ(s,55,78,14);},
+  s=>{poly(s,[[40,38],[70,38],[85,68],[25,68]]);circ(s,55,30,8);circ(s,55,81,13);},
+  s=>{poly(s,[[28,38],[68,38],[86,68],[28,68]]);circ(s,40,30,8);circ(s,60,81,13);},
+  s=>{band(s,55,-42,58,88,68,112);circ(s,55,8,8);circ(s,55,60,13);},
+  s=>{poly(s,[[25,38],[85,38],[85,68],[25,68]]);circ(s,40,28,10);circ(s,55,77,9);}]);
+opts("o567",[
+  s=>{poly(s,[[25,15],[45,15],[45,95],[25,95]]);poly(s,[[65,15],[85,15],[85,95],[65,95]]);},
+  s=>{poly(s,[[30,15],[80,15],[80,95],[30,95]]);},
+  s=>{el("path",Object.assign({d:"M15 90A40 52 0 0 1 95 90L75 90A20 30 0 0 0 35 90Z"},st),s);},
+  s=>{el("path",Object.assign({d:"M25 55a30 42 0 1 0 60 0a30 42 0 1 0 -60 0Z M40 60a15 24 0 1 0 30 0a15 24 0 1 0 -30 0Z","fill-rule":"evenodd"},st),s);},
+  s=>{poly(s,[[55,15],[95,95],[15,95]]);}]);
+
+/* 592 */
+(()=>{const s=$("f592");s.setAttribute("viewBox","0 0 180 180");const g=[[3,2,2,3],[2,1,1,2],[2,1,1,2],[3,2,2,3]];
+  g.forEach((row,i)=>row.forEach((v,j)=>{const x=10+j*40,y=10+i*40;el("rect",{x,y,width:40,height:40,fill:v===2?F.coral:v===3?F.blue:F.surf,stroke:C.ink,"stroke-width":1.2},s);T(s,x+20,y+26,String(v),"lbl");}));})();
+
+/* 599 */
+(()=>{const s=$("f599");s.setAttribute("viewBox","0 0 300 230");
+  el("path",{d:P([[20,85],[82,85],[82,55],[111,25],[140,55],[140,85],[280,85],[280,145],[140,145],[140,175],[111,205],[82,175],[82,145],[20,145]]),fill:F.sunk,stroke:C.ink,"stroke-width":1.6},s);
+  [[82,85,82,145],[140,85,140,145],[202,85,202,145],[232,85,232,145],[82,85,140,85],[82,145,140,145]].forEach(l=>el("line",{x1:l[0],y1:l[1],x2:l[2],y2:l[3],stroke:C.ink,"stroke-width":1.2,"stroke-dasharray":"5 4"},s));})();
+
+/* ===== section lab ===== */
+const SOL={
+  cyl:{z0:0,z1:200,ro:z=>70},
+  cone:{z0:0,z1:200,ro:z=>80*(1-z/200)},
+  frus:{z0:0,z1:200,ro:z=>85-45*z/200},
+  sph:{z0:10,z1:190,ro:z=>Math.sqrt(Math.max(0,8100-(z-100)**2))},
+  hol:{z0:0,z1:200,ro:z=>75,ri:z=>35},
+  hg:{z0:0,z1:200,ro:z=>80*Math.abs(z-100)/100}};
+const AXN={cyl:["직사각형","прямоугольник"],cone:["이등변삼각형","равнобедренный треугольник"],frus:["등변사다리꼴","равнобедренная трапеция"],sph:["원","круг"],hol:["직사각형 2개","два прямоугольника"],hg:["이등변삼각형 2개","«бантик» из двух треугольников"]};
+let cur="cyl";
+const side=$("labSide"),cut=$("labCut"),ang=$("ang"),off=$("off");
+function runs(fn,L){const out=[];let r=null;for(let u=-L;u<=L;u+=0.2){const w=fn(u);if(w>0.01){if(!r){r=[];out.push(r);}r.push([u,w]);}else r=null;}return out;}
+function render(){
+  const S=SOL[cur],th=ang.value*Math.PI/180,s=+off.value;
+  $("angV").textContent=ang.value+"°";$("offV").textContent=s;
+  const t=[Math.cos(th),-Math.sin(th)],n=[Math.sin(th),Math.cos(th)],c=[s*n[0],100+s*n[1]];
+  const X=x=>150+x,Y=z=>235-z;
+  side.textContent="";
+  const R=[],Lp=[];for(let z=S.z0;z<=S.z1;z+=2){R.push([X(S.ro(z)),Y(z)]);Lp.unshift([X(-S.ro(z)),Y(z)]);}
+  el("path",{d:P(R.concat(Lp)),fill:F.blue,stroke:C.blue,"stroke-width":1.5},side);
+  [S.z0,S.z1].forEach(z=>{const r=S.ro(z);if(r>1)el("ellipse",{cx:150,cy:Y(z),rx:r,ry:r*.2,fill:"none",stroke:C.blue,"stroke-width":1},side);});
+  if(S.ri){[-1,1].forEach(k=>el("line",{x1:X(k*35),y1:Y(S.z0),x2:X(k*35),y2:Y(S.z1),stroke:C.blue,"stroke-dasharray":"4 3"},side));}
+  el("line",{x1:150,y1:15,x2:150,y2:255,stroke:C.ink,"stroke-dasharray":"6 4","stroke-width":1},side);
+  el("line",{x1:X(c[0]-400*t[0]),y1:Y(c[1]-400*t[1]),x2:X(c[0]+400*t[0]),y2:Y(c[1]+400*t[1]),stroke:C.coral,"stroke-width":3},side);
+  // section
+  const pt=u=>[c[0]+u*t[0],c[1]+u*t[1]];
+  const inZ=z=>z>=S.z0-1e-9&&z<=S.z1+1e-9;
+  const wo=u=>{const[x,z]=pt(u);if(!inZ(z))return 0;const r=S.ro(z);return r>Math.abs(x)?Math.sqrt(r*r-x*x):0;};
+  const wi=u=>{if(!S.ri)return 0;const[x,z]=pt(u);if(!inZ(z))return 0;const r=S.ri(z);return r>Math.abs(x)?Math.sqrt(r*r-x*x):0;};
+  const ro=runs(wo,320),ri=runs(wi,320);
+  cut.textContent="";
+  let name="",note="",ok=true;
+  if(!ro.length){name="Плоскость не задевает тело";note="Сдвинь плоскость ближе к телу.";ok=false;}
+  else{
+    const all=ro.flat();const umin=Math.min(...all.map(p=>p[0])),umax=Math.max(...all.map(p=>p[0])),wm=Math.max(...all.map(p=>p[1]));
+    const uc=(umin+umax)/2,k=Math.min(1,235/(umax-umin+1),270/(2*wm+1));
+    const MX=w=>150+w*k,MY=u=>130+(u-uc)*k;
+    const toPath=rs=>rs.map(r=>P(r.map(p=>[MX(p[1]),MY(p[0])]).concat(r.slice().reverse().map(p=>[MX(-p[1]),MY(p[0])])))).join(" ");
+    el("path",{d:toPath(ro)+" "+toPath(ri),fill:F.coral,"fill-rule":"evenodd",stroke:C.coral,"stroke-width":1.8},cut);
+    const deg=+ang.value;
+    const hitsBase=ro.some(r=>[r[0],r[r.length-1]].some(p=>{const z=pt(p[0])[1];return (z<=S.z0+1.5||z>=S.z1-1.5)&&p[1]>3;}));
+    if(deg===0){if(S.ri&&ri.length){name="고리 · кольцо";}else name="원 · круг";note="Плоскость ⊥ оси (수직) — всегда круг.";}
+    else if(cur==="sph"){name="원 · круг";note="У шара любое сечение — круг.";}
+    else if(deg===90&&s===0){name=AXN[cur][0]+" · "+AXN[cur][1];note="Плоскость через ось (포함): фигура + её зеркало.";}
+    else if(deg===90){
+      if(cur==="cyl"||cur==="hol"){name=(ro.length>1||ri.length?"직사각형 2개 · два прямоугольника":"직사각형 · прямоугольник");note="Вдоль оси, но не через неё.";}
+      else if(ro.length>1){name="두 아치 · две арки";note="Вдоль оси мимо неё: прямой низ, кривой верх.";}
+      else{name="아치 모양 · арка";note="Вдоль оси мимо неё: прямой низ, кривой верх.";}}
+    else if(ro.length>1){name="두 조각 · две отдельные части";note="Плоскость задела обе половинки.";}
+    else if(hitsBase){name="아치 모양 · арка";note="Наискосок с задеванием основания: один край прямой, другой кривой.";}
+    else{name=(ri.length?"타원 고리 · овальное кольцо":"타원 · овал (эллипс)");note="Наискосок только через боковую поверхность.";}
+  }
+  const nm=$("labName");nm.textContent=name;nm.className="status"+(ok?" ok":"");$("labNote").textContent=note;
+}
+function setSolid(k){cur=k;document.querySelectorAll("#solidSeg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.s===k)));}
+document.querySelectorAll("#solidSeg button").forEach(b=>b.addEventListener("click",()=>{setSolid(b.dataset.s);render();}));
+document.querySelectorAll(".presets .btn").forEach(b=>b.addEventListener("click",()=>{const[a,o]=b.dataset.p.split(",");ang.value=a;off.value=o;render();}));
+document.querySelectorAll("[data-lab]").forEach(b=>b.addEventListener("click",()=>{const[k,a,o]=b.dataset.lab.split(",");setSolid(k);ang.value=a;off.value=o;render();$("lab").scrollIntoView({behavior:"smooth",block:"start"});}));
+ang.addEventListener("input",render);off.addEventListener("input",render);
+render();
+})();
+</script>
+
+</body></html>
