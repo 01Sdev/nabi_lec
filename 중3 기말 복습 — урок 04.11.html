@@ -1,0 +1,676 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>중3 기말 복습</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Unbounded:wght@500;700&family=Noto+Serif:ital,wght@1,400;1,600&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, 3 крупных блока (삼각비 / 원 / 통계), у каждого свой цвет-метка */
+:root{
+  --bg:#f6f7fb; --fg:#1b2030; --muted:#5d6478; --card:#ffffff; --line:#dde1ec;
+  --blue:#2f64d6; --blue-bg:#e8effd;
+  --coral:#e0573f; --coral-bg:#fdece8;
+  --green:#1f8a5b; --green-bg:#e4f5ec;
+  --amber:#b7791f; --amber-bg:#fdf3df;
+  --violet:#6a4bc4; --violet-bg:#efeafc;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151d; --fg:#e7e9f1; --muted:#9aa1b4; --card:#1b1f2a; --line:#2c3242;
+  --blue:#7ea3ff; --blue-bg:#1d2a47; --coral:#ff8a72; --coral-bg:#3a221e;
+  --green:#5fd19a; --green-bg:#173327; --amber:#f0be63; --amber-bg:#352a15;
+  --violet:#b39cff; --violet-bg:#2a2244; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151d; --fg:#e7e9f1; --muted:#9aa1b4; --card:#1b1f2a; --line:#2c3242;
+  --blue:#7ea3ff; --blue-bg:#1d2a47; --coral:#ff8a72; --coral-bg:#3a221e;
+  --green:#5fd19a; --green-bg:#173327; --amber:#f0be63; --amber-bg:#352a15;
+  --violet:#b39cff; --violet-bg:#2a2244; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 64px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{text-wrap:balance;margin:0;line-height:1.25}
+h1{font:700 clamp(26px,5vw,40px)/1.15 var(--f-disp);letter-spacing:-.01em}
+h2{font:700 clamp(20px,3.6vw,26px)/1.25 var(--f-disp)}
+h3{font-size:18px;font-weight:700}
+p{margin:0;max-width:68ch}
+.kr{font-family:var(--f-kr)}
+.m{font-family:var(--f-math);font-style:italic}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;font-family:var(--f-math);font-style:italic;line-height:1.15;margin:0 2px}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 3px}
+.frac>span{padding:0 3px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:99px;background:var(--card);border:1px solid var(--line);color:var(--muted)}
+header{display:flex;flex-direction:column;gap:14px}
+.lead{color:var(--muted);font-size:17px}
+nav.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+nav.toc a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+nav.toc a b{font-family:var(--f-kr)}
+nav.toc a small{color:var(--muted)}
+nav.toc a:focus-visible, button:focus-visible, summary:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+section.unit{display:flex;flex-direction:column;gap:18px;padding-top:8px;border-top:3px solid var(--tone)}
+.unit-head{display:flex;flex-direction:column;gap:6px}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--tone);font-weight:700}
+.t-blue{--tone:var(--blue);--tone-bg:var(--blue-bg)}
+.t-coral{--tone:var(--coral);--tone-bg:var(--coral-bg)}
+.t-green{--tone:var(--green);--tone-bg:var(--green-bg)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.analogy{background:var(--amber-bg);border-color:transparent}
+.analogy .lbl{color:var(--amber)}
+.warn{background:var(--coral-bg);border-color:transparent}
+.warn .lbl{color:var(--coral)}
+.lbl{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.formula{background:var(--tone-bg);border-radius:10px;padding:12px 14px;font-size:17px;display:flex;flex-direction:column;gap:6px}
+.formula .ru{font-size:14px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.grid2>*{min-width:0}
+figure{margin:0;display:flex;flex-direction:column;gap:6px}
+figure svg{width:100%;max-width:300px;height:auto;align-self:center}
+figcaption{font-size:13px;color:var(--muted)}
+svg text{font-family:var(--f-math);font-style:italic;font-size:13px;fill:var(--fg)}
+svg .t-kr{font-family:var(--f-kr);font-style:normal;font-size:11px;fill:var(--muted)}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px}
+.vc{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 11px;display:flex;flex-direction:column;gap:1px}
+.vc b{font-family:var(--f-kr);font-size:15px}
+.vc i{font-style:normal;color:var(--tone,var(--blue));font-size:14px;font-weight:600}
+.vc span{font-size:12.5px;color:var(--muted);line-height:1.4}
+details{border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+details>summary{cursor:pointer;padding:9px 12px;font-weight:600;font-size:14px;list-style:none}
+details>summary::before{content:"▸ ";color:var(--tone,var(--blue))}
+details[open]>summary::before{content:"▾ "}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.prob{display:flex;flex-direction:column;gap:10px}
+.prob .q{font-family:var(--f-kr);font-size:16px}
+.prob .q-ru{color:var(--muted);font-size:14px}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;background:var(--tone-bg);color:var(--tone);margin-right:6px}
+.ans{color:var(--green);font-weight:700}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:540px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:600}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:620px){.lab{grid-template-columns:1fr}}
+.lab svg{width:100%;height:auto;max-width:340px;justify-self:center}
+.readout{display:flex;flex-direction:column;gap:8px}
+.ro{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border-radius:8px;background:var(--bg);font-variant-numeric:tabular-nums}
+.ro b{font-family:var(--f-math);font-style:italic}
+.ro.s{border-left:4px solid var(--coral)} .ro.c{border-left:4px solid var(--blue)} .ro.t{border-left:4px solid var(--green)}
+input[type=range]{width:100%;accent-color:var(--blue)}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+button{font:600 14px var(--f-body);padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+button:hover{border-color:var(--blue)}
+.status{font-size:14px;color:var(--muted);min-height:1.6em}
+ul.clean{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px}
+.special td,.special th{text-align:center}
+.plan{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.plan .box{gap:4px}
+.plan .d{font:700 13px var(--f-disp);color:var(--blue)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="chips"><span class="chip kr">중등수학3(하)</span><span class="chip">I 삼각비 · II 원의 성질 · III 통계</span><span class="chip kr">기말고사 복습</span></div>
+  <h1><span class="kr">중3 기말 복습</span><br><span style="font-size:.6em;color:var(--muted)">Повторение к итоговой контрольной</span></h1>
+  <p class="lead">Вся вторая часть учебника на одной странице: главные формулы, разобранные задачи и карта задач из <span class="kr">문제집</span>, которые стоит решить перед экзаменом. Решения спрятаны — сначала попробуй сам.</p>
+  <nav class="toc" aria-label="Разделы">
+    <a href="#trig"><b>I. 삼각비</b><small>Тригонометрические отношения</small></a>
+    <a href="#circle"><b>II. 원의 성질</b><small>Свойства окружности</small></a>
+    <a href="#stats"><b>III. 통계</b><small>Статистика</small></a>
+    <a href="#plan"><b>시험 대비 계획</b><small>Что решать и в каком порядке</small></a>
+  </nav>
+</header>
+
+<!-- ================= I. 삼각비 ================= -->
+<section class="unit t-blue" id="trig">
+  <div class="unit-head">
+    <span class="eyebrow">Часть I · стр. 3–30</span>
+    <h2><span class="kr">삼각비</span> — тригонометрические отношения</h2>
+  </div>
+
+  <div class="box">
+    <span class="lbl">0 · <span class="kr">단어장</span> — слова из задач</span>
+    <div class="vocab">
+      <div class="vc"><b>삼각비</b><i>тригоном. отношение</i><span>sin, cos, tan вместе</span></div>
+      <div class="vc"><b>직각삼각형</b><i>прямоугольный треугольник</i><span>есть угол 90°</span></div>
+      <div class="vc"><b>빗변</b><i>гипотенуза</i><span>сторона напротив 90°</span></div>
+      <div class="vc"><b>높이</b><i>высота / противолежащий катет</i><span>сторона напротив угла</span></div>
+      <div class="vc"><b>밑변</b><i>основание / прилежащий катет</i><span>сторона рядом с углом</span></div>
+      <div class="vc"><b>예각</b><i>острый угол</i><span>0° &lt; угол &lt; 90°</span></div>
+      <div class="vc"><b>둔각</b><i>тупой угол</i><span>90° &lt; угол &lt; 180°</span></div>
+      <div class="vc"><b>사인 / 코사인 / 탄젠트</b><i>sin / cos / tan</i><span>читаются так же</span></div>
+      <div class="vc"><b>삼각비의 표</b><i>таблица значений</i><span>sin, cos, tan для 0°–90°</span></div>
+      <div class="vc"><b>올려본각</b><i>угол подъёма (взгляда вверх)</i><span>от горизонтали вверх</span></div>
+      <div class="vc"><b>내려본각</b><i>угол спуска (взгляда вниз)</i><span>от горизонтали вниз</span></div>
+      <div class="vc"><b>넓이</b><i>площадь</i><span>S</span></div>
+      <div class="vc"><b>평행사변형</b><i>параллелограмм</i><span>S = ab·sin x</span></div>
+      <div class="vc"><b>끼인각</b><i>угол между сторонами</i><span>угол, «зажатый» двумя сторонами</span></div>
+      <div class="vc"><b>구하시오</b><i>найдите</i><span>главное слово в условии</span></div>
+      <div class="vc"><b>소수점 아래 둘째 자리</b><i>до сотых</i><span>округление</span></div>
+    </div>
+  </div>
+
+  <div class="box analogy">
+    <span class="lbl">Аналогия</span>
+    <p>Представь пандус для велосипеда. Неважно, длинный он или короткий: если угол наклона одинаковый, то «сколько поднимаемся на каждый метр» — тоже одинаково. Это число и есть <b class="kr">탄젠트</b>. Значит, <b class="kr">삼각비</b> зависит <b>только от угла</b>, а не от размера треугольника.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <span class="lbl">1 · <span class="kr">삼각비의 뜻</span></span>
+      <div class="formula">
+        <div><span class="m">sin A</span> = <span class="frac"><span>높이</span><span>빗변</span></span> = <span class="frac"><span>a</span><span>b</span></span>&nbsp;&nbsp; <span class="m">cos A</span> = <span class="frac"><span>밑변</span><span>빗변</span></span> = <span class="frac"><span>c</span><span>b</span></span>&nbsp;&nbsp; <span class="m">tan A</span> = <span class="frac"><span>높이</span><span>밑변</span></span> = <span class="frac"><span>a</span><span>c</span></span></div>
+        <div class="ru">∠C = 90°. <span class="m">a</span> — напротив ∠A, <span class="m">b</span> — гипотенуза, <span class="m">c</span> — рядом с ∠A.</div>
+      </div>
+      <p style="font-size:14px">Запоминалка: <b>s</b>in — «противоположный / гипотенуза», <b>c</b>os — «соседний / гипотенуза», <b>t</b>an — «противоположный / соседний».</p>
+    </div>
+    <figure class="box">
+      <span class="lbl">Рисунок</span>
+      <svg id="fig-tri" viewBox="0 0 260 170" role="img" aria-label="Прямоугольный треугольник ABC"></svg>
+      <figcaption>Угол A всегда «смотрит» на сторону <span class="m">a</span>. Сначала найди, какой угол спрашивают, и только потом подписывай 높이 и 밑변.</figcaption>
+    </figure>
+  </div>
+
+  <div class="box">
+    <span class="lbl">2 · <span class="kr">특수한 각의 삼각비</span> — значения для 30°, 45°, 60°</span>
+    <div class="tbl"><table class="special">
+      <tr><th></th><th>30°</th><th>45°</th><th>60°</th></tr>
+      <tr><td class="m">sin</td><td><span class="frac"><span>1</span><span>2</span></span></td><td><span class="frac"><span>√2</span><span>2</span></span></td><td><span class="frac"><span>√3</span><span>2</span></span></td></tr>
+      <tr><td class="m">cos</td><td><span class="frac"><span>√3</span><span>2</span></span></td><td><span class="frac"><span>√2</span><span>2</span></span></td><td><span class="frac"><span>1</span><span>2</span></span></td></tr>
+      <tr><td class="m">tan</td><td><span class="frac"><span>√3</span><span>3</span></span></td><td>1</td><td>√3</td></tr>
+    </table></div>
+    <p style="font-size:14px">Строка sin: числители 1, √2, √3 растут. Строка cos — та же, но в обратном порядке. tan = sin ÷ cos.</p>
+  </div>
+
+  <div class="box">
+    <span class="lbl">3 · <span class="kr">예각의 삼각비의 값</span> — интерактивная лаборатория</span>
+    <p>Радиус четверти круга = 1. Тогда вертикальный отрезок — это <b>sin</b>, горизонтальный — <b>cos</b>, а отрезок касательной при <span class="m">x</span> = 1 — <b>tan</b>. Двигай угол и найди, где sin = cos.</p>
+    <div class="lab">
+      <svg id="lab" viewBox="0 0 320 300" role="img" aria-label="Единичная четверть окружности"></svg>
+      <div class="readout">
+        <label for="ang" style="font-weight:600">Угол <span id="angv">30°</span></label>
+        <input id="ang" type="range" min="0" max="89" value="30">
+        <div class="ro s"><span><b>sin</b> — <span class="kr">높이</span></span><span id="rs"></span></div>
+        <div class="ro c"><span><b>cos</b> — <span class="kr">밑변</span></span><span id="rc"></span></div>
+        <div class="ro t"><span><b>tan</b> — <span class="kr">접선</span></span><span id="rt"></span></div>
+        <div class="btns"><button type="button" data-a="0">0°</button><button type="button" data-a="30">30°</button><button type="button" data-a="45">45°</button><button type="button" data-a="60">60°</button></div>
+        <div class="status" id="lab-st"></div>
+      </div>
+    </div>
+    <ul class="clean" style="font-size:14px">
+      <li>Угол растёт → <b>sin</b> и <b>tan</b> растут, <b>cos</b> уменьшается.</li>
+      <li><span class="m">sin 0°</span> = 0, <span class="m">cos 0°</span> = 1, <span class="m">tan 0°</span> = 0; <span class="m">sin 90°</span> = 1, <span class="m">cos 90°</span> = 0, <b class="kr">tan 90°는 정할 수 없다</b> (не определён).</li>
+    </ul>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <span class="lbl">4 · <span class="kr">삼각비의 활용(1); 길이</span></span>
+      <div class="formula">
+        <div>Знаем гипотенузу <span class="m">c</span> и угол: катеты = <span class="m">c</span>·<span class="m">sin A</span>, <span class="m">c</span>·<span class="m">cos A</span></div>
+        <div>Знаем катет <span class="m">b</span> и угол: высота = <span class="m">b</span>·<span class="m">tan A</span></div>
+      </div>
+      <p style="font-size:14px">В непрямоугольном треугольнике <b>опусти высоту (수선)</b>, чтобы получить два прямоугольных. Это главный приём всех задач на длину.</p>
+    </div>
+    <div class="box">
+      <span class="lbl">5 · <span class="kr">삼각비의 활용(2); 넓이</span></span>
+      <div class="formula">
+        <div><span class="kr">삼각형</span>: S = <span class="frac"><span>1</span><span>2</span></span><span class="m">ab</span>·<span class="m">sin x</span> &nbsp;(x — <span class="kr">예각</span>)</div>
+        <div>x — <span class="kr">둔각</span>: S = <span class="frac"><span>1</span><span>2</span></span><span class="m">ab</span>·sin(180° − <span class="m">x</span>)</div>
+        <div><span class="kr">평행사변형</span>: S = <span class="m">ab</span>·<span class="m">sin x</span> &nbsp; <span class="kr">사각형</span> (диагонали): S = <span class="frac"><span>1</span><span>2</span></span><span class="m">ab</span>·<span class="m">sin x</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box warn">
+    <span class="lbl">Частые ошибки</span>
+    <ul class="clean">
+      <li>Путают 높이 и 밑변, потому что подписали стороны не от того угла.</li>
+      <li>В формуле площади с <span class="kr">둔각</span> подставляют sin 120° как будто это sin 60°… и это правильно! Но для 150° нужен sin 30°, а не sin 60°.</li>
+      <li>Забывают прибавить рост человека (눈높이) в задачах на <span class="kr">올려본각</span>.</li>
+    </ul>
+  </div>
+
+  <h3>Разобранные задачи (<span class="kr">대표 문제</span>)</h3>
+  <div class="box prob">
+    <div><span class="badge">I-1</span><span class="badge">하</span></div>
+    <p class="q">∠C = 90°인 직각삼각형 ABC에서 AB = 10, BC = 6일 때, sin A, cos A, tan A의 값을 구하시오.</p>
+    <p class="q-ru">В прямоугольном треугольнике ABC (∠C = 90°) AB = 10, BC = 6. Найдите sin A, cos A, tan A.</p>
+    <details><summary>Подсказка</summary><div><p>Сначала найди третью сторону по теореме Пифагора (<span class="kr">피타고라스 정리</span>). Сторона напротив A — это BC.</p></div></details>
+    <details><summary>Решение</summary><div>
+      <p>Шаг 1. AC = √(10² − 6²) = √64 = 8.</p>
+      <p>Шаг 2. Для угла A: 높이 = BC = 6, 밑변 = AC = 8, 빗변 = AB = 10.</p>
+      <p>Шаг 3. sin A = <span class="frac"><span>6</span><span>10</span></span> = <span class="frac"><span>3</span><span>5</span></span>, cos A = <span class="frac"><span>4</span><span>5</span></span>, tan A = <span class="frac"><span>6</span><span>8</span></span> = <span class="frac"><span>3</span><span>4</span></span>.</p>
+      <p class="ans">Ответ: 3/5, 4/5, 3/4 ✓ (проверка: (3/5)² + (4/5)² = 1)</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">I-1</span><span class="badge">중하</span></div>
+    <p class="q">sin 30° × cos 60° + tan 45° 의 값을 구하시오.</p>
+    <p class="q-ru">Вычислите sin 30° · cos 60° + tan 45°.</p>
+    <details><summary>Решение</summary><div>
+      <p><span class="frac"><span>1</span><span>2</span></span> × <span class="frac"><span>1</span><span>2</span></span> + 1 = <span class="frac"><span>1</span><span>4</span></span> + 1</p>
+      <p class="ans">Ответ: 5/4</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">I-2</span><span class="badge">중하</span></div>
+    <p class="q">두 변의 길이가 6, 8이고 그 끼인각의 크기가 60°인 삼각형의 넓이를 구하시오. 끼인각이 150°이면?</p>
+    <p class="q-ru">Стороны треугольника 6 и 8, угол между ними 60°. Найдите площадь. А если угол 150°?</p>
+    <details><summary>Подсказка</summary><div><p>S = ½·a·b·sin x. Для тупого угла бери sin(180° − x).</p></div></details>
+    <details><summary>Решение</summary><div>
+      <p>60°: S = ½·6·8·<span class="frac"><span>√3</span><span>2</span></span> = 24·<span class="frac"><span>√3</span><span>2</span></span> = 12√3.</p>
+      <p>150°: S = ½·6·8·sin 30° = 24·½ = 12.</p>
+      <p class="ans">Ответ: 12√3 и 12</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">I-2</span><span class="badge">중</span></div>
+    <p class="q">건물로부터 20 m 떨어진 곳에서 건물 꼭대기를 올려본각의 크기가 30°였다. 눈높이가 1.5 m일 때, 건물의 높이를 구하시오.</p>
+    <p class="q-ru">С расстояния 20 м от здания угол подъёма до его вершины 30°. Глаза находятся на высоте 1,5 м. Найдите высоту здания.</p>
+    <details><summary>Подсказка</summary><div><p>Известен 밑변 (20 м) и угол → нужна tan. Не забудь 1,5 м.</p></div></details>
+    <details><summary>Решение</summary><div>
+      <p>Шаг 1. Часть над глазами: 20·tan 30° = 20·<span class="frac"><span>√3</span><span>3</span></span> = <span class="frac"><span>20√3</span><span>3</span></span> (м).</p>
+      <p>Шаг 2. Прибавляем рост глаз: <span class="frac"><span>20√3</span><span>3</span></span> + 1.5 ≈ 11.55 + 1.5.</p>
+      <p class="ans">Ответ: (20√3/3 + 1.5) м ≈ 13.05 м</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ================= II. 원 ================= -->
+<section class="unit t-coral" id="circle">
+  <div class="unit-head">
+    <span class="eyebrow">Часть II · стр. 31–69</span>
+    <h2><span class="kr">원의 성질</span> — свойства окружности</h2>
+  </div>
+
+  <div class="box">
+    <span class="lbl">0 · <span class="kr">단어장</span></span>
+    <div class="vocab">
+      <div class="vc"><b>원</b><i>окружность / круг</i><span>O — 중심</span></div>
+      <div class="vc"><b>중심</b><i>центр</i><span>точка O</span></div>
+      <div class="vc"><b>반지름</b><i>радиус</i><span>r</span></div>
+      <div class="vc"><b>현</b><i>хорда</i><span>отрезок между двумя точками окружности</span></div>
+      <div class="vc"><b>호</b><i>дуга</i><span>часть окружности</span></div>
+      <div class="vc"><b>수직이등분선</b><i>серединный перпендикуляр</i><span>⊥ и делит пополам</span></div>
+      <div class="vc"><b>접선</b><i>касательная</i><span>касается в одной точке</span></div>
+      <div class="vc"><b>접점</b><i>точка касания</i><span>там радиус ⊥ касательной</span></div>
+      <div class="vc"><b>접선의 길이</b><i>длина касательной</i><span>от внешней точки до 접점</span></div>
+      <div class="vc"><b>내접원</b><i>вписанная окружность</i><span>касается всех сторон</span></div>
+      <div class="vc"><b>외접</b><i>описанный (снаружи)</i><span>사각형이 원에 외접</span></div>
+      <div class="vc"><b>중심각</b><i>центральный угол</i><span>вершина в центре O</span></div>
+      <div class="vc"><b>원주각</b><i>вписанный угол</i><span>вершина на окружности</span></div>
+      <div class="vc"><b>내접하는 사각형</b><i>вписанный четырёхугольник</i><span>все вершины на окружности</span></div>
+      <div class="vc"><b>대각</b><i>противолежащий угол</i><span>сумма = 180°</span></div>
+      <div class="vc"><b>외각</b><i>внешний угол</i><span>= 내대각</span></div>
+      <div class="vc"><b>지름</b><i>диаметр</i><span>опирается → 90°</span></div>
+      <div class="vc"><b>이등변삼각형</b><i>равнобедренный треугольник</i><span>OA = OB = r</span></div>
+    </div>
+  </div>
+
+  <div class="box analogy">
+    <span class="lbl">Аналогия</span>
+    <p>Представь футбольные ворота (это <span class="kr">현</span> AB) и игроков, стоящих на окружности. Откуда бы игрок ни смотрел на ворота (с одной стороны), он видит их под <b>одним и тем же углом</b> — это <span class="kr">원주각</span>. А вратарь в центре поля видит их под углом вдвое больше — это <span class="kr">중심각</span>.</p>
+  </div>
+
+  <h3>1 · <span class="kr">원과 직선</span> — окружность и прямая</h3>
+  <div class="grid2">
+    <figure class="box">
+      <span class="lbl"><span class="kr">원의 현</span> — хорда</span>
+      <svg id="fig-chord" viewBox="0 0 200 200" role="img" aria-label="Хорда и перпендикуляр из центра"></svg>
+      <figcaption><b class="kr">원의 중심에서 현에 내린 수선은 그 현을 이등분한다.</b><br>Перпендикуляр из центра делит хорду пополам. Дальше всегда Пифагор: r² = d² + (половина хорды)².<br>Хорды на одинаковом расстоянии от центра — одной длины.</figcaption>
+    </figure>
+    <figure class="box">
+      <span class="lbl"><span class="kr">원의 접선</span> — касательные</span>
+      <svg id="fig-tan" viewBox="0 0 220 200" role="img" aria-label="Две касательные из внешней точки"></svg>
+      <figcaption><b class="kr">원 밖의 한 점에서 그 원에 그은 두 접선의 길이는 같다.</b> PA = PB.<br>Радиус в точке касания ⊥ касательной: ∠OAP = 90°, поэтому ∠APB + ∠AOB = 180°.</figcaption>
+    </figure>
+  </div>
+  <div class="box">
+    <span class="lbl"><span class="kr">원의 접선(2)</span> — вписанная окружность</span>
+    <ul class="clean">
+      <li><span class="kr">삼각형의 내접원</span>: отрезки касательных из одной вершины равны → периметр делится на пары одинаковых кусков.</li>
+      <li><span class="kr">원에 외접하는 사각형</span>: суммы противоположных сторон равны — <span class="m">AB + CD = AD + BC</span>.</li>
+    </ul>
+  </div>
+
+  <h3>2 · <span class="kr">원주각</span> — вписанный угол</h3>
+  <div class="grid2">
+    <figure class="box">
+      <span class="lbl"><span class="kr">원주각과 중심각</span></span>
+      <svg id="fig-ins" viewBox="0 0 200 200" role="img" aria-label="Вписанный и центральный угол"></svg>
+      <figcaption><b class="kr">(원주각) = ½ × (중심각)</b><br>Все вписанные углы на одну дугу равны. Если дуга — половина окружности (опирается на <span class="kr">지름</span>), угол = 90°. Равные дуги ↔ равные углы; длина дуги пропорциональна углу.</figcaption>
+    </figure>
+    <figure class="box">
+      <span class="lbl"><span class="kr">원에 내접하는 사각형</span></span>
+      <svg id="fig-cyc" viewBox="0 0 200 200" role="img" aria-label="Вписанный четырёхугольник"></svg>
+      <figcaption><b class="kr">한 쌍의 대각의 크기의 합은 180°</b>: ∠A + ∠C = ∠B + ∠D = 180°.<br>Внешний угол = внутренний противолежащий (<span class="kr">내대각</span>).</figcaption>
+    </figure>
+  </div>
+
+  <h3>3 · <span class="kr">원의 접선과 현이 이루는 각</span></h3>
+  <div class="grid2">
+    <figure class="box">
+      <span class="lbl">Угол между касательной и хордой</span>
+      <svg id="fig-tc" viewBox="0 0 220 200" role="img" aria-label="Угол между касательной и хордой"></svg>
+      <figcaption><b class="kr">접선과 현이 이루는 각의 크기는 그 각의 내부에 있는 호에 대한 원주각의 크기와 같다.</b><br>Зелёный угол (касательная и хорда AB) = коралловому углу ∠ACB, который опирается на ту же дугу.</figcaption>
+    </figure>
+    <div class="box warn">
+      <span class="lbl">Частые ошибки</span>
+      <ul class="clean">
+        <li>Делят 중심각 пополам, но берут вписанный угол на <b>другую</b> дугу. Проверь: вершина угла и дуга — по разные стороны хорды.</li>
+        <li>Забывают, что OA = OB (радиусы) → треугольник 이등변, углы при основании равны.</li>
+        <li>В касательных задачах не рисуют радиус в точку касания — а там прячется 90°.</li>
+        <li>Путают <span class="kr">내접</span> (вписан в окружность) и <span class="kr">외접</span> (описан около окружности).</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Разобранные задачи (<span class="kr">대표 문제</span>)</h3>
+  <div class="box prob">
+    <div><span class="badge">II-1</span><span class="badge">하</span></div>
+    <p class="q">반지름의 길이가 5 cm인 원 O에서 중심 O로부터 현 AB까지의 거리가 3 cm일 때, AB의 길이를 구하시오.</p>
+    <p class="q-ru">Радиус окружности 5 см, расстояние от центра до хорды AB — 3 см. Найдите AB.</p>
+    <details><summary>Решение</summary><div>
+      <p>Перпендикуляр OM делит хорду пополам. AM = √(5² − 3²) = 4.</p>
+      <p class="ans">Ответ: AB = 2·4 = 8 cm</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">II-1</span><span class="badge">중하</span></div>
+    <p class="q">점 P에서 원 O에 그은 두 접선의 접점을 A, B라 하자. OA = 3, PO = 5일 때 PA의 길이를, ∠AOB = 120°일 때 ∠APB의 크기를 구하시오.</p>
+    <p class="q-ru">PA и PB — касательные. OA = 3, PO = 5. Найдите PA. Если ∠AOB = 120°, найдите ∠APB.</p>
+    <details><summary>Решение</summary><div>
+      <p>∠OAP = 90° → PA = √(5² − 3²) = 4.</p>
+      <p>В четырёхугольнике OAPB два угла по 90°: ∠APB = 360° − 90° − 90° − 120° = 60°.</p>
+      <p class="ans">Ответ: PA = 4, ∠APB = 60°</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">II-2</span><span class="badge">중하</span></div>
+    <p class="q">원 O에서 ∠AOB = 100°일 때, 호 AB에 대한 원주각 ∠APB의 크기를 구하시오. 또, 원에 내접하는 □ABCD에서 ∠A = 75°이면 ∠C는?</p>
+    <p class="q-ru">∠AOB = 100°. Найдите вписанный угол ∠APB на дугу AB. Во вписанном □ABCD ∠A = 75°. Найдите ∠C.</p>
+    <details><summary>Решение</summary><div>
+      <p>∠APB = ½·100° = 50°.</p>
+      <p>∠A + ∠C = 180° → ∠C = 105°.</p>
+      <p class="ans">Ответ: 50°, 105°</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">II-3</span><span class="badge">중</span></div>
+    <p class="q">직선 ℓ은 점 A에서 원에 접하고, △ABC는 원에 내접한다. 직선 ℓ과 현 AB가 이루는 각의 크기가 70°, ∠ABC = 50°일 때 ∠BAC의 크기를 구하시오. (단, C는 70°인 각의 바깥쪽 호 위의 점)</p>
+    <p class="q-ru">Прямая ℓ касается окружности в A, △ABC вписан. Угол между ℓ и хордой AB — 70°, ∠ABC = 50°. Найдите ∠BAC.</p>
+    <details><summary>Подсказка</summary><div><p>Угол между касательной и хордой AB равен вписанному углу на ту же дугу — это ∠ACB.</p></div></details>
+    <details><summary>Решение</summary><div>
+      <p>Шаг 1. ∠ACB = 70° (теорема о касательной и хорде).</p>
+      <p>Шаг 2. ∠BAC = 180° − 70° − 50° = 60°.</p>
+      <p class="ans">Ответ: 60°</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ================= III. 통계 ================= -->
+<section class="unit t-green" id="stats">
+  <div class="unit-head">
+    <span class="eyebrow">Часть III · стр. 70–92</span>
+    <h2><span class="kr">통계</span> — статистика</h2>
+  </div>
+
+  <div class="box">
+    <span class="lbl">0 · <span class="kr">단어장</span></span>
+    <div class="vocab">
+      <div class="vc"><b>대푯값</b><i>центральная мера</i><span>평균, 중앙값, 최빈값</span></div>
+      <div class="vc"><b>평균</b><i>среднее</i><span>сумма ÷ количество</span></div>
+      <div class="vc"><b>중앙값</b><i>медиана</i><span>середина по порядку</span></div>
+      <div class="vc"><b>최빈값</b><i>мода</i><span>встречается чаще всего</span></div>
+      <div class="vc"><b>산포도</b><i>мера разброса</i><span>насколько данные рассеяны</span></div>
+      <div class="vc"><b>편차</b><i>отклонение</i><span>변량 − 평균</span></div>
+      <div class="vc"><b>분산</b><i>дисперсия</i><span>среднее (편차)²</span></div>
+      <div class="vc"><b>표준편차</b><i>стандартное отклонение</i><span>√분산</span></div>
+      <div class="vc"><b>변량</b><i>значение данных</i><span>каждое число в наборе</span></div>
+      <div class="vc"><b>사분위수</b><i>квартили</i><span>Q1, Q2, Q3</span></div>
+      <div class="vc"><b>사분위범위</b><i>межквартильный размах</i><span>Q3 − Q1</span></div>
+      <div class="vc"><b>상자그림</b><i>ящик с усами</i><span>min, Q1, Q2, Q3, max</span></div>
+      <div class="vc"><b>산점도</b><i>диаграмма рассеяния</i><span>точки (x, y)</span></div>
+      <div class="vc"><b>상관관계</b><i>корреляция</i><span>связь двух величин</span></div>
+      <div class="vc"><b>양의 상관관계</b><i>положительная</i><span>x ↑ → y ↑</span></div>
+      <div class="vc"><b>음의 상관관계</b><i>отрицательная</i><span>x ↑ → y ↓</span></div>
+      <div class="vc"><b>상관관계가 없다</b><i>нет корреляции</i><span>точки «облаком»</span></div>
+      <div class="vc"><b>고르다</b><i>равномерный, ровный</i><span>표준편차가 작을수록 고르다</span></div>
+    </div>
+  </div>
+
+  <div class="box analogy">
+    <span class="lbl">Аналогия</span>
+    <p>Два класса написали тест на 70 баллов в среднем. В первом почти все получили 68–72, во втором — от 40 до 100. 평균 одинаковое, а «разброс» разный. <b class="kr">표준편차</b> — это и есть «насколько обычно ученик отличается от среднего». Чем он меньше, тем результаты <b class="kr">고르다</b>.</p>
+  </div>
+
+  <div class="grid2">
+    <div class="box">
+      <span class="lbl">1 · <span class="kr">산포도</span> — порядок вычисления</span>
+      <ul class="clean">
+        <li><b>Шаг 1.</b> <span class="kr">평균</span> = (сумма) ÷ (количество)</li>
+        <li><b>Шаг 2.</b> <span class="kr">편차</span> = 변량 − 평균. Сумма отклонений <b>всегда 0</b> — удобная проверка.</li>
+        <li><b>Шаг 3.</b> <span class="kr">분산</span> = (сумма (편차)²) ÷ (количество)</li>
+        <li><b>Шаг 4.</b> <span class="kr">표준편차</span> = √분산</li>
+      </ul>
+    </div>
+    <figure class="box">
+      <span class="lbl">2 · <span class="kr">사분위수와 상자그림</span></span>
+      <svg id="fig-box" viewBox="0 0 300 120" role="img" aria-label="Ящик с усами для данных 1, 3, 4, 6, 7, 9, 10, 12"></svg>
+      <figcaption>Данные: 1, 3, 4, 6, 7, 9, 10, 12. Q2 = 6.5 делит данные на половины; Q1 и Q3 — медианы половин. <span class="kr">사분위범위</span> = Q3 − Q1 = 6 — ширина ящика, там лежит средняя половина данных.</figcaption>
+    </figure>
+  </div>
+
+  <figure class="box">
+    <span class="lbl">3 · <span class="kr">산점도와 상관관계</span></span>
+    <svg id="fig-scat" viewBox="0 0 600 190" role="img" aria-label="Три диаграммы рассеяния" style="max-width:600px"></svg>
+    <figcaption>Чем плотнее точки прижаты к одной прямой, тем <b class="kr">상관관계가 강하다</b> (связь сильная). Пример: рост и вес — 양의, время у телефона и время сна — 음의, рост и оценка по математике — 없다.</figcaption>
+  </figure>
+
+  <div class="box warn">
+    <span class="lbl">Частые ошибки</span>
+    <ul class="clean">
+      <li>Забывают извлечь корень: в ответе написали 분산, а спрашивали 표준편차.</li>
+      <li>Не упорядочили данные по возрастанию перед поиском 중앙값 и 사분위수.</li>
+      <li>Если в задаче неизвестный <span class="m">x</span>: сначала используй «сумма 편차 = 0» или «평균 известно» — получишь уравнение.</li>
+      <li>«Больше 표준편차» = больше разброс, а <b>не</b> выше баллы.</li>
+    </ul>
+  </div>
+
+  <h3>Разобранные задачи (<span class="kr">대표 문제</span>)</h3>
+  <div class="box prob">
+    <div><span class="badge">III-1</span><span class="badge">중하</span></div>
+    <p class="q">다음 자료의 분산과 표준편차를 구하시오. &nbsp; 4, 6, 8, 10, 12</p>
+    <p class="q-ru">Найдите дисперсию и стандартное отклонение данных 4, 6, 8, 10, 12.</p>
+    <details><summary>Решение</summary><div>
+      <p>평균 = 40 ÷ 5 = 8. 편차: −4, −2, 0, 2, 4 (сумма 0 ✓).</p>
+      <p>분산 = (16 + 4 + 0 + 4 + 16) ÷ 5 = 40 ÷ 5 = 8.</p>
+      <p class="ans">Ответ: 분산 8, 표준편차 √8 = 2√2</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">III-1</span><span class="badge">중</span></div>
+    <p class="q">5개의 변량 3, 5, x, 7, 9의 평균이 6일 때, x의 값과 분산을 구하시오.</p>
+    <p class="q-ru">Среднее пяти чисел 3, 5, x, 7, 9 равно 6. Найдите x и дисперсию.</p>
+    <details><summary>Подсказка</summary><div><p>Сумма = 6 × 5 = 30.</p></div></details>
+    <details><summary>Решение</summary><div>
+      <p>3 + 5 + x + 7 + 9 = 30 → x = 6.</p>
+      <p>편차: −3, −1, 0, 1, 3 → 분산 = (9 + 1 + 0 + 1 + 9) ÷ 5 = 4.</p>
+      <p class="ans">Ответ: x = 6, 분산 = 4</p>
+    </div></details>
+  </div>
+  <div class="box prob">
+    <div><span class="badge">III-2</span><span class="badge">하</span></div>
+    <p class="q">다음 자료의 제1사분위수, 중앙값, 제3사분위수, 사분위범위를 구하시오. &nbsp; 1, 3, 4, 6, 7, 9, 10, 12</p>
+    <p class="q-ru">Найдите Q1, медиану, Q3 и межквартильный размах для 1, 3, 4, 6, 7, 9, 10, 12.</p>
+    <details><summary>Решение</summary><div>
+      <p>8 значений → медиана = (6 + 7) ÷ 2 = 6.5.</p>
+      <p>Нижняя половина 1, 3, 4, 6 → Q1 = (3 + 4) ÷ 2 = 3.5. Верхняя 7, 9, 10, 12 → Q3 = (9 + 10) ÷ 2 = 9.5.</p>
+      <p class="ans">Ответ: Q1 = 3.5, Q2 = 6.5, Q3 = 9.5, 사분위범위 = 6</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- ================= 계획 ================= -->
+<section class="unit t-blue" id="plan">
+  <div class="unit-head">
+    <span class="eyebrow">Карта задач <span class="kr">문제집</span></span>
+    <h2><span class="kr">시험 대비 계획</span> — что решать</h2>
+    <p>Номера взяты из оглавления <span class="kr">문제집</span>. Сначала <b class="kr">개념 이해</b> (база), потом <b class="kr">응용 도전</b> (сложнее), в конце <b class="kr">단원 마무리</b> как мини-контрольную на время. Подсказка в таблице говорит, каким правилом решается группа задач.</p>
+  </div>
+
+  <div class="tbl"><table>
+    <tr><th>Тема</th><th><span class="kr">개념 이해</span></th><th>Что применять</th></tr>
+    <tr><td class="kr">삼각비</td><td class="num">001–006</td><td>Пифагор → подписать 높이/밑변/빗변 от нужного угла</td></tr>
+    <tr><td class="kr">특수한 각의 삼각비</td><td class="num">007–008</td><td>Таблица 30°/45°/60°</td></tr>
+    <tr><td class="kr">예각의 삼각비의 값</td><td class="num">009–014</td><td>Четверть круга радиуса 1, 삼각비의 표</td></tr>
+    <tr><td class="kr">활용(1) 길이</td><td class="num">033–041</td><td>Опустить высоту, катет = гипотенуза·sin/cos, высота = катет·tan</td></tr>
+    <tr><td class="kr">활용(2) 넓이</td><td class="num">042–050</td><td>½ab·sin x, для 둔각 sin(180° − x)</td></tr>
+    <tr><td class="kr">원의 현</td><td class="num">069–078</td><td>Перпендикуляр из центра делит хорду пополам + Пифагор</td></tr>
+    <tr><td class="kr">원의 접선(1)</td><td class="num">079–083</td><td>PA = PB, радиус ⊥ касательной</td></tr>
+    <tr><td class="kr">원의 접선(2)</td><td class="num">084–090</td><td>Вписанная окружность, AB + CD = AD + BC</td></tr>
+    <tr><td class="kr">원주각</td><td class="num">109–118</td><td>원주각 = ½ 중심각, 지름 → 90°, дуги ∝ углы</td></tr>
+    <tr><td class="kr">원에 내접하는 사각형</td><td class="num">119–128</td><td>Противоположные углы = 180°, 외각 = 내대각</td></tr>
+    <tr><td class="kr">접선과 현이 이루는 각</td><td class="num">147–154</td><td>Угол касательной и хорды = вписанный угол на ту же дугу</td></tr>
+    <tr><td class="kr">산포도</td><td class="num">170–179</td><td>평균 → 편차 (сумма 0) → 분산 → √</td></tr>
+    <tr><td class="kr">사분위수와 상자그림</td><td class="num">198–204</td><td>Упорядочить, Q2, затем медианы половин</td></tr>
+    <tr><td class="kr">산점도와 상관관계</td><td class="num">205–214</td><td>Направление облака точек и его «толщина»</td></tr>
+  </table></div>
+
+  <div class="tbl"><table>
+    <tr><th>Глава</th><th><span class="kr">응용 도전</span></th><th><span class="kr">단원 마무리</span></th></tr>
+    <tr><td class="kr">I-1 삼각비</td><td class="num">015–024</td><td class="num">025–032</td></tr>
+    <tr><td class="kr">I-2 삼각비의 활용</td><td class="num">051–060</td><td class="num">061–068</td></tr>
+    <tr><td class="kr">II-1 원과 직선</td><td class="num">091–100</td><td class="num">101–108</td></tr>
+    <tr><td class="kr">II-2 원주각</td><td class="num">129–138</td><td class="num">139–146</td></tr>
+    <tr><td class="kr">II-3 원주각의 활용</td><td class="num">155–163</td><td class="num">164–169</td></tr>
+    <tr><td class="kr">III-1 대푯값과 산포도</td><td class="num">180–189</td><td class="num">190–197</td></tr>
+    <tr><td class="kr">III-2 상관관계</td><td class="num">215–224</td><td class="num">225–232</td></tr>
+  </table></div>
+
+  <div class="plan">
+    <div class="box"><span class="d">День 1</span><b class="kr">삼각비 전체</b><span style="font-size:14px">Таблица 30/45/60 наизусть → 025–032 и 061–068 на время</span></div>
+    <div class="box"><span class="d">День 2</span><b class="kr">원과 직선</b><span style="font-size:14px">Каждый раз рисуй радиус в точку касания → 101–108</span></div>
+    <div class="box"><span class="d">День 3</span><b class="kr">원주각 + 활용</b><span style="font-size:14px">Отмечай, на какую дугу опирается угол → 139–146, 164–169</span></div>
+    <div class="box"><span class="d">День 4</span><b class="kr">통계</b><span style="font-size:14px">Проверка «сумма 편차 = 0» → 190–197, 225–232</span></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+const NS="http://www.w3.org/2000/svg";
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+function el(svg,tag,a,txt){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);if(txt!=null)e.textContent=txt;svg.appendChild(e);return e}
+const C=()=>({fg:css('--fg'),mu:css('--muted'),bl:css('--blue'),co:css('--coral'),gr:css('--green'),am:css('--amber'),ln:css('--line'),bg:css('--card')});
+function line(s,p,q,col,w=2,dash){return el(s,'line',{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:col,'stroke-width':w,'stroke-dasharray':dash||'none','stroke-linecap':'round'})}
+function dot(s,p,col){return el(s,'circle',{cx:p[0],cy:p[1],r:3.5,fill:col})}
+function lab(s,p,t,dx=0,dy=0,cls){const a={x:p[0]+dx,y:p[1]+dy,'text-anchor':'middle','dominant-baseline':'middle'};if(cls)a.class=cls;return el(s,'text',a,t)}
+function arc(s,c,r,a0,a1,col,w=2){ // degrees, math orientation
+  const p=a=>[c[0]+r*Math.cos(a*Math.PI/180),c[1]-r*Math.sin(a*Math.PI/180)];
+  const [x0,y0]=p(a0),[x1,y1]=p(a1);let d=a1-a0;while(d<0)d+=360;
+  return el(s,'path',{d:`M${x0} ${y0} A${r} ${r} 0 ${d>180?1:0} 0 ${x1} ${y1}`,fill:'none',stroke:col,'stroke-width':w})}
+function angDeg(c,p){return Math.atan2(c[1]-p[1],p[0]-c[0])*180/Math.PI}
+function angleMark(s,v,p,q,r,col){let a0=angDeg(v,p),a1=angDeg(v,q);let d=a1-a0;while(d<0)d+=360;if(d>180){[a0,a1]=[a1,a0]}arc(s,v,r,a0,a1,col,2.5)}
+function rightMark(s,v,p,q,k,col){const u=[(p[0]-v[0]),(p[1]-v[1])],w=[(q[0]-v[0]),(q[1]-v[1])];const nu=Math.hypot(...u),nw=Math.hypot(...w);const a=[v[0]+u[0]/nu*k,v[1]+u[1]/nu*k],b=[v[0]+w[0]/nw*k,v[1]+w[1]/nw*k];el(s,'path',{d:`M${a[0]} ${a[1]} L${a[0]+b[0]-v[0]} ${a[1]+b[1]-v[1]} L${b[0]} ${b[1]}`,fill:'none',stroke:col,'stroke-width':1.5})}
+
+function draw(){
+  const c=C();
+  document.querySelectorAll('svg[id^=fig]').forEach(s=>s.innerHTML='');
+  // triangle
+  {const s=document.getElementById('fig-tri');const A=[30,140],B=[210,40],Cc=[210,140];
+   el(s,'polygon',{points:[A,B,Cc].map(p=>p.join(',')).join(' '),fill:css('--blue-bg'),stroke:c.fg,'stroke-width':2});
+   rightMark(s,Cc,A,B,12,c.fg);angleMark(s,A,Cc,B,28,c.co);
+   lab(s,A,'A',-12,8);lab(s,B,'B',10,-8);lab(s,Cc,'C',10,8);
+   lab(s,[(B[0]+Cc[0])/2,(B[1]+Cc[1])/2],'a',14,0);lab(s,[(A[0]+Cc[0])/2,140],'c',0,16);lab(s,[(A[0]+B[0])/2,(A[1]+B[1])/2],'b',-10,-12);
+   lab(s,[232,90],'높이',0,0,'t-kr');lab(s,[120,166],'밑변',24,0,'t-kr');lab(s,[95,75],'빗변',0,0,'t-kr');}
+  const O=[100,100],R=70,pt=a=>[O[0]+R*Math.cos(a*Math.PI/180),O[1]-R*Math.sin(a*Math.PI/180)];
+  // chord
+  {const s=document.getElementById('fig-chord');el(s,'circle',{cx:100,cy:100,r:70,fill:'none',stroke:c.fg,'stroke-width':2});
+   const A=[44,142],B=[156,142],M=[100,142];line(s,A,B,c.co,2.5);line(s,O,M,c.bl,2,'4 3');line(s,O,A,c.mu,1.5);
+   rightMark(s,M,B,O,9,c.fg);[O,A,B,M].forEach(p=>dot(s,p,c.fg));lab(s,O,'O',0,-10);lab(s,A,'A',-10,8);lab(s,B,'B',10,8);lab(s,M,'M',0,14);
+   lab(s,[100,121],'3',8,0);lab(s,[72,121],'5',-8,-4);lab(s,[72,142],'4',0,-9);}
+  // tangents
+  {const s=document.getElementById('fig-tan');const Oo=[60,100],P=[180,100],A=[103.2,42.4],B=[103.2,157.6];
+   el(s,'circle',{cx:60,cy:100,r:72,fill:'none',stroke:c.fg,'stroke-width':2});
+   const ext=(p,q,t)=>[p[0]+(q[0]-p[0])*t,p[1]+(q[1]-p[1])*t];
+   line(s,P,ext(P,A,1.25),c.co,2.5);line(s,P,ext(P,B,1.25),c.co,2.5);line(s,Oo,A,c.bl,2);line(s,Oo,B,c.bl,2);line(s,Oo,P,c.mu,1.5,'4 3');
+   rightMark(s,A,Oo,P,9,c.fg);rightMark(s,B,Oo,P,9,c.fg);[Oo,P,A,B].forEach(p=>dot(s,p,c.fg));
+   lab(s,Oo,'O',-10,0);lab(s,P,'P',10,0);lab(s,A,'A',0,-12);lab(s,B,'B',0,12);}
+  // inscribed
+  {const s=document.getElementById('fig-ins');el(s,'circle',{cx:100,cy:100,r:70,fill:'none',stroke:c.fg,'stroke-width':2});
+   const A=pt(215),B=pt(325),P=pt(95);line(s,P,A,c.co,2.5);line(s,P,B,c.co,2.5);line(s,O,A,c.bl,2);line(s,O,B,c.bl,2);
+   angleMark(s,P,A,B,22,c.co);angleMark(s,O,A,B,18,c.bl);[A,B,P,O].forEach(p=>dot(s,p,c.fg));
+   lab(s,A,'A',-10,6);lab(s,B,'B',10,6);lab(s,P,'P',0,-11);lab(s,O,'O',12,-4);
+   lab(s,[100,188],'중심각 = 2 × 원주각',0,0,'t-kr');}
+  // cyclic
+  {const s=document.getElementById('fig-cyc');el(s,'circle',{cx:100,cy:100,r:70,fill:'none',stroke:c.fg,'stroke-width':2});
+   const A=pt(140),B=pt(215),Cq=pt(300),D=pt(30);el(s,'polygon',{points:[A,B,Cq,D].map(p=>p.join(',')).join(' '),fill:css('--coral-bg'),stroke:c.co,'stroke-width':2.5});
+   angleMark(s,A,B,D,18,c.bl);angleMark(s,Cq,D,B,18,c.bl);
+   [A,B,Cq,D].forEach(p=>dot(s,p,c.fg));lab(s,A,'A',-9,-8);lab(s,B,'B',-10,6);lab(s,Cq,'C',8,10);lab(s,D,'D',10,-6);
+   lab(s,[100,100],'∠A + ∠C = 180°',0,0,'t-kr');}
+  // tangent-chord
+  {const s=document.getElementById('fig-tc');const Oc=[110,90],r=65,p2=a=>[Oc[0]+r*Math.cos(a*Math.PI/180),Oc[1]-r*Math.sin(a*Math.PI/180)];
+   el(s,'circle',{cx:Oc[0],cy:Oc[1],r:r,fill:'none',stroke:c.fg,'stroke-width':2});
+   const A=p2(270),B=p2(20),Cc=p2(140),T=[205,A[1]];
+   line(s,[15,A[1]],[205,A[1]],c.fg,2);line(s,A,B,c.bl,2.5);line(s,Cc,A,c.co,2);line(s,Cc,B,c.co,2);
+   angleMark(s,A,T,B,24,c.gr);angleMark(s,Cc,A,B,22,c.co);
+   [A,B,Cc].forEach(p=>dot(s,p,c.fg));lab(s,A,'A',0,13);lab(s,B,'B',10,-4);lab(s,Cc,'C',-9,-8);lab(s,[205,A[1]],'ℓ',0,-10);}
+  // boxplot
+  {const s=document.getElementById('fig-box');const x=v=>20+v*21;const y=55;
+   line(s,[x(0),95],[x(13),95],c.mu,1);for(let v=0;v<=13;v++){line(s,[x(v),92],[x(v),98],c.mu,1);if(v%2===0||v===13)lab(s,[x(v),110],String(v),0,0)}
+   line(s,[x(1),y],[x(3.5),y],c.fg,2);line(s,[x(9.5),y],[x(12),y],c.fg,2);
+   el(s,'rect',{x:x(3.5),y:y-18,width:x(9.5)-x(3.5),height:36,fill:css('--green-bg'),stroke:c.gr,'stroke-width':2});
+   line(s,[x(6.5),y-18],[x(6.5),y+18],c.gr,3);line(s,[x(1),y-9],[x(1),y+9],c.fg,2);line(s,[x(12),y-9],[x(12),y+9],c.fg,2);
+   lab(s,[x(1),y-26],'min',0,0,'t-kr');lab(s,[x(3.5),y-26],'Q1',0,0);lab(s,[x(6.5),y-26],'Q2',0,0);lab(s,[x(9.5),y-26],'Q3',0,0);lab(s,[x(12),y-26],'max',0,0,'t-kr');}
+  // scatter
+  {const s=document.getElementById('fig-scat');let seed=7;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280};
+   const panels=[['양의 상관관계',1],['음의 상관관계',-1],['상관관계가 없다',0]];
+   panels.forEach(([t,k],i)=>{const ox=10+i*200,oy=10,w=170,h=140;
+     el(s,'rect',{x:ox,y:oy,width:w,height:h,fill:'none',stroke:c.ln,'stroke-width':1});
+     line(s,[ox+10,oy+h-10],[ox+w-6,oy+h-10],c.mu,1.2);line(s,[ox+10,oy+h-10],[ox+10,oy+6],c.mu,1.2);
+     for(let j=0;j<28;j++){const u=rnd();let v=k===0?rnd():(k>0?u:1-u)+(rnd()-.5)*.3;v=Math.max(.02,Math.min(.98,v));
+       el(s,'circle',{cx:ox+18+u*(w-30),cy:oy+h-16-v*(h-28),r:3.3,fill:k>0?c.gr:k<0?c.co:c.bl,opacity:.85})}
+     lab(s,[ox+w/2,oy+h+22],t,0,0,'t-kr');});}
+}
+// lab
+const s=document.getElementById('lab'),inp=document.getElementById('ang');
+const SPEC={0:['0','1','0'],30:['1/2 = 0.5000','√3/2 ≈ 0.8660','√3/3 ≈ 0.5774'],45:['√2/2 ≈ 0.7071','√2/2 ≈ 0.7071','1'],60:['√3/2 ≈ 0.8660','1/2 = 0.5000','√3 ≈ 1.7321']};
+function drawLab(){
+  const c=C();s.innerHTML='';const a=+inp.value,r=a*Math.PI/180;const O=[30,270],U=220;
+  const P=[O[0]+U*Math.cos(r),O[1]-U*Math.sin(r)],H=[P[0],O[1]];const tv=Math.tan(r);const T=[O[0]+U,O[1]-U*Math.min(tv,1.15)];
+  {let d='';for(let k=0;k<=90;k++){const t=k*Math.PI/180;d+=(k?'L':'M')+(O[0]+U*Math.cos(t)).toFixed(1)+' '+(O[1]-U*Math.sin(t)).toFixed(1)}
+   el(s,'path',{d,fill:'none',stroke:c.mu,'stroke-width':1.5,opacity:.6});}
+  line(s,O,[O[0]+U+10,O[1]],c.mu,1.2);line(s,O,[O[0],O[1]-U-10],c.mu,1.2);
+  line(s,[O[0]+U,O[1]],[O[0]+U,O[1]-U*1.15],c.mu,1,'3 3');
+  line(s,O,tv<=1.15?T:[O[0]+U/tv*1.15,O[1]-U*1.15],c.mu,1.2,'4 3');
+  line(s,O,P,c.fg,2);line(s,P,H,c.co,4);line(s,O,H,c.bl,4);
+  if(tv<=1.15)line(s,[O[0]+U,O[1]],T,c.gr,4);
+  if(a>3)angleMark(s,O,[O[0]+50,O[1]],P,30,c.am);
+  dot(s,O,c.fg);dot(s,P,c.fg);lab(s,O,'O',-10,8);lab(s,[O[0]+U,O[1]],'1',0,14);
+  lab(s,[O[0]+44*Math.cos(r/2),O[1]-44*Math.sin(r/2)],'x',4,0);
+  document.getElementById('angv').textContent=a+'°';
+  const sp=SPEC[a];
+  document.getElementById('rs').textContent=sp?sp[0]:Math.sin(r).toFixed(4);
+  document.getElementById('rc').textContent=sp?sp[1]:Math.cos(r).toFixed(4);
+  document.getElementById('rt').textContent=sp?sp[2]:tv.toFixed(4);
+  const st=document.getElementById('lab-st');
+  st.textContent=a===45?'Нашёл! При 45° sin = cos, а tan = 1.':a<45?'sin < cos — угол меньше 45°.':'sin > cos — угол больше 45°, tan > 1'+(tv>1.15?' (зелёный отрезок вышел за рисунок).':'.');
+}
+inp.addEventListener('input',drawLab);
+document.querySelectorAll('[data-a]').forEach(b=>b.addEventListener('click',()=>{inp.value=b.dataset.a;drawLab()}));
+function all(){draw();drawLab()}
+all();
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',all)}catch(e){}
+try{new MutationObserver(all).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']})}catch(e){}
+})();
+</script>
+
+</body></html>

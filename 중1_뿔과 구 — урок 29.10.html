@@ -1,0 +1,1130 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>뿔과 구 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column; Part A 뿔 (겉넓이 → lab → 부피), Part B 구 (겉넓이 → 부피 → lab), then 개념 이해 604–609 and 유형 111–122 */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --sunk:#E9EEF6; --line:#D5DCE8;
+  --ink:#14203A; --muted:#566281;
+  --blue:#2457C5; --blue-soft:#E3EAFA; --blue-fill:rgba(36,87,197,.16);
+  --coral:#CF4429; --coral-soft:#FBE8E3; --coral-fill:rgba(207,68,41,.38);
+  --green:#1A7B51; --green-soft:#E0F2E8; --green-fill:rgba(26,123,81,.24);
+  --amber:#A86A12; --amber-soft:#FBF0DC;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--f-body)}
+.wrap{max-width:820px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(30px,6vw,44px)/1.15 var(--f-disp);display:flex;flex-direction:column;gap:6px}
+h1 .ru{font:500 clamp(17px,3vw,21px)/1.35 var(--f-body);color:var(--muted)}
+h2{font:700 21px/1.3 var(--f-body);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font:700 14px var(--f-disp);color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:2px 8px}
+h3{font:700 18px/1.35 var(--f-body)}
+p{margin:0}
+.kr,.ko{font-family:var(--f-kr)}
+.m{font:italic 400 1.06em var(--f-math)}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-kr);padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.lead{max-width:62ch;color:var(--ink)}
+.hero{display:flex;flex-direction:column;gap:14px}
+.box{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box .tag{font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.analogy{background:var(--amber-soft)} .analogy .tag{color:var(--amber)}
+.text{background:var(--surface);border:1px solid var(--line)} .text .tag{color:var(--blue)}
+.warn{background:var(--coral-soft)} .warn .tag{color:var(--coral)}
+.ex{background:var(--green-soft)} .ex .tag{color:var(--green)}
+.def-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.def-list li{display:flex;flex-direction:column;gap:2px}
+.def-list .ko{font-weight:500}
+.def-list .tr{color:var(--muted);font-size:15.5px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vocab div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.vocab b{font:700 17px var(--f-kr)}
+.vocab i{font-style:normal;font-weight:600;font-size:14.5px;color:var(--blue)}
+.vocab span{font-size:13.5px;color:var(--muted);line-height:1.4}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0}
+.card b{font:700 16px var(--f-kr)} .card span{font-size:14px;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--f-kr);fill:var(--ink);font-size:13px}
+svg .lbl{font:italic 15px var(--f-math);fill:var(--ink)}
+svg .sm{font-size:11px;fill:var(--muted)}
+.fig{display:flex;flex-direction:column;gap:6px}
+.cap{font-size:14.5px;color:var(--muted)}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:15px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--sunk);font-weight:600}
+td .kr,th .kr{font-weight:500}
+/* lab */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:620px){.lab-grid{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:500 14.5px var(--f-body);border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+.seg.cut button[aria-pressed="true"]{background:var(--coral);border-color:var(--coral)}
+.btn.go{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue)}
+#cutH{accent-color:var(--coral)}
+.readout{background:var(--sunk);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:15.5px;min-height:96px}
+.readout b{font-family:var(--f-kr)}
+.status{font-weight:600;color:var(--coral)}
+.status.ok{color:var(--green)}
+/* problems */
+.type{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--line);padding-top:18px}
+.type-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.type-h .tn{font:700 14px var(--f-disp);color:var(--surface);background:var(--blue);border-radius:6px;padding:2px 8px}
+.type-h b{font:700 18px var(--f-kr)}
+.type-h span{color:var(--muted);font-size:15px}
+.prob{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.phead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pno{font:700 22px var(--f-disp);color:var(--blue)}
+.badge{font:600 12px var(--f-kr);padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.badge.rep{background:var(--green-soft);color:var(--green)}
+.pq{font:500 17px/1.6 var(--f-kr)}
+.pt{font-size:15px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:4px 18px;font:500 16px var(--f-kr);margin:0;padding:0;list-style:none}
+details{border-radius:10px;border:1px solid var(--line)}
+details>summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+details.h>summary{color:var(--amber)}
+details.s>summary{color:var(--green)}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.ans{font-weight:700;color:var(--green)}
+.rest{display:flex;flex-direction:column;gap:8px}
+.rest details>summary b{font-family:var(--f-disp);margin-right:6px;color:var(--ink)}
+.rest details>div .pq{font-size:16px}
+.optfig{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.optfig figure{margin:0;background:var(--sunk);border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.optfig figcaption{font:600 14px var(--f-kr)}
+.mistakes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.figsm{max-width:340px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* --- extra for this lesson: surface area & volume --- */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.86em;line-height:1.12;margin:0 2px}
+.fr>span:first-child{border-bottom:1.2px solid currentColor;padding:0 3px}
+.fx{font:400 19px/1.9 var(--f-math);display:flex;flex-direction:column;gap:2px;padding:4px 0}
+.fx .ko{font:500 17px var(--f-kr)}
+.fx .eq{padding-left:1.4em}
+.hl-b{color:var(--blue);font-weight:600}
+.hl-c{color:var(--coral);font-weight:600}
+.hl-g{color:var(--green);font-weight:600}
+.hl-a{color:var(--amber);font-weight:600}
+.src .ko b{font-weight:700}
+.note{font-size:15px;color:var(--muted)}
+.cards2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cards2 .cc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cards2 .cc h4{margin:0;font:700 16px var(--f-kr)}
+.cards2 .cc p{font-size:15.5px}
+.figrow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:center}
+@media (max-width:560px){.figrow{grid-template-columns:1fr}}
+.figrow figure{margin:0;background:var(--sunk);border-radius:12px;padding:10px;display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.figrow figure svg{max-width:300px}
+.figrow figcaption{font-size:14px;color:var(--muted);text-align:center}
+.pfig{background:var(--sunk);border-radius:10px;padding:8px;display:flex;justify-content:center}
+.pfig svg{max-width:300px;max-height:230px}
+[hidden]{display:none!important}
+.bars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end;height:150px;padding:0 4px}
+.bar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%;min-width:0}
+.bar i{display:block;width:100%;max-width:70px;border-radius:6px 6px 0 0;transition:height .25s}
+.bar span{font:600 13px var(--f-kr);text-align:center}
+.part-h{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:14px;background:var(--blue-soft)}
+.part-h b{font:700 19px var(--f-kr)}
+.ratio{font:700 26px var(--f-disp);letter-spacing:.04em;text-align:center;color:var(--green)}
+
+/* --- extra for this lesson: 뿔 · 구 --- */
+.part-h .tn{font:700 13px var(--f-disp);color:var(--blue);letter-spacing:.04em}
+.part-h.b{background:var(--green-soft)} .part-h.b .tn{color:var(--green)}
+.water{display:flex;flex-wrap:wrap;gap:6px}
+.btn.cone{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.btn.ball{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.thirds{display:flex;gap:4px}
+.thirds i{flex:1;height:10px;border-radius:4px;background:var(--line)}
+.thirds i.c{background:var(--coral)} .thirds i.g{background:var(--green)}
+.formula-big{font:400 22px/1.5 var(--f-math);text-align:center;padding:6px 0}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:15.5px}
+.kv b{font-family:var(--f-kr)}
+</style>
+<main class="wrap">
+
+<header class="hero">
+  <div class="chips">
+    <span class="chip">NaBi school</span>
+    <span class="chip">III 입체도형의 성질 › 2 입체도형의 겉넓이와 부피</span>
+    <span class="chip">стр. 201–204 · 604–609 · 유형 111–122</span>
+  </div>
+  <h1><span class="kr">뿔과 구의 겉넓이와 부피</span><span class="ru">Пирамида, конус и шар: площадь поверхности и объём</span></h1>
+  <p class="lead">Две страницы учебника: стр. 201 — <span class="kr">뿔</span> (пирамида и конус), стр. 203 — <span class="kr">구</span> (шар). Главная мысль урока: конус — это <b>⅓ цилиндра</b>, шар — это <b>⅔ цилиндра</b>. Если запомнишь картинку с водой, формулы запомнятся сами.</p>
+</header>
+
+<!-- 0 vocab -->
+<section>
+  <h2><span class="num">0</span> 단어장 · словарь</h2>
+  <p>Эти слова будут в задачах. Читай их по-корейски: на контрольной будет именно так.</p>
+  <div class="vocab">
+    <div><b>뿔</b><i>«пирамидальное» тело</i><span>общее название: 각뿔 + 원뿔. Одно основание и вершина</span></div>
+    <div><b>각뿔</b><i>пирамида</i><span>основание — многоугольник, бока — треугольники</span></div>
+    <div><b>원뿔</b><i>конус</i><span>основание — круг</span></div>
+    <div><b>정사각뿔</b><i>правильная 4-угольная пирамида</i><span>основание — квадрат, 4 одинаковых бока</span></div>
+    <div><b>삼각뿔</b><i>треугольная пирамида</i><span>все 4 грани — треугольники</span></div>
+    <div><b>꼭짓점</b><i>вершина</i><span>острый верх 뿔</span></div>
+    <div><b>밑면 · 옆면</b><i>основание · боковая грань</i><span>у 뿔 밑면 только один!</span></div>
+    <div><b>밑넓이</b><i>площадь основания</i><span>S, у конуса πr²</span></div>
+    <div><b>옆넓이</b><i>площадь боковой поверхности</i><span>все 옆면 вместе</span></div>
+    <div><b>겉넓이</b><i>площадь поверхности</i><span>밑넓이 + 옆넓이</span></div>
+    <div><b>부피</b><i>объём</i><span>сколько места внутри, cm³</span></div>
+    <div><b>모선</b><i>образующая, l</i><span>от вершины до края основания <b>по поверхности</b></span></div>
+    <div><b>높이</b><i>высота, h</i><span>от вершины <b>перпендикулярно</b> вниз, внутри тела</span></div>
+    <div><b>전개도</b><i>развёртка</i><span>фигура, разрезанная и разложенная на столе</span></div>
+    <div><b>부채꼴</b><i>сектор круга</i><span>боковая поверхность конуса на развёртке</span></div>
+    <div><b>중심각</b><i>центральный угол</i><span>угол сектора у вершины</span></div>
+    <div><b>호의 길이</b><i>длина дуги</i><span>«корочка» сектора</span></div>
+    <div><b>뿔대</b><i>усечённая пирамида / конус</i><span>각뿔대, 원뿔대 — 뿔 без верхушки</span></div>
+    <div><b>구 · 반구</b><i>шар · полушар</i><span>반구 = половина 구</span></div>
+    <div><b>반지름 · 지름</b><i>радиус · диаметр</i><span>지름 = 2 × 반지름</span></div>
+    <div><b>꼭 맞게 들어가다</b><i>точно помещается</i><span>касается стенок, дна и крышки</span></div>
+    <div><b>비</b><i>отношение</i><span>например 1 : 2 : 3</span></div>
+    <div><b>녹이다</b><i>расплавить</i><span>объём при этом не меняется</span></div>
+    <div><b>회전시키다</b><i>вращать</i><span>축 — ось вращения</span></div>
+  </div>
+</section>
+
+<!-- 1 warm-up -->
+<section>
+  <h2><span class="num">1</span> 복습 · разминка</h2>
+  <p>Сегодня нужны три старые вещи. Вспомни их, прежде чем идти дальше.</p>
+  <div class="figrow">
+    <figure><svg id="wu1" role="img" aria-label="Круг радиуса r: длина окружности 2πr, площадь πr²"></svg>
+      <figcaption>Красная линия — <span class="kr">원의 둘레</span> = <span class="m">2πr</span>. Заливка — <span class="kr">원의 넓이</span> = <span class="m">πr²</span>.</figcaption></figure>
+    <figure><svg id="wu2" role="img" aria-label="Сектор с радиусом l и дугой"></svg>
+      <figcaption><span class="kr">부채꼴의 넓이</span> = <span class="fr"><span>1</span><span>2</span></span> × <span class="kr">반지름</span> × <span class="kr">호의 길이</span>. Как треугольник: ½ × высота × основание.</figcaption></figure>
+  </div>
+  <div class="box text"><span class="tag">прошлый урок · стр. 199</span>
+    <p><span class="kr">(기둥의 부피) = (밑넓이) × (높이)</span>. Сегодня мы увидим, что <span class="kr">뿔</span> с тем же основанием и той же высотой вмещает ровно в 3 раза меньше.</p></div>
+</section>
+
+<!-- PART A -->
+<div class="part-h"><span class="tn">ЧАСТЬ A · стр. 201</span><b>뿔의 겉넓이와 부피</b><span class="muted">Пирамида и конус</span></div>
+
+<section>
+  <h2><span class="num">2</span> <span class="kr">뿔의 겉넓이</span> · площадь поверхности</h2>
+
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p><b>Палатка-пирамида.</b> Внизу один пол (<span class="kr">밑면</span>), по бокам треугольные стенки (<span class="kr">옆면</span>). Сверху крышки нет — там <span class="kr">꼭짓점</span>. Поэтому у <span class="kr">뿔</span>, в отличие от <span class="kr">기둥</span>, нет «× 2».</p>
+    <p><b>Праздничный колпак.</b> Разрежь колпак по шву от верхушки до края и разверни. Получится <span class="kr">부채꼴</span>. Шов — это <span class="kr">모선</span> <span class="m">l</span>, он становится радиусом сектора. Край колпака (окружность <span class="m">2πr</span>) становится дугой сектора.</p>
+  </div>
+
+  <div class="box text src"><span class="tag">учебник · стр. 201</span>
+    <div class="fx">
+      <span class="ko"><b>(1) 각뿔의 겉넓이</b></span>
+      <span class="ko eq">(각뿔의 겉넓이) = (밑넓이) + (옆넓이)</span>
+      <span class="ko"><b>(2) 원뿔의 겉넓이</b> — 밑면의 반지름의 길이가 <span class="m">r</span>, 모선의 길이가 <span class="m">l</span>인 원뿔에서</span>
+      <span class="ko eq">(원뿔의 겉넓이) = (밑넓이) + (옆넓이)</span>
+      <span class="eq">= πr² + <span class="fr"><span>1</span><span>2</span></span> × <span class="m">l</span> × 2π<span class="m">r</span></span>
+      <span class="eq">= πr² + π<span class="m">rl</span></span>
+    </div>
+    <p class="note">(1) Площадь поверхности пирамиды = площадь основания + площадь боковых граней. (2) У конуса с радиусом основания <span class="m">r</span> и образующей <span class="m">l</span>: <span class="m">πr² + πrl</span>.</p>
+  </div>
+
+  <div class="figrow">
+    <figure><svg id="pyrnet" role="img" aria-label="Четырёхугольная пирамида и её развёртка: квадрат и 4 треугольника"></svg>
+      <figcaption><span class="kr">각뿔</span> → <span class="kr">전개도</span>: 1 <span class="kr">밑면</span> + треугольники <span class="kr">옆면</span>. Пунктир — высота треугольника-грани.</figcaption></figure>
+    <figure><svg id="conenet" role="img" aria-label="Конус и его развёртка: сектор и круг"></svg>
+      <figcaption><span class="kr">원뿔</span> → <span class="kr">부채꼴</span> (радиус <span class="m">l</span>, дуга <span class="m">2πr</span>) + круг <span class="kr">밑면</span>.</figcaption></figure>
+  </div>
+
+  <div class="cards2">
+    <div class="cc"><h4>Откуда <span class="m">πrl</span>?</h4>
+      <p>Сектор: радиус = <span class="m">l</span>, дуга = <span class="m">2πr</span>. По формуле из разминки: ½ × <span class="m">l</span> × <span class="m">2πr</span> = <span class="m">πrl</span>.</p></div>
+    <div class="cc"><h4><span class="kr">중심각</span> сектора</h4>
+      <p>Дуга составляет такую же часть полной окружности радиуса <span class="m">l</span>, как угол — часть 360°: <br><span class="kr">중심각</span> = 360° × <span class="fr"><span class="m">r</span><span class="m">l</span></span>.</p></div>
+    <div class="cc"><h4><span class="kr">모선</span> ≠ <span class="kr">높이</span></h4>
+      <p><span class="m">h</span>, <span class="m">r</span>, <span class="m">l</span> образуют прямоугольный треугольник, <span class="m">l</span> — самая длинная сторона. В <span class="kr">겉넓이</span> идёт <span class="m">l</span>. <span class="m">h</span> нужна только для <span class="kr">부피</span>.</p></div>
+    <div class="cc"><h4><span class="kr">정사각뿔</span></h4>
+      <p>4 одинаковых треугольника: <span class="kr">옆넓이</span> = 4 × ½ × сторона × высота треугольника-грани. Это не высота пирамиды!</p></div>
+  </div>
+
+  <div class="box ex"><span class="tag">Пример</span>
+    <p>Конус: <span class="m">r</span> = 3 cm, <span class="m">l</span> = 5 cm. Найти <span class="kr">겉넓이</span>.</p>
+    <ol class="steps">
+      <li>Шаг 1. <span class="kr">밑넓이</span> = π × 3² = 9π.</li>
+      <li>Шаг 2. <span class="kr">옆넓이</span> = π × 3 × 5 = 15π.</li>
+      <li>Шаг 3. <span class="kr">겉넓이</span> = 9π + 15π = <b>24π cm²</b>.</li>
+      <li>Проверка ✓ <span class="kr">중심각</span> = 360° × 3/5 = 216° — больше половины круга, а конус «приземистый». Сходится.</li>
+    </ol>
+  </div>
+
+  <div class="box warn"><span class="tag">주의</span>
+    <p>Дан <span class="kr">지름</span> → сначала раздели на 2 (задача 605).</p>
+    <p>Если даны и <span class="kr">높이</span>, и <span class="kr">모선</span>, для <span class="kr">겉넓이</span> бери <span class="kr">모선</span>. Высота здесь — лишнее число-ловушка (задачи 645, 667).</p>
+    <p>Спрашивают только <span class="kr">옆넓이</span> или «<span class="kr">포장지</span>» вокруг бока → основание <b>не</b> добавляй.</p>
+  </div>
+
+  <h3><span class="kr">뿔대의 겉넓이</span> · усечённый конус</h3>
+  <div class="box text src"><span class="tag">учебник · 참고</span>
+    <div class="fx">
+      <span class="ko">① (각뿔대의 겉넓이) = (두 밑넓이의 합) + (옆면인 사다리꼴의 넓이의 합)</span>
+      <span class="ko">② (원뿔대의 겉넓이) = (큰 밑면의 넓이) + (작은 밑면의 넓이) + (큰 부채꼴의 넓이) − (작은 부채꼴의 넓이)</span>
+    </div>
+    <p class="note">① Усечённая пирамида: два основания + трапеции по бокам. ② Усечённый конус: большой круг + маленький круг + (большой сектор − маленький сектор).</p>
+  </div>
+  <div class="figrow">
+    <figure><svg id="frust" role="img" aria-label="Усечённый конус как большой конус минус маленький"></svg>
+      <figcaption>Достраиваем <span class="kr">원뿔대</span> до целого конуса. <span class="hl-c">Большой конус</span> минус <span class="hl-b">маленький</span>.</figcaption></figure>
+    <figure><svg id="frustnet" role="img" aria-label="Развёртка боковой поверхности усечённого конуса — кольцевой сектор"></svg>
+      <figcaption>Бок <span class="kr">원뿔대</span> на развёртке — «кусок кольца»: <span class="kr">큰 부채꼴</span> − <span class="kr">작은 부채꼴</span>.</figcaption></figure>
+  </div>
+  <div class="box warn"><span class="tag">주의</span>
+    <p><span class="kr">모선</span> большого конуса = <span class="kr">모선</span> маленького + <span class="kr">모선</span> самого <span class="kr">원뿔대</span>. Сначала сложи, потом считай <span class="m">πRL</span>.</p>
+  </div>
+</section>
+
+<!-- LAB A -->
+<section>
+  <h2><span class="num">3</span> 실험실 · развёртка конуса</h2>
+  <div class="lab">
+    <p>Меняй <span class="m">r</span> и <span class="m">l</span> и смотри, как меняется сектор. <b>Задание:</b> сделай <span class="kr">중심각</span> ровно 90°.</p>
+    <div class="lab-grid">
+      <svg id="labsvg" viewBox="0 0 380 215" role="img" aria-label="Конус и его развёртка, меняются слайдерами"></svg>
+      <div class="ctrl" style="gap:10px">
+        <div class="ctrl"><label for="rS"><span><span class="kr">반지름</span> <span class="m">r</span></span><b id="rV">3</b></label><input id="rS" type="range" min="1" max="6" step="1" value="3"></div>
+        <div class="ctrl"><label for="lS"><span><span class="kr">모선</span> <span class="m">l</span></span><b id="lV">8</b></label><input id="lS" type="range" min="2" max="12" step="1" value="8"></div>
+        <div class="seg"><button class="btn go" id="p606" type="button">606: r=3, l=12</button><button class="btn" id="p120" type="button">120°</button><button class="btn" id="p180" type="button">полукруг</button></div>
+      </div>
+    </div>
+    <div class="readout" id="roA" aria-live="polite"></div>
+    <p class="status" id="stA" aria-live="polite"></p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">4</span> <span class="kr">뿔의 부피</span> · объём</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p><b>Рожок и стакан.</b> Возьми рожок-конус и стакан-цилиндр с одинаковым дном и одинаковой высотой. Наливай воду рожком в стакан. Стакан наполнится ровно за <b>3 рожка</b>. Значит, рожок = ⅓ стакана.</p>
+  </div>
+  <div class="box text src"><span class="tag">учебник · стр. 201</span>
+    <div class="fx">
+      <span class="ko"><b>(1) 각뿔의 부피</b> — 밑넓이가 <span class="m">S</span>, 높이가 <span class="m">h</span>인 각뿔에서</span>
+      <span class="ko eq">(각뿔의 부피) = <span class="fr"><span>1</span><span>3</span></span> × (밑넓이) × (높이) = <span class="fr"><span>1</span><span>3</span></span><span class="m">Sh</span></span>
+      <span class="ko"><b>(2) 원뿔의 부피</b> — 밑면의 반지름의 길이가 <span class="m">r</span>, 높이가 <span class="m">h</span>인 원뿔에서</span>
+      <span class="ko eq">(원뿔의 부피) = <span class="fr"><span>1</span><span>3</span></span> × (밑넓이) × (높이) = <span class="fr"><span>1</span><span>3</span></span>π<span class="m">r²h</span></span>
+      <span class="ko">참고 ① (각뿔대의 부피) = (큰 각뿔의 부피) − (작은 각뿔의 부피)</span>
+      <span class="ko eq">② (원뿔대의 부피) = (큰 원뿔의 부피) − (작은 원뿔의 부피)</span>
+    </div>
+    <p class="note">Объём пирамиды = ⅓ × площадь основания × высота. Объём конуса = ⅓πr²h. Усечённая фигура = большая − маленькая.</p>
+  </div>
+  <div class="figrow">
+    <figure><svg id="pour3" role="img" aria-label="Три конуса воды наполняют цилиндр"></svg>
+      <figcaption>Одинаковые <span class="kr">밑면</span> и <span class="kr">높이</span>: 3 конуса = 1 цилиндр.</figcaption></figure>
+    <figure><svg id="corner" role="img" aria-label="Треугольная пирамида, отрезанная от угла прямоугольного параллелепипеда"></svg>
+      <figcaption>Угол коробки, отрезанный плоскостью через A, F, C: <span class="kr">삼각뿔</span> B−AFC.</figcaption></figure>
+  </div>
+  <div class="cards2">
+    <div class="cc"><h4>Высота — перпендикуляр</h4><p>В <span class="kr">부피</span> идёт <span class="kr">높이</span> <span class="m">h</span>, а не <span class="kr">모선</span>. На рисунке её отмечают значком прямого угла ㄱ.</p></div>
+    <div class="cc"><h4>Пирамида внутри коробки</h4><p>Любую грань коробки можно взять как <span class="kr">밑면</span>. Тогда <span class="kr">높이</span> — это ребро, перпендикулярное этой грани (типы 115, 116).</p></div>
+    <div class="cc"><h4>Угол коробки = ⅙</h4><p>Отрезанный угол: ⅓ × (½ × <span class="m">a</span> × <span class="m">b</span>) × <span class="m">c</span> = <span class="fr"><span class="m">abc</span><span>6</span></span>. Это ⅙ всей коробки.</p></div>
+    <div class="cc"><h4>Обратная задача</h4><p>Дан <span class="kr">부피</span> — найди <span class="m">h</span> или <span class="m">r</span>. Пиши формулу, подставляй числа, решай уравнение.</p></div>
+  </div>
+  <div class="box ex"><span class="tag">Пример</span>
+    <p>Конус: <span class="m">r</span> = 3 cm, <span class="m">h</span> = 4 cm. Найти <span class="kr">부피</span>.</p>
+    <ol class="steps">
+      <li>Шаг 1. <span class="kr">밑넓이</span> = π × 3² = 9π.</li>
+      <li>Шаг 2. <span class="kr">부피</span> = ⅓ × 9π × 4 = <b>12π cm³</b>.</li>
+      <li>Проверка ✓ цилиндр с тем же дном и высотой: 9π × 4 = 36π, и 36π ÷ 3 = 12π.</li>
+    </ol>
+  </div>
+  <div class="box warn"><span class="tag">주의</span>
+    <p>Забыли ⅓ — самая частая ошибка. Ответ получается ровно в 3 раза больше и часто стоит среди вариантов.</p>
+    <p>Если у конуса даны <span class="m">r</span> и <span class="m">l</span>, а нужен <span class="kr">부피</span>, сначала найди <span class="m">h</span> (по рисунку или по теореме Пифагора, когда её пройдёте).</p>
+  </div>
+</section>
+
+<!-- PART B -->
+<div class="part-h b"><span class="tn">ЧАСТЬ B · стр. 203</span><b>구의 겉넓이와 부피</b><span class="muted">Шар и полушар</span></div>
+
+<section>
+  <h2><span class="num">5</span> <span class="kr">구의 겉넓이</span> · площадь поверхности шара</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p><b>Апельсин.</b> Обведи апельсин на бумаге — получишь круг радиуса <span class="m">r</span>. Нарисуй 4 таких круга. Если очистить апельсин и разложить кожуру, она закроет ровно эти 4 круга. Значит, <span class="kr">구의 겉넓이</span> = 4 × <span class="m">πr²</span>.</p>
+  </div>
+  <div class="box text src"><span class="tag">учебник · стр. 203</span>
+    <div class="fx">
+      <span class="ko"><b>1 구의 겉넓이</b></span>
+      <span class="ko eq">구의 반지름의 길이를 <span class="m">r</span>라 하면 ⇨ (겉넓이) = 4π<span class="m">r²</span></span>
+      <span class="ko">참고 ① (반구의 겉넓이) = (구의 겉넓이) × <span class="fr"><span>1</span><span>2</span></span> + (밑넓이)</span>
+    </div>
+    <p class="note">Если радиус шара <span class="m">r</span>, то площадь поверхности = 4πr². Полушар: половина шара + плоский круг-основание.</p>
+  </div>
+  <div class="figrow">
+    <figure><svg id="sph4" role="img" aria-label="Шар и четыре круга того же радиуса"></svg>
+      <figcaption>Кожура шара = 4 круга радиуса <span class="m">r</span>.</figcaption></figure>
+    <figure><svg id="hemi" role="img" aria-label="Полушар: купол 2πr² и плоский круг πr²"></svg>
+      <figcaption><span class="kr">반구</span>: <span class="hl-c">купол 2πr²</span> + <span class="hl-b">крышка πr²</span> = <b>3πr²</b>.</figcaption></figure>
+  </div>
+  <div class="box ex"><span class="tag">Пример</span>
+    <ol class="steps">
+      <li>Шар, <span class="m">r</span> = 3: <span class="kr">겉넓이</span> = 4π × 9 = <b>36π cm²</b>.</li>
+      <li>Полушар, <span class="m">r</span> = 3: купол = 36π ÷ 2 = 18π, круг = 9π, всего <b>27π cm²</b> (= 3π × 9 ✓).</li>
+    </ol>
+  </div>
+  <div class="box warn"><span class="tag">주의</span>
+    <p>У <span class="kr">반구</span> не забудь плоский круг! В задаче 607 ответ «половина шара» (50π) стоит среди вариантов как ловушка.</p>
+    <p>Если к полушару приклеен конус (667), плоский круг оказывается внутри — его <b>не</b> считаем.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">6</span> <span class="kr">구의 부피</span> · объём шара</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p><b>Мяч в банке с водой.</b> Банка-цилиндр точно по размеру мяча: ширина = высота = <span class="kr">지름</span>. Наполни банку водой до краёв и опусти мяч. Выльется <b>⅔</b> воды, останется <b>⅓</b>. Значит, шар = ⅔ цилиндра (задачи 677, 678).</p>
+  </div>
+  <div class="box text src"><span class="tag">учебник · стр. 203</span>
+    <div class="fx">
+      <span class="ko"><b>2 구의 부피</b></span>
+      <span class="ko eq">구의 반지름의 길이를 <span class="m">r</span>라 하면 ⇨ (부피) = <span class="fr"><span>4</span><span>3</span></span>π<span class="m">r³</span></span>
+      <span class="ko">참고 ② (반구의 부피) = (구의 부피) × <span class="fr"><span>1</span><span>2</span></span></span>
+      <span class="ko">참고 원기둥 안에 구와 원뿔이 꼭 맞게 들어 있을 때</span>
+      <span class="ko eq">⇨ (원뿔의 부피) : (구의 부피) : (원기둥의 부피) = 1 : 2 : 3</span>
+    </div>
+    <p class="note">Объём шара = ⁴⁄₃πr³. Полушар — половина. Если шар и конус точно помещаются в цилиндр, их объёмы относятся как конус : шар : цилиндр = 1 : 2 : 3.</p>
+  </div>
+  <div class="figrow">
+    <figure><svg id="arch" role="img" aria-label="Цилиндр, в который вписаны шар и конус"></svg>
+      <figcaption>Цилиндр радиуса <span class="m">r</span> и высоты <span class="m">2r</span>, внутри <span class="hl-g">шар</span> и <span class="hl-c">конус</span>.</figcaption></figure>
+    <figure style="align-items:stretch"><div class="kv">
+      <b>원뿔</b><span>⅓ × πr² × 2r = <span class="fr"><span>2</span><span>3</span></span>πr³</span>
+      <b>구</b><span><span class="fr"><span>4</span><span>3</span></span>πr³</span>
+      <b>원기둥</b><span>πr² × 2r = 2πr³ = <span class="fr"><span>6</span><span>3</span></span>πr³</span>
+    </div><div class="ratio">2 : 4 : 6 = 1 : 2 : 3</div>
+      <figcaption>Числители 2, 4, 6 → делим на 2.</figcaption></figure>
+  </div>
+  <div class="cards2">
+    <div class="cc"><h4>Радиус × 2 → ?</h4><p><span class="kr">겉넓이</span> растёт как <span class="m">r²</span>: × 4. <span class="kr">부피</span> растёт как <span class="m">r³</span>: × 8. Радиус × 3 → площадь × 9, объём × 27 (668, 670, 674).</p></div>
+    <div class="cc"><h4>Переплавка (<span class="kr">녹이다</span>)</h4><p>Объём не теряется. Сколько маленьких шаров из большого? (отношение радиусов)³. Например, радиусы 30 и 2 → 15³ = 3375 (673).</p></div>
+    <div class="cc"><h4>Шар в кубе</h4><p>Шар <span class="kr">꼭 맞게</span> в кубе: <span class="kr">지름</span> шара = ребро куба (679–681).</p></div>
+  </div>
+  <div class="box ex"><span class="tag">Пример</span>
+    <ol class="steps">
+      <li>Шар, <span class="m">r</span> = 3: <span class="kr">부피</span> = ⁴⁄₃ × π × 27 = <b>36π cm³</b>.</li>
+      <li>Совпадение: при <span class="m">r</span> = 3 и площадь, и объём равны 36π. Это случайность только для <span class="m">r</span> = 3, единицы при этом разные (cm² и cm³).</li>
+      <li>Полушар, <span class="m">r</span> = 3: 36π ÷ 2 = <b>18π cm³</b>.</li>
+    </ol>
+  </div>
+  <div class="box warn"><span class="tag">주의</span>
+    <p>В объёме <span class="m">r³</span>, а не <span class="m">r²</span>. И дробь ⁴⁄₃, а не ¾.</p>
+    <p>Следи за порядком слов в вопросе про отношение: «원뿔과 <b>원기둥</b>과 구» → 1 : 3 : 2, а не 1 : 2 : 3 (задача 675).</p>
+  </div>
+</section>
+
+<!-- LAB B -->
+<section>
+  <h2><span class="num">7</span> 실험실 · переливаем воду</h2>
+  <div class="lab">
+    <p>Цилиндр высотой <span class="m">2r</span>. Конус и шар помещаются в него точно. <b>Задание:</b> наполни цилиндр до краёв двумя разными способами.</p>
+    <div class="lab-grid">
+      <svg id="labsvg2" viewBox="0 0 300 230" role="img" aria-label="Цилиндр, который наполняется водой из конуса и шара"></svg>
+      <div class="ctrl" style="gap:10px">
+        <div class="water">
+          <button class="btn cone" id="addCone" type="button">+ 원뿔 (⅓)</button>
+          <button class="btn ball" id="addBall" type="button">+ 구 (⅔)</button>
+          <button class="btn" id="empty" type="button">비우기</button>
+        </div>
+        <div class="thirds" id="thirds" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="ctrl"><label for="rB"><span><span class="kr">반지름</span> <span class="m">r</span></span><b id="rBV">3</b></label><input id="rB" type="range" min="1" max="6" step="1" value="3"></div>
+      </div>
+    </div>
+    <div class="readout" id="roB" aria-live="polite"></div>
+    <p class="status" id="stB" aria-live="polite"></p>
+  </div>
+</section>
+
+<!-- recipe -->
+<section>
+  <h2><span class="num">8</span> 풀이 순서 · рецепт</h2>
+  <ol class="steps">
+    <li><b>Что за фигура?</b> <span class="kr">각뿔</span>, <span class="kr">원뿔</span>, <span class="kr">뿔대</span>, <span class="kr">구</span>, <span class="kr">반구</span> или их сумма.</li>
+    <li><b>Что спрашивают?</b> <span class="kr">겉넓이</span>, <span class="kr">옆넓이</span>, <span class="kr">부피</span> или <span class="kr">비</span>.</li>
+    <li class="hl-c"><b>Разбери числа:</b> <span class="kr">지름</span> → ÷ 2. Отдели <span class="kr">모선</span> <span class="m">l</span> (для площади) от <span class="kr">높이</span> <span class="m">h</span> (для объёма). Лишние числа — ловушка.</li>
+    <li><b>Напиши формулу словами</b>, потом подставь: например «⅓ × 밑넓이 × 높이».</li>
+    <li><b>Проверь:</b> есть ли ⅓? не забыт ли круг у <span class="kr">반구</span>? единицы cm² или cm³?</li>
+  </ol>
+  <div class="box warn"><span class="tag">чаще всего ошибаются в шаге 3</span><p>Перед формулой подпиши на рисунке: <span class="m">r</span> = …, <span class="m">l</span> = …, <span class="m">h</span> = ….</p></div>
+</section>
+
+<!-- concept problems -->
+<section>
+  <h2><span class="num">9</span> 개념 이해 · задачи учебника стр. 202, 204</h2>
+  <p>Сначала реши сам. Открой <b>подсказку</b>, если застрял, и <b>решение</b> — чтобы проверить себя. Рисунки перерисованы по учебнику, пропорции могут немного отличаться.</p>
+
+  <article class="prob"><div class="phead"><span class="pno">604</span><span class="badge">중하</span><span class="badge">각뿔의 겉넓이</span></div>
+    <p class="pq">다음 그림은 정사각뿔의 전개도이다. 정사각뿔의 겉넓이는?</p>
+    <p class="pt">На рисунке развёртка правильной четырёхугольной пирамиды. Найди площадь её поверхности.</p>
+    <div class="pfig"><svg id="f604" role="img" aria-label="Развёртка: квадрат 5×5 и 4 треугольника высотой 8"></svg></div>
+    <ul class="opts"><li>① 85</li><li>② 90</li><li>③ 95</li><li>④ 100</li><li>⑤ 105</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Посчитай отдельно: 1 квадрат + 4 одинаковых треугольника (основание 5, высота 8).</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="kr">밑넓이</span> = 5 × 5 = 25.</p>
+      <p><span class="kr">옆넓이</span> = 4 × (½ × 5 × 8) = 4 × 20 = 80.</p>
+      <p><span class="kr">겉넓이</span> = 25 + 80 = 105. <span class="ans">Ответ ⑤</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">605</span><span class="badge">중하</span><span class="badge">원뿔의 옆넓이</span></div>
+    <p class="pq">밑면의 지름이 4 cm, 모선의 길이가 8 cm인 원뿔 모양의 아이스크림이 있다. 이 원뿔 모양의 아이스크림의 옆면을 둘러싼 포장지의 넓이는?</p>
+    <p class="pt">Мороженое в форме конуса: диаметр основания 4 см, образующая 8 см. Найди площадь обёртки, которая закрывает боковую поверхность.</p>
+    <div class="pfig"><svg id="f605" role="img" aria-label="Рожок длиной 8 см, диаметр 4 см"></svg></div>
+    <ul class="opts"><li>① 12π cm²</li><li>② 15π cm²</li><li>③ 16π cm²</li><li>④ 21π cm²</li><li>⑤ 24π cm²</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Две ловушки: дан <span class="kr">지름</span>, а спрашивают только <span class="kr">옆면</span>.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="m">r</span> = 4 ÷ 2 = 2, <span class="m">l</span> = 8.</p>
+      <p><span class="kr">옆넓이</span> = π × 2 × 8 = 16π cm². Основание не добавляем. <span class="ans">Ответ ③</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">606</span><span class="badge">중하</span><span class="badge">부채꼴의 중심각</span></div>
+    <p class="pq">다음 원뿔의 전개도를 그렸을 때, 옆면인 부채꼴의 중심각의 크기를 구하시오.</p>
+    <p class="pt">Нарисовали развёртку конуса. Найди центральный угол сектора (боковой поверхности).</p>
+    <div class="pfig"><svg id="f606" role="img" aria-label="Конус: образующая 12 см, радиус 3 см"></svg></div>
+    <details class="h"><summary>Подсказка</summary><div><p>Длина дуги сектора = длина окружности основания. Какая это часть окружности радиуса 12? Можно проверить в лаборатории (кнопка «606»).</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="kr">호의 길이</span> = 2π × 3 = 6π. Полная окружность радиуса 12: 2π × 12 = 24π.</p>
+      <p>6π / 24π = ¼ → <span class="kr">중심각</span> = 360° × ¼ = 90°. (Или 360° × 3/12.) <span class="ans">Ответ 90°</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">607</span><span class="badge">중하</span><span class="badge">반구의 겉넓이</span></div>
+    <p class="pq">반지름의 길이가 5 cm인 반구의 겉넓이는?</p>
+    <p class="pt">Найди площадь поверхности полушара радиусом 5 см.</p>
+    <div class="pfig"><svg id="f607" role="img" aria-label="Полушар радиуса 5 см"></svg></div>
+    <ul class="opts"><li>① 65π cm²</li><li>② 70π cm²</li><li>③ 75π cm²</li><li>④ 80π cm²</li><li>⑤ 85π cm²</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Купол + плоский круг. Не останавливайся на половине шара.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>Купол = ½ × 4π × 5² = 50π. Круг = π × 5² = 25π.</p>
+      <p>50π + 25π = 75π cm². <span class="ans">Ответ ③</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">608</span><span class="badge">중하</span><span class="badge">구의 겉넓이와 부피</span></div>
+    <p class="pq">반지름의 길이가 12 cm인 구의 겉넓이와 부피는?</p>
+    <p class="pt">Найди площадь поверхности и объём шара радиусом 12 см.</p>
+    <ul class="opts"><li>① 575π, 2302π</li><li>② 575π, 2304π</li><li>③ 575π, 2303π</li><li>④ 576π, 2303π</li><li>⑤ 576π, 2304π</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>12² = 144, 12³ = 1728. Удобно сначала разделить 1728 на 3.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="kr">겉넓이</span> = 4π × 144 = 576π cm².</p>
+      <p><span class="kr">부피</span> = ⁴⁄₃ × π × 1728 = 4 × 576π = 2304π cm³. <span class="ans">Ответ ⑤</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">609</span><span class="badge">중하</span><span class="badge">회전체 → 반구</span></div>
+    <p class="pq">다음 그림과 같은 도형을 직선 <span class="m">l</span>을 축으로 하여 회전시킬 때, 생기는 입체도형의 겉넓이는?</p>
+    <p class="pt">Фигуру (четверть круга радиуса 9) вращают вокруг прямой l. Найди площадь поверхности получившегося тела.</p>
+    <div class="pfig"><svg id="f609" role="img" aria-label="Четверть круга радиуса 9 у оси l"></svg></div>
+    <ul class="opts"><li>① 242π cm²</li><li>② 243π cm²</li><li>③ 244π cm²</li><li>④ 245π cm²</li><li>⑤ 246π cm²</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Четверть круга, повёрнутая вокруг своей стороны, даёт <span class="kr">반구</span>. Дальше как в 607.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>Получается <span class="kr">반구</span> с <span class="m">r</span> = 9.</p>
+      <p>3π × 9² = 3π × 81 = 243π cm². <span class="ans">Ответ ②</span></p></div></details>
+  </article>
+</section>
+
+<!-- type practice -->
+<section>
+  <h2><span class="num">10</span> 유형 연습 · задачи для тренировки стр. 213–227</h2>
+  <p>По каждому типу <span class="kr">대표 유제</span> разобран полностью. Остальные задачи — только подсказка, ответы проверим на занятии. Рисунки к ним — на указанной странице книги.</p>
+
+  <!-- 111 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">111</span><b>각뿔의 겉넓이</b><span>площадь поверхности пирамиды · стр. 213–214</span></div>
+    <article class="prob"><div class="phead"><span class="pno">635</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림에서 □ABCD는 한 변의 길이가 10 cm인 정사각형이고, AB, BC의 중점을 각각 E, F라 한다. ED, EF, DF를 접는 선으로 하여 접었을 때 생기는 입체도형의 겉넓이를 구하시오.</p>
+      <p class="pt">ABCD — квадрат со стороной 10 см, E и F — середины AB и BC. Сгибаем по линиям ED, EF, DF. Найди площадь поверхности получившегося тела.</p>
+      <div class="pfig"><svg id="f635" role="img" aria-label="Квадрат ABCD со сгибами ED, EF, DF"></svg></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Когда сгибаешь бумагу, её площадь не меняется. Ничего не отрезали и не добавили.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Квадрат — это и есть <span class="kr">전개도</span> треугольной пирамиды (<span class="kr">삼각뿔</span>) с <span class="kr">밑면</span> △DEF.</p>
+        <p>Проверка по кускам: △AED = ½ × 10 × 5 = 25, △EBF = ½ × 5 × 5 = 12.5, △FCD = 25, △DEF = 100 − 62.5 = 37.5. Сумма 100.</p>
+        <p><span class="ans">Ответ: 100 cm²</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>636</b>삼각뿔의 전개도 (квадрат 20 cm)</summary><div><p class="pq">전개도가 다음 그림과 같은 삼각뿔의 겉넓이는?</p><p class="pt">Развёртка треугольной пирамиды — квадрат 20 × 20 с такими же сгибами. Найди 겉넓이.</p><p>Подсказка: та же идея, что в 635.</p></div></details>
+      <details class="h"><summary><b>637</b>정사각뿔, 겉넓이 133 → x</summary><div><p class="pq">다음 그림과 같은 정사각뿔의 겉넓이가 133 cm²일 때, <span class="m">x</span>의 값을 구하시오.</p><p class="pt">Основание — квадрат 7 × 7, <span class="m">x</span> — высота треугольника-грани. Площадь поверхности 133.</p><p>Подсказка: 49 + 4 × ½ × 7 × <span class="m">x</span> = 133. Реши уравнение.</p></div></details>
+      <details class="h"><summary><b>638</b>사각뿔, 겉넓이 64 → h</summary><div><p class="pq">다음 그림과 같은 사각뿔의 겉넓이가 64 cm²일 때, <span class="m">h</span>의 값을 구하시오.</p><p class="pt">Основание 4 × 4, <span class="m">h</span> — высота треугольника-грани.</p><p>Подсказка: как 637. Здесь <span class="m">h</span> — высота <b>грани</b>, а не пирамиды.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 112 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">112</span><b>원뿔의 겉넓이</b><span>площадь поверхности конуса · стр. 214–215</span></div>
+    <article class="prob"><div class="phead"><span class="pno">639</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 원뿔의 겉넓이가 100π cm²일 때, 이 원뿔의 모선의 길이를 구하시오.</p>
+      <p class="pt">Площадь поверхности конуса 100π см², радиус основания 5 см. Найди образующую.</p>
+      <div class="pfig"><svg id="f639" role="img" aria-label="Конус с радиусом 5 см"></svg></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Запиши <span class="m">πr² + πrl</span> = 100π с <span class="m">r</span> = 5 и найди <span class="m">l</span>.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>π × 5² + π × 5 × <span class="m">l</span> = 100π → 25π + 5π<span class="m">l</span> = 100π.</p>
+        <p>5π<span class="m">l</span> = 75π → <span class="m">l</span> = 15. <span class="ans">Ответ: 15 cm</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>640</b>원뿔, 겉넓이 90π → x</summary><div><p class="pq">다음 그림과 같은 원뿔의 겉넓이가 90π cm²일 때, <span class="m">x</span>의 값을 구하시오.</p><p class="pt">Радиус 5 см, образующая <span class="m">x</span>.</p><p>Подсказка: 25π + 5π<span class="m">x</span> = 90π.</p></div></details>
+      <details class="h"><summary><b>641</b><span class="m">l</span> = 3<span class="m">r</span>, 겉넓이 64π</summary><div><p class="pq">원뿔의 모선의 길이를 <span class="m">l</span>, 밑면의 반지름의 길이를 <span class="m">r</span>라 할 때, <span class="m">l</span>은 <span class="m">r</span>의 3배이다. 원뿔의 겉넓이가 64π cm²일 때, <span class="m">r</span>의 값을 구하시오.</p><p class="pt">Образующая в 3 раза больше радиуса, площадь поверхности 64π. Найди <span class="m">r</span>.</p><p>Подсказка: πr² + πr × 3r = 4πr². Значит, 4r² = 64.</p></div></details>
+      <details class="h"><summary><b>642</b><span class="m">l</span> = 2<span class="m">r</span>, 겉넓이 48π</summary><div><p class="pq">원뿔 모선의 길이 <span class="m">l</span>이 밑면의 반지름 길이 <span class="m">r</span>의 2배인 원뿔의 겉넓이가 48π일 때, <span class="m">r</span>의 값은? ① 2 ② 4 ③ 6 ④ 8 ⑤ 10</p><p class="pt">Образующая в 2 раза больше радиуса, площадь 48π.</p><p>Подсказка: как 641, только πr² + 2πr² = 3πr².</p></div></details>
+    </div>
+  </div>
+
+  <!-- 113 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">113</span><b>뿔대의 겉넓이</b><span>площадь усечённого конуса · стр. 216–217</span></div>
+    <article class="prob"><div class="phead"><span class="pno">643</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같은 원뿔대의 옆넓이는?</p>
+      <p class="pt">Найди площадь боковой поверхности усечённого конуса. Маленький (отрезанный) конус: образующая 4, радиус 2. Сам усечённый конус: образующая 6, нижний радиус 5.</p>
+      <div class="pfig"><svg id="f643" role="img" aria-label="Усечённый конус: радиусы 2 и 5, образующие 4 и 6"></svg></div>
+      <ul class="opts"><li>① 24π cm²</li><li>② 32π cm²</li><li>③ 42π cm²</li><li>④ 50π cm²</li><li>⑤ 71π cm²</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Бок большого конуса минус бок маленького. Образующая большого = 4 + 6.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Большой конус: <span class="m">R</span> = 5, <span class="m">L</span> = 4 + 6 = 10 → π × 5 × 10 = 50π.</p>
+        <p>Маленький конус: <span class="m">r</span> = 2, <span class="m">l</span> = 4 → π × 2 × 4 = 8π.</p>
+        <p><span class="kr">옆넓이</span> = 50π − 8π = 42π cm². Основания не добавляем — спрашивают только <span class="kr">옆넓이</span>. <span class="ans">Ответ ③</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>644</b>원뿔대의 겉넓이 (4, 8, 모선 6 + 6)</summary><div><p class="pq">다음 그림과 같은 입체도형의 겉넓이는?</p><p class="pt">Усечённый конус: верхний радиус 4, нижний 8; образующая отрезанного конуса 6, самого 원뿔대 тоже 6.</p><p>Подсказка: два круга (16π и 64π) + (π × 8 × 12 − π × 4 × 6).</p></div></details>
+      <details class="h"><summary><b>645</b>원뿔대의 겉넓이 (3, 6, 모선 5 и 10)</summary><div><p class="pq">다음 그림과 같은 원뿔대의 겉넓이는?</p><p class="pt">Верхний радиус 3, нижний 6. Образующая маленького конуса 5, образующая всего большого конуса 10. Число 4 — высота маленького конуса.</p><p>Подсказка: 10 — это уже вся образующая большого конуса, ничего не складывай. Высота 4 не нужна.</p></div></details>
+      <details class="h"><summary><b>646</b>원뿔대의 겉넓이 (3, 6, 모선 5 + 5)</summary><div><p class="pq">다음 그림과 같은 원뿔대의 겉넓이는?</p><p class="pt">Верхний радиус 3, нижний 6, образующие 5 (маленький конус) и 5 (원뿔대).</p><p>Подсказка: здесь образующую большого конуса нужно сложить: 5 + 5.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 114 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">114</span><b>각뿔의 부피</b><span>объём пирамиды · стр. 217–218</span></div>
+    <article class="prob"><div class="phead"><span class="pno">647</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 밑면이 정사각형인 사각뿔의 부피가 128 cm³일 때, 사각뿔의 높이는?</p>
+      <p class="pt">Основание пирамиды — квадрат 8 × 8, объём 128 см³. Найди высоту.</p>
+      <div class="pfig"><svg id="f647" role="img" aria-label="Четырёхугольная пирамида с основанием 8 на 8"></svg></div>
+      <ul class="opts"><li>① 2 cm</li><li>② 3 cm</li><li>③ 4 cm</li><li>④ 5 cm</li><li>⑤ 6 cm</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>⅓ × 밑넓이 × <span class="m">h</span> = 128.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="kr">밑넓이</span> = 8 × 8 = 64.</p>
+        <p>⅓ × 64 × <span class="m">h</span> = 128 → 64<span class="m">h</span> = 384 → <span class="m">h</span> = 6. <span class="ans">Ответ ⑤</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>648</b>정사각뿔, 밑변 6, 부피 60 → h</summary><div><p class="pq">밑면이 한 변의 길이가 6 cm인 정사각형인 정사각뿔의 부피가 60 cm³일 때, 이 사각뿔의 높이 <span class="m">h</span>의 값을 구하시오.</p><p class="pt">Основание 6 × 6, объём 60. Найди высоту.</p><p>Подсказка: как 647.</p></div></details>
+      <details class="h"><summary><b>649</b>육각뿔, 밑넓이 36, 부피 252</summary><div><p class="pq">밑면의 넓이가 36 cm²인 육각뿔의 부피가 252 cm³일 때, 육각뿔의 높이를 구하시오.</p><p class="pt">Шестиугольная пирамида: площадь основания 36, объём 252. Найди высоту.</p><p>Подсказка: форма основания не важна, важна только его площадь <span class="m">S</span>.</p></div></details>
+      <details class="h"><summary><b>650</b>팔각뿔, 높이 12, 부피 396</summary><div><p class="pq">높이가 12 cm인 팔각뿔의 부피가 396 cm³일 때, 밑면인 팔각형의 넓이를 구하시오.</p><p class="pt">Восьмиугольная пирамида: высота 12, объём 396. Найди площадь основания.</p><p>Подсказка: ⅓ × <span class="m">S</span> × 12 = 4<span class="m">S</span>.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 115 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">115</span><b>직육면체의 내부에 있는 각뿔의 부피</b><span>пирамида внутри коробки · стр. 218–219</span></div>
+    <article class="prob"><div class="phead"><span class="pno">651</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 직육면체를 잘라서 생긴 사각뿔 B−CGHD의 부피는?</p>
+      <p class="pt">Из прямоугольного параллелепипеда вырезали четырёхугольную пирамиду B−CGHD. Найди её объём. BF = 3, FG = 4, GH = 3, BD = 5.</p>
+      <div class="pfig"><svg id="f651" role="img" aria-label="Параллелепипед с пирамидой B−CGHD"></svg></div>
+      <ul class="opts"><li>① 8 cm³</li><li>② 10 cm³</li><li>③ 12 cm³</li><li>④ 14 cm³</li><li>⑤ 16 cm³</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p><span class="kr">밑면</span> — грань CGHD (правая стенка). <span class="kr">높이</span> — расстояние от B до этой стенки, то есть ребро BC.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="kr">밑면</span> CGHD: CG = BF = 3, GH = 3 → площадь 9.</p>
+        <p><span class="kr">높이</span> = BC = FG = 4 (BC перпендикулярно стенке CGHD).</p>
+        <p><span class="kr">부피</span> = ⅓ × 9 × 4 = 12 cm³. Число 5 (диагональ BD) — лишнее. <span class="ans">Ответ ③</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>652</b>사각뿔 E−CGHD (6, 4, 5)</summary><div><p class="pq">다음 그림과 같이 직육면체를 잘라서 생긴 사각뿔 E−CGHD의 부피를 구하시오.</p><p class="pt">FG = 6, GH = 4, DH = 5. Найди объём пирамиды E−CGHD.</p><p>Подсказка: 밑면 CGHD = 4 × 5, 높이 = EH = FG.</p></div></details>
+      <details class="h"><summary><b>653</b>사각뿔 C−ABFE (5, 3, 2)</summary><div><p class="pq">다음 그림과 같이 직육면체를 잘라서 생긴 사각뿔 C−ABFE의 부피를 구하시오.</p><p class="pt">FG = 5, GH = 3, DH = 2.</p><p>Подсказка: 밑면 — левая стенка ABFE (AB × BF), 높이 = BC.</p></div></details>
+      <details class="h"><summary><b>654</b>사각뿔 C−ABFE (9, 6, 4)</summary><div><p class="pq">다음 그림과 같이 직육면체를 잘라서 생긴 사각뿔 C−ABFE의 부피를 구하시오.</p><p class="pt">FG = 9, GH = 6, DH = 4.</p><p>Подсказка: как 653.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 116 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">116</span><b>각기둥에서 잘라 낸 각뿔의 부피</b><span>отрезанный угол коробки · стр. 219–220</span></div>
+    <article class="prob"><div class="phead"><span class="pno">655</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같은 각뿔의 부피를 구하시오.</p>
+      <p class="pt">От угла коробки отрезали треугольную пирамиду. Три её ребра, выходящие из угла, равны 3 см и перпендикулярны друг другу. Найди объём.</p>
+      <div class="pfig"><svg id="f655" role="img" aria-label="Угол куба: три ребра по 3 см"></svg></div>
+      <details class="h"><summary>Подсказка</summary><div><p><span class="kr">밑면</span> — прямоугольный треугольник с катетами 3 и 3. <span class="kr">높이</span> — третье ребро.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="kr">밑넓이</span> = ½ × 3 × 3 = <span class="fr"><span>9</span><span>2</span></span>.</p>
+        <p><span class="kr">부피</span> = ⅓ × <span class="fr"><span>9</span><span>2</span></span> × 3 = <span class="fr"><span>9</span><span>2</span></span> cm³. Проверка: 3 × 3 × 3 ÷ 6 = 27/6 = 9/2 ✓.</p>
+        <p><span class="ans">Ответ: 9/2 cm³</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>656</b>삼각뿔 B−AFC (5, 4, 6)</summary><div><p class="pq">다음 그림과 같은 직육면체가 있다. 이 직육면체를 세 꼭짓점 A, F, C를 지나는 평면으로 잘라낸 삼각뿔의 부피는? ① 18 ② 20 ③ 24 ④ 32 ⑤ 36</p><p class="pt">EF = 5, FG = 4, AE = 6. Отрезаем плоскостью через A, F, C.</p><p>Подсказка: 밑면 △ABC = ½ × 5 × 4, 높이 BF = 6. Или: коробка ÷ 6.</p></div></details>
+      <details class="h"><summary><b>657</b>삼각뿔 C−BGD (2, 3, 8)</summary><div><p class="pq">다음 그림과 같은 직육면체를 세 꼭짓점 B, G, D를 지나는 평면으로 자를 때 생기는 삼각뿔 C−BGD의 부피를 구하시오.</p><p class="pt">FG = 2, GH = 3, DH = 8.</p><p>Подсказка: угол C: рёбра CB, CD, CG перпендикулярны. Коробка ÷ 6.</p></div></details>
+      <details class="h"><summary><b>658</b>정육면체 6, 평면 B, G, D</summary><div><p class="pq">다음 그림과 같이 한 모서리의 길이가 6 cm인 정육면체를 세 꼭짓점 B, G, D를 지나는 평면으로 자를 때, 생기는 삼각뿔의 부피를 구하시오.</p><p class="pt">Куб с ребром 6 разрезан плоскостью через B, G, D.</p><p>Подсказка: та же идея, все три ребра равны 6.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 117 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">117</span><b>원뿔의 부피</b><span>объём конуса · стр. 220–221</span></div>
+    <article class="prob"><div class="phead"><span class="pno">659</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">밑면의 반지름의 길이가 4 cm인 원뿔의 부피가 48π cm³일 때, 이 원뿔의 높이는?</p>
+      <p class="pt">Радиус основания конуса 4 см, объём 48π см³. Найди высоту.</p>
+      <ul class="opts"><li>① 8 cm</li><li>② 9 cm</li><li>③ 10 cm</li><li>④ 11 cm</li><li>⑤ 12 cm</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>⅓ × π × 4² × <span class="m">h</span> = 48π. π сокращается.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>⅓ × 16π × <span class="m">h</span> = 48π → 16<span class="m">h</span> = 144 → <span class="m">h</span> = 9. <span class="ans">Ответ ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>660</b>r = 6, 부피 120π → h</summary><div><p class="pq">밑면의 반지름의 길이가 6 cm인 원뿔의 부피가 120π cm³일 때, 이 원뿔의 높이를 구하시오.</p><p class="pt">Радиус 6, объём 120π. Найди высоту.</p><p>Подсказка: ⅓ × 36π × <span class="m">h</span> = 12π<span class="m">h</span>.</p></div></details>
+      <details class="h"><summary><b>661</b>물 채우기 (5, 12, 20π / 5분)</summary><div><p class="pq">다음 그림과 같이 밑면의 반지름의 길이가 5 cm, 높이가 12 cm인 원뿔 모양의 그릇에 5분에 20π cm³의 속도로 물을 담을 때, 빈 그릇에 물을 완전히 채우려면 몇 분이 걸리는지 구하시오.</p><p class="pt">Конический сосуд: радиус 5, высота 12. Вода льётся со скоростью 20π см³ за 5 минут. За сколько минут сосуд наполнится?</p><p>Подсказка: сначала объём сосуда, потом сколько см³ за 1 минуту.</p></div></details>
+      <details class="h"><summary><b>662</b>부피 12π, 높이 4 → r</summary><div><p class="pq">다음 그림과 같은 원뿔의 부피가 12π cm³일 때, 이 원뿔의 밑면의 반지름의 길이는? ① 1 ② 2 ③ 3 ④ 4 ⑤ 5 (cm)</p><p class="pt">Высота 4, объём 12π. Найди радиус.</p><p>Подсказка: получится <span class="m">r²</span> = …, подбери <span class="m">r</span>.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 118 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">118</span><b>뿔대의 부피</b><span>объём усечённой пирамиды и конуса · стр. 221–222</span></div>
+    <article class="prob"><div class="phead"><span class="pno">663</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 밑면이 정사각형인 사각뿔대의 부피는?</p>
+      <p class="pt">Усечённая пирамида с квадратными основаниями: нижнее 4 × 4, верхнее 2 × 2. Высота отрезанной верхушки 3, высота самого 사각뿔대 3.</p>
+      <div class="pfig"><svg id="f663" role="img" aria-label="Усечённая пирамида, основания 4 и 2, высоты 3 и 3"></svg></div>
+      <ul class="opts"><li>① 6 cm³</li><li>② 14 cm³</li><li>③ 28 cm³</li><li>④ 30 cm³</li><li>⑤ 32 cm³</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Большая пирамида (высота 3 + 3) минус маленькая (высота 3).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Большая: ⅓ × 16 × 6 = 32.</p>
+        <p>Маленькая: ⅓ × 4 × 3 = 4.</p>
+        <p><span class="kr">뿔대</span> = 32 − 4 = 28 cm³. <span class="ans">Ответ ③</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>664</b>정사각뿔대 (4 и 6, высоты 6 и 3)</summary><div><p class="pq">다음 그림의 정사각뿔대의 부피는?</p><p class="pt">Верхнее основание 4 × 4, нижнее 6 × 6. Высота отрезанной верхушки 6, высота 뿔대 3.</p><p>Подсказка: высота большой пирамиды = 6 + 3. (В книге варианты ② и ④ одинаковые — опечатка.)</p></div></details>
+      <details class="h"><summary><b>665</b>정사각뿔대 (2 и 5, высоты 2 и 3)</summary><div><p class="pq">다음 그림과 같은 정사각뿔대의 부피는?</p><p class="pt">Верх 2 × 2, низ 5 × 5; высота верхушки 2, высота 뿔대 3.</p><p>Подсказка: большая пирамида высотой 5.</p></div></details>
+      <details class="h"><summary><b>666</b>원뿔대 (r 2 и 4, высоты 3 и 3)</summary><div><p class="pq">다음 그림과 같은 원뿔대의 부피는?</p><p class="pt">Верхний радиус 2, нижний 4; высоты 3 и 3.</p><p>Подсказка: ⅓π × 4² × 6 − ⅓π × 2² × 3.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 119 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">119</span><b>구의 겉넓이</b><span>площадь поверхности шара · стр. 222–223</span></div>
+    <article class="prob"><div class="phead"><span class="pno">667</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림의 입체도형은 한 원뿔과 밑면의 반지름의 길이가 같은 반구를 합쳐 놓은 것이다. 이 입체도형의 겉넓이는?</p>
+      <p class="pt">Тело склеено из конуса и полушара с тем же радиусом. Конус: высота 8, образующая 10, радиус 6. Найди площадь поверхности.</p>
+      <div class="pfig"><svg id="f667" role="img" aria-label="Конус на полушаре: радиус 6, высота 8, образующая 10"></svg></div>
+      <ul class="opts"><li>① 124π cm²</li><li>② 132π cm²</li><li>③ 148π cm²</li><li>④ 176π cm²</li><li>⑤ 192π cm²</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Снаружи видны только бок конуса и купол полушара. Круг между ними — внутри.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Бок конуса = π × 6 × 10 = 60π (высота 8 не нужна).</p>
+        <p>Купол = ½ × 4π × 6² = 72π.</p>
+        <p>60π + 72π = 132π cm². <span class="ans">Ответ ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>668</b>반지름 r, 2r → 비</summary><div><p class="pq">반지름의 길이가 각 <span class="m">r</span>, 2<span class="m">r</span>인 두 구의 겉넓이의 비는? ① 1:2 ② 1:3 ③ 1:4 ④ 1:6 ⑤ 1:8</p><p class="pt">Отношение площадей поверхности шаров с радиусами r и 2r.</p><p>Подсказка: площадь растёт как квадрат радиуса.</p></div></details>
+      <details class="h"><summary><b>669</b>야구공, 지름 7</summary><div><p class="pq">야구공의 겉면은 다음 그림과 같이 똑같이 생긴 두 개의 조각으로 되어 있다. 야구공의 지름의 길이가 7 cm일 때, 한 조각의 넓이는?</p><p class="pt">Бейсбольный мяч сшит из двух одинаковых кусков. Диаметр 7 см. Найди площадь одного куска.</p><p>Подсказка: <span class="m">r</span> = 7/2, площадь шара ÷ 2.</p></div></details>
+      <details class="h"><summary><b>670</b>반구, 반지름 × 3</summary><div><p class="pq">어떤 반구의 반지름의 길이를 3배로 늘리면 겉넓이는 몇 배로 늘어나는지 구하시오.</p><p class="pt">Радиус полушара увеличили в 3 раза. Во сколько раз увеличится площадь поверхности?</p><p>Подсказка: 3π<span class="m">r²</span> → 3π(3<span class="m">r</span>)².</p></div></details>
+    </div>
+  </div>
+
+  <!-- 120 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">120</span><b>구의 부피</b><span>объём шара · стр. 223–224</span></div>
+    <article class="prob"><div class="phead"><span class="pno">671</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림에서 반구와 원뿔의 부피가 같다고 한다. 이때 원뿔의 높이는?</p>
+      <p class="pt">Объёмы полушара и конуса равны. Радиус у обоих 4 см. Найди высоту конуса.</p>
+      <div class="pfig"><svg id="f671" role="img" aria-label="Полушар радиуса 4 и перевёрнутый конус радиуса 4"></svg></div>
+      <ul class="opts"><li>① 2 cm</li><li>② 4 cm</li><li>③ 6 cm</li><li>④ 8 cm</li><li>⑤ 10 cm</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Посчитай объём полушара, потом приравняй к ⅓ × π × 4² × <span class="m">h</span>.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="kr">반구</span>: ½ × ⁴⁄₃ × π × 64 = <span class="fr"><span>128</span><span>3</span></span>π.</p>
+        <p><span class="kr">원뿔</span>: ⅓ × 16π × <span class="m">h</span> = <span class="fr"><span>16<span class="m">h</span></span><span>3</span></span>π.</p>
+        <p>16<span class="m">h</span> = 128 → <span class="m">h</span> = 8. <span class="ans">Ответ ④</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>672</b>구 r 6 = 원뿔 r 6 → h</summary><div><p class="pq">다음 그림의 원뿔의 부피가 구의 부피와 같을 때, 원뿔의 높이를 구하시오.</p><p class="pt">Шар радиуса 6 и конус радиуса 6 имеют равные объёмы. Найди высоту конуса.</p><p>Подсказка: как 671, только целый шар.</p></div></details>
+      <details class="h"><summary><b>673</b>쇠구슬 30 → 2</summary><div><p class="pq">어느 공장에서 반지름의 길이가 30 cm인 쇠구슬을 녹여 반지름의 길이가 2 cm인 쇠구슬을 만들 때, 최대 몇 개를 만들 수 있는지 구하시오.</p><p class="pt">Расплавили железный шар радиусом 30 см и делают шарики радиусом 2 см. Сколько получится максимум?</p><p>Подсказка: радиус в 15 раз меньше → объём в 15³ раз меньше.</p></div></details>
+      <details class="h"><summary><b>674</b>쇠공 지름 18 → 6</summary><div><p class="pq">지름의 길이가 18인 쇠공 한 개를 녹여 지름의 길이가 6인 쇠공을 몇 개 만들 수 있는지 구하시오.</p><p class="pt">Из шара диаметром 18 делают шары диаметром 6. Сколько штук?</p><p>Подсказка: как 673. Отношение диаметров = отношение радиусов.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 121 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">121</span><b>원기둥에 꼭 맞게 들어가는 구, 원뿔</b><span>1 : 2 : 3 · стр. 224–225</span></div>
+    <article class="prob"><div class="phead"><span class="pno">675</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 반지름이 2 cm인 구와 그 구가 꼭 들어가는 원기둥과 그 원기둥에 꼭 들어가는 원뿔이 있다. 이때 원뿔과 원기둥과 구의 부피의 비는?</p>
+      <p class="pt">Шар радиуса 2 см, цилиндр, в который шар точно помещается, и конус, который точно помещается в цилиндр. Найди отношение объёмов <b>конус : цилиндр : шар</b>.</p>
+      <div class="pfig"><svg id="f675" role="img" aria-label="Цилиндр с вписанными шаром и конусом, радиус 2"></svg></div>
+      <ul class="opts"><li>① 1:2:3</li><li>② 1:3:2</li><li>③ 1:3:4</li><li>④ 1:4:2</li><li>⑤ 1:4:3</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Ты знаешь 원뿔 : 구 : 원기둥 = 1 : 2 : 3. Но в вопросе другой порядок!</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Цилиндр: <span class="m">r</span> = 2, высота 4. <span class="kr">원뿔</span> = ⅓ × 4π × 4 = <span class="fr"><span>16</span><span>3</span></span>π, <span class="kr">원기둥</span> = 4π × 4 = 16π, <span class="kr">구</span> = ⁴⁄₃π × 8 = <span class="fr"><span>32</span><span>3</span></span>π.</p>
+        <p>Умножим всё на <span class="fr"><span>3</span><span>16π</span></span>: 1 : 3 : 2. <span class="ans">Ответ ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>676</b>구 안의 도형 : 구 : 원기둥</summary><div><p class="pq">다음 그림과 같이 반지름의 길이가 3 cm인 원기둥 안에 꼭 맞는 구와 구 안에 꼭 맞는 도형이 들어 있다. 구 안의 도형, 구, 원기둥의 부피의 비는?</p><p class="pt">В цилиндре радиуса 3 лежит шар, а в шаре — тело из двух конусов, сложенных основаниями (на рисунке ромб).</p><p>Подсказка: два конуса, у каждого <span class="m">r</span> = 3 и <span class="m">h</span> = 3. Цилиндр лежит: длина 6.</p></div></details>
+      <details class="h"><summary><b>677</b>남은 물 (r = 6)</summary><div><p class="pq">밑면의 지름의 길이와 높이가 같은 원기둥 모양의 그릇이 있다. 지름의 길이가 원기둥의 밑면의 지름의 길이와 같은 구가 있을 때, [1단계] 원기둥에 물을 가득 채운다. [2단계] 원기둥에 구를 넣었다가 꺼낸다. 구의 반지름의 길이가 6 cm일 때, 남은 물의 양은?</p><p class="pt">Цилиндр (диаметр = высота) полон воды. Опустили шар того же диаметра и вынули. Радиус 6. Сколько воды осталось?</p><p>Подсказка: осталось 원기둥 − 구 = ⅓ цилиндра. Проверь в лаборатории 7.</p></div></details>
+      <details class="h"><summary><b>678</b>남은 물 (r = 5)</summary><div><p class="pq">반지름의 길이가 5 cm인 구가 꼭 맞게 들어가는 원기둥 모양의 그릇에 물을 가득 채운 후 구를 넣을 때, 남아 있는 물의 부피는?</p><p class="pt">То же, радиус 5, шар остаётся в сосуде.</p><p>Подсказка: как 677.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 122 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">122</span><b>입체도형에 꼭 맞게 들어가는 입체도형</b><span>шар в кубе и другие · стр. 226–227</span></div>
+    <article class="prob"><div class="phead"><span class="pno">679</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림과 같이 공 하나가 꼭 맞게 들어가는 한 변의 길이가 10 cm인 정육면체 모양의 상자가 있다. 이때 공의 부피는?</p>
+      <p class="pt">Мяч точно помещается в кубическую коробку с ребром 10 см. Найди объём мяча.</p>
+      <div class="pfig"><svg id="f679" role="img" aria-label="Шар внутри куба с ребром 10"></svg></div>
+      <ul class="opts"><li>① 100π</li><li>② 500π/3</li><li>③ 200π</li><li>④ 700π/3</li><li>⑤ 300π (cm³)</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Ребро куба = <span class="kr">지름</span> шара.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="kr">지름</span> = 10 → <span class="m">r</span> = 5.</p>
+        <p>⁴⁄₃ × π × 125 = <span class="fr"><span>500</span><span>3</span></span>π cm³. <span class="ans">Ответ ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>680</b>구 r 5 : 정육면체</summary><div><p class="pq">다음 그림과 같이 반지름이 5 cm인 구가 정육면체에 꼭 맞게 들어있다. 이때 구와 정육면체의 부피의 비는? ① π:1 ② π:6 ③ 3π:2 ④ 4π:3 ⑤ 4π:5</p><p class="pt">Шар радиуса 5 в кубе. Отношение объёмов шар : куб.</p><p>Подсказка: ребро куба 10. Сократи на 500/3.</p></div></details>
+      <details class="h"><summary><b>681</b>공 지름 5 : 상자</summary><div><p class="pq">지름의 길이가 5 cm인 구 모양의 공 하나가 정육면체 모양의 상자에 꼭 맞게 들어가 있다. 이때 공과 상자의 부피의 비는?</p><p class="pt">Мяч диаметром 5 в кубической коробке. Отношение мяч : коробка.</p><p>Подсказка: результат не зависит от размера — сравни с 680.</p></div></details>
+      <details class="h"><summary><b>682</b>반구 r 3 : 원뿔</summary><div><p class="pq">다음 그림과 같이 반지름의 길이가 3 cm인 반구 안에 원뿔이 꼭 맞게 들어 있을 때, 반구와 원뿔의 부피의 비는?</p><p class="pt">В полушар радиуса 3 вписан конус (радиус 3, высота 3). Отношение полушар : конус.</p><p>Подсказка: ⅔π<span class="m">r³</span> против ⅓π<span class="m">r²</span> × <span class="m">r</span>.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<!-- cheat sheet -->
+<section>
+  <h2><span class="num">11</span> 정리 · шпаргалка</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Фигура</th><th><span class="kr">겉넓이</span></th><th><span class="kr">부피</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="kr">각뿔</span></td><td>밑넓이 + 옆넓이 (треугольники)</td><td>⅓ <span class="m">Sh</span></td></tr>
+      <tr><td><span class="kr">원뿔</span></td><td><span class="m">πr² + πrl</span></td><td>⅓ <span class="m">πr²h</span></td></tr>
+      <tr><td><span class="kr">뿔대</span></td><td>두 밑넓이 + (큰 옆넓이 − 작은 옆넓이)</td><td>큰 뿔 − 작은 뿔</td></tr>
+      <tr><td><span class="kr">구</span></td><td><span class="m">4πr²</span></td><td>⁴⁄₃ <span class="m">πr³</span></td></tr>
+      <tr><td><span class="kr">반구</span></td><td><span class="m">2πr² + πr² = 3πr²</span></td><td>⅔ <span class="m">πr³</span></td></tr>
+      <tr><td><span class="kr">원뿔 : 구 : 원기둥</span></td><td colspan="2">1 : 2 : 3 (когда всё точно вписано в цилиндр)</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Частые ошибки</h3>
+  <ul class="mistakes">
+    <li>Взяли <span class="kr">지름</span> вместо <span class="kr">반지름</span>.</li>
+    <li>В <span class="kr">겉넓이</span> конуса поставили высоту <span class="m">h</span> вместо <span class="kr">모선</span> <span class="m">l</span>.</li>
+    <li>Забыли ⅓ в объёме <span class="kr">뿔</span>.</li>
+    <li>У <span class="kr">뿔</span> посчитали два основания, как у <span class="kr">기둥</span>.</li>
+    <li>У <span class="kr">반구</span> забыли плоский круг (или, наоборот, посчитали его, когда он спрятан внутри).</li>
+    <li>В <span class="kr">원뿔대</span> не сложили образующие маленького конуса и самого 뿔대.</li>
+    <li>Перепутали порядок в отношении (1 : 3 : 2 вместо 1 : 2 : 3).</li>
+  </ul>
+</section>
+
+</main>
+
+<script>
+(()=>{
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a){if(k==="text")e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;}
+function P(pts,close=true){return pts.map((q,i)=>(i?"L":"M")+q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" ")+(close?" Z":"");}
+const C={ink:"var(--ink)",mut:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",amber:"var(--amber)"};
+const F={blue:"var(--blue-fill)",coral:"var(--coral-fill)",green:"var(--green-fill)",sunk:"var(--sunk)",surf:"var(--surface)"};
+function T(s,x,y,t,cls="lbl",anc="middle"){return el("text",{x,y,text:t,class:cls,"text-anchor":anc},s);}
+function K(s,x,y,t,anc="middle"){return el("text",{x,y,text:t,"text-anchor":anc},s);}
+const dash={"stroke-dasharray":"4 3"};
+function line(s,a,b,col=C.ink,w=1.4,ex={}){return el("line",Object.assign({x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:col,"stroke-width":w},ex),s);}
+function ra(s,p,d1,d2,z=7){el("path",{d:`M${p[0]+d1[0]*z} ${p[1]+d1[1]*z} L${p[0]+(d1[0]+d2[0])*z} ${p[1]+(d1[1]+d2[1])*z} L${p[0]+d2[0]*z} ${p[1]+d2[1]*z}`,fill:"none",stroke:C.ink,"stroke-width":1},s);}
+function vb(s,v){s.setAttribute("viewBox",v);}
+/* pseudo-3D solids */
+function cylinder(s,cx,yt,rx,h,o={}){const ry=o.ry||rx*.28,fill=o.fill||F.coral,st=o.st||C.coral;const yb=yt+h;
+  el("path",{d:`M${cx-rx} ${yt} L${cx-rx} ${yb} A${rx} ${ry} 0 0 0 ${cx+rx} ${yb} L${cx+rx} ${yt} Z`,fill,stroke:"none"},s);
+  el("path",{d:`M${cx-rx} ${yb} A${rx} ${ry} 0 0 1 ${cx+rx} ${yb}`,fill:"none",stroke:st,"stroke-width":1,...dash},s);
+  el("path",{d:`M${cx-rx} ${yt} L${cx-rx} ${yb} A${rx} ${ry} 0 0 0 ${cx+rx} ${yb} L${cx+rx} ${yt}`,fill:"none",stroke:st,"stroke-width":1.6},s);
+  el("ellipse",{cx,cy:yt,rx,ry,fill:o.top||F.blue,stroke:st,"stroke-width":1.6},s);}
+function cone(s,cx,yb,rx,h,o={}){const ry=o.ry||rx*.28,fill=o.fill||F.coral,st=o.st||C.coral;const ap=[cx,yb-h];
+  el("path",{d:`M${cx-rx} ${yb} L${ap[0]} ${ap[1]} L${cx+rx} ${yb} A${rx} ${ry} 0 0 1 ${cx-rx} ${yb} Z`,fill,stroke:"none"},s);
+  el("path",{d:`M${cx-rx} ${yb} A${rx} ${ry} 0 0 1 ${cx+rx} ${yb}`,fill:"none",stroke:st,"stroke-width":1,...dash},s);
+  el("path",{d:`M${cx-rx} ${yb} A${rx} ${ry} 0 0 0 ${cx+rx} ${yb} L${ap[0]} ${ap[1]} Z`,fill:"none",stroke:st,"stroke-width":1.6},s);return ap;}
+function hemi(s,cx,y,rx,o={}){const ry=o.ry||rx*.28,st=o.st||C.coral;
+  el("path",{d:`M${cx-rx} ${y} A${rx} ${rx} 0 0 0 ${cx+rx} ${y} A${rx} ${ry} 0 0 0 ${cx-rx} ${y} Z`,fill:o.fill||F.coral,stroke:st,"stroke-width":1.6},s);
+  el("ellipse",{cx,cy:y,rx,ry,fill:o.top||F.blue,stroke:st,"stroke-width":1.4},s);}
+function boxF(s,x,y,w,h,dx,dy,o={}){const st=o.st||C.green,fill=o.fill||F.green;
+  const A=[x,y],B=[x+w,y],Cc=[x+w,y+h],D=[x,y+h],A2=[x+dx,y-dy],B2=[x+w+dx,y-dy],C2=[x+w+dx,y+h-dy],D2=[x+dx,y+h-dy];
+  el("path",{d:P([A,B,Cc,D]),fill,stroke:st,"stroke-width":1.5},s);
+  el("path",{d:P([A,A2,B2,B]),fill,stroke:st,"stroke-width":1.5},s);
+  el("path",{d:P([B,B2,C2,Cc]),fill,stroke:st,"stroke-width":1.5},s);
+  line(s,D,D2,st,1,dash);line(s,D2,A2,st,1,dash);line(s,D2,C2,st,1,dash);}
+
+/* warm-up */
+(()=>{const s=$("wu1");vb(s,"0 0 220 150");const c=[110,75],r=55;
+  el("circle",{cx:c[0],cy:c[1],r,fill:F.blue,stroke:C.coral,"stroke-width":3},s);
+  line(s,c,[c[0]+r,c[1]],C.ink,1.5);el("circle",{cx:c[0],cy:c[1],r:2.5,fill:C.ink},s);T(s,c[0]+r/2,c[1]-6,"r");
+  K(s,c[0]-8,c[1]+24,"πr²").setAttribute("class","lbl");K(s,c[0]+r+4,c[1]-r+6,"2πr","start").setAttribute("style","fill:var(--coral);font:italic 14px var(--f-math)");})();
+(()=>{const s=$("wu2");vb(s,"0 0 220 150");const c=[110,128],R=110,a1=-130,a2=-50,rad=d=>d*Math.PI/180;
+  const p1=[c[0]+R*Math.cos(rad(a1)),c[1]+R*Math.sin(rad(a1))],p2=[c[0]+R*Math.cos(rad(a2)),c[1]+R*Math.sin(rad(a2))];
+  el("path",{d:`M${c[0]} ${c[1]} L${p1[0]} ${p1[1]} A${R} ${R} 0 0 1 ${p2[0]} ${p2[1]} Z`,fill:F.coral,stroke:C.ink,"stroke-width":1.4},s);
+  el("path",{d:`M${p1[0]} ${p1[1]} A${R} ${R} 0 0 1 ${p2[0]} ${p2[1]}`,fill:"none",stroke:C.coral,"stroke-width":3.5},s);
+  T(s,(c[0]+p1[0])/2-10,(c[1]+p1[1])/2+4,"l");K(s,c[0],12,"호의 길이").setAttribute("style","fill:var(--coral);font-size:12px");
+  el("path",{d:`M${c[0]-12} ${c[1]-14} A18 18 0 0 1 ${c[0]+12} ${c[1]-14}`,fill:"none",stroke:C.ink,"stroke-width":1},s);T(s,c[0],c[1]-22,"x°","sm");})();
+
+/* cone net */
+(()=>{const s=$("conenet");vb(s,"0 0 300 200");
+  const ap=cone(s,55,150,30,100);line(s,[55,150],[85,150],C.ink,1);T(s,70,146,"r","sm");T(s,82,95,"l");
+  el("path",{d:"M100 110 l16 0 m-5 -4 l5 4 l-5 4",stroke:C.mut,fill:"none","stroke-width":1.4},s);
+  const c=[210,20],R=110,th=360*30/100,rad=d=>d*Math.PI/180;const a1=90+th/2,a2=90-th/2;
+  const p1=[c[0]+R*Math.cos(rad(a1)),c[1]+R*Math.sin(rad(a1))],p2=[c[0]+R*Math.cos(rad(a2)),c[1]+R*Math.sin(rad(a2))];
+  el("path",{d:`M${c[0]} ${c[1]} L${p1[0]} ${p1[1]} A${R} ${R} 0 0 0 ${p2[0]} ${p2[1]} Z`,fill:F.coral,stroke:C.ink,"stroke-width":1.3},s);
+  el("path",{d:`M${p1[0]} ${p1[1]} A${R} ${R} 0 0 0 ${p2[0]} ${p2[1]}`,fill:"none",stroke:C.coral,"stroke-width":3.5},s);
+  el("circle",{cx:c[0],cy:c[1]+R+33,r:33*0.85,fill:F.blue,stroke:C.coral,"stroke-width":1.4},s);
+  T(s,c[0]-50,c[1]+50,"l");T(s,c[0]+58,c[1]+R-8,"2πr").setAttribute("style","fill:var(--coral)");K(s,c[0],c[1]+R+38,"밑면").setAttribute("class","sm");})();
+/* pyramid net */
+(()=>{const s=$("pyrnet");vb(s,"0 0 300 200");
+  const b=[[15,150],[75,150],[95,132],[35,132]],ap=[55,50];
+  el("path",{d:P([b[0],b[1],ap]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);el("path",{d:P([b[1],b[2],ap]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);
+  line(s,b[0],b[3],C.coral,1,dash);line(s,b[3],b[2],C.coral,1,dash);line(s,b[3],ap,C.coral,1,dash);
+  el("path",{d:"M108 110 l16 0 m-5 -4 l5 4 l-5 4",stroke:C.mut,fill:"none","stroke-width":1.4},s);
+  const c=[210,100],a=24,t=48;const q=[[c[0]-a,c[1]-a],[c[0]+a,c[1]-a],[c[0]+a,c[1]+a],[c[0]-a,c[1]+a]];
+  el("path",{d:P([q[0],q[1],[c[0],c[1]-a-t]]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);
+  el("path",{d:P([q[1],q[2],[c[0]+a+t,c[1]]]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);
+  el("path",{d:P([q[2],q[3],[c[0],c[1]+a+t]]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);
+  el("path",{d:P([q[3],q[0],[c[0]-a-t,c[1]]]),fill:F.coral,stroke:C.coral,"stroke-width":1.4},s);
+  el("path",{d:P(q),fill:F.blue,stroke:C.coral,"stroke-width":1.4},s);K(s,c[0],c[1]+5,"밑면").setAttribute("class","sm");
+  line(s,[c[0]+a,c[1]],[c[0]+a+t,c[1]],C.ink,1,dash);ra(s,[c[0]+a,c[1]],[1,0],[0,-1],6);})();
+/* hemisphere */
+(()=>{const s=$("hemi");vb(s,"0 0 260 150");hemi(s,130,45,85);line(s,[130,45],[215,45],C.ink,1.2);el("circle",{cx:130,cy:45,r:2.5,fill:C.ink},s);T(s,172,40,"r");
+  K(s,130,105,"2πr²").setAttribute("style","fill:var(--coral);font:italic 16px var(--f-math)");K(s,95,52,"πr²").setAttribute("style","fill:var(--blue);font:italic 14px var(--f-math)");})();
+/* archimedes */
+(()=>{const s=$("arch");vb(s,"0 0 220 190");const cx=110,r=60,yt=25,yb=yt+2*r;
+  cylinder(s,cx,yt,r,2*r,{fill:F.blue,top:"none",st:C.blue,ry:14});
+  el("circle",{cx,cy:yt+r,r,fill:F.green,stroke:C.green,"stroke-width":1.5},s);
+  el("path",{d:`M${cx-r} ${yb} L${cx} ${yt} L${cx+r} ${yb}`,fill:F.coral,stroke:C.coral,"stroke-width":1.6},s);
+  T(s,cx+r+12,yt+r+4,"2r");})();
+
+/* LAB A: cone net */
+(()=>{const s=$("labsvg"),rS=$("rS"),lS=$("lS"),k=9,rad=d=>d*Math.PI/180;
+  function draw(){let r=+rS.value,l=+lS.value;if(l<=r){l=r+1;lS.value=l;}
+    $("rV").textContent=r;$("lV").textContent=l;s.textContent="";
+    const h=Math.sqrt(l*l-r*r);cone(s,75,200,r*k,h*k,{ry:r*k*.25});
+    line(s,[75,200],[75+r*k,200],C.ink,1);T(s,75+r*k/2,196,"r","sm");
+    line(s,[75,200],[75,200-h*k],C.mut,1,dash);
+    T(s,75+r*k/2+14,200-h*k/2,"l");
+    const th=360*r/l,R=l*k,cy=12+R*Math.max(0,-Math.cos(rad(th/2))),c=[262,cy];
+    const a1=90+th/2,a2=90-th/2,large=th>180?1:0;
+    const p1=[c[0]+R*Math.cos(rad(a1)),c[1]+R*Math.sin(rad(a1))],p2=[c[0]+R*Math.cos(rad(a2)),c[1]+R*Math.sin(rad(a2))];
+    el("path",{d:`M${c[0]} ${c[1]} L${p1[0]} ${p1[1]} A${R} ${R} 0 ${large} 0 ${p2[0]} ${p2[1]} Z`,fill:F.coral,stroke:C.ink,"stroke-width":1.2},s);
+    el("path",{d:`M${p1[0]} ${p1[1]} A${R} ${R} 0 ${large} 0 ${p2[0]} ${p2[1]}`,fill:"none",stroke:C.coral,"stroke-width":3.5},s);
+    const ar=Math.min(16,R*.3);
+    const q1=[c[0]+ar*Math.cos(rad(a1)),c[1]+ar*Math.sin(rad(a1))],q2=[c[0]+ar*Math.cos(rad(a2)),c[1]+ar*Math.sin(rad(a2))];
+    el("path",{d:`M${q1[0]} ${q1[1]} A${ar} ${ar} 0 ${large} 0 ${q2[0]} ${q2[1]}`,fill:"none",stroke:C.ink,"stroke-width":1},s);
+    const thS=(Math.round(th*10)/10).toString();
+    T(s,c[0],c[1]+ar+13,thS+"°","sm");
+    const fmt=v=>Number.isInteger(v)?v:(Math.round(v*100)/100);
+    $("roA").innerHTML=`<span><span class="kr">호의 길이</span> = 2π·${r} = <b>${2*r}π</b></span>`+
+      `<span><span class="kr">중심각</span> = 360° × ${r}/${l} = <b>${thS}°</b></span>`+
+      `<span><span class="kr">옆넓이</span> = π·${r}·${l} = <b>${r*l}π</b></span>`+
+      `<span><span class="kr">겉넓이</span> = ${r*r}π + ${r*l}π = <b>${r*r+r*l}π</b></span>`+
+      `<span class="note"><span class="kr">높이</span> h = √(${l}² − ${r}²) ≈ ${fmt(h)} — не равна l</span>`;
+    const st=$("stA");
+    if(Math.abs(th-90)<1e-9){st.textContent="찾았다! 90° — значит r : l = 1 : 4 (как в задаче 606).";st.className="status ok";}
+    else{st.textContent=th>90?`Сейчас ${thS}° — больше 90°. Сделай l длиннее или r меньше.`:`Сейчас ${thS}° — меньше 90°. Сделай r больше или l короче.`;st.className="status";}}
+  rS.addEventListener("input",draw);lS.addEventListener("input",draw);
+  $("p606").onclick=()=>{rS.value=3;lS.value=12;draw();};
+  $("p120").onclick=()=>{rS.value=4;lS.value=12;draw();};
+  $("p180").onclick=()=>{rS.value=5;lS.value=10;draw();};
+  draw();})();
+
+/* problem figures (reused) */
+(()=>{const s=$("f604");vb(s,"0 0 260 230");const c=[130,115],a=25,t=80;const q=[[c[0]-a,c[1]-a],[c[0]+a,c[1]-a],[c[0]+a,c[1]+a],[c[0]-a,c[1]+a]];
+  const tips=[[c[0],c[1]-a-t],[c[0]+a+t,c[1]],[c[0],c[1]+a+t],[c[0]-a-t,c[1]]];
+  for(let i=0;i<4;i++)el("path",{d:P([q[i],q[(i+1)%4],tips[i]]),fill:F.green,stroke:C.ink,"stroke-width":1.5},s);
+  el("path",{d:P(q),fill:F.green,stroke:C.ink,"stroke-width":1,...dash},s);
+  line(s,[c[0]+a,c[1]],tips[1],C.ink,1,dash);ra(s,[c[0]+a,c[1]],[1,0],[0,-1],6);
+  T(s,c[0],c[1]-a-5,"5","sm");T(s,c[0]-a-8,c[1]+4,"5","sm");T(s,c[0]+a+t/2,c[1]+16,"8");})();
+(()=>{const s=$("f605");vb(s,"0 0 240 110");const tip=[25,55],cx=185;
+  el("path",{d:`M${tip[0]} ${tip[1]} L${cx} 30 A10 25 0 0 1 ${cx} 80 Z`,fill:F.coral,stroke:C.coral,"stroke-width":1.5},s);
+  el("ellipse",{cx,cy:55,rx:10,ry:25,fill:F.blue,stroke:C.coral,"stroke-width":1.4},s);
+  T(s,100,90,"8cm","sm");line(s,[212,30],[212,80],C.ink,1);T(s,218,59,"4cm","sm","start");})();
+(()=>{const s=$("f606");vb(s,"0 0 160 200");cone(s,80,175,30,150,{fill:F.blue,st:C.blue});line(s,[80,175],[110,175],C.ink,1);el("circle",{cx:80,cy:175,r:2,fill:C.ink},s);T(s,95,195,"3cm","sm");T(s,112,95,"12cm","sm","start");})();
+(()=>{const s=$("f609");vb(s,"0 0 200 170");const ax=130,r=100,y=145;
+  el("path",{d:`M${ax} ${y-r} A${r} ${r} 0 0 0 ${ax-r} ${y} L${ax} ${y} Z`,fill:F.blue,stroke:C.ink,"stroke-width":1.5},s);
+  line(s,[ax,y-r-22],[ax,y+18],C.ink,1.4);T(s,ax,y-r-26,"l");ra(s,[ax,y],[-1,0],[0,-1],7);
+  T(s,ax+20,y-r/2,"9cm","sm","start");T(s,ax-r/2,y+16,"9cm","sm");})();
+(()=>{const s=$("f635");vb(s,"0 0 200 190");const x0=40,y0=25,a=130;const A=[x0,y0],B=[x0,y0+a],Cc=[x0+a,y0+a],D=[x0+a,y0],E=[x0,y0+a/2],Fp=[x0+a/2,y0+a];
+  el("path",{d:P([A,D,Cc,B]),fill:F.coral,stroke:C.ink,"stroke-width":1.5},s);
+  line(s,E,D,C.ink,1.2,dash);line(s,E,Fp,C.ink,1.2,dash);line(s,Fp,D,C.ink,1.2,dash);
+  K(s,A[0]-8,A[1],"A","end");K(s,B[0]-8,B[1]+6,"B","end");K(s,Cc[0]+6,Cc[1]+6,"C","start");K(s,D[0]+6,D[1],"D","start");K(s,E[0]-8,E[1]+5,"E","end");K(s,Fp[0],Fp[1]+16,"F");
+  T(s,x0+a+10,y0+a/2,"10","sm","start");})();
+(()=>{const s=$("f639");vb(s,"0 0 160 180");cone(s,80,150,50,125,{fill:F.green,st:C.green});line(s,[80,150],[130,150],C.ink,1);el("circle",{cx:80,cy:150,r:2,fill:C.ink},s);T(s,105,145,"5cm","sm");T(s,120,80,"l","lbl","start");})();
+(()=>{const s=$("f667");vb(s,"0 0 220 190");const cx=110,y=95,r=72;
+  el("path",{d:`M${cx-r} ${y} A${r} ${r} 0 0 0 ${cx+r} ${y} Z`,fill:F.green,stroke:C.green,"stroke-width":1.5},s);
+  el("path",{d:P([[cx-r,y],[cx,y-96],[cx+r,y]]),fill:F.green,stroke:C.green,"stroke-width":1.5},s);
+  line(s,[cx-r,y],[cx+r,y],C.green,1,dash);line(s,[cx,y-96],[cx,y],C.ink,1,dash);ra(s,[cx,y],[1,0],[0,-1],6);
+  T(s,cx-12,y-44,"8","sm","end");T(s,cx+r/2+12,y-52,"10","sm","start");T(s,cx+r/2,y+14,"6","sm");})();
+(()=>{const s=$("f671");vb(s,"0 0 260 150");hemi(s,65,70,50,{ry:12});line(s,[65,70],[115,70],C.ink,1);T(s,90,64,"4cm","sm");
+  const cx=190,yt=30,r=50,h=105;
+  el("path",{d:`M${cx-r} ${yt} L${cx} ${yt+h} L${cx+r} ${yt} Z`,fill:F.coral,stroke:C.coral,"stroke-width":1.5},s);
+  el("ellipse",{cx,cy:yt,rx:r,ry:12,fill:F.blue,stroke:C.coral,"stroke-width":1.4},s);
+  line(s,[cx,yt],[cx+r,yt],C.ink,1);T(s,cx+r/2,yt-6,"4cm","sm");line(s,[cx,yt],[cx,yt+h],C.ink,1,dash);T(s,cx-8,yt+h/2+10,"h","lbl","end");})();
+
+/* ---------- new drawings for this lesson ---------- */
+const rad=d=>d*Math.PI/180;
+function proj(o,k){return (x,y,z)=>[o[0]+x*k+z*k*.5,o[1]-y*k-z*k*.32];}
+function frustum(s,cx,yb,R,r,H,o={}){const ryR=o.ry||R*.26,ryr=r*(ryR/R),st=o.st||C.coral,fill=o.fill||F.coral;const yt=yb-H;
+  el("path",{d:`M${cx-R} ${yb} L${cx-r} ${yt} L${cx+r} ${yt} L${cx+R} ${yb} A${R} ${ryR} 0 0 1 ${cx-R} ${yb} Z`,fill,stroke:"none"},s);
+  el("path",{d:`M${cx-R} ${yb} A${R} ${ryR} 0 0 1 ${cx+R} ${yb}`,fill:"none",stroke:st,"stroke-width":1,...dash},s);
+  el("path",{d:`M${cx-R} ${yb} A${R} ${ryR} 0 0 0 ${cx+R} ${yb} L${cx+r} ${yt} M${cx-R} ${yb} L${cx-r} ${yt}`,fill:"none",stroke:st,"stroke-width":1.6},s);
+  el("ellipse",{cx,cy:yt,rx:r,ry:ryr,fill:o.top||F.blue,stroke:st,"stroke-width":1.5},s);
+  return {yt,ryR,ryr};}
+function arrow(s,x,y){el("path",{d:`M${x} ${y} l16 0 m-5 -4 l5 4 l-5 4`,stroke:C.mut,fill:"none","stroke-width":1.4},s);}
+
+/* frustum as big − small */
+(()=>{const s=$("frust");vb(s,"0 0 300 200");const cx=170,yb=170,R=90,H=150,ap=[cx,yb-H];
+  const r=R*.4,yt=yb-H*.6;
+  frustum(s,cx,yb,R,r,H*.6,{fill:F.coral,st:C.coral});
+  line(s,[cx-r,yt],ap,C.blue,1.4,dash);line(s,[cx+r,yt],ap,C.blue,1.4,dash);
+  el("circle",{cx:ap[0],cy:ap[1],r:2.5,fill:C.ink},s);
+  T(s,cx+r/2+18,yt-30,"l","lbl","start");T(s,cx+(R+r)/2+16,yb-H*.3,"l′","lbl","start");
+  line(s,[cx,yb],[cx+R,yb],C.ink,1);T(s,cx+R/2,yb-5,"R","sm");line(s,[cx,yt],[cx+r,yt],C.ink,1);T(s,cx+r/2,yt-5,"r","sm");
+  K(s,8,40,"큰 원뿔 − 작은 원뿔","start").setAttribute("class","sm");})();
+(()=>{const s=$("frustnet");vb(s,"0 0 260 200");const c=[130,18],L=165,l=66,th=150,a1=90+th/2,a2=90-th/2;
+  const P2=(R,a)=>[c[0]+R*Math.cos(rad(a)),c[1]+R*Math.sin(rad(a))];
+  const A1=P2(L,a1),A2=P2(L,a2),B1=P2(l,a1),B2=P2(l,a2);
+  el("path",{d:`M${B1[0]} ${B1[1]} L${A1[0]} ${A1[1]} A${L} ${L} 0 0 0 ${A2[0]} ${A2[1]} L${B2[0]} ${B2[1]} A${l} ${l} 0 0 1 ${B1[0]} ${B1[1]} Z`,fill:F.coral,stroke:C.coral,"stroke-width":1.5},s);
+  el("path",{d:`M${c[0]} ${c[1]} L${B1[0]} ${B1[1]} A${l} ${l} 0 0 0 ${B2[0]} ${B2[1]} Z`,fill:F.blue,stroke:C.blue,"stroke-width":1.2,...dash},s);
+  K(s,c[0],c[1]+l+42,"옆넓이").setAttribute("class","sm");K(s,c[0],c[1]+l-22,"작은 부채꼴").setAttribute("style","fill:var(--blue);font-size:11px");
+  K(s,c[0],195,"큰 부채꼴 − 작은 부채꼴").setAttribute("class","sm");})();
+
+/* 3 cones = cylinder */
+(()=>{const s=$("pour3");vb(s,"0 0 300 170");const yb=140,r=28,h=95;
+  [0,1,2].forEach(i=>{cone(s,30+i*58,yb,r*.62,h*.62,{ry:5});});
+  K(s,90,yb+22,"× 3").setAttribute("style","fill:var(--coral);font:700 15px var(--f-body)");
+  arrow(s,196,yb-40);
+  cylinder(s,250,yb-h,r,h,{fill:F.blue,st:C.blue,top:F.sunk,ry:8});
+  K(s,250,yb+22,"원기둥").setAttribute("class","sm");
+  K(s,90,22,"같은 밑면, 같은 높이").setAttribute("class","sm");})();
+
+/* corner tetrahedron */
+(()=>{const s=$("corner");vb(s,"0 0 260 190");const p=proj([40,165],22);const a=6,b=4,c=5; // x=BC? use: width a (x), height c (y), depth b (z)
+  const V={F:p(0,0,0),G:p(a,0,0),H:p(a,0,b),E:p(0,0,b),B:p(0,c,0),C:p(a,c,0),D:p(a,c,b),A:p(0,c,b)};
+  [["E","F"],["E","H"],["E","A"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1,dash));
+  [["F","G"],["G","H"],["H","D"],["D","A"],["A","B"],["B","F"],["B","C"],["C","G"],["C","D"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1.2));
+  el("path",{d:P([V.A,V.F,V.C]),fill:F.coral,stroke:C.coral,"stroke-width":1.6},s);
+  el("path",{d:P([V.A,V.B,V.C]),fill:F.blue,stroke:C.blue,"stroke-width":1.2},s);
+  line(s,V.B,V.F,C.ink,2);
+  const off={A:[-6,-6],B:[-10,4],C:[6,-6],D:[6,-6],E:[-12,4],F:[-10,12],G:[4,14],H:[6,10]};
+  for(const k in V)K(s,V[k][0]+off[k][0],V[k][1]+off[k][1],k,off[k][0]<0?"end":"start");
+  K(s,V.B[0]-8,(V.B[1]+V.F[1])/2+4,"높이","end").setAttribute("class","sm");})();
+
+/* sphere = 4 circles */
+(()=>{const s=$("sph4");vb(s,"0 0 300 160");const r=48,cx=70,cy=80;
+  el("circle",{cx,cy,r,fill:F.green,stroke:C.green,"stroke-width":1.6},s);
+  el("path",{d:`M${cx-r} ${cy} A${r} ${r*.28} 0 0 0 ${cx+r} ${cy}`,fill:"none",stroke:C.green,"stroke-width":1.2},s);
+  el("path",{d:`M${cx-r} ${cy} A${r} ${r*.28} 0 0 1 ${cx+r} ${cy}`,fill:"none",stroke:C.green,"stroke-width":1,...dash},s);
+  line(s,[cx,cy],[cx+r,cy],C.ink,1);el("circle",{cx,cy,r:2.3,fill:C.ink},s);T(s,cx+r/2,cy-5,"r","sm");
+  K(s,140,cy+5,"=").setAttribute("style","font:700 20px var(--f-body);fill:var(--ink)");
+  const rr=27;[[185,52],[245,52],[185,112],[245,112]].forEach(q=>el("circle",{cx:q[0],cy:q[1],r:rr,fill:F.coral,stroke:C.coral,"stroke-width":1.3},s));
+  K(s,215,86,"πr² × 4").setAttribute("style","font:italic 13px var(--f-math);fill:var(--ink)");})();
+
+/* LAB B: water */
+(()=>{const s=$("labsvg2"),rB=$("rB");let fill=0,cones=0,balls=0,over=false;
+  function draw(){const r=+rB.value;$("rBV").textContent=r;s.textContent="";
+    const cx=200,R=60,H=2*R,yt=40,yb=yt+H,ry=14;
+    // water
+    const f=Math.min(fill,3)/3,wy=yb-H*f;
+    if(f>0){el("path",{d:`M${cx-R} ${wy} L${cx-R} ${yb} A${R} ${ry} 0 0 0 ${cx+R} ${yb} L${cx+R} ${wy} Z`,fill:F.blue,stroke:"none"},s);
+      el("ellipse",{cx,cy:wy,rx:R,ry,fill:"var(--blue-soft)",stroke:C.blue,"stroke-width":1},s);}
+    el("path",{d:`M${cx-R} ${yb} A${R} ${ry} 0 0 1 ${cx+R} ${yb}`,fill:"none",stroke:C.ink,"stroke-width":1,...dash},s);
+    el("path",{d:`M${cx-R} ${yt} L${cx-R} ${yb} A${R} ${ry} 0 0 0 ${cx+R} ${yb} L${cx+R} ${yt}`,fill:"none",stroke:C.ink,"stroke-width":1.6},s);
+    el("ellipse",{cx,cy:yt,rx:R,ry,fill:"none",stroke:C.ink,"stroke-width":1.6},s);
+    [1,2].forEach(i=>{const y=yb-H*i/3;line(s,[cx+R,y],[cx+R+10,y],C.mut,1);T(s,cx+R+13,y+4,i+"/3","sm","start");});
+    T(s,cx+R+13,yt+4,"3/3","sm","start");
+    if(over){for(let i=0;i<5;i++)el("path",{d:`M${cx+R-4} ${yt+2} q12 ${10+i*8} ${6+i*5} ${30+i*14}`,fill:"none",stroke:C.blue,"stroke-width":2},s);}
+    // fillers
+    cone(s,48,95,26,52,{ry:7});K(s,48,112,"원뿔","middle").setAttribute("class","sm");
+    el("circle",{cx:48,cy:160,r:26,fill:F.green,stroke:C.green,"stroke-width":1.5},s);K(s,48,202,"구","middle").setAttribute("class","sm");
+    T(s,cx,yb+36,"원기둥 r = "+r+", h = "+2*r,"sm");
+    const r3=r*r*r,fr=n=>n%3===0?`${n/3}π`:`${n}/3 π`;
+    $("roB").innerHTML=`<span><span class="kr">원뿔</span> = ⅓ × π·${r}² × ${2*r} = <b>${fr(2*r3)}</b></span>`+
+      `<span><span class="kr">구</span> = ⁴⁄₃ × π·${r}³ = <b>${fr(4*r3)}</b></span>`+
+      `<span><span class="kr">원기둥</span> = π·${r}² × ${2*r} = <b>${2*r3}π</b></span>`+
+      `<span class="note">Налито: <span class="kr">원뿔</span> × ${cones}, <span class="kr">구</span> × ${balls} → ${Math.min(fill,3)}/3 цилиндра</span>`;
+    const th=$("thirds").children;let k=0;
+    const seq=[];for(let i=0;i<balls;i++)seq.push("g","g");for(let i=0;i<cones;i++)seq.push("c");
+    for(let i=0;i<3;i++){th[i].className=seq[i]||"";}
+    const st=$("stB");
+    if(over){st.textContent="넘쳤다! Цилиндр вмещает только 3/3. Нажми 비우기.";st.className="status";}
+    else if(fill===3){st.textContent=cones===3?"가득! 원뿔 3개 = 원기둥 1개. Конус = ⅓ цилиндра.":balls===1?"가득! 구 1개 + 원뿔 1개 = 원기둥. Шар = ⅔, конус = ⅓ → 1 : 2 : 3.":"가득!";st.className="status ok";}
+    else{st.textContent=fill===0?"Цилиндр пустой. Налей воду конусом или шаром.":`Заполнено ${fill}/3. Ещё не до краёв.`;st.className="status";}}
+  function add(n,isCone){if(fill+n>3){over=true;}else{fill+=n;if(isCone)cones++;else balls++;}draw();}
+  $("addCone").onclick=()=>add(1,true);$("addBall").onclick=()=>add(2,false);
+  $("empty").onclick=()=>{fill=0;cones=0;balls=0;over=false;draw();};
+  rB.addEventListener("input",draw);draw();})();
+
+/* problem figures (new) */
+(()=>{const s=$("f607");vb(s,"0 0 220 120");hemi(s,110,40,80,{fill:F.green,top:F.green,st:C.green,ry:18});
+  line(s,[110,40],[190,40],C.ink,1,dash);el("circle",{cx:110,cy:40,r:2.5,fill:C.ink},s);T(s,104,46,"O","sm","end");T(s,150,35,"5cm","sm");})();
+(()=>{const s=$("f643");vb(s,"0 0 220 190");const cx=100,yb=160,R=75,r=30,H=90;const g=frustum(s,cx,yb,R,r,H,{fill:F.blue,st:C.blue,top:F.sunk});
+  const ap=[cx,yb-H*R/(R-r)];line(s,[cx-r,g.yt],ap,C.ink,1,dash);line(s,[cx+r,g.yt],ap,C.ink,1,dash);
+  line(s,[cx,yb],[cx+R,yb],C.ink,1);el("circle",{cx,cy:yb,r:2,fill:C.ink},s);T(s,cx+R/2,yb+16,"5cm","sm");
+  line(s,[cx,g.yt],[cx+r,g.yt],C.ink,1);el("circle",{cx,cy:g.yt,r:2,fill:C.ink},s);T(s,cx+r/2+4,g.yt+14,"2cm","sm");
+  T(s,cx-r/2-14,(g.yt+ap[1])/2,"4cm","sm","end");T(s,cx-(R+r)/2-12,(yb+g.yt)/2,"6cm","sm","end");})();
+(()=>{const s=$("f647");vb(s,"0 0 250 170");const p=proj([40,140],15);const a=8,h=7;
+  const b=[p(0,0,0),p(a,0,0),p(a,0,a),p(0,0,a)],t=p(a/2,h,a/2),m=p(a/2,0,a/2);
+  line(s,b[0],b[3],C.mut,1,dash);line(s,b[3],b[2],C.mut,1,dash);line(s,b[3],t,C.mut,1,dash);
+  el("path",{d:P([b[0],b[1],t]),fill:F.blue,stroke:C.blue,"stroke-width":1.5},s);el("path",{d:P([b[1],b[2],t]),fill:F.blue,stroke:C.blue,"stroke-width":1.5},s);
+  line(s,t,m,C.ink,1,dash);ra(s,m,[1,0],[0,-1],5);T(s,m[0]+6,(t[1]+m[1])/2,"h","lbl","start");
+  T(s,(b[0][0]+b[1][0])/2,b[0][1]+16,"8cm","sm");T(s,(b[1][0]+b[2][0])/2+16,(b[1][1]+b[2][1])/2+8,"8cm","sm","start");})();
+(()=>{const s=$("f651");vb(s,"0 0 240 180");const p=proj([45,150],26);const a=4,c=3,b=3;
+  const V={F:p(0,0,0),G:p(a,0,0),H:p(a,0,b),E:p(0,0,b),B:p(0,c,0),C:p(a,c,0),D:p(a,c,b),A:p(0,c,b)};
+  [["E","F"],["E","H"],["E","A"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1,dash));
+  [["F","G"],["G","H"],["H","D"],["D","A"],["A","B"],["B","F"],["B","C"],["C","G"],["C","D"]].forEach(([u,v])=>line(s,V[u],V[v],C.ink,1.2));
+  el("path",{d:P([V.C,V.G,V.H,V.D]),fill:F.blue,stroke:C.blue,"stroke-width":1.6},s);
+  el("path",{d:P([V.B,V.G,V.C]),fill:F.blue,stroke:C.blue,"stroke-width":1},s);
+  line(s,V.B,V.D,C.blue,1.6);line(s,V.B,V.G,C.blue,1.6);line(s,V.B,V.H,C.blue,1,dash);
+  const off={A:[-4,-6],B:[-8,0],C:[6,-6],D:[6,-6],E:[-8,12],F:[-8,12],G:[4,14],H:[7,8]};
+  for(const k in V)K(s,V[k][0]+off[k][0],V[k][1]+off[k][1],k,off[k][0]<0?"end":"start");
+  T(s,V.B[0]-10,(V.B[1]+V.F[1])/2+12,"3","sm","end");T(s,(V.F[0]+V.G[0])/2,V.F[1]+16,"4","sm");T(s,(V.G[0]+V.H[0])/2+10,(V.G[1]+V.H[1])/2+12,"3","sm","start");
+  T(s,(V.B[0]+V.D[0])/2-6,(V.B[1]+V.D[1])/2-6,"5","sm");})();
+(()=>{const s=$("f655");vb(s,"0 0 220 200");const p=proj([30,185],30);const a=4;
+  const V={F:p(0,0,0),G:p(a,0,0),H:p(a,0,a),E:p(0,0,a),B:p(0,a,0),C:p(a,a,0),D:p(a,a,a),A:p(0,a,a)};
+  [["E","F"],["E","H"],["E","A"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1,dash));
+  [["F","G"],["G","H"],["H","D"],["D","A"],["A","B"],["B","F"],["B","C"],["C","G"],["C","D"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1.2));
+  const q=k=>p(a-k[0],a-k[1],k[2]); // corner at C(a,a,0) going -x,-y,+z
+  const c0=p(a,a,0),c1=p(a-3*a/4,a,0),c2=p(a,a-3*a/4,0),c3=p(a,a,3*a/4);
+  el("path",{d:P([c1,c2,c3]),fill:F.coral,stroke:C.coral,"stroke-width":1.6},s);
+  [c1,c2,c3].forEach(v=>line(s,c0,v,C.ink,2));
+  T(s,(c0[0]+c1[0])/2,c0[1]-6,"3","sm");T(s,c0[0]+8,(c0[1]+c2[1])/2+4,"3","sm","start");T(s,(c0[0]+c3[0])/2+8,(c0[1]+c3[1])/2,"3","sm","start");})();
+(()=>{const s=$("f663");vb(s,"0 0 240 200");const p=proj([50,170],18);const A=4,a=2,H=6,h=3;
+  const B=[p(0,0,0),p(A,0,0),p(A,0,A),p(0,0,A)];const o=(A-a)/2;const T2=[p(o,h,o),p(o+a,h,o),p(o+a,h,o+a),p(o,h,o+a)];const ap=p(A/2,H,A/2);
+  line(s,B[0],B[3],C.mut,1,dash);line(s,B[3],B[2],C.mut,1,dash);line(s,B[3],T2[3],C.mut,1,dash);
+  el("path",{d:P([B[0],B[1],T2[1],T2[0]]),fill:F.blue,stroke:C.blue,"stroke-width":1.5},s);
+  el("path",{d:P([B[1],B[2],T2[2],T2[1]]),fill:F.blue,stroke:C.blue,"stroke-width":1.5},s);
+  el("path",{d:P(T2),fill:F.blue,stroke:C.blue,"stroke-width":1.5},s);
+  [T2[0],T2[1],T2[2],T2[3]].forEach(v=>line(s,v,ap,C.mut,1,dash));
+  const m=p(A/2,0,A/2),mt=p(A/2,h,A/2);line(s,ap,m,C.ink,1,dash);
+  const X=215;[[ap,"3cm",mt],[mt,"3cm",m]].forEach(([u,t,v])=>{line(s,[X,u[1]],[X,v[1]],C.ink,1);line(s,[X-5,u[1]],[X+5,u[1]],C.ink,1);line(s,[X-5,v[1]],[X+5,v[1]],C.ink,1);T(s,X-6,(u[1]+v[1])/2+4,t,"sm","end");});
+  T(s,(B[0][0]+B[1][0])/2,B[0][1]+16,"4cm","sm");T(s,(B[1][0]+B[2][0])/2+12,(B[1][1]+B[2][1])/2+10,"4cm","sm","start");T(s,T2[0][0]-6,T2[0][1]-4,"2cm","sm","end");})();
+(()=>{const s=$("f675");vb(s,"0 0 220 200");const cx=110,r=62,yt=35,yb=yt+2*r;
+  cylinder(s,cx,yt,r,2*r,{fill:F.blue,top:"none",st:C.blue,ry:14});
+  el("circle",{cx,cy:yt+r,r,fill:F.coral,stroke:C.coral,"stroke-width":1.5},s);
+  el("path",{d:`M${cx-r} ${yb} L${cx} ${yt} L${cx+r} ${yb}`,fill:"none",stroke:C.ink,"stroke-width":1.4},s);
+  line(s,[cx,yt+r],[cx+r,yt+r],C.ink,1);el("circle",{cx,cy:yt+r,r:2.3,fill:C.ink},s);T(s,cx+r+6,yt+r+4,"2cm","sm","start");})();
+(()=>{const s=$("f679");vb(s,"0 0 220 190");const p=proj([35,170],13);const a=10;
+  const V={F:p(0,0,0),G:p(a,0,0),H:p(a,0,a),E:p(0,0,a),B:p(0,a,0),C:p(a,a,0),D:p(a,a,a),A:p(0,a,a)};
+  [["E","F"],["E","H"],["E","A"]].forEach(([u,v])=>line(s,V[u],V[v],C.mut,1,dash));
+  const ctr=p(a/2,a/2,a/2);el("circle",{cx:ctr[0],cy:ctr[1],r:a*13/2,fill:F.coral,stroke:C.coral,"stroke-width":1.5},s);
+  el("path",{d:`M${ctr[0]-65} ${ctr[1]} A65 16 0 0 0 ${ctr[0]+65} ${ctr[1]}`,fill:"none",stroke:C.coral,"stroke-width":1},s);
+  [["F","G"],["G","H"],["H","D"],["D","A"],["A","B"],["B","F"],["B","C"],["C","G"],["C","D"]].forEach(([u,v])=>line(s,V[u],V[v],C.ink,1.3));
+  T(s,V.F[0]-6,(V.B[1]+V.F[1])/2+4,"10cm","sm","end");})();
+})();
+</script>
+
+</body></html>

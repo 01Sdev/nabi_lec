@@ -1,0 +1,1118 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>접선의 방정식 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, как в прошлых уроках: словарь → главная формула → лаборатория → типы 37–42 (учебник + 문제집) → шпаргалка. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* v > 0, движение вправо, среднее */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* v < 0, движение влево, мгновенное */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;     /* пример, ответ, v = 0 */
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;     /* аналогия */
+  --amber-soft:#fbf2e0;
+  --violet:#7346c2;    /* ускорение */
+  --violet-soft:#f0eafb;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.6vw,42px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25;font-style:italic;font-family:var(--f-math)}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+.pos{color:var(--blue);font-weight:600}
+.neg{color:var(--coral);font-weight:600}
+.acc{color:var(--violet);font-weight:600}
+.zero{color:var(--green);font-weight:600}
+
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.85}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px}
+.label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.theorem .label{color:var(--blue)}
+.analogy{background:var(--amber-soft)}
+.analogy .label{color:var(--amber)}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral)}
+.note{background:var(--blue-soft)}
+.note .label{color:var(--blue)}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green)}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figcaption{font-size:14px;color:var(--muted)}
+figure svg{width:100%;height:auto;display:block}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--green);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line)}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+.status{border-radius:10px;padding:10px 14px;font-weight:600;border:1px solid var(--line);background:var(--bg)}
+.status.st-pos{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+.status.st-neg{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.status.st-hit{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.status.st-trap{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.src{font-size:12px;color:var(--muted);font-family:var(--f-kr)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:600}
+.tag.hint{background:var(--amber-soft);color:var(--amber)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+.pk{font-size:16px;line-height:1.85}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+details>div,details>p,details>figure{margin-bottom:8px}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+.type-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.hint-grid .prob{padding:14px 16px;gap:8px}
+.hint-grid .pnum{font-size:18px}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (max-width:480px){.hint-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.pnum.wb::before{content:"문제집 ";font-family:var(--f-kr);font-size:12px;font-weight:500;color:var(--muted);vertical-align:middle}
+section[id^="t"] > h3{margin-top:10px}
+.sec-type{color:var(--coral)}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip">미적분1</span>
+    <span class="chip kr">II 미분 › 2 도함수의 활용 › 유형 연습</span>
+    <span class="chip">стр. 93–100 · №316–351</span>
+    <span class="chip kr">문제집 3. 접선의 방정식 · стр. 90–101</span>
+  </div>
+  <h1><span class="kr">접선의 방정식</span>: шесть типов задач</h1>
+  <p class="lead">Все задачи 316–351 решаются одной формулой касательной. Меняется только то, что дано в условии: точка касания, наклон, точка вне кривой или вторая кривая. Для каждого типа здесь есть рецепт, разобранная ключевая задача (<span class="kr">대표 유제</span>) и подсказки к остальным. После каждого типа идут задачи из <span class="kr">문제집</span>.</p>
+</header>
+
+<!-- 0. Словарь -->
+<section id="vocab">
+  <div class="head"><span class="sec-num">0 · 단어장</span><h2>Слова из условий</h2></div>
+  <p>Эти слова встречаются в задачах 316–351. На контрольной они будут только по-корейски, поэтому учи корейский вариант.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">접선</span><span class="r">касательная</span><span class="n">Прямая, которая касается кривой в одной точке.</span></div>
+    <div class="term"><span class="k">접점</span><span class="r">точка касания</span><span class="n">Где касательная «трогает» кривую. Обозначаем (t, f(t)).</span></div>
+    <div class="term"><span class="k">접선의 방정식</span><span class="r">уравнение касательной</span><span class="n">y − f(a) = f′(a)(x − a).</span></div>
+    <div class="term"><span class="k">접선의 기울기</span><span class="r">наклон касательной</span><span class="n">Равен производной в точке касания: f′(a).</span></div>
+    <div class="term"><span class="k">곡선 위의 점</span><span class="r">точка на кривой</span><span class="n">Её координаты подходят в y = f(x).</span></div>
+    <div class="term"><span class="k">곡선 밖의 점</span><span class="r">точка вне кривой</span><span class="n">Не лежит на кривой. Тип 41.</span></div>
+    <div class="term"><span class="k">점 A에서 곡선에 그은 접선</span><span class="r">касательная, проведённая из точки A к кривой</span><span class="n">A не обязательно точка касания. Проверь, лежит ли A на кривой.</span></div>
+    <div class="term"><span class="k">접하다</span><span class="r">касаться</span><span class="n">직선이 곡선에 접한다: прямая касается кривой.</span></div>
+    <div class="term"><span class="k">수직</span><span class="r">перпендикулярный</span><span class="n">Произведение наклонов равно −1.</span></div>
+    <div class="term"><span class="k">평행</span><span class="r">параллельный</span><span class="n">Наклоны равны.</span></div>
+    <div class="term"><span class="k">y절편 · x절편</span><span class="r">пересечение с осью y · с осью x</span><span class="n">y절편: подставь x = 0. x절편: подставь y = 0.</span></div>
+    <div class="term"><span class="k">미정계수</span><span class="r">неизвестный коэффициент</span><span class="n">Буква внутри функции или прямой: a, b, k.</span></div>
+    <div class="term"><span class="k">공통인 접선</span><span class="r">общая касательная</span><span class="n">Одна прямая касается сразу двух кривых. Тип 42.</span></div>
+    <div class="term"><span class="k">일치하다</span><span class="r">совпадать</span><span class="n">Две прямые совпадают: равны и наклоны, и y절편.</span></div>
+    <div class="term"><span class="k">대입하다</span><span class="r">подставить</span><span class="n">x = 1을 대입하면… = если подставить x = 1…</span></div>
+    <div class="term"><span class="k">연립방정식</span><span class="r">система уравнений</span><span class="n">Два уравнения с двумя неизвестными.</span></div>
+    <div class="term"><span class="k">상수</span><span class="r">константа</span><span class="n">Число, которое не меняется: a, b, k в условии.</span></div>
+    <div class="term"><span class="k">양수 · 음수</span><span class="r">положительное · отрицательное число</span><span class="n">«양수 k» = из двух ответов бери положительный.</span></div>
+    <div class="term"><span class="k">유리수</span><span class="r">рациональное число</span><span class="n">Дробь без корней. Нужно в задаче 345.</span></div>
+    <div class="term"><span class="k">제1사분면 · 제3사분면</span><span class="r">I четверть · III четверть</span><span class="n">I: x &gt; 0, y &gt; 0. III: x &lt; 0, y &lt; 0.</span></div>
+    <div class="term"><span class="k">둘러싸인 도형의 넓이</span><span class="r">площадь ограниченной фигуры</span><span class="n">Обычно треугольник между прямыми и осью.</span></div>
+  </div>
+</section>
+
+<!-- 1. Главная формула -->
+<section id="main">
+  <div class="head"><span class="sec-num">1 · 복습</span><h2>Одна формула на всю главу</h2></div>
+  <div class="box analogy">
+    <span class="label">Аналогия</span>
+    <p>Машина ночью едет по извилистой дороге. Фары всегда светят прямо вперёд, туда, куда машина едет в этот момент. Луч фар — это касательная. Чтобы нарисовать луч, нужно знать две вещи: <strong>где стоит машина</strong> (точка касания) и <strong>куда она повёрнута</strong> (наклон).</p>
+  </div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span> 위의 점 <span class="m">(a, f(a))</span>에서의 접선의 방정식은
+      <br><span class="m">y − f(a) = f′(a)(x − a)</span></p>
+    <p class="tr">Уравнение касательной к кривой <span class="m">y = f(x)</span> в точке <span class="m">(a, f(a))</span>: <span class="m">y − f(a) = f′(a)(x − a)</span>.</p>
+  </div>
+  <figure>
+    <svg id="figMaster" viewBox="0 0 520 250" role="img" aria-label="Кривая и касательная в точке (a, f(a))"></svg>
+    <figcaption>Точка касания <span class="m">(a, f(a))</span> и наклон <span class="neg">f′(a)</span> полностью задают касательную. Красная прямая — касательная.</figcaption>
+  </figure>
+  <p>В каждой задаче не хватает одной из двух деталей. Тип задачи показывает, какой именно и как её найти.</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Тип</th><th>Что дано</th><th>Что ищем</th><th>Главный ход</th></tr></thead>
+      <tbody>
+        <tr><td><b>37</b> <span class="kr">접점이 주어진 경우</span></td><td>точка касания <span class="m">(a, f(a))</span></td><td>только наклон</td><td><span class="m">f′(a)</span> → формула</td></tr>
+        <tr><td><b>38</b> <span class="kr">접선과 수직인 직선</span></td><td>точка касания</td><td>перпендикуляр</td><td>наклон <span class="m">−1 / f′(a)</span></td></tr>
+        <tr><td><b>39</b> <span class="kr">기울기가 주어진 경우</span></td><td>наклон <span class="m">m</span></td><td>точку касания <span class="m">t</span></td><td><span class="m">f′(t) = m</span></td></tr>
+        <tr><td><b>40</b> <span class="kr">미정계수의 결정</span></td><td>прямая <span class="m">y = mx + n</span> касается</td><td>букву <span class="m">k, a</span></td><td><span class="m">f′(t) = m</span> и <span class="m">f(t) = mt + n</span></td></tr>
+        <tr><td><b>41</b> <span class="kr">곡선 밖의 한 점</span></td><td>точка <span class="m">(x₁, y₁)</span> не на кривой</td><td>точку касания <span class="m">t</span></td><td>подставить <span class="m">(x₁, y₁)</span> в касательную в точке <span class="m">t</span></td></tr>
+        <tr><td><b>42</b> <span class="kr">공통인 접선</span></td><td>две кривые</td><td>общую точку или букву</td><td><span class="m">f(a) = g(a)</span>, <span class="m">f′(a) = g′(a)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Первый вопрос к любой задаче</span>
+    <p>Точка из условия лежит на кривой? Подставь её в <span class="m">y = f(x)</span>. Если да, это тип 37 или 38. Если нет, точку касания нужно искать: тип 41.</p>
+  </div>
+</section>
+
+<!-- Лаборатория -->
+<section id="lab-sec">
+  <div class="head"><span class="sec-num">2 · 실험실</span><h2>Лаборатория: найди точку касания</h2></div>
+  <p>Двигай точку касания <span class="m">t</span> по кривой. Касательная поворачивается вместе с ней. В двух режимах нужно поймать разные условия.</p>
+  <div class="lab">
+    <div class="controls" role="group" aria-label="Режим">
+      <button id="modeA" aria-pressed="true">Тип 39: наклон = 9</button>
+      <button id="modeB" aria-pressed="false">Тип 41: через точку P(1, 2)</button>
+    </div>
+    <p id="labTask" class="kr"></p>
+    <svg id="labGraph" viewBox="0 0 560 330" role="img" aria-label="Кривая и подвижная касательная"></svg>
+    <div class="controls">
+      <label for="tSlider">t</label>
+      <input type="range" id="tSlider" min="-1.6" max="3.4" step="0.01" value="0.5">
+    </div>
+    <div class="controls" id="jumps"></div>
+    <div class="readout">
+      <div>точка касания<b id="rP"></b></div>
+      <div>наклон <span class="m">f′(t)</span><b id="rS"></b></div>
+      <div id="rXbox">касательная<b id="rL"></b></div>
+    </div>
+    <div class="status" id="status" aria-live="polite"></div>
+  </div>
+  <p>В обоих режимах ответов два. Так бывает часто: уравнение для <span class="m">t</span> квадратное или кубическое. Потом условие задачи (<span class="kr">양수, 제1사분면, y절편이 양수</span>) выбирает один ответ.</p>
+</section>
+
+<!-- ===== ТИП 37 ===== -->
+<section id="t37">
+  <div class="head"><span class="sec-num">Тип 37</span><h2><span class="kr">접선의 방정식(1) 접점의 좌표가 주어진 경우</span></h2><p class="lead">Дана точка касания. Задачи 316–322.</p></div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span> 위의 점 <span class="m">(a, f(a))</span>에서의 접선의 방정식은 다음과 같은 순서로 구한다.<br>(i) 접선의 기울기 <span class="m">f′(a)</span>를 구한다.<br>(ii) <span class="m">f′(a)</span>의 값을 <span class="m">y − f(a) = f′(a)(x − a)</span>에 대입하여 접선의 방정식을 구한다.</p>
+    <p class="tr">Уравнение касательной в точке <span class="m">(a, f(a))</span> находят так: (i) находят наклон <span class="m">f′(a)</span>; (ii) подставляют его в <span class="m">y − f(a) = f′(a)(x − a)</span>.</p>
+  </div>
+  <div class="box note">
+    <span class="label">Рецепт</span>
+    <ol class="steps">
+      <li>Проверь, что точка на кривой: <span class="m">f(a)</span> равно данному <span class="m">y</span>.</li>
+      <li>Найди <span class="m">f′(x)</span>, потом число <span class="m">f′(a)</span>.</li>
+      <li>Запиши <span class="m">y = f′(a)(x − a) + f(a)</span> и раскрой скобки.</li>
+      <li>Ответь именно на вопрос: <span class="kr">y절편</span> — свободный член, <span class="kr">x절편</span> — реши <span class="m">y = 0</span>, площадь — нарисуй картинку.</li>
+    </ol>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Подставляют <span class="m">x = a</span> в саму функцию вместо производной. Наклон — это всегда <span class="m">f′(a)</span>.</li>
+      <li>Если в точке есть буква (320: <span class="m">P(a, 7)</span>), сначала найди её из <span class="m">f(a) = 7</span>.</li>
+      <li>Для произведения <span class="m">g = u·v</span> производная <span class="m">g′ = u′v + uv′</span> (322).</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">316</span><span class="lvl">하 · лёгкая</span><span class="tag">대표 유제</span></div>
+    <p class="kr pk">곡선 <span class="m">y = x³ + 2x² + x − 2</span> 위의 점 <span class="m">(1, 2)</span>에서 그은 접선의 방정식은?</p>
+    <p><strong>Перевод:</strong> найдите уравнение касательной к кривой <span class="m">y = x³ + 2x² + x − 2</span> в точке <span class="m">(1, 2)</span>.</p>
+    <div class="opts"><span>① y = 8x − 6</span><span>② y = 6x − 3</span><span>③ y = 6x − 4</span><span>④ y = 8x + 6</span><span>⑤ y = 6x − 5</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> точка на кривой? 1 + 2 + 1 − 2 = 2 ✓</span>
+        <span><span class="ok">Шаг 2.</span> y′ = 3x² + 4x + 1, f′(1) = 3 + 4 + 1 = 8</span>
+        <span><span class="ok">Шаг 3.</span> y − 2 = 8(x − 1) ⇒ y = 8x − 6</span>
+      </div>
+      <p>Ответ: <span class="answer">① y = 8x − 6</span></p>
+    </details>
+  </div>
+
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">317</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(−1, −1)</span>에서 곡선 <span class="m">y = x³</span>에 접하는 직선의 방정식은?</p>
+      <div class="opts"><span>① y = −3x + 4</span><span>② y = −x − 2</span><span>③ y = 3x + 2</span><span>④ y = −2x − 3</span><span>⑤ y = −3x + 2</span></div>
+      <details><summary>Подсказка</summary><p>Проверь: <span class="m">(−1)³ = −1</span>, значит точка на кривой. Наклон <span class="m">f′(−1)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">318</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x⁴ − 3x + 8</span> 위의 점 <span class="m">(1, 6)</span>에서의 접선의 방정식이 <span class="m">y = mx + n</span>이다. 두 상수 <span class="m">m, n</span>에 대하여 <span class="m">mn</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">m = f′(1)</span>. После раскрытия скобок <span class="m">n</span> — свободный член.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">319</span><span class="lvl">중하</span><span class="tag hint">подсказка</span><span class="src">2026년 6월 고3 19번</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 5x² + 3x + 6</span> 위의 점 <span class="m">(1, 5)</span>에서의 접선의 <span class="m">y</span>절편을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Наклон отрицательный, не потеряй минус. <span class="kr">y절편</span> = значение касательной при <span class="m">x = 0</span>. Это же задача 347 в 문제집.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">320</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = 2x³ − 9</span> 위의 점 <span class="m">P(a, 7)</span>에서의 접선의 방정식을 <span class="m">y = mx + n</span>이라 할 때, 상수 <span class="m">a, m, n</span>에 대하여 <span class="m">|a + m + n|</span>의 값은?</p>
+      <div class="opts"><span>① 12</span><span>② 13</span><span>③ 14</span><span>④ 15</span><span>⑤ 16</span></div>
+      <details><summary>Подсказка</summary><p>Сначала <span class="m">2a³ − 9 = 7</span> ⇒ <span class="m">a</span>. Дальше как 316.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">321</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">다항함수 <span class="m">f(x)</span>에 대하여 곡선 <span class="m">y = f(x)</span> 위의 점 <span class="m">(4, 3)</span>에서의 접선이 점 <span class="m">(7, 9)</span>를 지날 때, <span class="m">lim<sub>x→2</sub></span> <span class="frac"><span>x²f(4) − 4f(x²)</span><span>x − 2</span></span>의 값은?</p>
+      <div class="opts"><span>① −40</span><span>② −30</span><span>③ −20</span><span>④ −10</span><span>⑤ 0</span></div>
+      <details><summary>Подсказка</summary>
+        <p>1) <span class="m">f(4) = 3</span>. Касательная проходит через <span class="m">(4, 3)</span> и <span class="m">(7, 9)</span>, значит <span class="m">f′(4)</span> = наклон этой прямой.</p>
+        <p>2) Разбей числитель: <span class="m">x²f(4) − 4f(x²) = f(4)(x² − 4) − 4(f(x²) − f(4))</span>. Каждую часть дели на <span class="m">x − 2</span>. Во второй части домножь на <span class="m">(x + 2)</span>, чтобы получилось <span class="m">(f(x²) − f(4)) / (x² − 4) → f′(4)</span>.</p>
+      </details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">322</span><span class="lvl">중</span><span class="tag hint">подсказка</span><span class="src">2025년 11월 고3 13번</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x² − 4x − 3</span>에 대하여 곡선 <span class="m">y = f(x)</span> 위의 점 <span class="m">(1, −6)</span>에서의 접선을 <span class="m">l</span>이라 하고, 함수 <span class="m">g(x) = (x³ − 2x)f(x)</span>에 대하여 곡선 <span class="m">y = g(x)</span> 위의 점 <span class="m">(1, 6)</span>에서의 접선을 <span class="m">m</span>이라 하자. 두 직선 <span class="m">l, m</span>과 <span class="m">y</span>축으로 둘러싸인 도형의 넓이는?</p>
+      <div class="opts"><span>① 21</span><span>② 28</span><span>③ 35</span><span>④ 42</span><span>⑤ 49</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">g′(1) = (3 − 2)f(1) + (1 − 2)f′(1)</span>. Найди обе прямые. Их <span class="kr">y절편</span>ы дают основание треугольника на оси <span class="m">y</span>, а <span class="m">x</span> точки пересечения <span class="m">l</span> и <span class="m">m</span> — высоту. Это же задача 340 в 문제집.</p></details>
+    </div>
+  </div>
+
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">356</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 95 · 2013년 9월 고3 문과 27번</span></div>
+    <p class="kr pk">곡선 <span class="m">y = x³ + 2x + 7</span> 위의 점 <span class="m">P(−1, 4)</span>에서의 접선이 점 <span class="m">P</span>가 아닌 점 <span class="m">(a, b)</span>에서 곡선과 만난다. <span class="m">a + b</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> касательная к кривой в точке <span class="m">P(−1, 4)</span> пересекает кривую ещё в одной точке <span class="m">(a, b)</span>, отличной от <span class="m">P</span>. Найдите <span class="m">a + b</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> y′ = 3x² + 2, наклон 3 + 2 = 5. Касательная: y = 5(x + 1) + 4 = 5x + 9</span>
+        <span><span class="ok">Шаг 2.</span> кривая = касательная: x³ + 2x + 7 = 5x + 9 ⇒ x³ − 3x − 2 = 0</span>
+        <span><span class="ok">Шаг 3.</span> x = −1 — двойной корень (там касание): x³ − 3x − 2 = (x + 1)²(x − 2)</span>
+        <span><span class="ok">Шаг 4.</span> a = 2, b = 5·2 + 9 = 19 ⇒ a + b = 21</span>
+      </div>
+      <p>Главная идея: <strong>точка касания всегда двойной корень</strong> уравнения «кривая = касательная». Поэтому множитель <span class="m">(x + 1)²</span> известен заранее, и кубическое уравнение делится сразу. Это работает и в 357, 359.</p>
+      <p>Ответ: <span class="answer">21</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">327 · 328 · 330 · 334</span><span class="lvl">하–중하</span><span class="tag hint">разминка</span></div>
+      <p class="kr">327: <span class="m">y = 4x³ − 5x + 9</span>, 점 <span class="m">(1, 8)</span>에서의 접선의 기울기.<br>328: <span class="m">y = x³ + x² − 5</span>, 점 <span class="m">(1, −3)</span>에서의 기울기.<br>330: <span class="m">y = (x² − 1)(2x + 1)</span>, 점 <span class="m">(1, 0)</span>에서의 기울기.<br>334: <span class="m">y = x³ − 6x + 7</span>, 점 <span class="m">(1, 2)</span>에서의 접선의 <span class="m">y</span>절편.</p>
+      <details><summary>Подсказка</summary><p>Везде просто <span class="m">f′(1)</span>. В 330 производная произведения, скобки не раскрывай. В 334 потом свободный член.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">339 · 345 · 348 · 349</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">339: <span class="m">y = −x³ + 2x</span>, 점 <span class="m">(1, 1)</span>에서의 접선이 점 <span class="m">(−10, a)</span>를 지날 때 <span class="m">a</span>.<br>345: <span class="m">y = x³ − 5x² + 6x</span>, 점 <span class="m">(3, 0)</span>에서의 접선이 점 <span class="m">(5, a)</span>를 지날 때 <span class="m">a</span>.<br>348: <span class="m">y = x³ − 6x² + 6</span>, 점 <span class="m">(1, 1)</span>에서의 접선이 점 <span class="m">(0, a)</span>를 지날 때 <span class="m">a</span>.<br>349: <span class="m">y = x³ − x² + a</span>, 점 <span class="m">(1, a)</span>에서의 접선이 점 <span class="m">(0, 12)</span>를 지날 때 <span class="m">a</span>.</p>
+      <details><summary>Подсказка</summary><p>Построй касательную, потом подставь вторую точку. В 349 буква <span class="m">a</span> остаётся внутри касательной: <span class="m">y = x − 1 + a</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">329 · 332</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">329: 점 <span class="m">(0, f(0))</span>에서의 접선이 <span class="m">y = 3x − 1</span>, <span class="m">g(x) = (x + 2)f(x)</span>일 때 <span class="m">g′(0)</span>은? (① 5 ② 6 ③ 7 ④ 8 ⑤ 9)<br>332: 점 <span class="m">(3, 2)</span>에서의 접선의 기울기가 4, <span class="m">g(x) = (x + 2)f(x)</span>일 때 <span class="m">g′(3)</span>.</p>
+      <details><summary>Подсказка</summary><p>Из касательной читаем два числа: <span class="m">f(a)</span> (точка) и <span class="m">f′(a)</span> (наклон). В 329: <span class="m">f(0) = −1</span>, <span class="m">f′(0) = 3</span>. Потом <span class="m">g′ = f + (x + 2)f′</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">333</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x³ − 3x</span>에서 <span class="m">x</span>의 값이 1에서 4까지 변할 때의 평균변화율과 점 <span class="m">(k, f(k))</span>에서의 접선의 기울기가 서로 같을 때, 양수 <span class="m">k</span>의 값은? (① √3 ② 2 ③ √5 ④ √6 ⑤ √7)</p>
+      <details><summary>Подсказка</summary><p>Средняя скорость изменения <span class="m">(f(4) − f(1)) / 3</span>. Приравняй к <span class="m">f′(k)</span>, возьми <span class="kr">양수</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">343</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="m">f(x) = x³ − 2x² + 2x + a</span>, 점 <span class="m">(1, f(1))</span>에서의 접선이 <span class="m">x</span>축, <span class="m">y</span>축과 만나는 점을 <span class="m">P, Q</span>라 하자. <span class="m">PQ = 6</span>일 때 양수 <span class="m">a</span>는? (① 2√2 ② 5√2/2 ③ 3√2 ④ 7√2/2 ⑤ 4√2)</p>
+      <details><summary>Подсказка</summary><p>Наклон 1, касательная <span class="m">y = x + a</span>. Тогда <span class="m">P(−a, 0)</span>, <span class="m">Q(0, a)</span>, длина <span class="m">PQ = a√2</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">359</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 5x</span> 위의 점 <span class="m">A(1, −4)</span>에서의 접선이 점 <span class="m">A</span>가 아닌 점 <span class="m">B</span>에서 곡선과 만난다. 선분 <span class="m">AB</span>의 길이는? (① √30 ② √35 ③ 2√10 ④ 3√5 ⑤ 5√2)</p>
+      <details><summary>Подсказка</summary><p>Как 356: в уравнении «кривая = касательная» есть множитель <span class="m">(x − 1)²</span>. Потом расстояние между точками.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">357</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="m">f(x) = x³ − 4x² + 6x − 8</span>, 점 <span class="m">P(1, −5)</span>에서의 접선이 곡선과 만나는 점 중 <span class="m">P</span>가 아닌 점을 <span class="m">Q</span>라 하자. 점 <span class="m">Q</span>에서의 접선과 <span class="m">x</span>축, <span class="m">y</span>축으로 둘러싸인 도형의 넓이는? (① 8 ② 10 ③ 12 ④ 14 ⑤ 16)</p>
+      <details><summary>Подсказка</summary><p>Две касательные подряд. Сначала <span class="m">Q</span> через множитель <span class="m">(x − 1)²</span>, потом касательная в <span class="m">Q</span>, потом треугольник с осями.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">376</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 2x</span> 위의 점 <span class="m">(2, 4)</span>에서의 접선과 <span class="m">x</span>축, <span class="m">y</span>축으로 둘러싸인 삼각형의 넓이를 <span class="m">S</span>라 할 때, <span class="m">10S</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Найди оба <span class="kr">절편</span>. Площадь = ½ · |x절편| · |y절편|.</p></details>
+    </div>
+  </div>
+  <div class="box ex">
+    <span class="label">Для сильных (상)</span>
+    <p><span class="kr">문제집</span> <b>331</b>, <b>336</b>, <b>346</b>. Все три сводятся к тому, чтобы найти <span class="m">f(a)</span> и <span class="m">f′(a)</span> из лимита или из условия, а потом записать касательную. Подсказка к 331 и 336: если <span class="m">lim<sub>x→a</sub> (…)/(x − a)</span> — число, то числитель при <span class="m">x = a</span> равен 0, а сам предел — производная числителя в точке <span class="m">a</span>.</p>
+  </div>
+</section>
+
+<!-- ===== ТИП 38 ===== -->
+<section id="t38">
+  <div class="head"><span class="sec-num">Тип 38</span><h2><span class="kr">접선과 수직인 직선의 방정식</span></h2><p class="lead">Прямая, перпендикулярная касательной. Задачи 323–325.</p></div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span> 위의 점 <span class="m">(a, f(a))</span>를 지나고 이 점에서의 접선과 수직인 직선의 방정식은
+      <br><span class="m">y − f(a) = −</span><span class="frac"><span>1</span><span>f′(a)</span></span><span class="m">(x − a)</span> (단, <span class="m">f′(a) ≠ 0</span>)</p>
+    <p class="tk">참고: 두 직선이 서로 수직이다 ⇔ 두 직선의 기울기의 곱이 −1이다.</p>
+    <p class="tr">Прямая через точку <span class="m">(a, f(a))</span>, перпендикулярная касательной в этой точке, имеет наклон <span class="m">−1/f′(a)</span>. Две прямые перпендикулярны ⇔ произведение их наклонов равно −1.</p>
+  </div>
+  <figure>
+    <svg id="figNormal" viewBox="0 0 520 240" role="img" aria-label="Касательная и перпендикулярная к ней прямая"></svg>
+    <figcaption>Красная — касательная с наклоном <span class="m">f′(a)</span>. Фиолетовая проходит через ту же точку под прямым углом, её наклон <span class="m">−1/f′(a)</span>.</figcaption>
+  </figure>
+  <div class="box note">
+    <span class="label">Рецепт</span>
+    <ol class="steps">
+      <li>Найди <span class="m">f′(a)</span>, как в типе 37.</li>
+      <li>Переверни и смени знак: наклон <span class="m">−1/f′(a)</span>. Пример: 2 → −½, −½ → 2, 1 → −1.</li>
+      <li>Прямая проходит через <strong>ту же точку</strong> <span class="m">(a, f(a))</span>.</li>
+    </ol>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Меняют только знак (2 → −2) или только переворачивают (2 → ½). Нужно и то, и другое.</li>
+      <li>Ответ в виде <span class="m">ax + by + 6 = 0</span> (323): сначала получи свою прямую, потом домножь так, чтобы свободный член стал ровно +6.</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">323</span><span class="lvl">하 · лёгкая</span><span class="tag">대표 유제</span></div>
+    <p class="kr pk">곡선 <span class="m">y = x³ − 3x² + 4x + 3</span> 위의 점 <span class="m">(1, 5)</span>를 지나고 이 점에서의 접선과 수직인 직선의 방정식이 <span class="m">ax + by + 6 = 0</span>일 때, 상수 <span class="m">a, b</span>에 대하여 <span class="m">ab</span>의 값은?</p>
+    <p><strong>Перевод:</strong> прямая через точку <span class="m">(1, 5)</span> кривой, перпендикулярная касательной в этой точке, имеет уравнение <span class="m">ax + by + 6 = 0</span>. Найдите <span class="m">ab</span>.</p>
+    <div class="opts"><span>① −2</span><span>② −1</span><span>③ 1</span><span>④ 2</span><span>⑤ 3</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> точка на кривой: 1 − 3 + 4 + 3 = 5 ✓</span>
+        <span><span class="ok">Шаг 2.</span> y′ = 3x² − 6x + 4, f′(1) = 1</span>
+        <span><span class="ok">Шаг 3.</span> наклон перпендикуляра −1/1 = −1: y − 5 = −(x − 1) ⇒ x + y − 6 = 0</span>
+        <span><span class="ok">Шаг 4.</span> нужно «+6»: умножаем на −1 ⇒ −x − y + 6 = 0 ⇒ a = −1, b = −1</span>
+      </div>
+      <p>Ответ: <span class="answer">③ ab = 1</span></p>
+    </details>
+  </div>
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">324</span><span class="lvl">하</span><span class="tag hint">подсказка</span><span class="src">2020년 11월 고3 문과 9번</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 3x² + 2x + 2</span> 위의 점 <span class="m">A(0, 2)</span>에서의 접선과 수직이고 점 <span class="m">A</span>를 지나는 직선의 <span class="m">x</span>절편은?</p>
+      <div class="opts"><span>① 4</span><span>② 6</span><span>③ 8</span><span>④ 10</span><span>⑤ 12</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">f′(0)</span> — это коэффициент при <span class="m">x</span>. Перевернуть, сменить знак, потом <span class="m">y = 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">325</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 2x² + x + 3</span> 위의 점 <span class="m">A(0, 3)</span>에서의 접선과 수직이고 점 <span class="m">A</span>를 지나는 직선의 <span class="m">x</span>절편은?</p>
+      <div class="opts"><span>① 3</span><span>② 6</span><span>③ 9</span><span>④ 12</span><span>⑤ 15</span></div>
+      <details><summary>Подсказка</summary><p>Точно как 324.</p></details>
+    </div>
+  </div>
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">352</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 94 · 2016년 11월 고3 문과 26번</span></div>
+    <p class="kr pk">곡선 <span class="m">y = x³ − ax + b</span> 위의 점 <span class="m">(1, 1)</span>에서의 접선과 수직인 직선의 기울기가 <span class="m">−½</span>이다. 두 상수 <span class="m">a, b</span>에 대하여 <span class="m">a + b</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> прямая, перпендикулярная касательной в точке <span class="m">(1, 1)</span>, имеет наклон <span class="m">−½</span>. Найдите <span class="m">a + b</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> обратный ход: перпендикуляр −½ ⇒ касательная 2 (−½ · 2 = −1)</span>
+        <span><span class="ok">Шаг 2.</span> y′ = 3x² − a ⇒ 3 − a = 2 ⇒ a = 1</span>
+        <span><span class="ok">Шаг 3.</span> точка на кривой: 1 − a + b = 1 ⇒ b = a = 1</span>
+      </div>
+      <p>Два неизвестных — значит, нужны два уравнения: одно из наклона, другое из того, что точка лежит на кривой.</p>
+      <p>Ответ: <span class="answer">2</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">354</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = 2x³ + ax + b</span> 위의 점 <span class="m">(1, 1)</span>에서의 접선과 수직인 직선의 기울기가 <span class="m">−½</span>이다. <span class="m">a² + b²</span>의 값은? (① 25 ② 27 ③ 29 ④ 31 ⑤ 33)</p>
+      <details><summary>Подсказка</summary><p>Двойник 352: наклон касательной 2, точка на кривой.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">350</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">f(x) = ⅔x³ + ax</span> 위의 두 점 <span class="m">(0, f(0))</span>, <span class="m">(1, f(1))</span>에서의 접선이 서로 수직일 때, 상수 <span class="m">a</span>의 값은? (① −2 ② −1 ③ 0 ④ 1 ⑤ 2)</p>
+      <details><summary>Подсказка</summary><p><span class="m">f′(0) · f′(1) = −1</span>. Получится полный квадрат.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ТИП 39 ===== -->
+<section id="t39">
+  <div class="head"><span class="sec-num">Тип 39</span><h2><span class="kr">접선의 방정식(2) 기울기가 주어진 경우</span></h2><p class="lead">Дан наклон, точку касания нужно найти. Задачи 326–333.</p></div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span>에 접하고 기울기가 <span class="m">m</span>인 접선의 방정식은 다음과 같은 순서로 구한다.<br>(i) 접점의 좌표를 <span class="m">(t, f(t))</span>로 놓는다.<br>(ii) <span class="m">f′(t) = m</span>임을 이용하여 <span class="m">t</span>의 값을 구한다.<br>(iii) <span class="m">t</span>의 값을 <span class="m">y − f(t) = m(x − t)</span>에 대입하여 접선의 방정식을 구한다.</p>
+    <p class="tk">참고: 기울기가 <span class="m">m</span>인 직선이 <span class="m">x</span>축의 양의 방향과 이루는 각의 크기를 <span class="m">θ</span>라 하면 <span class="m">m = tan θ</span>이다.</p>
+    <p class="tr">Касательная с наклоном <span class="m">m</span>: (i) обозначаем точку касания <span class="m">(t, f(t))</span>; (ii) из <span class="m">f′(t) = m</span> находим <span class="m">t</span>; (iii) подставляем в <span class="m">y − f(t) = m(x − t)</span>. Если прямая образует с положительным направлением оси <span class="m">x</span> угол <span class="m">θ</span>, то <span class="m">m = tan θ</span>.</p>
+  </div>
+  <div class="box note">
+    <span class="label">Рецепт</span>
+    <ol class="steps">
+      <li>Переведи условие в число <span class="m">m</span>: <span class="kr">평행</span> — тот же наклон, <span class="kr">수직</span> — <span class="m">−1/m</span>.</li>
+      <li>Реши <span class="m">f′(t) = m</span>. Корней может быть два.</li>
+      <li>Для каждого <span class="m">t</span> найди точку <span class="m">(t, f(t))</span> и касательную.</li>
+      <li>Оставь то, что разрешает условие: <span class="kr">제1사분면</span>, <span class="kr">y절편이 양수</span>, <span class="kr">양수</span>.</li>
+    </ol>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Прямую <span class="m">x − 7y + 14 = 0</span> (330) читают как наклон 1 или 7. Сначала вырази <span class="m">y</span>: <span class="m">y = x/7 + 2</span>, наклон <span class="m">1/7</span>.</li>
+      <li>Находят <span class="m">t</span> и пишут ответ <span class="m">t</span>, хотя спрашивают точку или <span class="kr">y절편</span>.</li>
+      <li>Берут только один корень и теряют второй, хотя нужен был именно он (333).</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">326</span><span class="lvl">하 · лёгкая</span><span class="tag">대표 유제</span></div>
+    <p class="kr pk">곡선 <span class="m">f(x) = −3x² + x + 4</span> 위의 점 <span class="m">(a, f(a))</span>에서의 접선의 기울기가 −5일 때, 상수 <span class="m">a</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> наклон касательной в точке <span class="m">(a, f(a))</span> равен −5. Найдите <span class="m">a</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = −6x + 1</span>
+        <span><span class="ok">Шаг 2.</span> f′(a) = −5 ⇒ −6a + 1 = −5 ⇒ a = 1</span>
+      </div>
+      <p>Здесь спрашивают только <span class="m">a</span>, поэтому шаг (iii) не нужен.</p>
+      <p>Ответ: <span class="answer">a = 1</span></p>
+    </details>
+  </div>
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">327</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x² − 2x</span> 위의 점으로서 그 점에서의 접선의 기울기가 4인 점의 좌표는?</p>
+      <div class="opts"><span>① (1, −1)</span><span>② (2, 0)</span><span>③ (3, 3)</span><span>④ (4, 8)</span><span>⑤ (0, 0)</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">2x − 2 = 4</span>, потом <span class="m">y</span> из кривой.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">328</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = 2x² − x + 3</span>에서 기울기가 3인 접선을 그을 때, 접점의 좌표를 <span class="m">(a, b)</span>라 하면 <span class="m">a + b</span>의 값은?</p>
+      <div class="opts"><span>① 2</span><span>② 3</span><span>③ 4</span><span>④ 5</span><span>⑤ 6</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">4a − 1 = 3</span>, затем <span class="m">b = f(a)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">329</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 9x² + 21x + 4</span>에 접하고 직선 <span class="m">y = −6x + 4</span>에 평행한 직선의 <span class="m">y</span>절편을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="kr">평행</span> ⇒ наклон −6. Уравнение для <span class="m">x</span> — полный квадрат, корень один.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">330</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ + 6x² + 5x − 10</span>에 접하고 직선 <span class="m">x − 7y + 14 = 0</span>에 수직인 직선의 방정식은?</p>
+      <div class="opts"><span>① 7x − y − 14 = 0</span><span>② 7x − y + 14 = 0</span><span>③ 7x − y − 18 = 0</span><span>④ 7x + y − 18 = 0</span><span>⑤ 7x + y + 18 = 0</span></div>
+      <details><summary>Подсказка</summary><p>Наклон данной прямой <span class="m">1/7</span>, значит нужный наклон −7. Опять полный квадрат.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">331</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 8x + a</span> 위의 점 <span class="m">P</span>에서의 접선의 방정식이 <span class="m">y = 4x + b</span>일 때, 상수 <span class="m">a, b</span>에 대하여 <span class="m">a − b</span>의 값을 구하시오. (단, 점 <span class="m">P</span>는 제1사분면 위의 점이다.)</p>
+      <details><summary>Подсказка</summary><p><span class="m">3t² − 8 = 4</span> даёт <span class="m">t = ±2</span>. <span class="kr">제1사분면</span> ⇒ <span class="m">t &gt; 0</span>. Запиши касательную с буквой <span class="m">a</span> и сравни свободный член с <span class="m">b</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">332</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − ax² + bx − 1</span> 위의 점 <span class="m">(1, 2)</span>에서의 접선의 기울기가 2일 때, 상수 <span class="m">a, b</span>에 대하여 <span class="m">a + b</span>의 값은?</p>
+      <div class="opts"><span>① 2</span><span>② 5</span><span>③ 8</span><span>④ 11</span><span>⑤ 14</span></div>
+      <details><summary>Подсказка</summary><p>Два уравнения: точка на кривой и <span class="m">f′(1) = 2</span>. Как 352 из 문제집.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">333</span><span class="lvl">중하</span><span class="tag hint">подсказка</span><span class="src">2026년 9월 고3 19번</span></div>
+      <p class="kr">기울기가 8이고 <span class="m">y</span>절편이 양수인 직선이 곡선 <span class="m">y = x³ − 3x² − x + 2</span>에 접할 때, 이 직선은 점 <span class="m">(1, k)</span>를 지난다. <span class="m">k</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">3t² − 6t − 1 = 8</span> даёт два <span class="m">t</span>. Построй обе касательные и оставь ту, у которой <span class="kr">y절편</span> положительный. Ту же идею с двумя корнями показывает лаборатория, режим «Тип 39» (задача 334).</p></details>
+    </div>
+  </div>
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">361</span><span class="lvl">중 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 96 · 2006년 11월 고3 이과 18번</span></div>
+    <p class="kr pk">사차함수 <span class="m">f(x) = x⁴ − 4x³ + 6x² + 4</span>의 그래프 위의 점 <span class="m">(a, b)</span>에서의 접선의 기울기가 4일 때, <span class="m">a² + b²</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> наклон касательной к графику в точке <span class="m">(a, b)</span> равен 4. Найдите <span class="m">a² + b²</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f′(x) = 4x³ − 12x² + 12x</span>
+        <span><span class="ok">Шаг 2.</span> 4a³ − 12a² + 12a = 4 ⇒ a³ − 3a² + 3a − 1 = 0 ⇒ (a − 1)³ = 0 ⇒ a = 1</span>
+        <span><span class="ok">Шаг 3.</span> b = f(1) = 1 − 4 + 6 + 4 = 7</span>
+        <span><span class="ok">Шаг 4.</span> a² + b² = 1 + 49 = 50</span>
+      </div>
+      <p>Узнай куб разности: <span class="m">a³ − 3a² + 3a − 1 = (a − 1)³</span>. Без этого кубическое уравнение кажется трудным.</p>
+      <p>Ответ: <span class="answer">50</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">360</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">직선 <span class="m">x + 2y − 8 = 0</span>에 수직이고 곡선 <span class="m">y = −x⁴ + 6x − 2</span>에 접하는 직선의 방정식을 <span class="m">y = mx + n</span>이라 할 때, <span class="m">m + n</span>의 값은? (① 1 ② 2 ③ 3 ④ 4 ⑤ 5)</p>
+      <details><summary>Подсказка</summary><p>Наклон данной прямой <span class="m">−½</span>, значит <span class="m">m = 2</span>. Реши <span class="m">−4t³ + 6 = 2</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">368</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = ⅓x³ + 11/3 (x &gt; 0)</span> 위를 움직이는 점 <span class="m">P</span>와 직선 <span class="m">x − y − 10 = 0</span> 사이의 거리를 최소가 되게 하는 점 <span class="m">P</span>의 좌표를 <span class="m">(a, b)</span>라 할 때, <span class="m">a + b</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Ближайшая к прямой точка кривой — та, где касательная <span class="kr">평행</span> этой прямой. Наклон прямой 1, реши <span class="m">t² = 1</span> при <span class="m">t &gt; 0</span>.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ТИП 40 ===== -->
+<section id="t40">
+  <div class="head"><span class="sec-num">Тип 40</span><h2><span class="kr">곡선과 직선이 접할 때 미정계수의 결정</span></h2><p class="lead">Прямая касается кривой, найти букву. Задачи 334–337.</p></div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span>와 직선 <span class="m">y = mx + n</span>이 접하면 다음을 이용하여 미정계수를 구한다.<br>(1) 접점의 좌표를 <span class="m">(t, f(t))</span>로 놓고 <span class="m">t</span>와 미정계수를 이용하여 세운 접선의 방정식이 직선 <span class="m">y = mx + n</span>과 일치함을 이용한다. ⇒ (접선의 기울기) = <span class="m">m</span>, (접선의 <span class="m">y</span>절편) = <span class="m">n</span><br>(2) <span class="m">m</span>의 값이 주어지면 접점의 좌표 <span class="m">(t, f(t))</span>에 대하여 <span class="m">f′(t) = m</span>임을 이용하여 접점의 좌표를 구한 후 <span class="m">y = f(x)</span> 또는 <span class="m">y = mx + n</span>에 대입한다.</p>
+    <p class="tr">Если кривая и прямая <span class="m">y = mx + n</span> касаются: (1) обозначь точку касания <span class="m">(t, f(t))</span>, запиши касательную и приравняй её к данной прямой: наклон = <span class="m">m</span>, <span class="kr">y절편</span> = <span class="m">n</span>. (2) Если <span class="m">m</span> известно, найди <span class="m">t</span> из <span class="m">f′(t) = m</span>, затем подставь точку в кривую или в прямую.</p>
+  </div>
+  <div class="box note">
+    <span class="label">Рецепт: два условия касания</span>
+    <ol class="steps">
+      <li><strong>Одинаковый наклон:</strong> <span class="m">f′(t) = m</span>.</li>
+      <li><strong>Общая точка:</strong> <span class="m">f(t) = mt + n</span>.</li>
+      <li>Если известен наклон, из первого уравнения находим <span class="m">t</span>, из второго — букву.</li>
+      <li>Если кривая — парабола, можно короче: уравнение <span class="m">f(x) = mx + n</span> имеет двойной корень, то есть <span class="m">D = 0</span>.</li>
+    </ol>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Пишут только одно условие. Касание — это <strong>всегда два</strong> уравнения.</li>
+      <li>Забывают про условие выбора: <span class="kr">양수 k</span> (334), <span class="kr">제3사분면</span> ⇒ <span class="m">t &lt; 0</span> (336).</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">334</span><span class="lvl">중하 · средняя</span><span class="tag">대표 유제</span></div>
+    <p class="kr pk">직선 <span class="m">y = 9x + k</span>가 곡선 <span class="m">y = x³ − 3x²</span>에 접할 때, 양수 <span class="m">k</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> прямая <span class="m">y = 9x + k</span> касается кривой <span class="m">y = x³ − 3x²</span>. Найдите положительное <span class="m">k</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> наклон: 3t² − 6t = 9 ⇒ t² − 2t − 3 = 0 ⇒ t = 3 или t = −1</span>
+        <span><span class="ok">Шаг 2.</span> t = 3: точка (3, 0), касательная y = 9x − 27 ⇒ k = −27</span>
+        <span><span class="ok">Шаг 3.</span> t = −1: точка (−1, −4), касательная y = 9(x + 1) − 4 = 9x + 5 ⇒ k = 5</span>
+        <span><span class="ok">Шаг 4.</span> <span class="kr">양수</span> ⇒ k = 5</span>
+      </div>
+      <p>Оба случая можно увидеть в лаборатории (режим «Тип 39»): там та же кривая и тот же наклон 9.</p>
+      <p>Ответ: <span class="answer">k = 5</span></p>
+    </details>
+  </div>
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">335</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">직선 <span class="m">y = kx + 2</span>가 곡선 <span class="m">y = 2x³ − 2</span>에 접할 때, 상수 <span class="m">k</span>의 값은?</p>
+      <div class="opts"><span>① 6</span><span>② 8</span><span>③ 10</span><span>④ 12</span><span>⑤ 14</span></div>
+      <details><summary>Подсказка</summary><p>Здесь известен <span class="kr">y절편</span> (2), а не наклон. Касательная в точке <span class="m">t</span>: <span class="m">y = 6t²x − 4t³ − 2</span>. Приравняй свободный член к 2.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">336</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = 3x³ − k</span>와 직선 <span class="m">y = 9x</span>가 제3사분면에서 접할 때, 상수 <span class="m">k</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p><span class="m">9t² = 9</span> ⇒ <span class="m">t = ±1</span>. III четверть ⇒ <span class="m">t = −1</span>. Точка лежит и на прямой, и на кривой.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">337</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">f(x) = x³ + 2x²</span>에 접하는 직선 <span class="m">y = ax + b</span>가 곡선 <span class="m">g(x) = 2x²</span>에도 접할 때, <span class="frac"><span>b</span><span>a</span></span>의 값은? (단, <span class="m">a, b</span>는 0이 아닌 상수이다.)</p>
+      <div class="opts"><span>① 5/54</span><span>② 1/9</span><span>③ 7/54</span><span>④ 4/27</span><span>⑤ 1/6</span></div>
+      <details><summary>Подсказка</summary><p>Касательная к <span class="m">f</span> в точке <span class="m">t</span>: <span class="m">a = 3t² + 4t</span>, <span class="m">b = −2t³ − 2t²</span>. Касание с параболой: <span class="m">2x² − ax − b = 0</span> имеет <span class="m">D = a² + 8b = 0</span>. Получится <span class="m">t³(9t + 8) = 0</span>, а <span class="m">t = 0</span> запрещено условием.</p></details>
+    </div>
+  </div>
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">362</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 96 · 2023년 3월 고3 17번</span></div>
+    <p class="kr pk">직선 <span class="m">y = 4x + 5</span>가 곡선 <span class="m">y = 2x⁴ − 4x + k</span>에 접할 때, 상수 <span class="m">k</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> прямая <span class="m">y = 4x + 5</span> касается кривой <span class="m">y = 2x⁴ − 4x + k</span>. Найдите <span class="m">k</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> наклон: 8t³ − 4 = 4 ⇒ t³ = 1 ⇒ t = 1</span>
+        <span><span class="ok">Шаг 2.</span> точка на прямой: y = 4 + 5 = 9</span>
+        <span><span class="ok">Шаг 3.</span> та же точка на кривой: 2 − 4 + k = 9 ⇒ k = 11</span>
+      </div>
+      <p>Ответ: <span class="answer">11</span></p>
+    </details>
+  </div>
+  <p>Задачи 352 и 354 из 문제집 (тип 38 выше) тоже решаются этими двумя условиями.</p>
+</section>
+
+<!-- ===== ТИП 41 ===== -->
+<section id="t41">
+  <div class="head"><span class="sec-num">Тип 41</span><h2><span class="kr">접선의 방정식(3) 곡선 밖의 한 점이 주어진 경우</span></h2><p class="lead">Касательная из точки вне кривой. Задачи 338–345.</p></div>
+  <div class="box analogy">
+    <span class="label">Аналогия</span>
+    <p>Ты стоишь в стороне от трассы и светишь фонарём так, чтобы луч лёг на дорогу точно вдоль её направления. Где луч коснётся дороги, заранее неизвестно, это и нужно найти. Обычно таких мест несколько: можно светить на ближний поворот или на дальний.</p>
+  </div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">곡선 <span class="m">y = f(x)</span> 위에 있지 않은 한 점 <span class="m">(x₁, y₁)</span>에서 곡선에 그은 접선의 방정식은 다음과 같은 순서로 구한다.<br>(i) 접점의 좌표를 <span class="m">(t, f(t))</span>로 놓는다.<br>(ii) 접선의 기울기 <span class="m">f′(t)</span>를 구한다.<br>(iii) 접선의 방정식을 <span class="m">y − f(t) = f′(t)(x − t)</span>로 놓고 <span class="m">x = x₁, y = y₁</span>을 대입하여 <span class="m">t</span>의 값을 구한다.<br>(iv) <span class="m">t</span>의 값을 <span class="m">y − f(t) = f′(t)(x − t)</span>에 대입하여 접선의 방정식을 구한다.</p>
+    <p class="tk">주의: 접선의 방정식을 구할 때는 주어진 점의 좌표를 곡선의 방정식에 대입하여 그 점이 곡선 위의 점인지 아닌지를 확인한다.</p>
+    <p class="tr">Касательная из точки <span class="m">(x₁, y₁)</span>, не лежащей на кривой: (i) точка касания <span class="m">(t, f(t))</span>; (ii) наклон <span class="m">f′(t)</span>; (iii) в уравнение касательной подставляем <span class="m">x = x₁, y = y₁</span> и находим <span class="m">t</span>; (iv) подставляем <span class="m">t</span> обратно. Внимание: сначала проверь, лежит ли данная точка на кривой.</p>
+  </div>
+  <div class="box note">
+    <span class="label">Рецепт</span>
+    <ol class="steps">
+      <li>Подставь данную точку в кривую. Не подходит ⇒ это тип 41.</li>
+      <li>Запиши касательную в общей точке <span class="m">t</span>: <span class="m">y = f′(t)(x − t) + f(t)</span>.</li>
+      <li>Подставь <span class="m">x = x₁</span>, <span class="m">y = y₁</span>. Получится уравнение только на <span class="m">t</span>.</li>
+      <li>Найди все <span class="m">t</span> и для каждого запиши касательную.</li>
+    </ol>
+    <p><strong>Короткий путь</strong>, если точка на оси <span class="m">y</span>, то есть <span class="m">(0, k)</span>: <span class="kr">y절편</span> касательной в точке <span class="m">t</span> равен <span class="m">f(t) − t·f′(t)</span>. Сразу пиши <span class="m">f(t) − t·f′(t) = k</span>. Так решаются 339, 340, 343, 371.</p>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Считают данную точку точкой касания и берут наклон <span class="m">f′(x₁)</span>. Это главная ошибка всего типа.</li>
+      <li>Теряют один из двух <span class="m">t</span> (338: <span class="m">t = 0</span> и <span class="m">t = 2</span>).</li>
+      <li>343: касательная проходит через <span class="m">(0, 2)</span>, значит её <span class="kr">y절편</span> — сразу 2. Считать почти ничего не нужно.</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">338</span><span class="lvl">하 · лёгкая</span><span class="tag">대표 유제</span></div>
+    <p class="kr pk">다음 보기 중 점 <span class="m">(1, 2)</span>에서 곡선 <span class="m">y = x² + 2x</span>에 그은 접선의 방정식인 것만을 있는 대로 고른 것은?</p>
+    <p class="kr">ㄱ. <span class="m">y = 2x</span> &nbsp; ㄴ. <span class="m">y = 3x − 1</span> &nbsp; ㄷ. <span class="m">y = 4x − 2</span> &nbsp; ㄹ. <span class="m">y = 5x − 3</span> &nbsp; ㅁ. <span class="m">y = 6x − 4</span></p>
+    <p><strong>Перевод:</strong> выберите все прямые из списка, которые являются касательными к кривой <span class="m">y = x² + 2x</span>, проведёнными из точки <span class="m">(1, 2)</span>.</p>
+    <div class="opts"><span>① ㄱ, ㄷ</span><span>② ㄱ, ㅁ</span><span>③ ㄴ, ㄹ</span><span>④ ㄷ, ㄹ</span><span>⑤ ㄹ, ㅁ</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> точка на кривой? 1 + 2 = 3 ≠ 2 ⇒ вне кривой, тип 41</span>
+        <span><span class="ok">Шаг 2.</span> касательная в t: y = (2t + 2)(x − t) + t² + 2t = (2t + 2)x − t²</span>
+        <span><span class="ok">Шаг 3.</span> подставляем (1, 2): 2t + 2 − t² = 2 ⇒ t(t − 2) = 0 ⇒ t = 0 или t = 2</span>
+        <span><span class="ok">Шаг 4.</span> t = 0: y = 2x (ㄱ); t = 2: y = 6x − 4 (ㅁ)</span>
+      </div>
+      <p>Ловушка: все пять прямых проходят через <span class="m">(1, 2)</span>. Если взять наклон <span class="m">f′(1) = 4</span>, получится ㄷ, а это не касательная. Проверь в лаборатории, режим «Тип 41».</p>
+      <p>Ответ: <span class="answer">② ㄱ, ㅁ</span></p>
+    </details>
+  </div>
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">339</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(0, 2)</span>에서 곡선 <span class="m">y = x³ − 2x</span>에 그은 접선의 기울기는?</p>
+      <div class="opts"><span>① −2</span><span>② −1</span><span>③ 1</span><span>④ 2</span><span>⑤ 4</span></div>
+      <details><summary>Подсказка</summary><p>Короткий путь: <span class="m">f(t) − t·f′(t) = −2t³ = 2</span>. Наклон <span class="m">f′(t)</span>, а не <span class="m">t</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">340</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">원점에서 곡선 <span class="m">y = x³ − 2x + 16</span>에 그은 접선의 방정식을 <span class="m">y = mx</span>라 할 때, 상수 <span class="m">m</span>의 값은?</p>
+      <div class="opts"><span>① 4</span><span>② 6</span><span>③ 8</span><span>④ 10</span><span>⑤ 12</span></div>
+      <details><summary>Подсказка</summary><p>Через начало координат ⇒ <span class="kr">y절편</span> 0: <span class="m">f(t) − t·f′(t) = 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">341</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(2, 5)</span>에서 <span class="m">y = −x² + 4x</span>에 그은 접선 중 기울기가 음수인 것은?</p>
+      <div class="opts"><span>① y = −2x + 1</span><span>② y = −2x + 9</span><span>③ y = −x + 3</span><span>④ y = −5x − 12</span><span>⑤ y = −2x − 1</span></div>
+      <details><summary>Подсказка</summary><p>Получишь два <span class="m">t</span> и два наклона, ±2. Оставь отрицательный.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">342</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(−1, 2)</span>에서 곡선 <span class="m">y = x³ + 3x² + 4x + 2</span>에 그은 접선의 방정식은?</p>
+      <div class="opts"><span>① y = 2x + 3</span><span>② y = 2x + 4</span><span>③ y = 3x + 5</span><span>④ y = 4x + 5</span><span>⑤ y = 4x + 6</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">f(−1) = 0 ≠ 2</span>, точка вне кривой. Подставь <span class="m">(−1, 2)</span> в касательную в точке <span class="m">t</span>. Получится кубическое уравнение с целым корнем <span class="m">t = −2</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">343</span><span class="lvl">중하</span><span class="tag hint">подсказка</span><span class="src">2022년 11월 고3 8번 변형</span></div>
+      <p class="kr">점 <span class="m">(0, 2)</span>에서 곡선 <span class="m">y = x³ − 2x + 4</span>에 그은 접선의 <span class="m">y</span>절편은?</p>
+      <div class="opts"><span>① 0</span><span>② 1/2</span><span>③ 1</span><span>④ 3/2</span><span>⑤ 2</span></div>
+      <details><summary>Подсказка</summary><p>Прочитай вопрос ещё раз: касательная проходит через точку на оси <span class="m">y</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">344</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(−1, −21)</span>에서 곡선 <span class="m">y = x³ − 3x + 4</span>에 그은 접선의 <span class="m">y</span>절편을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Общий путь (точка не на оси <span class="m">y</span>). Уравнение на <span class="m">t</span> имеет один целый корень <span class="m">t = 2</span>, остальные не действительные.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">345</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(4, −12)</span>에서 곡선 <span class="m">y = x³ − 5x² + 4x</span>에 그은 접선 중 기울기가 유리수인 접선의 방정식을 <span class="m">y = ax + b</span>라 할 때, <span class="m">ab</span>의 값은?</p>
+      <div class="opts"><span>① −16</span><span>② −14</span><span>③ −12</span><span>④ −10</span><span>⑤ −8</span></div>
+      <details><summary>Подсказка</summary><p>Уравнение на <span class="m">t</span> кубическое: один корень целый (<span class="m">t = 2</span>), два других с <span class="m">√57</span>. <span class="kr">유리수</span> оставляет только целый.</p></details>
+    </div>
+  </div>
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">371</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 98 · 2022년 11월 고3 8번</span></div>
+    <p class="kr pk">점 <span class="m">(0, 4)</span>에서 곡선 <span class="m">y = x³ − x + 2</span>에 그은 접선의 <span class="m">x</span>절편은?</p>
+    <p><strong>Перевод:</strong> из точки <span class="m">(0, 4)</span> проведена касательная к кривой <span class="m">y = x³ − x + 2</span>. Найдите её точку пересечения с осью <span class="m">x</span>.</p>
+    <div class="opts"><span>① −1/2</span><span>② −1</span><span>③ −3/2</span><span>④ −2</span><span>⑤ −5/2</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> f(0) = 2 ≠ 4 ⇒ точка вне кривой</span>
+        <span><span class="ok">Шаг 2.</span> y절편 касательной в t: f(t) − t·f′(t) = t³ − t + 2 − t(3t² − 1) = −2t³ + 2</span>
+        <span><span class="ok">Шаг 3.</span> −2t³ + 2 = 4 ⇒ t³ = −1 ⇒ t = −1</span>
+        <span><span class="ok">Шаг 4.</span> наклон f′(−1) = 3 − 1 = 2 ⇒ y = 2x + 4 ⇒ x절편: 2x + 4 = 0 ⇒ x = −2</span>
+      </div>
+      <p>Ответ: <span class="answer">④ −2</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">370</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">점 <span class="m">(0, −4)</span>에서 곡선 <span class="m">y = x³ − 2</span>에 그은 접선이 <span class="m">x</span>축과 만나는 점의 좌표를 <span class="m">(a, 0)</span>이라 할 때, <span class="m">a</span>의 값은? (① 7/6 ② 4/3 ③ 3/2 ④ 5/3 ⑤ 11/6)</p>
+      <details><summary>Подсказка</summary><p>Двойник 371: <span class="m">f(t) − t·f′(t) = −4</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">342</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">양수 <span class="m">t</span>에 대하여 함수 <span class="m">f(x) = 2x³ − 7x² + 1</span>의 그래프 위의 점 <span class="m">(t, f(t))</span>에서의 접선이 점 <span class="m">(0, 1)</span>을 지나도록 하는 <span class="m">t</span>의 값은? (① 3/4 ② 1 ③ 5/4 ④ 3/2 ⑤ 7/4)</p>
+      <details><summary>Подсказка</summary><p><span class="m">f(t) − t·f′(t) = 1</span> ⇒ <span class="m">t²(7 − 4t) = 0</span>. <span class="kr">양수</span> отбрасывает <span class="m">t = 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">344</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">최고차항의 계수가 1이고 <span class="m">f(0) = 0</span>인 삼차함수 <span class="m">f(x)</span>가 <span class="m">lim<sub>x→a</sub></span> <span class="frac"><span>f(x) − 1</span><span>x − a</span></span> = 3을 만족시킨다. 점 <span class="m">(a, f(a))</span>에서의 접선의 <span class="m">y</span>절편이 4일 때, <span class="m">f(1)</span>의 값은? (① −1 ② −2 ③ −3 ④ −4 ⑤ −5)</p>
+      <details><summary>Подсказка</summary><p>Из предела: <span class="m">f(a) = 1</span>, <span class="m">f′(a) = 3</span>. <span class="kr">y절편</span>: <span class="m">1 − 3a = 4</span>. Потом <span class="m">f(x) = x³ + px² + qx</span> и два уравнения.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">369</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">양수 <span class="m">a</span>에 대하여 점 <span class="m">(a, 0)</span>에서 곡선 <span class="m">y = 3x³</span>에 그은 접선과 점 <span class="m">(0, a)</span>에서 곡선 <span class="m">y = 3x³</span>에 그은 접선이 서로 평행할 때, <span class="m">90a</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Из <span class="m">(a, 0)</span>: касание в <span class="m">t = 3a/2</span> (<span class="m">t = 0</span> даёт горизонтальную прямую, она не подходит). Из <span class="m">(0, a)</span>: <span class="m">−6s³ = a</span>. <span class="kr">평행</span>: <span class="m">t² = s²</span>, причём <span class="m">s &lt; 0</span>.</p></details>
+    </div>
+  </div>
+  <div class="box ex">
+    <span class="label">Для сильных (상)</span>
+    <p><span class="kr">문제집</span> <b>338</b>: две касательные к одной кубической функции пересекаются в <span class="m">(1, 3)</span>. Касательная в <span class="m">(2, 3)</span> проходит через <span class="m">(1, 3)</span> ⇒ она горизонтальна, <span class="m">f′(2) = 0</span>. Вторая даёт <span class="m">f(−2) + 3f′(−2) = 3</span>.</p>
+  </div>
+</section>
+
+<!-- ===== ТИП 42 ===== -->
+<section id="t42">
+  <div class="head"><span class="sec-num">Тип 42</span><h2><span class="kr">공통인 접선</span></h2><p class="lead">Общая касательная двух кривых. Задачи 346–351.</p></div>
+  <div class="box theorem">
+    <span class="label">Учебник</span>
+    <p class="tk">두 곡선 <span class="m">y = f(x)</span>, <span class="m">y = g(x)</span>가 공통인 접선을 가지면 다음을 이용하여 접선의 방정식을 구한다.<br>(1) 두 곡선이 <span class="m">x = a</span>인 점에서 공통인 접선을 갖는 경우<br>① <span class="m">x = a</span>인 점에서 두 곡선이 만난다. ⇔ <span class="m">f(a) = g(a)</span><br>② <span class="m">x = a</span>인 점에서 두 곡선의 접선의 기울기가 같다. ⇔ <span class="m">f′(a) = g′(a)</span><br>(2) 두 곡선 위의 서로 다른 점에서의 접선이 공통인 접선인 경우: 각 곡선 위의 점 <span class="m">(α, f(α))</span>, <span class="m">(β, g(β))</span>에서의 접선의 방정식을 각각 구하고, 두 접선의 방정식이 같음을 이용하여 연립방정식을 세워 <span class="m">α, β</span>의 값을 구한다.</p>
+    <p class="tr">(1) Общая касательная в точке <span class="m">x = a</span>: кривые встречаются (<span class="m">f(a) = g(a)</span>) и имеют одинаковый наклон (<span class="m">f′(a) = g′(a)</span>). (2) Касания в разных точках: пишем касательную к каждой кривой в своей точке (<span class="m">α</span> и <span class="m">β</span>) и приравниваем наклоны и <span class="kr">y절편</span>ы.</p>
+  </div>
+  <figure>
+    <svg id="figCommon" viewBox="0 0 540 230" role="img" aria-label="Два случая общей касательной"></svg>
+    <figcaption>Слева случай (1): кривые касаются друг друга в одной точке. Справа случай (2): одна прямая касается каждой кривой в своей точке.</figcaption>
+  </figure>
+  <div class="box note">
+    <span class="label">Рецепт</span>
+    <ol class="steps">
+      <li><strong>Одна общая точка</strong> (347, 348, 349, 351): два уравнения <span class="m">f(a) = g(a)</span> и <span class="m">f′(a) = g′(a)</span>.</li>
+      <li><strong>Касательная одной кривой касается другой</strong> (346, 350): сначала тип 37 для первой кривой, потом тип 40 для второй.</li>
+      <li>Если вторая кривая — парабола, касание проверяй через <span class="m">D = 0</span> (350).</li>
+    </ol>
+  </div>
+  <div class="box warn">
+    <span class="label">Где ошибаются</span>
+    <ul class="plain">
+      <li>Пишут только <span class="m">f′(a) = g′(a)</span> и забывают, что кривые должны ещё и встретиться.</li>
+      <li>В 349 точка неизвестна: из двух уравнений сначала исключи <span class="m">a</span>, получится уравнение на <span class="m">x</span>.</li>
+    </ul>
+  </div>
+
+  <h3>Ключевая задача учебника</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">346</span><span class="lvl">중하 · средняя</span><span class="tag">대표 유제</span><span class="src">2011년 4월 고3 이과 23번</span></div>
+    <p class="kr pk">곡선 <span class="m">y = 2x² + 1</span> 위의 점 <span class="m">(−1, 3)</span>에서의 접선이 곡선 <span class="m">y = 2x³ − ax + 3</span>에 접할 때, 상수 <span class="m">a</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> касательная к кривой <span class="m">y = 2x² + 1</span> в точке <span class="m">(−1, 3)</span> касается также кривой <span class="m">y = 2x³ − ax + 3</span>. Найдите <span class="m">a</span>.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1 (тип 37).</span> y′ = 4x, наклон −4; y = −4(x + 1) + 3 = −4x − 1</span>
+        <span><span class="ok">Шаг 2 (тип 40), наклон.</span> 6t² − a = −4 ⇒ a = 6t² + 4</span>
+        <span><span class="ok">Шаг 3, общая точка.</span> 2t³ − at + 3 = −4t − 1</span>
+        <span><span class="ok">Шаг 4.</span> подставляем a: 2t³ − 6t³ − 4t + 3 = −4t − 1 ⇒ −4t³ = −4 ⇒ t = 1</span>
+        <span><span class="ok">Шаг 5.</span> a = 6 + 4 = 10</span>
+      </div>
+      <p>Ответ: <span class="answer">a = 10</span></p>
+    </details>
+  </div>
+  <h3>Остальные задачи учебника</h3>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">347</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 곡선 <span class="m">y = −x³ + ax²</span>, <span class="m">y = x² − 4</span>가 점 <span class="m">(t, t² − 4)</span>에서 접할 때, 상수 <span class="m">a, t</span>에 대하여 <span class="m">a + t</span>의 값은?</p>
+      <div class="opts"><span>① −4</span><span>② −2</span><span>③ 0</span><span>④ 2</span><span>⑤ 4</span></div>
+      <details><summary>Подсказка</summary><p>Наклоны: <span class="m">−3t² + 2at = 2t</span>, раздели на <span class="m">t</span> (<span class="m">t = 0</span> не подходит, проверь). Вырази <span class="m">a</span> и подставь в равенство значений.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">348</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="m">f(x) = x³ + ax + 2</span>, <span class="m">g(x) = bx² + 3</span>이 <span class="m">x = 1</span>에 대응하는 점에서 공통 접선을 갖는다. 이때 <span class="m">a − b</span>의 값은?</p>
+      <div class="opts"><span>① −1</span><span>② 1</span><span>③ 0</span><span>④ −2</span><span>⑤ 2</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">f(1) = g(1)</span> и <span class="m">f′(1) = g′(1)</span>: система на <span class="m">a, b</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">349</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 곡선 <span class="m">y = x³ + ax + 3</span>과 <span class="m">y = x² + 2</span>가 한 점에서 공통인 접선을 갖도록 하는 실수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① −4</span><span>② −3</span><span>③ −2</span><span>④ −1</span><span>⑤ 0</span></div>
+      <details><summary>Подсказка</summary><p>Из наклонов <span class="m">a = 2x − 3x²</span>. Подставь в равенство значений: <span class="m">2x³ − x² − 1 = 0</span>, корень <span class="m">x = 1</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">350</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x²</span> 위의 점 <span class="m">(1, 1)</span>에서의 접선이 곡선 <span class="m">y = ax² − 3</span>에 접할 때, 상수 <span class="m">a</span>의 값을 구하시오. (단, <span class="m">a ≠ 0</span>)</p>
+      <details><summary>Подсказка</summary><p>Касательная <span class="m">y = 2x − 1</span>. Касание с параболой: <span class="m">ax² − 2x − 2 = 0</span>, <span class="m">D = 0</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">351</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">두 곡선 <span class="m">y = x³ − 5x</span>, <span class="m">y = ax² + bx</span>가 <span class="m">x = 2</span>인 점에서 공통인 접선을 가질 때, 상수 <span class="m">a, b</span>의 합 <span class="m">a + b</span>의 값은?</p>
+      <div class="opts"><span>① −5</span><span>② −3</span><span>③ −1</span><span>④ 1</span><span>⑤ 3</span></div>
+      <details><summary>Подсказка</summary><p>Как 348: значения и производные при <span class="m">x = 2</span> равны.</p></details>
+    </div>
+  </div>
+  <h3>문제집: задачи на этот тип</h3>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum wb">372</span><span class="lvl">중하 · средняя</span><span class="tag">ключевая задача</span><span class="src">문제집 стр. 99 · 2009년 6월 고3 이과 4번</span></div>
+    <p class="kr pk">곡선 <span class="m">y = x²</span> 위의 점 <span class="m">(−2, 4)</span>에서의 접선이 곡선 <span class="m">y = x³ + ax − 2</span>에 접할 때, 상수 <span class="m">a</span>의 값은?</p>
+    <p><strong>Перевод:</strong> касательная к <span class="m">y = x²</span> в точке <span class="m">(−2, 4)</span> касается кривой <span class="m">y = x³ + ax − 2</span>. Найдите <span class="m">a</span>.</p>
+    <div class="opts"><span>① −9</span><span>② −7</span><span>③ −5</span><span>④ −3</span><span>⑤ −1</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> наклон 2·(−2) = −4; y = −4(x + 2) + 4 = −4x − 4</span>
+        <span><span class="ok">Шаг 2.</span> наклон: 3t² + a = −4 ⇒ a = −4 − 3t²</span>
+        <span><span class="ok">Шаг 3.</span> общая точка: t³ + at − 2 = −4t − 4</span>
+        <span><span class="ok">Шаг 4.</span> t³ − 4t − 3t³ − 2 = −4t − 4 ⇒ −2t³ = −2 ⇒ t = 1</span>
+        <span><span class="ok">Шаг 5.</span> a = −4 − 3 = −7</span>
+      </div>
+      <p>Тот же план, что в 346: сначала касательная к первой кривой, потом два условия касания со второй.</p>
+      <p>Ответ: <span class="answer">② −7</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">363</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">곡선 <span class="m">y = x³ − 4x + 5</span> 위의 점 <span class="m">(1, 2)</span>에서의 접선이 곡선 <span class="m">y = x⁴ + 3x + a</span>에 접할 때, 상수 <span class="m">a</span>의 값은? (① 6 ② 7 ③ 8 ④ 9 ⑤ 10)</p>
+      <details><summary>Подсказка</summary><p>Как 372. Касательная <span class="m">y = −x + 3</span>, потом <span class="m">4t³ + 3 = −1</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum wb">373</span><span class="lvl">중하</span><span class="tag hint">повтор</span></div>
+      <p>Это та же задача, что 346 из учебника. Реши её ещё раз сама, не глядя в разбор.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Шпаргалка -->
+<section id="sum">
+  <div class="head"><span class="sec-num">정리</span><h2>Шпаргалка</h2></div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Тип</th><th>Неизвестное</th><th>Уравнения</th><th>Ловушка</th></tr></thead>
+      <tbody>
+        <tr><td>37 <span class="kr">접점</span></td><td>—</td><td><span class="m">y = f′(a)(x − a) + f(a)</span></td><td>точка с буквой (320), произведение (322)</td></tr>
+        <tr><td>38 <span class="kr">수직</span></td><td>—</td><td>наклон <span class="m">−1/f′(a)</span>, та же точка</td><td>перевернуть и сменить знак</td></tr>
+        <tr><td>39 <span class="kr">기울기</span></td><td><span class="m">t</span></td><td><span class="m">f′(t) = m</span></td><td>два корня, условие выбора</td></tr>
+        <tr><td>40 <span class="kr">미정계수</span></td><td><span class="m">t</span> и буква</td><td><span class="m">f′(t) = m</span>, <span class="m">f(t) = mt + n</span></td><td>нужны оба уравнения</td></tr>
+        <tr><td>41 <span class="kr">곡선 밖의 점</span></td><td><span class="m">t</span></td><td><span class="m">y₁ = f′(t)(x₁ − t) + f(t)</span></td><td>точка из условия — не точка касания</td></tr>
+        <tr><td>42 <span class="kr">공통인 접선</span></td><td><span class="m">a</span> или буквы</td><td><span class="m">f(a) = g(a)</span>, <span class="m">f′(a) = g′(a)</span></td><td>забыть равенство значений</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Пять главных ошибок</span>
+    <ul class="plain">
+      <li>Не проверить, лежит ли точка на кривой.</li>
+      <li>Взять наклон из <span class="m">f(a)</span>, а не из <span class="m">f′(a)</span>.</li>
+      <li>Найти <span class="m">t</span> и забыть ответить на сам вопрос (<span class="kr">y절편, x절편, 넓이</span>).</li>
+      <li>Потерять второй корень или не применить условие выбора (<span class="kr">양수, 사분면, 유리수</span>).</li>
+      <li>Неверно прочитать наклон прямой <span class="m">ax + by + c = 0</span>: он равен <span class="m">−a/b</span>.</li>
+    </ul>
+  </div>
+  <div class="box ex">
+    <span class="label">Полезный приём</span>
+    <p>Уравнение «кривая = касательная» всегда содержит множитель <span class="m">(x − t)²</span>, где <span class="m">t</span> — точка касания. Это ускоряет 356, 357, 359 и объясняет, почему для параболы касание — это <span class="m">D = 0</span>.</p>
+  </div>
+</section>
+
+<footer>Источник: 미적분1, 도함수의 활용, 유형 연습 37–42 (стр. 93–100) и 문제집 «3. 접선의 방정식» (стр. 90–101). Графики нарисованы заново и передают форму примерно.</footer>
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T)};}
+  function path(f,a,b,M,n=240){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",violet:"var(--violet)",grid:"var(--grid)",paper:"var(--paper)",line:"var(--line)",amber:"var(--amber)"};
+  const SANS="Golos Text, Noto Sans KR, sans-serif";
+  function T(s,x,y,txt,o){return el("text",Object.assign({x,y,fill:C.ink,"font-size":13},o||{}),s,txt);}
+  function dot(s,x,y,col,r){return el("circle",{cx:x,cy:y,r:r||4.5,fill:col},s);}
+  function axes(s,M,x0,x1,y0,y1,xl,yl){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},s);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},s);
+    T(s,M.X(x1)-4,M.Y(0)+16,xl||"x",{fill:C.muted,"text-anchor":"end"});
+    T(s,M.X(0)+6,M.Y(y1)+12,yl||"y",{fill:C.muted});
+    T(s,M.X(0)-6,M.Y(0)+15,"O",{fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"});
+  }
+  function clip(s,id,M,x0,x1,y0,y1){const d=el("defs",{},s);const c=el("clipPath",{id},d);el("rect",{x:M.X(x0),y:M.Y(y1),width:M.X(x1)-M.X(x0),height:M.Y(y0)-M.Y(y1)},c);return el("g",{"clip-path":`url(#${id})`},s);}
+  function lineThrough(g,M,x0,x1,a,fa,m,col,w,dash){const o={x1:M.X(x0),y1:M.Y(fa+m*(x0-a)),x2:M.X(x1),y2:M.Y(fa+m*(x1-a)),stroke:col,"stroke-width":w||2.2};if(dash)o["stroke-dasharray"]=dash;return el("line",o,g);}
+  const fmt=v=>{const r=Math.round(v*100)/100;return (r<0?"−":"")+Math.abs(r).toFixed(2).replace(/\.?0+$/,"");};
+  function lineStr(m,b){const ms=Math.abs(m-1)<1e-9?"x":Math.abs(m+1)<1e-9?"−x":fmt(m)+"x";if(Math.abs(b)<0.005)return "y = "+ms;return "y = "+ms+(b>0?" + ":" − ")+fmt(Math.abs(b));}
+
+  /* главная картинка */
+  (function(){
+    const s=document.getElementById("figMaster");
+    const f=x=>0.12*x*x*x-0.75*x*x+1.2*x+1.6, df=x=>0.36*x*x-1.5*x+1.2;
+    const x0=-0.6,x1=5.6,y0=-0.5,y1=4.2;
+    const M=mapper(x0,x1,y0,y1,30,500,14,226);
+    axes(s,M,x0,x1,y0,y1);
+    const g=clip(s,"cm",M,x0,x1,y0,y1);
+    el("path",{d:path(f,-0.4,5.4,M),fill:"none",stroke:C.ink,"stroke-width":2.4},g);
+    const a=0.6,fa=f(a),m=df(a);
+    lineThrough(g,M,-0.5,4.4,a,fa,m,C.coral,2.4);
+    /* треугольник наклона */
+    const b=a+1.6;
+    el("path",{d:`M${M.X(a)},${M.Y(fa)} L${M.X(b)},${M.Y(fa)} L${M.X(b)},${M.Y(fa+m*1.6)}`,fill:"none",stroke:C.coral,"stroke-dasharray":"4 3","stroke-width":1.4},g);
+    T(s,(M.X(a)+M.X(b))/2,M.Y(fa)+17,"1",{"text-anchor":"middle",fill:C.coral,"font-style":"normal"});
+    T(s,M.X(b)+6,(M.Y(fa)+M.Y(fa+m*1.6))/2+4,"f′(a)",{fill:C.coral});
+    el("line",{x1:M.X(a),y1:M.Y(fa),x2:M.X(a),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);
+    dot(s,M.X(a),M.Y(fa),C.coral,5.5);
+    T(s,M.X(a)-10,M.Y(fa)-12,"(a, f(a))",{"text-anchor":"end"});
+    T(s,M.X(a),M.Y(0)+17,"a",{"text-anchor":"middle"});
+    T(s,M.X(5.3),M.Y(f(5.3))-10,"y = f(x)",{"text-anchor":"end"});
+    T(s,M.X(4.2),M.Y(fa+m*(4.2-a))+22,"접선",{fill:C.coral,"font-style":"normal","font-family":SANS,"font-weight":600});
+  })();
+
+  /* перпендикуляр */
+  (function(){
+    const s=document.getElementById("figNormal");
+    const f=x=>0.3*x*x+0.4, df=x=>0.6*x;
+    const x0=-1,x1=5.2,y0=-0.4,y1=4.6;
+    const M=mapper(x0,x1,y0,y1,30,500,12,222);
+    axes(s,M,x0,x1,y0,y1);
+    const g=clip(s,"cn",M,x0,x1,y0,y1);
+    el("path",{d:path(f,-1,4,M),fill:"none",stroke:C.ink,"stroke-width":2.4},g);
+    const a=2,fa=f(a),m=df(a);
+    /* одинаковый масштаб по осям, чтобы угол был прямым на экране */
+    lineThrough(g,M,0,4.6,a,fa,m,C.coral,2.4);
+    lineThrough(g,M,-1,5.2,a,fa,-1/m,C.violet,2.4);
+    const sx=(M.X(1)-M.X(0)),sy=(M.Y(0)-M.Y(1));
+    const u=[1,m],v=[-m,1];const nu=Math.hypot(u[0]*sx,u[1]*sy),nv=Math.hypot(v[0]*sx,v[1]*sy);
+    const k=14;const p0=[M.X(a),M.Y(fa)];
+    const pu=[p0[0]+u[0]*sx/nu*k,p0[1]-u[1]*sy/nu*k],pv=[p0[0]+v[0]*sx/nv*k,p0[1]-v[1]*sy/nv*k];
+    el("path",{d:`M${pu[0]},${pu[1]} L${pu[0]+pv[0]-p0[0]},${pu[1]+pv[1]-p0[1]} L${pv[0]},${pv[1]}`,fill:"none",stroke:C.muted,"stroke-width":1.3},s);
+    dot(s,M.X(a),M.Y(fa),C.ink,5);
+    T(s,M.X(a)+12,M.Y(fa)+18,"(a, f(a))");
+    T(s,M.X(4.2),M.Y(fa+m*(4.2-a))+4,"f′(a)",{fill:C.coral,"dx":8});
+    T(s,M.X(-0.2),M.Y(fa-(-0.2-a)/m)-10,"−1 / f′(a)",{fill:C.violet});
+    T(s,M.X(-0.6),M.Y(f(-0.6))-12,"y = f(x)",{"text-anchor":"start"});
+  })();
+
+  /* общая касательная */
+  (function(){
+    const s=document.getElementById("figCommon");
+    function panel(ox,title,fs,ts){
+      const x0=-0.4,x1=4.4,y0=-0.6,y1=4.2;
+      const M=mapper(x0,x1,y0,y1,ox+16,ox+254,34,212);
+      el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted},s);
+      el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted},s);
+      const g=clip(s,"cc"+ox,M,x0,x1,y0,y1);
+      const L=x=>0.5*x+1;
+      lineThrough(g,M,x0,x1,0,1,0.5,C.coral,2.2);
+      fs.forEach(([f,col,lab,lx])=>{el("path",{d:path(f,x0,x1,M),fill:"none",stroke:col,"stroke-width":2.4},g);const isg=lab.indexOf("g")>=0;T(s,M.X(lx)+(isg?10:-10),M.Y(f(lx))+(isg?4:0),lab,{fill:col,"text-anchor":isg?"start":"end"});});
+      ts.forEach(([t,lab])=>{dot(s,M.X(t),M.Y(L(t)),C.ink,4.5);el("line",{x1:M.X(t),y1:M.Y(L(t)),x2:M.X(t),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},s);T(s,M.X(t),M.Y(0)+16,lab,{"text-anchor":"middle"});});
+      T(s,ox+135,16,title,{"text-anchor":"middle","font-style":"normal","font-family":SANS,"font-weight":600,fill:C.muted});
+    }
+    panel(0,"(1) одна точка",[[x=>0.5*x+1+0.55*(x-2)**2,C.ink,"y = f(x)",3.6],[x=>0.5*x+1-0.7*(x-2)**2,C.blue,"y = g(x)",2.9]],[[2,"a"]]);
+    panel(276,"(2) разные точки",[[x=>0.5*x+1+0.8*(x-0.8)**2,C.ink,"y = f(x)",2.4],[x=>0.5*x+1-0.6*(x-3)**2,C.blue,"y = g(x)",1.6]],[[0.8,"α"],[3,"β"]]);
+  })();
+
+  /* лаборатория */
+  (function(){
+    const modes={
+      A:{f:x=>x*x*x-3*x*x,df:x=>3*x*x-6*x,fs:"y = x³ − 3x²",tmin:-1.6,tmax:3.4,xr:[-2.2,4.2],yr:[-13,8],stops:[-1,3],
+         task:"Найди точки, где наклон касательной равен 9 (задача 334: 직선 y = 9x + k가 곡선 y = x³ − 3x²에 접한다)."},
+      B:{f:x=>x*x+2*x,df:x=>2*x+2,fs:"y = x² + 2x",tmin:-2.6,tmax:3.2,xr:[-3.4,3.8],yr:[-2,9],stops:[0,2],P:[1,2],
+         task:"Найди точки касания, касательные в которых проходят через P(1, 2) (задача 338: 점 (1, 2)에서 곡선 y = x² + 2x에 그은 접선)."}
+    };
+    let mode="A",t=0.5;
+    const g=document.getElementById("labGraph"),sl=document.getElementById("tSlider"),st=document.getElementById("status"),jumps=document.getElementById("jumps"),task=document.getElementById("labTask");
+    const bA=document.getElementById("modeA"),bB=document.getElementById("modeB");
+    function setMode(m){mode=m;const o=modes[m];bA.setAttribute("aria-pressed",m==="A");bB.setAttribute("aria-pressed",m==="B");
+      sl.min=o.tmin;sl.max=o.tmax;t=m==="A"?0.5:1;sl.value=t;task.textContent=o.task;
+      jumps.textContent="";o.stops.forEach(v=>{const b=document.createElement("button");b.textContent="Перейти: t = "+fmt(v);b.addEventListener("click",()=>{t=v;sl.value=v;draw();});jumps.appendChild(b);});
+      draw();}
+    function draw(){
+      const o=modes[mode];g.textContent="";
+      const [x0,x1]=o.xr,[y0,y1]=o.yr;
+      const M=mapper(x0,x1,y0,y1,30,546,12,318);
+      for(let k=Math.ceil(x0);k<=x1;k++){if(k)el("line",{x1:M.X(k),y1:M.Y(y0),x2:M.X(k),y2:M.Y(y1),stroke:C.grid},g);}
+      const ys=mode==="A"?2:1;for(let k=Math.ceil(y0/ys)*ys;k<=y1;k+=ys){if(k)el("line",{x1:M.X(x0),y1:M.Y(k),x2:M.X(x1),y2:M.Y(k),stroke:C.grid},g);}
+      axes(g,M,x0,x1,y0,y1);
+      for(let k=Math.ceil(x0);k<=x1;k++){if(k)T(g,M.X(k),M.Y(0)+15,String(k).replace("-","−"),{"text-anchor":"middle","font-size":11,fill:C.muted,"font-style":"normal"});}
+      const cg=clip(g,"lc"+mode,M,x0,x1,y0,y1);
+      el("path",{d:path(o.f,x0,x1,M),fill:"none",stroke:C.ink,"stroke-width":2.4},cg);
+      const ft=o.f(t),m=o.df(t),b=ft-m*t;
+      let hit=false,cls,txt;
+      if(mode==="A"){
+        hit=Math.abs(m-9)<0.06;
+        if(hit){const tt=Math.round(t);const bb=o.f(tt)-9*tt;cls="st-hit";txt="Попал! Наклон 9. Касательная "+lineStr(9,bb)+(bb>0?": k = "+fmt(bb)+" > 0, это ответ задачи 334.":": k = "+fmt(bb)+" < 0, не подходит под «양수 k».");}
+        else if(m<9){cls="st-neg";txt="Наклон f′(t) = "+fmt(m)+": меньше 9, касательная слишком пологая.";}
+        else{cls="st-pos";txt="Наклон f′(t) = "+fmt(m)+": больше 9, касательная слишком крутая.";}
+      } else {
+        const atP=m*(o.P[0]-t)+ft, diff=atP-o.P[1];
+        hit=Math.abs(diff)<0.05;
+        if(hit){const tt=Math.round(t);cls="st-hit";txt="Попал! Касательная "+lineStr(o.df(tt),o.f(tt)-o.df(tt)*tt)+" проходит через P(1, 2).";}
+        else if(diff>0){cls="st-pos";txt="При x = 1 касательная проходит на "+fmt(diff)+" выше точки P.";}
+        else{cls="st-neg";txt="При x = 1 касательная проходит на "+fmt(-diff)+" ниже точки P.";}
+      }
+      const col=hit?C.green:C.coral;
+      el("line",{x1:M.X(x0),y1:M.Y(m*x0+b),x2:M.X(x1),y2:M.Y(m*x1+b),stroke:col,"stroke-width":hit?3:2.2},cg);
+      if(mode==="B"){dot(g,M.X(1),M.Y(2),C.blue,6);T(g,M.X(1)+9,M.Y(2)+18,"P(1, 2)",{fill:C.blue});}
+      el("line",{x1:M.X(t),y1:M.Y(ft),x2:M.X(t),y2:M.Y(0),stroke:C.muted,"stroke-dasharray":"3 3"},cg);
+      dot(g,M.X(t),M.Y(ft),col,6.5);
+      T(g,M.X(x0)+10,M.Y(y1)+22,o.fs,{"text-anchor":"start"});
+      document.getElementById("rP").textContent="("+fmt(t)+", "+fmt(ft)+")";
+      document.getElementById("rS").textContent=fmt(m);
+      document.getElementById("rL").textContent=lineStr(m,b);
+      st.className="status "+cls;st.textContent=txt;
+    }
+    sl.addEventListener("input",()=>{t=parseFloat(sl.value);const o=modes[mode];o.stops.forEach(v=>{if(Math.abs(t-v)<0.03)t=v;});draw();});
+    bA.addEventListener("click",()=>setMode("A"));bB.addEventListener("click",()=>setMode("B"));
+    setMode("A");
+  })();
+})();
+</script>
+
+</body></html>

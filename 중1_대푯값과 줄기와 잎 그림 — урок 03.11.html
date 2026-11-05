@@ -1,0 +1,740 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>대푯값과 줄기와 잎 그림 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column; Part A 대푯값 (평균 → 중앙값 → 최빈값 → lab), Part B 줄기와 잎 그림 (+ builder lab), then 개념 이해 701–704 and 유형 123–130 */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --sunk:#E9EEF6; --line:#D5DCE8;
+  --ink:#14203A; --muted:#566281;
+  --blue:#2457C5; --blue-soft:#E3EAFA; --blue-fill:rgba(36,87,197,.16);
+  --coral:#CF4429; --coral-soft:#FBE8E3; --coral-fill:rgba(207,68,41,.38);
+  --green:#1A7B51; --green-soft:#E0F2E8; --green-fill:rgba(26,123,81,.24);
+  --amber:#A86A12; --amber-soft:#FBF0DC;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--f-body)}
+.wrap{max-width:820px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(30px,6vw,44px)/1.15 var(--f-disp);display:flex;flex-direction:column;gap:6px}
+h1 .ru{font:500 clamp(17px,3vw,21px)/1.35 var(--f-body);color:var(--muted)}
+h2{font:700 21px/1.3 var(--f-body);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font:700 14px var(--f-disp);color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:2px 8px}
+h3{font:700 18px/1.35 var(--f-body)}
+p{margin:0}
+.kr,.ko{font-family:var(--f-kr)}
+.m{font:italic 400 1.06em var(--f-math)}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-kr);padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.lead{max-width:62ch;color:var(--ink)}
+.hero{display:flex;flex-direction:column;gap:14px}
+.box{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box .tag{font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.analogy{background:var(--amber-soft)} .analogy .tag{color:var(--amber)}
+.text{background:var(--surface);border:1px solid var(--line)} .text .tag{color:var(--blue)}
+.warn{background:var(--coral-soft)} .warn .tag{color:var(--coral)}
+.ex{background:var(--green-soft)} .ex .tag{color:var(--green)}
+.def-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.def-list li{display:flex;flex-direction:column;gap:2px}
+.def-list .ko{font-weight:500}
+.def-list .tr{color:var(--muted);font-size:15.5px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vocab div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.vocab b{font:700 17px var(--f-kr)}
+.vocab i{font-style:normal;font-weight:600;font-size:14.5px;color:var(--blue)}
+.vocab span{font-size:13.5px;color:var(--muted);line-height:1.4}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0}
+.card b{font:700 16px var(--f-kr)} .card span{font-size:14px;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--f-kr);fill:var(--ink);font-size:13px}
+svg .lbl{font:italic 15px var(--f-math);fill:var(--ink)}
+svg .sm{font-size:11px;fill:var(--muted)}
+.fig{display:flex;flex-direction:column;gap:6px}
+.cap{font-size:14.5px;color:var(--muted)}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:15px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--sunk);font-weight:600}
+td .kr,th .kr{font-weight:500}
+/* lab */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:620px){.lab-grid{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:500 14.5px var(--f-body);border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+.seg.cut button[aria-pressed="true"]{background:var(--coral);border-color:var(--coral)}
+.btn.go{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue)}
+#cutH{accent-color:var(--coral)}
+.readout{background:var(--sunk);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:15.5px;min-height:96px}
+.readout b{font-family:var(--f-kr)}
+.status{font-weight:600;color:var(--coral)}
+.status.ok{color:var(--green)}
+/* problems */
+.type{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--line);padding-top:18px}
+.type-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.type-h .tn{font:700 14px var(--f-disp);color:var(--surface);background:var(--blue);border-radius:6px;padding:2px 8px}
+.type-h b{font:700 18px var(--f-kr)}
+.type-h span{color:var(--muted);font-size:15px}
+.prob{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.phead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pno{font:700 22px var(--f-disp);color:var(--blue)}
+.badge{font:600 12px var(--f-kr);padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.badge.rep{background:var(--green-soft);color:var(--green)}
+.pq{font:500 17px/1.6 var(--f-kr)}
+.pt{font-size:15px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:4px 18px;font:500 16px var(--f-kr);margin:0;padding:0;list-style:none}
+details{border-radius:10px;border:1px solid var(--line)}
+details>summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+details.h>summary{color:var(--amber)}
+details.s>summary{color:var(--green)}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.ans{font-weight:700;color:var(--green)}
+.rest{display:flex;flex-direction:column;gap:8px}
+.rest details>summary b{font-family:var(--f-disp);margin-right:6px;color:var(--ink)}
+.rest details>div .pq{font-size:16px}
+.optfig{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.optfig figure{margin:0;background:var(--sunk);border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.optfig figcaption{font:600 14px var(--f-kr)}
+.mistakes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.figsm{max-width:340px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* --- extra for this lesson: 대푯값 · 줄기와 잎 그림 --- */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.86em;line-height:1.12;margin:0 2px}
+.fr>span:first-child{border-bottom:1.2px solid currentColor;padding:0 3px}
+.fx{font:400 19px/1.9 var(--f-math);display:flex;flex-direction:column;gap:2px;padding:4px 0}
+.fx .ko{font:500 17px var(--f-kr)}
+.hl-b{color:var(--blue);font-weight:600}
+.hl-c{color:var(--coral);font-weight:600}
+.hl-g{color:var(--green);font-weight:600}
+.hl-a{color:var(--amber);font-weight:600}
+.note{font-size:15px;color:var(--muted)}
+.cards2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cards2 .cc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cards2 .cc h4{margin:0;font:700 16px var(--f-kr)}
+.cards2 .cc p{font-size:15.5px}
+.cc.b{border-top:4px solid var(--blue)} .cc.c{border-top:4px solid var(--coral)} .cc.g{border-top:4px solid var(--green)}
+.part-h{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:14px;background:var(--blue-soft)}
+.part-h b{font:700 19px var(--f-kr)}
+.part-h .tn{font:700 13px var(--f-disp);color:var(--blue);letter-spacing:.04em}
+.part-h.b{background:var(--green-soft)} .part-h.b .tn{color:var(--green)}
+.pfig{background:var(--sunk);border-radius:10px;padding:10px;display:flex;justify-content:center;overflow-x:auto}
+/* data strips */
+.nums{display:flex;flex-wrap:wrap;gap:6px;font:400 17px var(--f-math);font-variant-numeric:tabular-nums}
+.nums span{min-width:2.4em;text-align:center;padding:3px 6px;border-radius:7px;background:var(--surface);border:1px solid var(--line)}
+.nums span.mid{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);font-weight:700}
+.nums span.mode{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:700}
+.nums span.used{opacity:.35}
+.nums span.now{border-color:var(--amber);background:var(--amber-soft)}
+.nums span .pos{display:block;font-style:normal;font:500 10.5px var(--f-body);color:var(--muted)}
+/* stem and leaf */
+table.sl{min-width:0;width:auto;border-collapse:collapse;font:400 17px var(--f-math);font-variant-numeric:tabular-nums}
+table.sl th,table.sl td{border:none;padding:4px 10px;text-align:left}
+table.sl thead th{background:var(--sunk);font:600 14px var(--f-kr);border-bottom:1.5px solid var(--ink)}
+table.sl td.st{border-right:1.5px solid var(--ink);text-align:center;font-weight:600;min-width:44px}
+table.sl tr:last-child td{border-bottom:1.5px solid var(--ink)}
+table.sl td.lv span{display:inline-block;min-width:1.5em;text-align:center}
+table.sl td.lv span.box{border:1.5px solid var(--ink);border-radius:3px;min-width:1.7em;color:transparent}
+table.sl.show td.lv span.box{color:var(--coral);font-weight:700}
+table.sl td.lv span.hit{color:var(--green);font-weight:700;text-decoration:underline 2px var(--green);text-underline-offset:4px}
+table.sl td.lv span.new{color:var(--amber);font-weight:700}
+.slkey{font:400 14px var(--f-kr);color:var(--muted);text-align:right}
+.slwrap{display:flex;flex-direction:column;gap:4px;align-items:flex-start;overflow-x:auto;max-width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.legend i{display:inline-block;width:14px;height:4px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.big{font:700 20px var(--f-disp)}
+</style>
+<main class="wrap">
+<header class="hero">
+  <div class="chips">
+    <span class="chip">NaBi school</span>
+    <span class="chip">IV 자료의 정리와 해석 › 1 자료의 정리와 해석</span>
+    <span class="chip">стр. 234–237 · 701–704 · 유형 123–130</span>
+  </div>
+  <h1><span class="kr">대푯값과 줄기와 잎 그림</span><span class="ru">Средние значения и диаграмма «ствол и листья»</span></h1>
+  <p class="lead">Новая глава — статистика. Стр. 234: как описать много чисел <b>одним числом</b> (<span class="kr">평균, 중앙값, 최빈값</span>). Стр. 236: как красиво разложить числа по «веткам», чтобы сразу увидеть картину (<span class="kr">줄기와 잎 그림</span>).</p>
+</header>
+
+<!-- 0 vocab -->
+<section>
+  <h2><span class="num">0</span> 단어장 · словарь</h2>
+  <p>Эти слова будут в задачах. Читай их по-корейски: на контрольной будет именно так.</p>
+  <div class="vocab">
+    <div><b>자료</b><i>данные</i><span>все собранные числа (или ответы) вместе</span></div>
+    <div><b>변량</b><i>значение (варианта)</i><span>каждое отдельное число в 자료</span></div>
+    <div><b>대푯값</b><i>представительное значение</i><span>одно число, которое «представляет» все данные</span></div>
+    <div><b>평균</b><i>среднее арифметическое</i><span>сумма ÷ количество</span></div>
+    <div><b>중앙값</b><i>медиана</i><span>число ровно в середине ряда</span></div>
+    <div><b>최빈값</b><i>мода</i><span>число, которое встречается чаще всех</span></div>
+    <div><b>총합</b><i>общая сумма</i><span>(변량의 총합) — сумма всех чисел</span></div>
+    <div><b>개수</b><i>количество (штук)</i><span>(변량의 개수) — сколько всего чисел</span></div>
+    <div><b>작은 값부터 크기순으로</b><i>по возрастанию</i><span>от меньшего к большему</span></div>
+    <div><b>나열하다</b><i>выстроить в ряд</i><span>записать по порядку</span></div>
+    <div><b>홀수 · 짝수</b><i>нечётное · чётное</i><span>от этого зависит, как искать 중앙값</span></div>
+    <div><b>~번째</b><i>такой-то по счёту</i><span>5번째 = пятый</span></div>
+    <div><b>극단적인 값</b><i>экстремальное значение</i><span>число, сильно больше или меньше остальных</span></div>
+    <div><b>도수</b><i>частота</i><span>сколько раз встречается значение</span></div>
+    <div><b>선호도</b><i>предпочтения, популярность</i><span>«что больше всего любят»</span></div>
+    <div><b>줄기와 잎 그림</b><i>диаграмма «ствол и листья»</i><span>stem-and-leaf plot</span></div>
+    <div><b>줄기</b><i>ствол</i><span>обычно цифра десятков</span></div>
+    <div><b>잎</b><i>лист</i><span>обычно цифра единиц</span></div>
+    <div><b>세로선 · 세로로 · 가로로</b><i>вертикальная линия · вертикально · горизонтально</i><span>как рисовать таблицу</span></div>
+    <div><b>분포 상태</b><i>распределение</i><span>где числа «сгущаются», где их мало</span></div>
+    <div><b>중복되다</b><i>повторяться</i><span>одинаковые 잎 пишем столько раз, сколько встречаются</span></div>
+    <div><b>전체의 몇 %</b><i>сколько % от всех</i><span>(часть ÷ всего) × 100</span></div>
+    <div><b>이상 · 미만</b><i>не меньше (≥) · меньше (&lt;)</i><span>50 이상 60 미만 = 50 ≤ x &lt; 60</span></div>
+    <div><b>적절하다</b><i>подходящий</i><span>가장 적절한 것 — самый подходящий</span></div>
+  </div>
+</section>
+
+<!-- 1 warm-up -->
+<section>
+  <h2><span class="num">1</span> 복습 · разминка</h2>
+  <p>Сегодня понадобятся три простые вещи из начальной школы.</p>
+  <div class="cards2">
+    <div class="cc"><h4>크기순 · по порядку</h4><p>8, 3, 5, 3, 9 → <b>3, 3, 5, 8, 9</b>. Одинаковые числа пишем <b>все</b>, ничего не выбрасываем.</p></div>
+    <div class="cc"><h4>홀수 · 짝수</h4><p>Нечётные: 1, 3, 5, 7, 9, 11… Чётные: 2, 4, 6, 8, 10… Посчитай, сколько чисел в данных, и посмотри, какое это количество.</p></div>
+    <div class="cc"><h4>백분율 · проценты</h4><p>5 человек из 20: <span class="fr"><span>5</span><span>20</span></span> × 100 = 25 (%).</p></div>
+  </div>
+</section>
+
+<!-- PART A -->
+<div class="part-h"><span class="tn">ЧАСТЬ A · стр. 234</span><b>대푯값</b><span class="muted">Одно число вместо многих</span></div>
+
+<section>
+  <h2><span class="num">2</span> <span class="kr">변량과 대푯값</span> · данные и их «представитель»</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>В классе 30 человек. Учитель спрашивает: «Какой у вас средний рост?» Никто не будет перечислять 30 чисел. Хочется сказать <b>одно</b> число, которое описывает весь класс. Это как <span class="kr">반장</span> (староста): один человек говорит за всех. Такое число называется <span class="kr">대푯값</span>.</p></div>
+  <div class="box text"><span class="tag">учебник · стр. 234</span>
+    <p class="ko"><b>1 변량</b>: 성적, 키, 몸무게 등의 자료를 수량으로 나타낸 것</p>
+    <p class="muted">Значение (변량) — это каждое число в данных: оценка, рост, вес и т.п.</p>
+    <p class="ko"><b>2 대푯값</b>: 자료 전체의 중심적인 경향이나 특징을 대표적으로 나타낸 값으로 평균, 중앙값, 최빈값이 있다.</p>
+    <p class="muted">Представительное значение показывает «центр» данных. Их три вида: <span class="kr">평균</span>, <span class="kr">중앙값</span>, <span class="kr">최빈값</span>.</p>
+  </div>
+  <div class="box ex"><span class="tag">예시 из учебника · возраст (단위: 세)</span>
+    <div class="nums"><span>32</span><span>38</span><span>28</span><span>45</span><span>42</span><span>31</span><span>54</span><span>36</span><span>29</span></div>
+    <p>Здесь 9 <span class="kr">변량</span>. Каждое число (32, 38, …) — один <span class="kr">변량</span>. Ниже посчитаем для них все три <span class="kr">대푯값</span>.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">3</span> <span class="kr">평균</span> · среднее</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>У четырёх друзей 2, 4, 5 и 9 конфет. Они сложили всё в одну кучу (20 конфет) и поделили <b>поровну</b>: по 5. Вот это «по 5» и есть <span class="kr">평균</span>.</p></div>
+  <div class="box text"><span class="tag">учебник · (1) 평균</span>
+    <p class="ko">평균: 변량의 총합을 변량의 개수로 나눈 값으로 대푯값으로 가장 많이 사용되는 값</p>
+    <div class="fx"><span><span class="ko">(평균)</span> = <span class="fr"><span class="ko">(변량의 총합)</span><span class="ko">(변량의 개수)</span></span></span></div>
+    <p class="ko">⇨ 평균은 대푯값으로 가장 많이 쓰이며, 자료에 극단적인 값이 있으면 그 값에 영향을 받는다.</p>
+    <p class="muted">Среднее = сумма ÷ количество. Его используют чаще всего. Но если в данных есть <b>экстремальное</b> число (очень большое или очень маленькое), среднее сильно «съезжает» к нему.</p>
+  </div>
+  <div class="box ex"><span class="tag">пример · возраст из учебника</span>
+    <ol class="steps">
+      <li>Сумма: 32 + 38 + 28 + 45 + 42 + 31 + 54 + 36 + 29 = <b>335</b>.</li>
+      <li>Количество: <b>9</b>.</li>
+      <li><span class="kr">평균</span> = 335 ÷ 9 ≈ <b>37.2</b> (세). ✓</li>
+    </ol></div>
+</section>
+
+<section>
+  <h2><span class="num">4</span> <span class="kr">중앙값</span> · медиана</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Построй 9 учеников по росту, от низкого к высокому. Тот, кто стоит <b>ровно посередине</b> (5-й), и есть <span class="kr">중앙값</span>. Слева от него 4 человека, справа 4. Если учеников 10, посередине никто не стоит: берём двоих в центре (5-го и 6-го) и находим их среднее.</p></div>
+  <div class="box text"><span class="tag">учебник · (2) 중앙값</span>
+    <p class="ko">중앙값: 자료의 변량을 작은 값부터 크기순으로 나열할 때, 중앙에 위치하는 값</p>
+    <p class="ko">⇨ <span class="m">n</span>개의 변량을 작은 값부터 크기순으로 나열할 때, 중앙값은</p>
+    <div class="fx">
+      <span>① <span class="m">n</span><span class="ko">이 홀수이면</span> ⇨ <span class="fr"><span><span class="m">n</span> + 1</span><span>2</span></span> <span class="ko">번째 값</span></span>
+      <span>② <span class="m">n</span><span class="ko">이 짝수이면</span> ⇨ <span class="fr"><span class="m">n</span><span>2</span></span> <span class="ko">번째와</span> (<span class="fr"><span class="m">n</span><span>2</span></span> + 1) <span class="ko">번째 값의 평균</span></span>
+    </div>
+    <p class="ko">⇨ 자료에 극단적인 값이 있는 경우 자료 전체의 특징을 평균보다 더 잘 나타낼 수 있다.</p>
+    <p class="muted">Медиана — значение в середине упорядоченного ряда. Если <span class="m">n</span> нечётное — берём <span class="fr"><span><span class="m">n</span>+1</span><span>2</span></span>-е число. Если чётное — среднее двух центральных: <span class="fr"><span class="m">n</span><span>2</span></span>-го и (<span class="fr"><span class="m">n</span><span>2</span></span>+1)-го. Когда есть экстремальное число, медиана описывает данные лучше, чем среднее.</p>
+  </div>
+  <div class="box ex"><span class="tag">пример · возраст из учебника</span>
+    <ol class="steps">
+      <li>Выстраиваем по возрастанию:</li>
+    </ol>
+    <div class="nums" id="ageSorted"></div>
+    <ol class="steps" start="2">
+      <li><span class="m">n</span> = 9 — <span class="kr">홀수</span>, значит берём <span class="fr"><span>9 + 1</span><span>2</span></span> = 5-е число.</li>
+      <li><span class="kr">중앙값</span> = <b>36</b> (세). ✓</li>
+    </ol></div>
+  <div class="box ex"><span class="tag">пример · чётное количество</span>
+    <div class="nums"><span>2</span><span>3</span><span class="mid">5<i class="pos">3-е</i></span><span class="mid">9<i class="pos">4-е</i></span><span>10</span><span>12</span></div>
+    <p><span class="m">n</span> = 6 — <span class="kr">짝수</span>. Берём 3-е и 4-е: <span class="kr">중앙값</span> = <span class="fr"><span>5 + 9</span><span>2</span></span> = <b>7</b>. Числа 7 в данных нет, и это нормально!</p></div>
+  <div class="box warn"><span class="tag">주의 · осторожно</span>
+    <p>Сначала <b>упорядочи</b>, потом ищи середину. Самая частая ошибка: взять число из середины <b>неупорядоченного</b> списка. В примере выше в исходном списке 5-е число — 42, а правильный ответ 36.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">5</span> <span class="kr">최빈값</span> · мода</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Класс голосует за любимую еду: пицца, курица, пицца, рамён, пицца, курица. Чаще всех встречается «пицца» — это <span class="kr">최빈값</span>. Заметь: тут вообще нет чисел, а <span class="kr">최빈값</span> всё равно есть. <span class="kr">평균</span> и <span class="kr">중앙값</span> для еды посчитать нельзя.</p></div>
+  <div class="box text"><span class="tag">учебник · (3) 최빈값</span>
+    <p class="ko">최빈값: 자료의 변량 중에서 가장 많이 나타난 값</p>
+    <p class="ko">⇨ 자료의 변량의 도수가 가장 큰 값이 한 개 이상 있으면 그 값이 모두 최빈값이다.</p>
+    <p class="ko">⇨ 선호도를 조사할 때 주로 쓰이며, 자료의 변량의 개수가 많은 경우에 쉽게 구할 수 있고 숫자로 나타내지 못하는 자료에서도 구할 수 있다.</p>
+    <p class="ko"><b>참고</b> 최빈값은 자료에 따라 두 개 이상일 수 있다.</p>
+    <p class="muted">Мода — значение, которое встречается чаще всего. Если таких значений несколько (с одинаковой самой большой <span class="kr">도수</span>), то модами будут <b>все</b> они. Моду используют для опросов «что популярнее», её легко найти, даже когда данные не числа.</p>
+  </div>
+  <div class="box ex"><span class="tag">примеры</span>
+    <p>1, 2, 2, 3, 5 → <span class="kr">최빈값</span> = <b>2</b>.</p>
+    <p>1, 2, 2, 3, 3, 4 → <span class="kr">최빈값</span> = <b>2 и 3</b> (оба по 2 раза).</p>
+    <p>1, 2, 3, 4 → все встречаются по одному разу. В ответах этого задачника (№717) сказано: тогда <span class="kr">최빈값은 없다</span> (моды нет).</p></div>
+  <div class="box warn"><span class="tag">주의</span>
+    <p>Мода — это <b>само значение</b>, а не сколько раз оно встретилось. В ряду 7, 7, 7, 9 мода = 7, а не 3.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">6</span> 실험실 · одно огромное число</h2>
+  <p>Семь друзей записали, сколько у них карманных денег в неделю (тысяч вон). Двигай деньги седьмого друга — он «богач». Следи, кто из трёх <span class="kr">대푯값</span> убегает, а кто стоит на месте.</p>
+  <div class="lab">
+    <div class="legend"><span><i style="background:var(--blue)"></i><span class="kr">평균</span></span><span><i style="background:var(--coral)"></i><span class="kr">중앙값</span></span><span><i style="background:var(--green)"></i><span class="kr">최빈값</span></span></div>
+    <svg id="lab1" role="img" aria-label="Точечная диаграмма карманных денег с отметками среднего, медианы и моды"></svg>
+    <div class="lab-grid">
+      <div class="ctrl" style="display:flex;flex-direction:column;gap:10px">
+        <div class="ctrl"><label for="xR"><span>деньги «богача», тыс. вон</span><b id="xV">9</b></label>
+          <input type="range" id="xR" min="1" max="60" value="9"></div>
+        <div class="seg">
+          <button class="btn" id="add8" aria-pressed="false">+ 8-й друг (8 тыс.)</button>
+          <button class="btn" id="go60">Богач: 60</button>
+          <button class="btn" id="go9">Сброс</button>
+        </div>
+        <div class="nums" id="labNums"></div>
+      </div>
+      <div class="readout" id="labOut"></div>
+    </div>
+    <p class="status" id="labStatus"></p>
+  </div>
+  <p class="note">Что заметить: при богаче с 60 тыс. <span class="kr">평균</span> уходит вправо, хотя у шести из семи друзей меньше 8 тыс. <span class="kr">중앙값</span> и <span class="kr">최빈값</span> не двигаются. Это и есть <span class="kr">극단적인 값의 영향</span>. Добавь 8-го друга: количество станет <span class="kr">짝수</span>, и <span class="kr">중앙값</span> станет средним двух центральных чисел.</p>
+</section>
+
+<section>
+  <h2><span class="num">7</span> <span class="kr">적절한 대푯값</span> · какое выбрать</h2>
+  <div class="cards2">
+    <div class="cc b"><h4>평균</h4><p>Самое частое. Используем, когда числа «ровные», без выбросов.</p><p class="note">Слабость: экстремальное число тянет его к себе.</p></div>
+    <div class="cc c"><h4>중앙값</h4><p>Когда есть <span class="kr">극단적인 값</span>: 30, 32, 34, 36, <b>100</b> → лучше 중앙값 (34), а не 평균 (46.4).</p></div>
+    <div class="cc g"><h4>최빈값</h4><p>Для опросов (<span class="kr">선호도</span>): самый популярный размер обуви, цвет, блюдо. Работает и для не-чисел.</p></div>
+  </div>
+</section>
+
+<!-- PART B -->
+<div class="part-h b"><span class="tn">ЧАСТЬ B · стр. 236</span><b>줄기와 잎 그림</b><span class="muted">Диаграмма «ствол и листья»</span></div>
+
+<section>
+  <h2><span class="num">8</span> <span class="kr">줄기와 잎 그림</span> · что это</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Почтальон раскладывает письма по полкам: на полку «1» — все дома с 10 по 19, на полку «2» — с 20 по 29… На полке он пишет только <b>последнюю цифру</b>. Полка — это <span class="kr">줄기</span> (ствол, десятки), записка на полке — <span class="kr">잎</span> (лист, единицы). Посмотрев на длину полок, сразу видно, где писем больше.</p></div>
+  <div class="box text"><span class="tag">учебник · стр. 236</span>
+    <p class="ko"><b>1 줄기와 잎 그림</b>: 자료의 값을 줄기와 잎의 두 부분으로 나누어 나타낸 그림</p>
+    <p class="muted">Каждое число делим на две части: <span class="kr">줄기</span> (десятки) и <span class="kr">잎</span> (единицы). 23 → <span class="kr">줄기</span> 2, <span class="kr">잎</span> 3.</p>
+    <p class="ko"><b>2 줄기와 잎 그림을 그리는 순서</b></p>
+    <p class="ko">(ⅰ) 줄기와 잎을 정하고 변량을 줄기와 잎으로 나눈다.<br>(ⅱ) 세로선을 긋고 세로선의 왼쪽에 줄기를 크기순으로 세로로 쓴다.<br>(ⅲ) 세로선의 오른쪽에 각 줄기에 해당하는 잎을 가로로 쓴다.<br>(ⅳ) '줄기 | 잎'을 설명한다.</p>
+    <p class="muted">(i) Решаем, что ствол, что лист, и делим числа. (ii) Проводим вертикальную линию, слева сверху вниз пишем стволы по возрастанию. (iii) Справа от каждого ствола в строчку пишем его листья. (iv) Объясняем запись, например «1 | 4 는 14회».</p>
+    <p class="ko"><b>참고</b> ① 중복되는 잎이 있으면 중복된 횟수만큼 쓴다. ② 잎을 나열할 때 크기순으로 나열하면 자료를 분석할 때 편리하다.</p>
+    <p class="muted">① Повторяющиеся листья пишем столько раз, сколько они встречаются. ② Если листья упорядочить, данные удобнее анализировать.</p>
+    <p class="ko"><b>3 줄기와 잎 그림의 장점</b> ① 자료의 분포 상태를 쉽게 파악할 수 있다. ② 각 자료의 정확한 값을 알 수 있다.</p>
+    <p class="muted">Плюсы: ① сразу видно, как распределены числа; ② каждое точное число можно восстановить.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">9</span> 실험실 · строим диаграмму из учебника</h2>
+  <p>Данные из 예시 (단위: 회). Нажимай «Следующее число»: каждое число отправится на свою «полку». Потом упорядочь листья.</p>
+  <div class="lab">
+    <div class="nums" id="slRaw"></div>
+    <div class="seg">
+      <button class="btn go" id="slNext">Следующее число</button>
+      <button class="btn" id="slAll">Все сразу</button>
+      <button class="btn" id="slSort" aria-pressed="false">Упорядочить 잎</button>
+      <button class="btn" id="slReset">Сначала</button>
+    </div>
+    <div class="lab-grid">
+      <div class="pfig" style="justify-content:flex-start"><div class="slwrap"><div class="slkey">(1|4는 14회)</div><table class="sl" id="slLab"></table></div></div>
+      <div class="readout" id="slOut"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">10</span> Как читать диаграмму</h2>
+  <div class="box text"><span class="tag">유형 129 · 130</span>
+    <p>Ствол <span class="m">a</span>, лист <span class="m">b</span> → число <b>10<span class="m">a</span> + <span class="m">b</span></b>. Например, 3 | 2 → 32.</p>
+    <p><b>Сколько всего данных?</b> = сколько всего <span class="kr">잎</span> (листьев). Стволы не считаем!</p>
+    <p><b>중앙값</b>: листья уже стоят по порядку — считай их слева направо, строка за строкой, до нужного номера.</p>
+    <p><b>최빈값</b>: ищи лист, который повторяется больше всего в <b>одной строке</b>.</p>
+    <p><b>%</b>: (сколько нужных листьев) ÷ (всего листьев) × 100.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">11</span> 풀이 순서 · рецепт</h2>
+  <div class="cards2">
+    <div class="cc b"><h4>평균 с буквами</h4><ol class="steps"><li>Из «평균 = m» получи <b>сумму</b> = m × количество.</li><li>Новые числа: сложи их, вынеся сумму букв.</li><li>Раздели на новое количество.</li></ol></div>
+    <div class="cc c"><h4>중앙값</h4><ol class="steps"><li><b>Упорядочь</b> по возрастанию.</li><li>Посчитай <span class="m">n</span>: <span class="kr">홀수</span> или <span class="kr">짝수</span>?</li><li>Найди номер(а) середины.</li><li>Возьми число (или среднее двух).</li></ol></div>
+    <div class="cc g"><h4>줄기와 잎</h4><ol class="steps"><li>Прочитай ключ «a|b는 …».</li><li>Посчитай <b>все листья</b> = количество.</li><li>Найди нужные листья (по условию: 이상, 미만).</li><li>Посчитай % или 대푯값.</li></ol></div>
+  </div>
+  <div class="box warn"><span class="tag">чаще всего ошибаются здесь</span>
+    <p>Забывают упорядочить перед 중앙값. И при «добавили ещё одного ученика» забывают, что количество изменилось: <span class="kr">짝수</span> стал <span class="kr">홀수</span> (или наоборот).</p></div>
+</section>
+
+<!-- 개념 이해 -->
+<section>
+  <h2><span class="num">12</span> 개념 이해 · задачи учебника стр. 235, 237</h2>
+
+  <article class="prob"><div class="phead"><span class="pno">701</span><span class="badge">중하</span></div>
+    <p class="pq">다음은 어느 과일 가게의 A바구니에 들어 있는 귤 4개와 B바구니에 들어 있는 귤 5개의 무게를 조사하여 만든 자료이다. 귤의 무게의 평균이 더 높은 바구니는 어느 것인지 구하시오. (단위: g)</p>
+    <p class="pt">В корзине A — 4 мандарина, в корзине B — 5. Даны их веса. В какой корзине средний вес мандарина больше?</p>
+    <div class="box text"><p>[A바구니] 66, 72, 75, 65<br>[B바구니] 68, 76, 62, 60, 64</p></div>
+    <details class="h"><summary>Подсказка</summary><div><p>Посчитай <span class="kr">평균</span> отдельно для каждой корзины. Внимание: количество мандаринов разное (4 и 5).</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>A: (66 + 72 + 75 + 65) ÷ 4 = 278 ÷ 4 = 69.5 (g).</p>
+      <p>B: (68 + 76 + 62 + 60 + 64) ÷ 5 = 330 ÷ 5 = 66 (g).</p>
+      <p>69.5 &gt; 66. <span class="ans">Ответ: A바구니</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">702</span><span class="badge">중하</span></div>
+    <p class="pq">세 변량 <span class="m">a</span>, <span class="m">b</span>, <span class="m">c</span>의 평균이 6일 때, 5개의 변량 8, <span class="m">a</span>, <span class="m">b</span>, <span class="m">c</span>, 4의 평균은?</p>
+    <p class="pt">Среднее трёх значений <span class="m">a, b, c</span> равно 6. Найди среднее пяти значений 8, <span class="m">a, b, c</span>, 4.</p>
+    <ul class="opts"><li>① 2</li><li>② 4</li><li>③ 6</li><li>④ 8</li><li>⑤ 10</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Сами <span class="m">a, b, c</span> не нужны. Нужна только их <b>сумма</b>: из <span class="kr">평균</span> = 6 следует <span class="m">a</span> + <span class="m">b</span> + <span class="m">c</span> = ?</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="fr"><span><span class="m">a</span>+<span class="m">b</span>+<span class="m">c</span></span><span>3</span></span> = 6 → <span class="m">a</span> + <span class="m">b</span> + <span class="m">c</span> = 18.</p>
+      <p>Среднее пяти: <span class="fr"><span>8 + 18 + 4</span><span>5</span></span> = <span class="fr"><span>30</span><span>5</span></span> = 6. <span class="ans">Ответ: ③</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">703</span><span class="badge">하</span></div>
+    <p class="pq">희원이네 반 학생들의 과학 점수를 조사하였다. 조사 기록을 줄기와 잎 그림으로 나타낼 때, □ 안에 알맞은 수들의 합은? (단위: 점)</p>
+    <p class="pt">Оценки по естествознанию (баллы). Если записать их диаграммой «ствол и листья», какова сумма чисел в пустых клетках?</p>
+    <div class="box text"><div class="nums"><span>95</span><span>63</span><span>90</span><span>85</span><span>92</span><span>70</span><span>71</span><span>69</span><span>80</span><span>96</span><span>75</span><span>80</span><span>83</span><span>66</span><span>76</span><span>74</span><span>94</span><span>84</span><span>82</span><span>90</span></div></div>
+    <div class="pfig"><div class="slwrap"><div class="slkey">(6|3은 63점)</div><table class="sl" id="t703"></table></div></div>
+    <div class="seg"><button class="btn" id="b703" aria-pressed="false">Показать числа в клетках</button></div>
+    <ul class="opts"><li>① 10</li><li>② 11</li><li>③ 12</li><li>④ 13</li><li>⑤ 14</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p>Выпиши отдельно все оценки 60-х и все оценки 90-х и упорядочь их. Листья — это последние цифры.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>60-е: 63, 66, 69 → листья 3, <b>6</b>, 9.</p>
+      <p>90-е: 90, 90, 92, 94, 95, 96 → листья <b>0</b>, 0, <b>2</b>, <b>4</b>, 5, 6.</p>
+      <p>В клетках: 6, 0, 2, 4. Сумма 6 + 0 + 2 + 4 = 12. <span class="ans">Ответ: ③</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">704</span><span class="badge">중하</span></div>
+    <p class="pq">다음은 현경이네 반 학생들의 수학 성적을 줄기와 잎 그림으로 나타낸 것이다. 가장 높은 점수와 가장 낮은 점수의 차를 구하시오.</p>
+    <p class="pt">Оценки по математике в виде диаграммы. Найди разность самой высокой и самой низкой оценки.</p>
+    <div class="pfig"><div class="slwrap"><div class="slkey">(5|2는 52점)</div><table class="sl" id="t704"></table></div></div>
+    <details class="h"><summary>Подсказка</summary><div><p>Самое маленькое число — в <b>первой</b> строке, первый лист. Самое большое — в <b>последней</b> строке, последний лист.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>Самая низкая: 5 | 2 → 52. Самая высокая: 9 | 6 → 96.</p>
+      <p>96 − 52 = 44. <span class="ans">Ответ: 44점</span></p></div></details>
+  </article>
+</section>
+
+<!-- 유형 연습 -->
+<section>
+  <h2><span class="num">13</span> 유형 연습 · задачи для тренировки стр. 244–250</h2>
+  <p>В каждом типе: <b>대표 유제</b> разобран полностью, остальные — только с подсказкой. Сначала реши сам, потом открывай.</p>
+
+  <!-- 123 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">123</span><b>평균의 활용</b><span>среднее с буквами · стр. 244</span></div>
+    <div class="box text"><span class="tag">ключевая идея</span>
+      <p>Если <span class="m">n</span> чисел имеют <span class="kr">평균</span> <span class="m">a</span>, их сумма = <span class="m">na</span>. Добавили число <span class="m">x</span>: <span class="fr"><span><span class="m">na</span> + <span class="m">x</span></span><span><span class="m">n</span> + 1</span></span>. Убрали число <span class="m">y</span>: <span class="fr"><span><span class="m">na</span> − <span class="m">y</span></span><span><span class="m">n</span> − 1</span></span>.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">711</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다섯 개의 수 <span class="m">a, b, c, d, e</span>의 평균이 11일 때, 2<span class="m">a</span>+1, 2<span class="m">b</span>−3, 2<span class="m">c</span>+2, 2<span class="m">d</span>−3, 2<span class="m">e</span>−2의 평균은?</p>
+      <p class="pt">Среднее пяти чисел <span class="m">a…e</span> равно 11. Найди среднее новых пяти чисел.</p>
+      <ul class="opts"><li>① 20</li><li>② 21</li><li>③ 22</li><li>④ 23</li><li>⑤ 24</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Сначала сумма <span class="m">a</span>+…+<span class="m">e</span>. Потом сложи пять новых чисел: отдельно «буквенную» часть и отдельно числа +1, −3, +2, −3, −2.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><span class="m">a</span>+<span class="m">b</span>+<span class="m">c</span>+<span class="m">d</span>+<span class="m">e</span> = 11 × 5 = 55.</p>
+        <p>Сумма новых: 2(<span class="m">a</span>+…+<span class="m">e</span>) + (1 − 3 + 2 − 3 − 2) = 2 × 55 − 5 = 105.</p>
+        <p><span class="kr">평균</span> = 105 ÷ 5 = 21. <span class="ans">Ответ: ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>712</b>5개의 평균 10 → 2a+3, 2b−5, …</summary><div><p class="pq">5개의 <span class="m">a, b, c, d, e</span>의 평균이 10일 때, 다음 자료의 평균을 구하여라: 2<span class="m">a</span>+3, 2<span class="m">b</span>−5, 2<span class="m">c</span>+7, 2<span class="m">d</span>+14, 2<span class="m">e</span>+1</p><p class="pt">Та же схема, что в 711.</p><p>Подсказка: сумма букв = 50. Новая сумма = 2 × 50 + (3 − 5 + 7 + 14 + 1). Не забудь разделить на 5.</p></div></details>
+      <details class="h"><summary><b>713</b>평균 m → a+8, b+5, c+7, d−4</summary><div><p class="pq">4개의 변량 <span class="m">a, b, c, d</span>의 평균을 <span class="m">m</span>이라 할 때, 변량 <span class="m">a</span>+8, <span class="m">b</span>+5, <span class="m">c</span>+7, <span class="m">d</span>−4의 평균은? ① m−4 ② m−2 ③ m ④ m+2 ⑤ m+4</p><p class="pt">Здесь ответ — выражение с <span class="m">m</span>.</p><p>Подсказка: сумма букв = 4<span class="m">m</span>. Добавки 8 + 5 + 7 − 4 = ? Раздели всё на 4.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 124 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">124</span><b>중앙값의 뜻과 성질</b><span>медиана с неизвестными · стр. 245</span></div>
+    <article class="prob"><div class="phead"><span class="pno">714</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">7개의 정수 2, 4, 2, 6, <span class="m">a, b, c</span>의 중앙값이 될 수 있는 가장 큰 수를 구하시오.</p>
+      <p class="pt">7 целых чисел: 2, 4, 2, 6, <span class="m">a, b, c</span>. Какое самое большое число может быть медианой?</p>
+      <details class="h"><summary>Подсказка</summary><div><p>7 — <span class="kr">홀수</span>, медиана = 4-е число. Чтобы оно было как можно больше, поставь <span class="m">a, b, c</span> как можно правее (сделай их очень большими).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Известные числа по порядку: 2, 2, 4, 6. Медиана — <span class="fr"><span>7 + 1</span><span>2</span></span> = 4-е число.</p>
+        <p>Если <span class="m">a, b, c</span> все больше 6: 2, 2, 4, <b>6</b>, <span class="m">a, b, c</span>. 4-е число = 6.</p>
+        <p>Больше 6 4-е число стать не может: перед ним всегда стоят хотя бы 2, 2, 4. <span class="ans">Ответ: 6</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>715</b>9개의 정수, 가장 큰 중앙값</summary><div><p class="pq">9개의 정수 2, 4, 2, 6, <span class="m">a, b, c</span>, 8, 7의 중앙값이 될 수 있는 가장 큰 수를 구하시오.</p><p>Подсказка: как 714. Упорядочь известные шесть чисел. Медиана — 5-е число.</p></div></details>
+      <details class="h"><summary><b>716</b>9개의 정수, 가장 작은 중앙값</summary><div><p class="pq">9개의 정수 8, <span class="m">p, q, r</span>, 9, 11, 7, 15, 11의 중앙값이 될 수 있는 수 중 가장 작은 수를 구하시오.</p><p class="pt">Теперь ищем самую <b>маленькую</b> медиану.</p><p>Подсказка: поставь <span class="m">p, q, r</span> как можно <b>левее</b> (сделай их очень маленькими) и посмотри на 5-е число.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 125 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">125</span><b>최빈값의 뜻과 성질</b><span>верно / неверно · стр. 245–246</span></div>
+    <article class="prob"><div class="phead"><span class="pno">717</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 보기 중 대푯값에 대한 설명으로 옳은 것만을 있는 대로 고른 것은?</p>
+      <p class="ko">ㄱ. 최빈값은 없을 수도 있고, 2개 이상일 수도 있다.<br>ㄴ. 자료가 '빨강, 초록, 초록, 파랑, 하양, 하양'인 경우의 최빈값은 초록이다.<br>ㄷ. 크기순으로 나열한 자료의 개수가 짝수이면 중앙에 있는 두 수의 합을 2로 나눈 값이 중앙값이다.<br>ㄹ. 1부터 10까지의 자연수의 평균은 5이다.</p>
+      <p class="pt">Выбери все верные утверждения: ㄱ — моды может не быть или их может быть 2 и больше; ㄴ — для «красный, зелёный, зелёный, синий, белый, белый» мода — зелёный; ㄷ — при чётном количестве медиана = (сумма двух центральных) ÷ 2; ㄹ — среднее чисел от 1 до 10 равно 5.</p>
+      <ul class="opts"><li>① ㄱ, ㄴ</li><li>② ㄱ, ㄷ</li><li>③ ㄱ, ㄹ</li><li>④ ㄴ, ㄹ</li><li>⑤ ㄴ, ㄷ, ㄹ</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>В ㄴ посчитай <b>каждый</b> цвет. В ㄹ посчитай среднее честно: 1 + 2 + … + 10 = 55.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>ㄱ. 1, 2, 3, 4 — моды нет; 1, 2, 2, 3, 3, 4 — моды 2 и 3. <b>Верно</b>.</p>
+        <p>ㄴ. 초록 — 2 раза, 하양 — тоже 2 раза. Моды: 초록 и 하양. <b>Неверно</b>.</p>
+        <p>ㄷ. Это и есть правило для <span class="kr">짝수</span>. <b>Верно</b>.</p>
+        <p>ㄹ. 55 ÷ 10 = 5.5, а не 5. <b>Неверно</b>.</p>
+        <p><span class="ans">Ответ: ② (ㄱ, ㄷ)</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>718</b>중앙값과 최빈값 — 옳은 것</summary><div><p class="pq">ㄱ. 최빈값은 2개 이상일 수도 있다. ㄴ. 중앙값은 항상 평균보다 크다. ㄷ. 자료의 개수가 홀수이면 중앙값은 주어진 자료에 존재한다.<br>① ㄱ ② ㄷ ③ ㄱ, ㄴ ④ ㄱ, ㄷ ⑤ ㄱ, ㄴ, ㄷ</p><p>Подсказка: для ㄴ придумай один пример, где медиана меньше среднего (например, с одним огромным числом). Для ㄷ: при нечётном количестве медиана — это одно из чисел или нет?</p></div></details>
+      <details class="h"><summary><b>719</b>옳지 않은 것은?</summary><div><p class="pq">① 중앙값은 반드시 존재한다. ② 중앙값은 항상 평균보다 크다. ③ 평균, 중앙값, 최빈값이 모두 같을 수도 있다. ④ 자료의 개수가 짝수 개일때는 가운데 2개의 평균값을 중앙값으로 한다. ⑤ 최빈값은 자료에 따라 여러 개인 경우도 있다.</p><p class="pt">Найди <b>неверное</b> утверждение.</p><p>Подсказка: очень похоже на 718. Слово <span class="kr">항상</span> (всегда) — подозрительное.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 126 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">126</span><b>적절한 대푯값 찾기</b><span>когда медиана лучше · стр. 246–247</span></div>
+    <article class="prob"><div class="phead"><span class="pno">720</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 자료 중 평균보다 중앙값을 대푯값으로 하기에 가장 적절한 것은?</p>
+      <p class="pt">В каких данных медиана подходит лучше среднего?</p>
+      <ul class="opts" style="flex-direction:column"><li>① 2, 4, 6, 8, 10</li><li>② 10, 20, 30, 40, 50</li><li>③ 20, 20, 20, 20, 20</li><li>④ 30, 32, 34, 36, 100</li><li>⑤ 40, 80, 120, 160, 200</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Ищи данные с <span class="kr">극단적인 값</span>: одно число, которое резко отличается от остальных.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>В ①, ②, ⑤ числа идут ровным шагом, в ③ все одинаковые: среднее и медиана совпадают.</p>
+        <p>В ④ число 100 сильно больше 30–36. Среднее = 232 ÷ 5 = 46.4 — больше всех, кроме 100. Медиана = 34 — описывает данные лучше. <span class="ans">Ответ: ④</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>721</b>то же, другие данные</summary><div><p class="pq">① 6, 6, 6, 6, 6 ② 10, 11, 12, 13, 14 ③ 15, 20, 25, 30, 35 ④ 20, 40, 60, 80, 200 ⑤ 42, 44, 46, 48, 50</p><p>Подсказка: где шаг между числами вдруг ломается?</p></div></details>
+      <details class="h"><summary><b>722</b>то же, другие данные</summary><div><p class="pq">① 3, 6, 9, 12, 15 ② 5, 15, 25, 35, 45 ③ 12, 16, 20, 24, 120 ④ 20, 21, 22, 23, 24 ⑤ 50, 100, 150, 200, 250</p><p>Подсказка: как 720. Найди число, которое выпадает из ряда.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 127 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">127</span><b>대푯값을 이용하여 변량 구하기 (2) 중앙값이 주어진 경우</b><span>дана медиана · стр. 247</span></div>
+    <article class="prob"><div class="phead"><span class="pno">723</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">학생 10명의 몸무게를 측정하여 가장 가벼운 학생부터 차례대로 나열하였을 때, 5번째 학생의 몸무게가 50 kg이고 중앙값이 52 kg이었다. 여기에 몸무게가 53 kg인 학생을 한 명 추가하였을 때, 11명 학생의 몸무게의 중앙값을 구하시오.</p>
+      <p class="pt">10 учеников выстроили по весу. 5-й весит 50 кг, медиана 52 кг. Добавили ученика весом 53 кг. Найди медиану для 11 учеников.</p>
+      <details class="h"><summary>Подсказка</summary><div><p>При 10 учениках медиана = среднее 5-го и 6-го. Найди вес 6-го. Потом подумай, куда встанет новый ученик 53 кг.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>10 — <span class="kr">짝수</span>: <span class="fr"><span>50 + <span class="m">x</span></span><span>2</span></span> = 52 → 6-й весит <span class="m">x</span> = 54 кг.</p>
+        <p>Новый 53 кг: больше 50, меньше 54 → встаёт <b>между</b> 5-м и 6-м, то есть становится 6-м.</p>
+        <p>11 — <span class="kr">홀수</span>: медиана = <span class="fr"><span>11 + 1</span><span>2</span></span> = 6-й = 53 кг. <span class="ans">Ответ: 53 kg</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>724</b>6명 → 7명, 중앙값</summary><div><p class="pq">학생 6명의 수학 점수를 작은 값에서부터 크기순으로 나열할 때, 3번째 학생의 점수는 70점이고 중앙값은 74점이라고 한다. 이 집단에 수학 점수가 80점인 학생이 들어왔을 때, 7명의 수학 점수의 중앙값을 구하시오.</p><p>Подсказка: та же схема, что 723. Сначала найди 4-го. Потом реши, где окажется 80 — до или после 4-го?</p></div></details>
+      <details class="h"><summary><b>725</b>평균 = 중앙값 → x</summary><div><p class="pq">5개의 변량을 작은 값부터 크기순으로 나열하면 11, 13, 14, 16, <span class="m">x</span>이다. 자료의 평균과 중앙값이 같다고 할 때, <span class="m">x</span>의 값을 구하시오.</p><p>Подсказка: медиана видна сразу (3-е число). Приравняй <span class="fr"><span>11+13+14+16+<span class="m">x</span></span><span>5</span></span> к ней.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 128 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">128</span><b>대푯값을 이용하여 변량 구하기 (3) 최빈값이 주어진 경우</b><span>дана мода · стр. 248</span></div>
+    <div class="box warn"><span class="tag">주의 · учебник</span><p class="ko">미지수인 변량이 최빈값이 되는 경우를 모두 확인한다.</p><p class="muted">Проверь все случаи, когда неизвестное само становится модой.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">726</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음은 어느 빵집에서 월요일부터 일요일까지 매일 판매된 크림빵의 개수를 나타낸 것이다. 하루 동안 판매된 크림빵의 개수의 중앙값이 20, 최빈값이 28일 때, 화요일과 금요일에 판매된 개수의 합을 구하시오.</p>
+      <p class="pt">Продажи булочек с кремом с понедельника по воскресенье. Медиана 20, мода 28. Найди сумму продаж во вторник (<span class="m">y</span>) и пятницу (<span class="m">x</span>).</p>
+      <div class="tbl"><table style="min-width:420px;text-align:center"><tr><th>요일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th><th>일</th></tr><tr><th>크림빵의 개수</th><td>14</td><td><span class="m">y</span></td><td>4</td><td>18</td><td><span class="m">x</span></td><td>28</td><td>21</td></tr></table></div>
+      <details class="h"><summary>Подсказка</summary><div><p>28 сейчас встречается только один раз. Чтобы 28 стало модой, одно из <span class="m">x</span>, <span class="m">y</span> должно быть 28. Потом используй медиану (7 дней → 4-е число).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Мода 28 → пусть <span class="m">x</span> = 28 (случай <span class="m">y</span> = 28 даёт тот же ответ).</p>
+        <p>Числа: 4, 14, 18, 21, 28, 28 и <span class="m">y</span>. Всего 7, медиана — 4-е число, и она равна 20.</p>
+        <p>Среди известных нет 20, значит 4-е число — это сам <span class="m">y</span>: 4, 14, 18, <b>20</b>, 21, 28, 28. <span class="m">y</span> = 20.</p>
+        <p><span class="m">x</span> + <span class="m">y</span> = 28 + 20 = 48. <span class="ans">Ответ: 48</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>727</b>중앙값 8, 최빈값 9 → a+b+c</summary><div><p class="pq">다음 8개의 자료의 중앙값은 8, 최빈값은 9일 때, <span class="m">a</span>+<span class="m">b</span>+<span class="m">c</span>의 값을 구하시오: 3, 6, 6, 9, 12, <span class="m">a</span>, <span class="m">b</span>, <span class="m">c</span></p><p>Подсказка: 6 уже встречается 2 раза. Чтобы мода была 9, девяток должно стать больше — сколько из <span class="m">a, b, c</span> должны быть 9? Последнее неизвестное найди по медиане (среднее 4-го и 5-го).</p></div></details>
+      <details class="h"><summary><b>728</b>평균 = 최빈값 → a</summary><div><p class="pq">다음 7개 자료의 평균과 최빈값이 같을 때, <span class="m">a</span>의 값은? 23, 20, 23, 28, <span class="m">a</span>, 23, 24<br>① 20 ② 22 ③ 24 ④ 26 ⑤ 28</p><p>Подсказка: посмотри, какое число уже встречается 3 раза. Каким бы ни было <span class="m">a</span>, мода не изменится. Приравняй к ней среднее.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 129 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">129</span><b>줄기와 잎 그림의 이해</b><span>проценты по диаграмме · стр. 249</span></div>
+    <article class="prob"><div class="phead"><span class="pno">729</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음은 어느 동호회 회원들의 나이를 조사하여 나타낸 줄기와 잎 그림이다. 20대인 회원은 전체의 몇 %인지 구하시오.</p>
+      <p class="pt">Возраст членов клуба. Сколько процентов от всех составляют люди 20–29 лет (<span class="kr">20대</span>)?</p>
+      <div class="pfig"><div class="slwrap"><div class="slkey">(2|3은 23세)</div><table class="sl" id="t729"></table></div></div>
+      <details class="h"><summary>Подсказка</summary><div><p><span class="kr">20대</span> — это строка со стволом 2. Посчитай листья в ней и листья во всей диаграмме.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Всего листьев: 5 + 7 + 5 + 3 = 20 человек.</p>
+        <p>Ствол 2: 23, 24, 26, 28, 29 → 5 человек.</p>
+        <p><span class="fr"><span>5</span><span>20</span></span> × 100 = 25 (%). <span class="ans">Ответ: 25%</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>730</b>90점 이상 → 몇 %</summary><div><p class="pq">다음은 주희네 반 학생들의 미술 성적을 조사하여 나타낸 줄기와 잎 그림이다. 성적이 90점 이상인 학생은 전체의 몇 %인지 구하시오.</p><div class="pfig"><div class="slwrap"><div class="slkey">(6|1은 61점)</div><table class="sl" id="t730"></table></div></div><p>Подсказка: <span class="kr">90점 이상</span> — это вся строка со стволом 9. Дальше как 729.</p></div></details>
+      <details class="h"><summary><b>731</b>50% 이상 60% 미만 → 몇 %</summary><div><p class="pq">다음은 민주네 집에서 30일 동안 오전 10시에 측정한 습도를 조사하여 나타낸 줄기와 잎 그림이다. 겨울철 실내 적정 습도가 50% 이상 60% 미만일 때, 실내 적정 습도인 날은 전체의 몇 %인지 구하시오.</p><p class="pt">Влажность за 30 дней. Нормальная влажность — от 50% (включительно) до 60% (не включая). Сколько % дней были нормальными?</p><div class="pfig"><div class="slwrap"><div class="slkey">(4|3은 43%)</div><table class="sl" id="t731"></table></div></div><p>Подсказка: «50 이상 60 미만» = только строка со стволом 5. Всего дней 30 (проверь, посчитав листья).</p></div></details>
+    </div>
+  </div>
+
+  <!-- 130 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">130</span><b>줄기와 잎 그림에서 대푯값</b><span>평균 · 중앙값 · 최빈값 по диаграмме · стр. 250</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 130</span>
+      <p class="ko">자료의 총 개수는 잎의 총 개수와 같다. 중앙값: 자료의 총 개수에 따라 중앙값의 위치를 찾는다. 최빈값: 잎에서 중복된 값이 가장 많은 줄기를 찾아 해당 변량 값을 읽는다.</p>
+      <p class="muted">Количество данных = количество листьев. Для медианы найди её номер. Для моды найди лист, который чаще всего повторяется в одной строке.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">732</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 표는 어느 중학교 3학년 학생 20명이 30초 동안 윗몸일으키기를 한 횟수를 조사하여 십의 자리의 숫자를 줄기로, 일의 자리의 숫자를 잎으로 하여 나타낸 것이다. 이 자료의 중앙값을 <span class="m">a</span>회, 최빈값을 <span class="m">b</span>회라 할 때, <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오.</p>
+      <p class="pt">Сколько раз 20 учеников подняли корпус (пресс) за 30 секунд. Медиана = <span class="m">a</span>, мода = <span class="m">b</span>. Найди <span class="m">a</span> + <span class="m">b</span>.</p>
+      <div class="pfig"><div class="slwrap"><div class="slkey">(0|5는 5회)</div><table class="sl" id="t732"></table></div></div>
+      <div class="seg"><button class="btn" id="b732" aria-pressed="false">Подсветить 10-й, 11-й и моду</button></div>
+      <details class="h"><summary>Подсказка</summary><div><p>20 — <span class="kr">짝수</span>: медиана = среднее 10-го и 11-го листа. Считай листья по строкам: в первой строке 6.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>Строка 0: 6 листьев (номера 1–6). Строка 1 начинается с 7-го: 10 (7-й), 11 (8-й), 14 (9-й), <b>15 (10-й)</b>, <b>16 (11-й)</b>.</p>
+        <p><span class="m">a</span> = <span class="fr"><span>15 + 16</span><span>2</span></span> = 15.5.</p>
+        <p>Чаще всех: лист 6 в строке 1 — три раза → 16. <span class="m">b</span> = 16.</p>
+        <p><span class="m">a</span> + <span class="m">b</span> = 15.5 + 16 = 31.5. <span class="ans">Ответ: 31.5</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>733</b>16명, 중앙값 a + 최빈값 b</summary><div><p class="pq">다음 표는 진희네 반 학생 16명이 30초 동안 윗몸일으키기를 한 횟수를 조사하여 나타낸 것이다. 이 자료의 중앙값을 <span class="m">a</span>회, 최빈값을 <span class="m">b</span>회라 할 때, <span class="m">a</span>+<span class="m">b</span>의 값을 구하시오.</p><div class="pfig"><div class="slwrap"><div class="slkey">(0|2는 2회)</div><table class="sl" id="t733"></table></div></div><p>Подсказка: как 732. 16 — <span class="kr">짝수</span>: нужны 8-й и 9-й листья. Мода — лист, повторяющийся дважды в одной строке.</p></div></details>
+      <details class="h"><summary><b>734</b>평균 · 중앙값 · 최빈값의 대소 관계</summary><div><p class="pq">다음 줄기와 잎 그림은 학생 10명이 1년 동안 읽은 책의 수를 나타낸 것이다. 이때, 평균, 중앙값, 최빈값의 대소 관계를 바르게 나타낸 것은?</p><div class="pfig"><div class="slwrap"><table class="sl" id="t734"></table></div></div><p class="ko">① (평균) = (중앙값) = (최빈값) ② (평균) = (중앙값) &gt; (최빈값) ③ (평균) &lt; (중앙값) = (최빈값) ④ (평균) &gt; (중앙값) = (최빈값) ⑤ (평균) &gt; (중앙값) &gt; (최빈값)</p><p class="pt">Сравни среднее, медиану и моду (количество книг за год, 10 учеников).</p><p>Подсказка: выпиши все 10 чисел (5, 6, 10, …). Найди все три значения и сравни. Сумма получится круглой.</p></div></details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">14</span> 정리 · шпаргалка</h2>
+  <div class="tbl"><table>
+    <tr><th></th><th>Как найти</th><th>Когда лучше всего</th><th>Ловушка</th></tr>
+    <tr><td class="kr">평균</td><td>сумма ÷ количество</td><td>данные без выбросов</td><td>экстремальное число тянет его</td></tr>
+    <tr><td class="kr">중앙값</td><td>упорядочить → середина; <span class="kr">짝수</span> → среднее двух</td><td>есть <span class="kr">극단적인 값</span></td><td>забыть упорядочить</td></tr>
+    <tr><td class="kr">최빈값</td><td>самое частое значение</td><td><span class="kr">선호도</span>, не-числа</td><td>их может быть несколько (или ни одного)</td></tr>
+    <tr><td class="kr">줄기와 잎 그림</td><td>ствол = десятки, лист = единицы</td><td>видно <span class="kr">분포</span> и точные числа</td><td>количество = листья, а не стволы</td></tr>
+  </table></div>
+  <div class="box warn"><span class="tag">자주 하는 실수 · частые ошибки</span>
+    <ul class="mistakes">
+      <li>Ищут 중앙값 в неупорядоченном списке.</li>
+      <li>При <span class="kr">짝수</span> берут одно число вместо среднего двух.</li>
+      <li>Называют модой «сколько раз», а не само значение.</li>
+      <li>Пропускают повторяющиеся листья в 줄기와 잎 그림.</li>
+      <li>Путают <span class="kr">이상</span> (≥) и <span class="kr">초과</span> (&gt;), <span class="kr">미만</span> (&lt;) и <span class="kr">이하</span> (≤).</li>
+    </ul></div>
+</section>
+</main>
+
+<script>
+(()=>{
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a){if(k==="text")e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;}
+
+/* sorted ages */
+(()=>{const a=[28,29,31,32,36,38,42,45,54];$("ageSorted").innerHTML=a.map((v,i)=>`<span class="${i===4?"mid":""}">${v}<i class="pos">${i+1}-е</i></span>`).join("");})();
+
+/* stem-and-leaf tables. leaves: number or "?n" (box with answer n) */
+function sl(id,rows,opt={}){const t=$(id);if(!t)return;
+  let h=`<thead><tr><th style="text-align:center">줄기</th><th>잎</th></tr></thead><tbody>`;
+  rows.forEach(([s,ls],ri)=>{h+=`<tr><td class="st">${s}</td><td class="lv">`+ls.map((l,li)=>{
+    if(typeof l==="string"&&l[0]==="?")return `<span class="box">${l.slice(1)}</span>`;
+    const tag=opt.mark&&opt.mark(ri,li)?` data-m="${opt.mark(ri,li)}"`:"";return `<span${tag}>${l}</span>`;}).join(" ")+`</td></tr>`;});
+  t.innerHTML=h+"</tbody>";}
+sl("t703",[[6,[3,"?6",9]],[7,[0,1,4,5,6]],[8,[0,0,2,3,4,5]],[9,["?0",0,"?2","?4",5,6]]]);
+sl("t704",[[5,[2,2,6]],[6,[0,4,8]],[7,[2,2,6,6,6,6]],[8,[0,4,4,8,8]],[9,[2,2,6]]]);
+sl("t729",[[2,[3,4,6,8,9]],[3,[0,0,2,2,5,7,8]],[4,[1,3,4,8,8]],[5,[0,2,2]]]);
+sl("t730",[[6,[1,5,5,9]],[7,[4,4,7,8,8]],[8,[0,2,3,5,6,6,7]],[9,[1,1,4,5]]]);
+sl("t731",[[4,[3,3,6,7,8,8,8]],[5,[1,2,2,5,5,6,7,9,9]],[6,[2,4,4,6,6,6,8,8]],[7,[0,1,2,3,3,5]]]);
+sl("t732",[[0,[5,5,6,8,9,9]],[1,[0,1,4,5,6,6,6,7,7,8,9]],[2,[3,8,8]]],{mark:(r,i)=>r===1&&(i===3||i===4)?"mid":r===1&&i>=4&&i<=6?"mode":""});
+sl("t733",[[0,[2,5,9]],[1,[0,1,2,3,8]],[2,[0,1,1,2,5,8]],[3,[4,8]]]);
+sl("t734",[[0,[5,6]],[1,[0,3,4,4]],[2,[4,6,8]],[3,[0]]]);
+$("b703").onclick=e=>{const on=$("t703").classList.toggle("show");e.target.setAttribute("aria-pressed",on);};
+$("b732").onclick=e=>{const on=e.target.getAttribute("aria-pressed")!=="true";e.target.setAttribute("aria-pressed",on);
+  $("t732").querySelectorAll("span[data-m]").forEach(s=>{const m=s.dataset.m;s.className="";if(!on)return;
+    const idx=[...s.parentNode.children].indexOf(s);
+    if(idx===3||idx===4)s.className="new";if(idx>=4&&idx<=6&&s.textContent==="6")s.className=idx===4?"new hit":"hit";});};
+
+/* LAB 1: mean / median / mode */
+(()=>{const s=$("lab1");const W=600,H=190,x0=36,x1=W-20,lo=0,hi=62,base=140;
+  s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const X=v=>x0+(v-lo)/(hi-lo)*(x1-x0);
+  let rich=9,add8=false;
+  function data(){const d=[3,4,4,5,6,7];if(add8)d.push(8);d.push(rich);return d;}
+  function stats(d){const a=[...d].sort((p,q)=>p-q),n=a.length,sum=a.reduce((p,q)=>p+q,0);
+    const med=n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2;const cnt={};a.forEach(v=>cnt[v]=(cnt[v]||0)+1);
+    const mx=Math.max(...Object.values(cnt));const modes=Object.keys(cnt).filter(k=>cnt[k]===mx).map(Number);
+    return {a,n,sum,mean:sum/n,med,modes:mx>1?modes:[]};}
+  const f1=v=>Number.isInteger(v)?v:v.toFixed(1);
+  function draw(){s.innerHTML="";const d=data(),S=stats(d);
+    el("line",{x1:x0,y1:base,x2:x1,y2:base,stroke:"var(--muted)","stroke-width":1.4},s);
+    for(let v=0;v<=60;v+=5){el("line",{x1:X(v),y1:base,x2:X(v),y2:base+5,stroke:"var(--muted)"},s);el("text",{x:X(v),y:base+20,text:v,"text-anchor":"middle",class:"sm"},s);}
+    el("text",{x:x1,y:base+36,text:"тыс. вон",class:"sm","text-anchor":"end"},s);
+    const stack={};S.a.forEach(v=>{stack[v]=(stack[v]||0)+1;const k=stack[v];
+      el("circle",{cx:X(v),cy:base-10-(k-1)*17,r:7,fill:v===rich?"var(--amber)":"var(--surface)",stroke:"var(--ink)","stroke-width":1.3},s);});
+    const placed=[];
+    const mk=(v,col,lab)=>{let y=16;for(const L of [16,32,48]){if(!placed.some(p=>p.y===L&&Math.abs(p.x-X(v))<60)){y=L;break;}}placed.push({x:X(v),y});
+      el("line",{x1:X(v),y1:54,x2:X(v),y2:base,stroke:col,"stroke-width":2.4,"stroke-dasharray":"5 3"},s);
+      el("text",{x:X(v),y,text:lab,"text-anchor":"middle",style:`fill:${col};font-weight:700;font-size:13px`},s);};
+    S.modes.forEach(m=>mk(m,"var(--green)","최빈값"));
+    mk(S.med,"var(--coral)","중앙값");
+    mk(S.mean,"var(--blue)","평균");
+    $("xV").textContent=rich;
+    const midIdx=S.n%2?[(S.n-1)/2]:[S.n/2-1,S.n/2];
+    $("labNums").innerHTML=S.a.map((v,i)=>`<span class="${midIdx.includes(i)?"mid":S.modes.includes(v)?"mode":""}">${v}<i class="pos">${i+1}-е</i></span>`).join("");
+    $("labOut").innerHTML=`<span><b>n</b> = ${S.n} (${S.n%2?"홀수":"짝수"})</span>
+      <span class="hl-b">평균 = ${S.sum} ÷ ${S.n} ≈ ${f1(Math.round(S.mean*10)/10)}</span>
+      <span class="hl-c">중앙값 = ${S.n%2?`${(S.n+1)/2}-е = ${S.med}`:`(${S.a[S.n/2-1]} + ${S.a[S.n/2]}) ÷ 2 = ${f1(S.med)}`}</span>
+      <span class="hl-g">최빈값 = ${S.modes.length?S.modes.join(", "):"нет"}</span>`;
+    const st=$("labStatus");const gap=S.mean-S.med;
+    if(gap>4){st.className="status";st.textContent=`평균 убежал на ${f1(Math.round(gap*10)/10)} вправо от 중앙값. Здесь лучше взять 중앙값.`;}
+    else{st.className="status ok";st.textContent="Выбросов почти нет: 평균 и 중앙값 рядом, подходят оба.";}}
+  $("xR").oninput=e=>{rich=+e.target.value;draw();};
+  $("go60").onclick=()=>{rich=60;$("xR").value=60;draw();};
+  $("go9").onclick=()=>{rich=9;$("xR").value=9;add8=false;$("add8").setAttribute("aria-pressed","false");draw();};
+  $("add8").onclick=e=>{add8=!add8;e.target.setAttribute("aria-pressed",add8);draw();};
+  draw();})();
+
+/* LAB 2: stem-and-leaf builder */
+(()=>{const raw=[23,16,38,25,17,22,18,32,24,14,16,25,28,14,19];let k=0,sorted=false;
+  function draw(){
+    $("slRaw").innerHTML=raw.map((v,i)=>`<span class="${i<k-1?"used":i===k-1?"now":""}">${v}</span>`).join("");
+    const rows={1:[],2:[],3:[]};raw.slice(0,k).forEach((v,i)=>rows[Math.floor(v/10)].push({l:v%10,i}));
+    let h=`<thead><tr><th style="text-align:center">줄기</th><th>잎</th></tr></thead><tbody>`;
+    [1,2,3].forEach(s=>{let ls=rows[s].slice();if(sorted)ls.sort((p,q)=>p.l-q.l);
+      h+=`<tr><td class="st">${s}</td><td class="lv">${ls.map(o=>`<span class="${o.i===k-1&&!sorted?"new":""}">${o.l}</span>`).join(" ")}</td></tr>`;});
+    $("slLab").innerHTML=h+"</tbody>";
+    const out=$("slOut");
+    if(k===0){out.innerHTML=`<span>Нажми «Следующее число».</span><span class="muted">Стволы: 1, 2, 3 (десятки от 14 до 38).</span>`;}
+    else if(k<raw.length){const v=raw[k-1];out.innerHTML=`<span><b>${v}</b> → 줄기 <b>${Math.floor(v/10)}</b>, 잎 <b>${v%10}</b></span><span class="muted">Размещено ${k} из ${raw.length}.</span>`;}
+    else{out.innerHTML=`<span>Готово: 15 листьев = 15 данных.</span>${sorted?`<span class="hl-c">중앙값 = 8-й лист = 22</span><span class="hl-g">최빈값 = 14, 16, 25 (по 2 раза)</span><span class="hl-b">평균 = 331 ÷ 15 ≈ 22.1</span>`:`<span class="muted">Теперь нажми «Упорядочить 잎», чтобы найти 중앙값.</span>`}<span class="muted">Больше всего чисел — в 10-х (7 штук).</span>`;}
+    $("slSort").setAttribute("aria-pressed",sorted);}
+  $("slNext").onclick=()=>{if(k<raw.length)k++;draw();};
+  $("slAll").onclick=()=>{k=raw.length;draw();};
+  $("slSort").onclick=()=>{sorted=!sorted;draw();};
+  $("slReset").onclick=()=>{k=0;sorted=false;draw();};
+  draw();})();
+})();
+</script>
+
+</body></html>
