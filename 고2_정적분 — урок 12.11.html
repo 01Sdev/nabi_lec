@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>정적분 — урок</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: одна колонка-тетрадь, как в прошлых уроках: словарь → повторение → определение → F(b)−F(a) → свойства → функция-интеграл → лаборатория → рецепт → учебник → сборник → шпаргалка. */
+:root{
+  --bg:#f6f7f9;
+  --paper:#ffffff;
+  --ink:#1c2230;
+  --muted:#5b6475;
+  --line:#dfe3ea;
+  --blue:#2457c5;      /* v > 0, движение вправо, среднее */
+  --blue-soft:#e8eefb;
+  --coral:#d9483b;     /* v < 0, движение влево, мгновенное */
+  --coral-soft:#fbeceb;
+  --green:#1f8a5b;     /* пример, ответ, v = 0 */
+  --green-soft:#e6f4ec;
+  --amber:#a86a00;     /* аналогия */
+  --amber-soft:#fbf2e0;
+  --violet:#7346c2;    /* ускорение */
+  --violet-soft:#f0eafb;
+  --grid:#eef0f4;
+  --f-display:"Unbounded","Golos Text","Noto Sans KR",sans-serif;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",sans-serif;
+  --f-math:"Noto Serif","Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151c;--paper:#1a1f29;--ink:#e6e9f0;--muted:#9aa3b5;--line:#2c3342;
+  --blue:#7ea2ff;--blue-soft:#1f2a45;--coral:#ff8a7d;--coral-soft:#3a2224;
+  --green:#5fd39b;--green-soft:#173126;--amber:#f0b54a;--amber-soft:#33291a;
+  --violet:#b99bff;--violet-soft:#2a2240;--grid:#222836;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.65;padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:820px;margin:0 auto;padding-block:40px 80px;display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,5.6vw,42px);line-height:1.15;letter-spacing:-.01em}
+h2{font-family:var(--f-display);font-weight:600;font-size:clamp(21px,4vw,27px);line-height:1.25}
+h3{font-size:19px;font-weight:600;margin-top:8px}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:18px}
+.kr{font-family:var(--f-kr);font-weight:500}
+.lead{font-size:19px;color:var(--muted);max-width:62ch}
+.m{font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .15em;line-height:1.25;font-style:italic;font-family:var(--f-math)}
+.frac>span:first-child{border-bottom:1.5px solid currentColor;padding:0 .25em}
+.frac>span:last-child{padding:0 .25em}
+.sec-num{font-family:var(--f-display);color:var(--blue);font-size:15px;font-weight:700}
+.head{display:flex;flex-direction:column;gap:6px}
+.pos{color:var(--blue);font-weight:600}
+.neg{color:var(--coral);font-weight:600}
+.acc{color:var(--violet);font-weight:600}
+.zero{color:var(--green);font-weight:600}
+
+header{display:flex;flex-direction:column;gap:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.term{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.term .k{font-family:var(--f-kr);font-weight:700;font-size:17px}
+.term .r{color:var(--blue);font-weight:600;font-size:15px}
+.term .n{color:var(--muted);font-size:14px;line-height:1.45}
+
+.box{border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.theorem{background:var(--paper);border:2px solid var(--blue)}
+.theorem .tk{font-family:var(--f-kr);font-size:17px;line-height:1.85}
+.theorem .tr{border-top:1px dashed var(--line);padding-top:10px}
+.label{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.theorem .label{color:var(--blue)}
+.analogy{background:var(--amber-soft)}
+.analogy .label{color:var(--amber)}
+.warn{background:var(--coral-soft)}
+.warn .label{color:var(--coral)}
+.note{background:var(--blue-soft)}
+.note .label{color:var(--blue)}
+.ex{background:var(--paper);border:1px solid var(--line)}
+.ex .label{color:var(--green)}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:6px}
+.steps li::marker{color:var(--muted);font-weight:600}
+ul.plain{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.calc{font-family:var(--f-math);background:var(--bg);border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.calc .ok{color:var(--green);font-style:normal;font-family:var(--f-body);font-size:15px}
+
+/* цепочка 위치 → 속도 → 가속도 */
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.chain .node{flex:1 1 150px;border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;min-width:0}
+.chain .node .k{font-family:var(--f-kr);font-weight:700}
+.chain .node .r{font-size:14px}
+.chain .n1{background:var(--grid)}
+.chain .n2{background:var(--blue-soft);color:var(--ink)}
+.chain .n3{background:var(--violet-soft)}
+.chain .arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex:0 0 auto;padding:0 4px;text-align:center}
+.chain .arrow b{font-size:22px;color:var(--coral);line-height:1}
+
+.cond{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.cond>div{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cond .n{font-family:var(--f-display);font-size:13px}
+
+figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+figcaption{font-size:14px;color:var(--muted)}
+figure svg{width:100%;height:auto;display:block}
+.fig-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;align-items:start}
+svg text{font-family:var(--f-math);font-style:italic}
+
+.lab{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:14px}
+.lab svg{width:100%;height:auto;display:block;touch-action:none}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.controls label{font-weight:600}
+input[type=range]{flex:1 1 240px;accent-color:var(--green);min-width:0}
+button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--blue)}
+button[aria-pressed="true"]{background:var(--blue);color:var(--paper);border-color:var(--blue)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.readout>div{border-radius:10px;padding:10px 12px;font-size:15px;display:flex;flex-direction:column;gap:2px;background:var(--bg);border:1px solid var(--line)}
+.readout b{font-family:var(--f-math);font-size:20px;font-weight:400;font-variant-numeric:tabular-nums}
+.status{border-radius:10px;padding:10px 14px;font-weight:600;border:1px solid var(--line);background:var(--bg)}
+.status.st-pos{background:var(--blue-soft);border-color:var(--blue);color:var(--blue)}
+.status.st-neg{background:var(--coral-soft);border-color:var(--coral);color:var(--coral)}
+.status.st-hit{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.status.st-trap{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+
+.prob{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:18px 20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.prob-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pnum{font-family:var(--f-display);font-weight:700;color:var(--blue);font-size:22px}
+.lvl{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--bg);color:var(--muted);font-family:var(--f-kr)}
+.src{font-size:12px;color:var(--muted);font-family:var(--f-kr)}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:600}
+.tag.hint{background:var(--amber-soft);color:var(--amber)}
+.opts{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--f-math)}
+.pk{font-size:16px;line-height:1.85}
+details{border-top:1px solid var(--line);padding-top:10px}
+summary{cursor:pointer;font-weight:600;color:var(--blue)}
+details[open] summary{margin-bottom:10px}
+details+details{border-top:none;padding-top:0}
+details>div,details>p,details>figure{margin-bottom:8px}
+.answer{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:700;padding:2px 10px;border-radius:6px}
+.type-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.hint-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.hint-grid .prob{padding:14px 16px;gap:8px}
+.hint-grid .pnum{font-size:18px}
+
+.tbl-wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px;background:var(--paper);border-radius:10px;overflow:hidden}
+th,td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:15px}
+th{background:var(--blue-soft);font-weight:600}
+footer{color:var(--muted);font-size:14px}
+@media (max-width:480px){.hint-grid{grid-template-columns:1fr}.chain .arrow{flex-basis:100%;flex-direction:row;gap:6px}.chain .arrow b{transform:rotate(90deg)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* знак определённого интеграла с пределами справа: ∫ₐᵇ */
+.dint{display:inline-flex;align-items:center;vertical-align:middle;font-family:var(--f-math);font-style:italic;white-space:nowrap;margin:0 .05em}
+.dint .s{font-size:1.5em;line-height:1}
+.lim{display:inline-flex;flex-direction:column;justify-content:space-between;font-size:.62em;line-height:1.05;height:2.35em;margin-left:.08em;font-family:var(--f-math);font-style:italic;white-space:nowrap}
+.lim span:last-child{margin-left:-.45em}
+.bl{display:inline-flex;align-items:center;vertical-align:middle;font-family:var(--f-math)}
+.bl .s{font-size:1.45em;line-height:1;font-style:normal}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="crumb">
+    <span class="chip kr">미적분1</span>
+    <span class="chip kr">III 적분 › 1 부정적분과 정적분</span>
+    <span class="chip">учебник, стр. 137–139</span>
+    <span class="chip">сборник задач, стр. 154–161</span>
+  </div>
+  <h1><span class="kr">정적분</span><br>Определённый интеграл</h1>
+  <p class="lead">В прошлый раз мы находили первообразную <span class="m">F(x) + C</span>: это целая функция. Сегодня интеграл даёт <strong>одно число</strong>: площадь под графиком со знаком. Считается оно одной формулой: <span class="m">F(b) − F(a)</span>.</p>
+</header>
+
+<!-- ===== 0 словарь ===== -->
+<section id="vocab">
+  <div class="head">
+    <span class="sec-num">0 · <span class="kr">단어장</span></span>
+    <h2>Словарик: корейские слова из учебника</h2>
+  </div>
+  <p>Все эти слова есть на стр. 137 и в задачах урока. Читай их по-корейски: на контрольной будет именно так.</p>
+  <div class="vocab">
+    <div class="term"><span class="k">정적분</span><span class="r">определённый интеграл</span><span class="n"><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span> — это число</span></div>
+    <div class="term"><span class="k">넓이</span><span class="r">площадь</span><span class="n">도형의 넓이 = площадь фигуры</span></div>
+    <div class="term"><span class="k">둘러싸인 도형</span><span class="r">ограниченная (замкнутая) фигура</span><span class="n">곡선과 직선으로 둘러싸인 = ограниченная кривой и прямыми</span></div>
+    <div class="term"><span class="k">곡선 · 직선 · x축</span><span class="r">кривая · прямая · ось x</span><span class="n">두 직선 <span class="m">x = a, x = b</span></span></div>
+    <div class="term"><span class="k">닫힌구간 [a, b]</span><span class="r">отрезок [a, b]</span><span class="n">концы включены</span></div>
+    <div class="term"><span class="k">연속</span><span class="r">непрерывная</span><span class="n">график без разрывов</span></div>
+    <div class="term"><span class="k">아래끝 · 위끝</span><span class="r">нижний · верхний предел</span><span class="n"><span class="m">a</span> внизу, <span class="m">b</span> вверху у знака ∫</span></div>
+    <div class="term"><span class="k">적분 구간</span><span class="r">промежуток интегрирования</span><span class="n">от <span class="m">a</span> до <span class="m">b</span></span></div>
+    <div class="term"><span class="k">a에서 b까지</span><span class="r">от a до b</span><span class="n">~에서 = от, ~까지 = до</span></div>
+    <div class="term"><span class="k">양의 값 · 음의 값</span><span class="r">положительные · отрицательные значения</span><span class="n">выше / ниже оси x</span></div>
+    <div class="term"><span class="k">미적분의 기본정리</span><span class="r">основная теорема анализа</span><span class="n">формула Ньютона–Лейбница</span></div>
+    <div class="term"><span class="k">대소에 관계없이</span><span class="r">независимо от того, что больше</span><span class="n">a &lt; b или a &gt; b — не важно</span></div>
+    <div class="term"><span class="k">적분상수를 고려하지 않는다</span><span class="r">константу C не учитываем</span><span class="n">она всё равно сокращается</span></div>
+    <div class="term"><span class="k">성질</span><span class="r">свойство</span><span class="n">정적분의 성질 = свойства интеграла</span></div>
+    <div class="term"><span class="k">실수배 · 합 · 차</span><span class="r">умножение на число · сумма · разность</span><span class="n">свойства (1) и (2)</span></div>
+    <div class="term"><span class="k">복호동순</span><span class="r">знаки в том же порядке</span><span class="n">верхний ± с верхним, нижний с нижним</span></div>
+    <div class="term"><span class="k">짝수 · 홀수</span><span class="r">чётное · нечётное число</span><span class="n">짝수인 자연수 = чётное натуральное</span></div>
+    <div class="term"><span class="k">f(−x) = f(x)</span><span class="r">чётная функция</span><span class="n">график симметричен относительно оси y</span></div>
+    <div class="term"><span class="k">절댓값</span><span class="r">модуль, абсолютная величина</span><span class="n"><span class="m">|x − 2|</span> — раскрываем по кускам</span></div>
+    <div class="term"><span class="k">정적분으로 정의된 함수</span><span class="r">функция, заданная интегралом</span><span class="n"><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt</span> — тема следующего урока</span></div>
+    <div class="term"><span class="k">정수 k의 최댓값</span><span class="r">наибольшее целое k</span><span class="n">정수 = целое число</span></div>
+    <div class="term"><span class="k">최고차항의 계수</span><span class="r">старший коэффициент</span><span class="n">коэффициент при старшей степени</span></div>
+  </div>
+</section>
+
+<!-- ===== 1 разминка ===== -->
+<section id="warmup">
+  <div class="head">
+    <span class="sec-num">1 · <span class="kr">복습</span> (разминка)</span>
+    <h2>Что нужно помнить с прошлого урока</h2>
+  </div>
+  <div class="cond">
+    <div><span class="n pos"><span class="kr">부정적분</span></span><p><span class="m">∫xⁿdx = </span><span class="frac"><span>xⁿ⁺¹</span><span>n + 1</span></span><span class="m"> + C</span></p><p>Степень растёт на 1, делим на новую степень. <span class="m">∫k dx = kx + C</span>.</p></div>
+    <div><span class="n neg">Площади из геометрии</span><p>Прямоугольник: ширина × высота. Треугольник: <span class="frac"><span>1</span><span>2</span></span>× основание × высота. Трапеция: <span class="frac"><span>1</span><span>2</span></span>(верх + низ) × высота.</p><p>Сегодня проверим ими новую формулу.</p></div>
+  </div>
+</section>
+
+<!-- ===== 2 определение ===== -->
+<section id="def">
+  <div class="head">
+    <span class="sec-num">2 · <span class="kr">정적분의 정의</span></span>
+    <h2>Определённый интеграл — это площадь со знаком</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · банковская карта</span>
+    <p>Представь выписку по карте за месяц. Всё, что пришло на карту, — плюс. Всё, что ты потратил, — минус. В конце месяца банк показывает одно число: <strong>итог</strong> = пришло − потрачено.</p>
+    <p>Так и здесь. Площадь <span class="pos">над осью x</span> идёт со знаком плюс, площадь <span class="neg">под осью x</span> — со знаком минус. <span class="kr">정적분</span> — это итог: <span class="m">S₁ − S₂</span>. Итог может быть и нулём: сколько пришло, столько и ушло.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 137 · ① 정적분 (1) 정적분의 정의</span>
+    <p class="tk">① 함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속이고 <span class="m">f(x) ≥ 0</span>일 때, 곡선 <span class="m">y = f(x)</span>와 <span class="m">x</span>축 및 두 직선 <span class="m">x = a</span>, <span class="m">x = b</span>로 둘러싸인 도형의 넓이를 함수 <span class="m">f(x)</span>의 <span class="m">a</span>에서 <span class="m">b</span>까지의 정적분이라 하고, 이것을 기호로 <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span>와 같이 나타낸다.<br>
+    ② 함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속이고 <span class="m">f(x) ≤ 0</span>일 때, 곡선 <span class="m">y = f(x)</span>와 <span class="m">x</span>축 및 두 직선 <span class="m">x = a</span>, <span class="m">x = b</span>로 둘러싸인 도형의 넓이를 <span class="m">S</span>라 하면 <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = −S</span>이다.</p>
+    <p class="tr">① Пусть <span class="m">f(x)</span> непрерывна на отрезке <span class="m">[a, b]</span> и <span class="m">f(x) ≥ 0</span>. Площадь фигуры, ограниченной кривой <span class="m">y = f(x)</span>, осью <span class="m">x</span> и прямыми <span class="m">x = a</span>, <span class="m">x = b</span>, называют определённым интегралом функции <span class="m">f(x)</span> от <span class="m">a</span> до <span class="m">b</span> и обозначают <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span>.<br>
+    ② Если <span class="m">f(x) ≤ 0</span> на <span class="m">[a, b]</span> и площадь такой фигуры равна <span class="m">S</span>, то <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = −S</span>.</p>
+  </div>
+
+  <div class="fig-row">
+    <figure><svg id="figPos" viewBox="0 0 300 200" role="img" aria-label="f ≥ 0: площадь над осью"></svg><figcaption>① <span class="m">f ≥ 0</span>: интеграл = <span class="pos">+площадь</span>.</figcaption></figure>
+    <figure><svg id="figNeg" viewBox="0 0 300 200" role="img" aria-label="f ≤ 0: площадь под осью"></svg><figcaption>② <span class="m">f ≤ 0</span>: интеграл = <span class="neg">−S</span>.</figcaption></figure>
+    <figure><svg id="figMix" viewBox="0 0 300 200" role="img" aria-label="Смешанный случай S1 и S2"></svg><figcaption>참고: <span class="m">f</span> меняет знак: интеграл = <span class="pos">S₁</span> − <span class="neg">S₂</span>.</figcaption></figure>
+  </div>
+
+  <div class="box note">
+    <span class="label">참고 · стр. 137</span>
+    <p class="kr">함수 <span class="m">f(x)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 양의 값과 음의 값을 모두 가질 때, 곡선 <span class="m">y = f(x)</span>에서 <span class="m">f(x) ≥ 0</span>인 부분과 <span class="m">x</span>축 사이의 넓이를 <span class="m">S₁</span>, <span class="m">f(x) ≤ 0</span>인 부분과 <span class="m">x</span>축 사이의 넓이를 <span class="m">S₂</span>라 하면 <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = S₁ − S₂</span>이다. 또, 정적분의 기호에서 <span class="m">a</span>를 아래끝, <span class="m">b</span>를 위끝, <span class="m">a</span>에서 <span class="m">b</span>까지를 적분 구간이라 한다.</p>
+    <p>Если <span class="m">f</span> принимает на <span class="m">[a, b]</span> и положительные, и отрицательные значения, то интеграл = (площадь над осью) − (площадь под осью). <span class="m">a</span> — <span class="kr">아래끝</span> (нижний предел), <span class="m">b</span> — <span class="kr">위끝</span> (верхний предел), <span class="m">[a, b]</span> — <span class="kr">적분 구간</span>.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 137 · (2) a ≥ b일 때의 정의</span>
+    <p class="tk">① <span class="m">a = b</span>일 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>a</span></span></span><span class="m">f(x)dx = 0</span> &nbsp;&nbsp; ② <span class="m">a &gt; b</span>일 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = −</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>b</span></span></span><span class="m">f(x)dx</span></p>
+    <p class="tr">① Пределы совпали — ширина полоски 0, площадь 0.<br>② Поменяли пределы местами — <strong>знак меняется</strong>. Идём «справа налево» — всё считается со знаком минус.</p>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание</span>
+    <p><span class="kr">정적분</span> ≠ <span class="kr">넓이</span>, если график уходит под ось. Интеграл <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">(x² − 2x)dx</span> отрицательный, а площадь всегда положительна. Задачи «넓이를 구하시오» будут позже — там минус надо убирать.</p>
+  </div>
+</section>
+
+<!-- ===== 3 основная теорема ===== -->
+<section id="ftc">
+  <div class="head">
+    <span class="sec-num">3 · <span class="kr">부정적분과 정적분의 관계</span></span>
+    <h2>Главная формула: F(b) − F(a)</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · одометр в машине</span>
+    <p>В машине есть одометр — счётчик пройденных километров. В 14:00 он показывал 52 300 км, в 17:00 — 52 510 км. Сколько ты проехал? <span class="m">52 510 − 52 300 = 210</span> км.</p>
+    <p>Скорость — это <span class="m">f</span>, одометр — это первообразная <span class="m">F</span>. Путь за время от <span class="m">a</span> до <span class="m">b</span> = <span class="m">F(b) − F(a)</span>. С какого числа одометр начинал (новая машина или старая) — <strong>не важно</strong>: начальное число вычитается. Поэтому <span class="m">C</span> здесь не нужна.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 137 · ③ 부정적분과 정적분의 관계</span>
+    <p class="tk">닫힌구간 <span class="m">[a, b]</span>에서 연속인 함수 <span class="m">f(x)</span>의 한 부정적분을 <span class="m">F(x)</span>라 하면 <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = F(b) − F(a)</span>이다. 이때 <span class="m">F(b) − F(a)</span>를 기호로 <span class="m">[F(x)</span><span class="bl"><span class="s">]</span><span class="lim"><span>b</span><span>a</span></span></span>와 같이 나타낸다.</p>
+    <p class="tr">Пусть <span class="m">F(x)</span> — одна из первообразных непрерывной на <span class="m">[a, b]</span> функции <span class="m">f(x)</span>. Тогда <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx = F(b) − F(a)</span>. Разность <span class="m">F(b) − F(a)</span> коротко пишут <span class="m">[F(x)</span><span class="bl"><span class="s">]</span><span class="lim"><span>b</span><span>a</span></span></span>.</p>
+  </div>
+
+  <div class="cond">
+    <div><span class="n">참고</span><p class="kr">이와 같은 관계를 ‘미적분의 기본정리’라고 한다.</p><p>Эта связь называется <strong>основной теоремой анализа</strong>: площадь (интеграл) считается через первообразную.</p></div>
+    <div><span class="n neg">주의</span><p class="kr">부정적분과 정적분의 관계는 <span class="m">a, b</span>의 대소에 관계없이 성립하고, 이를 이용하여 계산할 때 적분상수는 고려하지 않는다.</p><p>Формула верна при любом порядке <span class="m">a</span> и <span class="m">b</span>. <span class="m">C</span> не пишем: <span class="m">(F(b) + C) − (F(a) + C) = F(b) − F(a)</span>.</p></div>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример · проверим формулу геометрией</span>
+    <p>Найдём <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>1</span></span></span><span class="m">2x dx</span> двумя способами.</p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1. Первообразная.</span> F(x) = x²  (C не пишем)</span>
+      <span><span class="ok">Шаг 2. Верхний предел.</span> F(3) = 9</span>
+      <span><span class="ok">Шаг 3. Нижний предел.</span> F(1) = 1</span>
+      <span><span class="ok">Шаг 4.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>1</span></span></span>2x dx = [x²<span class="bl"><span class="s">]</span><span class="lim"><span>3</span><span>1</span></span></span> = 9 − 1 = 8</span>
+    </div>
+    <figure>
+      <svg id="figFTC" viewBox="0 0 520 240" role="img" aria-label="Трапеция под прямой y = 2x от 1 до 3"></svg>
+      <figcaption>Под прямой <span class="m">y = 2x</span> на <span class="m">[1, 3]</span> — трапеция: стороны 2 и 6, высота 2. Площадь <span class="m">½(2 + 6)·2 = 8</span> ✓. Формула и геометрия совпали.</figcaption>
+    </figure>
+  </div>
+
+  <div class="box warn">
+    <span class="label">Внимание · порядок и скобки</span>
+    <p>Всегда <strong>верх минус низ</strong>: <span class="m">F(b) − F(a)</span>. И бери <span class="m">F(a)</span> в скобки целиком: <span class="m">F(2) − F(−1) = (8/3 + 2) − (−1/3 − 1)</span>. Минус перед скобкой меняет <strong>все</strong> знаки внутри. Здесь теряют больше всего баллов.</p>
+  </div>
+</section>
+
+<!-- ===== 4 свойства ===== -->
+<section id="prop">
+  <div class="head">
+    <span class="sec-num">4 · <span class="kr">정적분의 성질</span></span>
+    <h2>Свойства: выносим число, складываем, склеиваем промежутки</h2>
+  </div>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · поезд Сеул → Тэджон → Пусан</span>
+    <p>Путь Сеул → Тэджон плюс путь Тэджон → Пусан = путь Сеул → Пусан. Промежуточная станция <span class="m">c</span> просто делит маршрут на две части. Это свойство (3).</p>
+    <p>Даже если <span class="m">c</span> лежит <strong>за</strong> Пусаном (проехал дальше и вернулся), итог тот же: лишний кусок пройден туда и обратно, плюс и минус сокращаются.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 137 · ④ 정적분의 성질</span>
+    <p class="tk">두 함수 <span class="m">f(x), g(x)</span>가 세 실수 <span class="m">a, b, c</span>를 포함하는 구간에서 연속일 때<br>
+    (1) <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">kf(x)dx = k</span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span> (단, <span class="m">k</span>는 실수이다.)<br>
+    (2) <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">{f(x) ± g(x)}dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx ± </span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">g(x)dx</span> (복호동순)<br>
+    (3) <span class="dint"><span class="s">∫</span><span class="lim"><span>c</span><span>a</span></span></span><span class="m">f(x)dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>c</span></span></span><span class="m">f(x)dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span></p>
+    <p class="tr">Если <span class="m">f, g</span> непрерывны на промежутке, содержащем <span class="m">a, b, c</span>:<br>
+    (1) число-множитель выносится за знак интеграла;<br>
+    (2) интеграл суммы (разности) = сумма (разность) интегралов; <span class="kr">복호동순</span> — «плюс с плюсом, минус с минусом»;<br>
+    (3) два соседних промежутка склеиваются в один.</p>
+  </div>
+
+  <div class="cond">
+    <div><span class="n pos">(1) и (2) — справа налево</span><p>Чаще их применяют <strong>в обратную сторону</strong>: два интеграла с одинаковыми пределами → один интеграл. Под ним что-то сокращается (задачи 508, 605, 607).</p></div>
+    <div><span class="n zero">(3) — склейка</span><p>Верхний предел первого = нижний предел второго → склеиваем. Пределы «не стыкуются»? Переверни один интеграл по правилу (2)② (задачи 509, 614, 617).</p></div>
+    <div><span class="n neg">Чего нет</span><p>Для произведения правила нет: <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">{f(x)}²dx ≠ </span><span class="m">(</span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx)²</span>. Сначала раскрой скобки.</p></div>
+  </div>
+
+  <figure>
+    <svg id="figAdd" viewBox="0 0 520 220" role="img" aria-label="Свойство (3): две площади складываются"></svg>
+    <figcaption>Свойство (3): <span class="pos"><span class="dint"><span class="s">∫</span><span class="lim"><span>c</span><span>a</span></span></span></span> + <span class="zero"><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>c</span></span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span>. Точка <span class="m">c</span> делит фигуру на две части.</figcaption>
+  </figure>
+
+  <div class="box note">
+    <span class="label">참고 · чётная и нечётная степень</span>
+    <p class="kr"><span class="m">n</span>이 짝수인 자연수이면 <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−a</span></span></span><span class="m">xⁿdx = 2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">xⁿdx</span>, <span class="m">n</span>이 홀수인 자연수이면 <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−a</span></span></span><span class="m">xⁿdx = 0</span>이다.</p>
+    <p>Промежуток симметричный <span class="m">[−a, a]</span>. Чётная степень (<span class="m">x², x⁴, </span>число): левая половина = правая, считаем одну и удваиваем. Нечётная степень (<span class="m">x, x³</span>): левая половина = −правая, вместе 0. <strong>Нечётные слагаемые просто вычёркиваем.</strong></p>
+    <div class="fig-row">
+      <figure><svg id="figEven" viewBox="0 0 300 200" role="img" aria-label="y = x² на [−a, a]"></svg><figcaption><span class="m">y = x²</span>: две равные части → <span class="m">2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span>.</figcaption></figure>
+      <figure><svg id="figOdd" viewBox="0 0 300 200" role="img" aria-label="y = x³ на [−a, a]"></svg><figcaption><span class="m">y = x³</span>: <span class="pos">плюс</span> и <span class="neg">минус</span> равны → 0.</figcaption></figure>
+    </div>
+  </div>
+
+  <div class="box ex">
+    <span class="label">Пример · симметричный промежуток</span>
+    <p><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span><span class="m">(x³ + 3x² − x + 1)dx</span></p>
+    <div class="calc">
+      <span><span class="ok">Шаг 1. Вычёркиваем нечётные.</span> x³ и −x дают 0</span>
+      <span><span class="ok">Шаг 2. Удваиваем чётные.</span> 2<span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>(3x² + 1)dx</span>
+      <span><span class="ok">Шаг 3.</span> 2[x³ + x<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>0</span></span></span> = 2(8 + 2) = 20</span>
+    </div>
+    <p>Нижний предел 0 — подставлять почти нечего. Поэтому этот приём так экономит время.</p>
+  </div>
+</section>
+
+<!-- ===== 5 функция, заданная интегралом ===== -->
+<section id="preview">
+  <div class="head">
+    <span class="sec-num">5 · <span class="kr">적분과 미분의 관계 · 정적분으로 정의된 함수</span></span>
+    <h2>Когда верхний предел — переменная x</h2>
+  </div>
+  <p>На стр. 137 есть ещё пункты ② и ⑤. Задачи на них — на следующем уроке. Сейчас только смысл.</p>
+
+  <div class="box analogy">
+    <span class="label">Аналогия · красим забор</span>
+    <p>Ты красишь забор слева направо, начиная с точки <span class="m">a</span>. Покрашенная площадь — это <span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt</span>, где <span class="m">f(t)</span> — высота забора. С какой скоростью растёт покрашенная площадь? Ровно с той, какой высоты забор там, где сейчас кисть: <span class="m">f(x)</span>.</p>
+  </div>
+
+  <div class="box theorem">
+    <span class="label">Учебник · стр. 137 · ② 적분과 미분의 관계 · ⑤ 정적분으로 정의된 함수 (단, a는 상수)</span>
+    <p class="tk">함수 <span class="m">f(t)</span>가 닫힌구간 <span class="m">[a, b]</span>에서 연속일 때, <span class="frac"><span>d</span><span>dx</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt = f(x)</span> (단, <span class="m">a &lt; x &lt; b</span>)이다.<br>
+    (1) 미분: ① <span class="frac"><span>d</span><span>dx</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt = f(x)</span> &nbsp; ② <span class="frac"><span>d</span><span>dx</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x+a</span><span>x</span></span></span><span class="m">f(t)dt = f(x + a) − f(x)</span><br>
+    (2) 극한: ① <span class="m">lim</span><sub class="m">x→0</sub> <span class="frac"><span>1</span><span>x</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x+a</span><span>a</span></span></span><span class="m">f(t)dt = f(a)</span> &nbsp; ② <span class="m">lim</span><sub class="m">x→a</sub> <span class="frac"><span>1</span><span>x − a</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt = f(a)</span></p>
+    <p class="tr">Производная интеграла по верхнему пределу = подынтегральная функция в этой точке.<br>(1) ② Оба предела зависят от <span class="m">x</span>: «значение сверху минус значение снизу».<br>(2) Оба предела — это <span class="kr">미분계수</span> функции <span class="m">F(x) = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt</span> в точке <span class="m">a</span>, то есть <span class="m">F′(a) = f(a)</span>.</p>
+  </div>
+  <div class="box note">
+    <span class="label">Почему это то же самое, что пункт 3</span>
+    <p><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt = F(x) − F(a)</span>. <span class="m">F(a)</span> — число, его производная 0. Остаётся <span class="m">F′(x) = f(x)</span>.</p>
+  </div>
+</section>
+
+<!-- ===== 6 лаборатория ===== -->
+<section id="lab-sec">
+  <div class="head">
+    <span class="sec-num">6 · <span class="kr">실험실</span> (лаборатория)</span>
+    <h2>Когда интеграл равен нулю?</h2>
+  </div>
+  <p>Функция <span class="m">f(x) = x² − 2x</span>. Первообразная <span class="m">F(x) = </span><span class="frac"><span>1</span><span>3</span></span><span class="m">x³ − x²</span>. Двигай <span class="m">a</span> и <span class="m">b</span>. <span class="pos">Синяя</span> площадь идёт с плюсом, <span class="neg">красная</span> — с минусом. Задача: при <span class="m">a = 0</span> найди такое <span class="m">b &gt; 0</span>, чтобы <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>0</span></span></span><span class="m">f(x)dx = 0</span>.</p>
+  <div class="lab">
+    <svg id="lab" viewBox="0 0 520 340" role="img" aria-label="График y = x² − 2x и закрашенные площади от a до b"></svg>
+    <div class="controls">
+      <label for="aRange"><span class="m">a</span></label>
+      <input id="aRange" type="range" min="-1" max="4" step="0.25" value="0">
+    </div>
+    <div class="controls">
+      <label for="bRange"><span class="m">b</span></label>
+      <input id="bRange" type="range" min="-1" max="4" step="0.25" value="1.5">
+    </div>
+    <div class="controls">
+      <button id="swap" type="button">Поменять a и b</button>
+      <button id="jump" type="button">Показать ответ</button>
+    </div>
+    <div class="readout">
+      <div><span><span class="pos">S₁</span> (над осью)</span><b id="rS1">0</b></div>
+      <div><span><span class="neg">S₂</span> (под осью)</span><b id="rS2">0</b></div>
+      <div><span><span class="m">F(b) − F(a)</span></span><b id="rI">0</b></div>
+    </div>
+    <div id="status" class="status" aria-live="polite"></div>
+  </div>
+  <div class="box note">
+    <span class="label">Что заметить</span>
+    <ul class="plain">
+      <li>При <span class="m">a &lt; b</span>: <span class="m">F(b) − F(a) = S₁ − S₂</span> — формула и площади всегда совпадают.</li>
+      <li>Нажми «Поменять a и b»: площади те же, а знак интеграла меняется. Это (2)②.</li>
+      <li>Поставь <span class="m">a = b</span>: интеграл 0. Это (2)①.</li>
+      <li>Ответ <span class="m">b = 3</span>: <span class="m">F(3) − F(0) = 9 − 9 = 0</span>. Красная часть на <span class="m">[0, 2]</span> равна синей на <span class="m">[2, 3]</span>. Интеграл 0, а площадь — нет!</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 7 рецепт ===== -->
+<section id="recipe">
+  <div class="head">
+    <span class="sec-num">7 · <span class="kr">풀이 순서</span> (рецепт)</span>
+    <h2>Как решать задачи на определённый интеграл</h2>
+  </div>
+  <div class="cond">
+    <div>
+      <span class="n pos">Тип A · просто посчитать</span>
+      <ol class="steps">
+        <li>Одинаковые пределы? Сначала <strong>собери в один</strong> интеграл.</li>
+        <li>Найди первообразную <span class="m">F</span> (без <span class="m">C</span>).</li>
+        <li>Подставь <strong>верх</strong>, потом <strong>низ</strong>, вычти в скобках.</li>
+        <li>Дано <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f′(x)dx</span>? Это сразу <span class="m">f(b) − f(a)</span>.</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n zero">Тип B · пределы разные</span>
+      <ol class="steps">
+        <li>Выпиши все пределы. Ищи «стык»: <span class="m">∫ₐᶜ + ∫ᶜᵇ</span>.</li>
+        <li>Не стыкуется — переверни: <span class="m">∫ᵇᵃ = −∫ₐᵇ</span>.</li>
+        <li>Склей, потом считай один интеграл.</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n neg">Тип C · кусочная функция, модуль</span>
+      <ol class="steps">
+        <li>Найди точку «излома»: где <span class="m">|…| = 0</span> или где меняется формула.</li>
+        <li>Раздели промежуток в этой точке (свойство 3).</li>
+        <li>На каждом куске — своя формула без модуля.</li>
+      </ol>
+    </div>
+    <div>
+      <span class="n acc">Тип D · промежуток [−a, a]</span>
+      <ol class="steps">
+        <li>Вычеркни нечётные степени (<span class="m">x, x³</span>).</li>
+        <li>Остальное: <span class="m">2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span>.</li>
+        <li><span class="m">f(−x) = f(x)</span> в условии — функция чётная, так же удваиваем.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="box warn">
+    <span class="label">Чаще всего ошибаются здесь</span>
+    <p>Шаг «подставь низ и вычти». Подставляют отрицательный нижний предел без скобок: <span class="m">(−2)³ = −8</span>, а не 8; и забывают, что минус перед <span class="m">F(a)</span> относится ко всем слагаемым. Пиши <span class="m">F(b) − (…)</span> со скобками всегда.</p>
+  </div>
+</section>
+
+<!-- ===== 8 задачи учебника ===== -->
+<section id="book">
+  <div class="head">
+    <span class="sec-num">8 · <span class="kr">개념 이해</span></span>
+    <h2>Задачи учебника, стр. 138–139 · №505–514</h2>
+  </div>
+  <p>Сначала попробуй сам. Открывай <strong>подсказку</strong>, если застрял, и <strong>разбор</strong> — чтобы проверить себя.</p>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">505</span><span class="lvl">하</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>1</span></span></span><span class="m">f(x)dx = 5</span>일 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>3</span></span></span><span class="m">f(x)dx</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> известен интеграл от 1 до 3. Найдите интеграл от 3 до 1.</p>
+    <details><summary>Подсказка</summary><p>Пределы поменялись местами. Что происходит со знаком? (стр. 137, (2)②)</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc"><span><span class="ok">Шаг 1.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>3</span></span></span>f(x)dx = −<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>1</span></span></span>f(x)dx = −5</span></div>
+      <p>Ответ: <span class="answer">−5</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">506</span><span class="lvl">하</span><span class="src">2022년 10월 고3 2번 변형</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span><span class="m">(20x − 6x²)dx</span>의 값은?</p>
+    <div class="opts"><span>① 28</span><span>② 30</span><span>③ 32</span><span>④ 34</span><span>⑤ 36</span></div>
+    <details><summary>Подсказка</summary><p><span class="m">F(x) = 10x² − 2x³</span>. Нижний предел 0 — <span class="m">F(0) = 0</span>.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> [10x² − 2x³<span class="bl"><span class="s">]</span><span class="lim"><span>3</span><span>0</span></span></span></span>
+        <span><span class="ok">Шаг 2.</span> (90 − 54) − 0 = 36</span>
+      </div>
+      <p>Ответ: <span class="answer">⑤ 36</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">507</span><span class="lvl">중하</span></div>
+    <p class="kr pk">정적분 <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>1</span></span></span><span class="m">(−3x² + 2kx − 2)dx</span>의 값이 3보다 작을 때, 정수 <span class="m">k</span>의 최댓값을 구하시오.</p>
+    <p><strong>Перевод:</strong> интеграл меньше 3. Найдите наибольшее целое <span class="m">k</span>.</p>
+    <details><summary>Подсказка</summary><p><span class="m">k</span> — просто число. Посчитай интеграл как выражение с <span class="m">k</span>, потом реши неравенство.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> [−x³ + kx² − 2x<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>1</span></span></span></span>
+        <span><span class="ok">Шаг 2.</span> (−8 + 4k − 4) − (−1 + k − 2) = 3k − 9</span>
+        <span><span class="ok">Шаг 3.</span> 3k − 9 &lt; 3 ⇒ k &lt; 4</span>
+        <span><span class="ok">Шаг 4.</span> 정수 k: наибольшее 3</span>
+      </div>
+      <p>Неравенство строгое (<span class="kr">작을 때</span>), поэтому <span class="m">k = 4</span> не подходит.</p>
+      <p>Ответ: <span class="answer">3</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">508</span><span class="lvl">하</span></div>
+    <p class="kr pk">다음 정적분의 값을 구하시오. <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">(x² + x − 2)dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">(3x² + 2x − 1)dx</span></p>
+    <details><summary>Подсказка</summary><p>Пределы одинаковые → один интеграл (свойство 2). Потом промежуток <span class="m">[−3, 3]</span> — нечётные степени вычёркиваем.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span>(4x² + 3x − 3)dx</span>
+        <span><span class="ok">Шаг 2.</span> 3x — нечётная ⇒ 0. Остаётся 2<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>(4x² − 3)dx</span>
+        <span><span class="ok">Шаг 3.</span> 2[⁴⁄₃x³ − 3x<span class="bl"><span class="s">]</span><span class="lim"><span>3</span><span>0</span></span></span> = 2(36 − 9) = 54</span>
+      </div>
+      <p>Ответ: <span class="answer">54</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">509</span><span class="lvl">하</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>−1</span><span>−2</span></span></span><span class="m">(x² − 1)dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−1</span></span></span><span class="m">(x² − 1)dx</span>의 값을 구하시오.</p>
+    <details><summary>Подсказка</summary><p>Верхний предел первого = нижний предел второго = −1. Склей (свойство 3).</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−2</span></span></span>(x² − 1)dx = [⅓x³ − x<span class="bl"><span class="s">]</span><span class="lim"><span>0</span><span>−2</span></span></span></span>
+        <span><span class="ok">Шаг 2.</span> 0 − (−8/3 + 2) = 0 − (−2/3) = 2/3</span>
+      </div>
+      <p>Ответ: <span class="answer">2/3</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">510</span><span class="lvl">하</span></div>
+    <p class="kr pk"><span class="m">f(x) = x</span> (<span class="m">−2 ≤ x ≤ 1</span>), <span class="m">2 − x</span> (<span class="m">1 ≤ x ≤ 4</span>)인 함수 <span class="m">f(x)</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−1</span></span></span><span class="m">f(x)dx</span>의 값을 구하면?</p>
+    <div class="opts"><span>① 1/3</span><span>② 1/2</span><span>③ 2/3</span><span>④ 3/2</span><span>⑤ 5/2</span></div>
+    <details><summary>Подсказка</summary><p>Формула меняется в точке <span class="m">x = 1</span>. Раздели: <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>1</span></span></span>.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span>x dx = 0  (нечётная на симметричном промежутке)</span>
+        <span><span class="ok">Шаг 2.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>1</span></span></span>(2 − x)dx = [2x − ½x²<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>1</span></span></span> = 2 − 3/2 = 1/2</span>
+        <span><span class="ok">Шаг 3.</span> 0 + 1/2 = 1/2</span>
+      </div>
+      <p>Ответ: <span class="answer">② 1/2</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">511</span><span class="lvl">하</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>6</span><span>0</span></span></span><span class="m">|x − 2|dx</span>의 값을 구하시오.</p>
+    <details><summary>Подсказка</summary><p>Модуль равен нулю при <span class="m">x = 2</span>. Раздели промежуток там. Или нарисуй: это два треугольника.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> x ≤ 2: |x − 2| = 2 − x;  x ≥ 2: |x − 2| = x − 2</span>
+        <span><span class="ok">Шаг 2.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>(2 − x)dx = [2x − ½x²<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>0</span></span></span> = 2</span>
+        <span><span class="ok">Шаг 3.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>6</span><span>2</span></span></span>(x − 2)dx = [½x² − 2x<span class="bl"><span class="s">]</span><span class="lim"><span>6</span><span>2</span></span></span> = 6 − (−2) = 8</span>
+        <span><span class="ok">Шаг 4.</span> 2 + 8 = 10</span>
+      </div>
+      <figure><svg id="fig511" viewBox="0 0 520 220" role="img" aria-label="График y = |x − 2| и два треугольника"></svg>
+      <figcaption>Проверка геометрией: треугольники с площадями <span class="m">½·2·2 = 2</span> и <span class="m">½·4·4 = 8</span>.</figcaption></figure>
+      <p>Ответ: <span class="answer">10</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">512</span><span class="lvl">하</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span><span class="m">(x³ − 5x² + 2x − 3)dx</span>의 값을 구하시오.</p>
+    <details><summary>Подсказка</summary><p>Промежуток <span class="m">[−2, 2]</span>: <span class="m">x³</span> и <span class="m">2x</span> вычёркиваем.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> 2<span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>(−5x² − 3)dx</span>
+        <span><span class="ok">Шаг 2.</span> 2[−⁵⁄₃x³ − 3x<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>0</span></span></span> = 2(−40/3 − 6) = 2·(−58/3) = −116/3</span>
+      </div>
+      <p>Ответ: <span class="answer">−116/3</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">513</span><span class="lvl">중하</span></div>
+    <p class="kr pk">다항함수 <span class="m">f(x)</span>가 모든 실수 <span class="m">x</span>에 대하여 <span class="m">f(−x) = f(x)</span>를 만족시키고 <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f(x)dx = 5</span>, <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">f(x)dx = 30</span>일 때, 정적분 <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>2</span></span></span><span class="m">f(x)dx</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> <span class="m">f</span> чётная. Даны два интеграла. Найдите интеграл от 2 до 3.</p>
+    <details><summary>Подсказка</summary><p>Чётная ⇒ <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span> = 2<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>. А <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>2</span></span></span>.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> 2<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>f dx = 30 ⇒ <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>f dx = 15</span>
+        <span><span class="ok">Шаг 2.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>2</span></span></span>f dx = <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span> − <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span> = 15 − 5 = 10</span>
+      </div>
+      <p>Ответ: <span class="answer">10</span></p>
+    </details>
+  </div>
+
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">514</span><span class="lvl">중하</span></div>
+    <p class="kr pk">연속함수 <span class="m">f(x)</span>가 다음 조건을 모두 만족시킬 때, 정적분 <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−4</span></span></span><span class="m">f(x)dx</span>의 값을 구하시오.<br>(가) 모든 실수 <span class="m">x</span>에 대하여 <span class="m">f(x + 2) = f(x)</span><br>(나) <span class="m">0 ≤ x ≤ 2</span>일 때, <span class="m">f(x) = −x² + 2x</span></p>
+    <p><strong>Перевод:</strong> (가) <span class="m">f</span> повторяется с периодом 2. (나) на <span class="m">[0, 2]</span> задана формулой.</p>
+    <details><summary>Подсказка</summary><p>Длина <span class="m">[−4, 2]</span> равна 6 = три периода. Каждый период даёт одинаковую площадь.</p></details>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>(−x² + 2x)dx = [−⅓x³ + x²<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>0</span></span></span> = −8/3 + 4 = 4/3</span>
+        <span><span class="ok">Шаг 2.</span> [−4, 2] = [−4, −2] ∪ [−2, 0] ∪ [0, 2] — три одинаковых «горба»</span>
+        <span><span class="ok">Шаг 3.</span> 3 · 4/3 = 4</span>
+      </div>
+      <figure><svg id="fig514" viewBox="0 0 520 200" role="img" aria-label="Три одинаковых горба на [−4, 2]"></svg>
+      <figcaption>Периодическая функция: один и тот же горб повторяется каждые 2 единицы.</figcaption></figure>
+      <p>Ответ: <span class="answer">4</span></p>
+    </details>
+  </div>
+</section>
+
+<!-- ===== 9 сборник ===== -->
+<section id="drill">
+  <div class="head">
+    <span class="sec-num">9 · <span class="kr">문제집</span> (сборник задач)</span>
+    <h2>Сборник, стр. 154–161</h2>
+  </div>
+  <p>В каждом типе одна задача разобрана полностью. Остальные — только с подсказкой: реши сам и сверь ответ с учителем.</p>
+
+  <!-- A -->
+  <div class="type-h"><h3>Тип A · посчитать по формуле <span class="m">F(b) − F(a)</span></h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">598</span><span class="lvl">중하</span><span class="tag">ключевая задача</span><span class="src">2013년 9월 고3 문과 5번</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">(4x³ + a)dx = 8</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+    <p><strong>Перевод:</strong> интеграл равен 8. Найдите константу <span class="m">a</span>.</p>
+    <div class="opts"><span>① 6</span><span>② 7</span><span>③ 8</span><span>④ 9</span><span>⑤ 10</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1. Первообразная.</span> a — число, ∫a dx = ax ⇒ F(x) = x⁴ + ax</span>
+        <span><span class="ok">Шаг 2. Верх минус низ.</span> F(1) − F(0) = (1 + a) − 0 = 1 + a</span>
+        <span><span class="ok">Шаг 3. Уравнение.</span> 1 + a = 8 ⇒ a = 7</span>
+      </div>
+      <p>Неизвестная буква внутри интеграла не мешает: интегрируем её как обычное число. После подстановки пределов получается обычное уравнение.</p>
+      <p>Ответ: <span class="answer">② 7</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">595</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">3x²dx</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">F(x) = x³</span>. Подставь 1 и 0.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">597</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">(2x³ + 3x²)dx</span>의 값은?</p>
+      <div class="opts"><span>① 14</span><span>② 16</span><span>③ 18</span><span>④ 20</span><span>⑤ 22</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">F(x) = ½x⁴ + x³</span>. Нижний предел 0.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">603</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">(ax² + 1)dx = 4</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 7</span><span>② 9</span><span>③ 11</span><span>④ 13</span><span>⑤ 15</span></div>
+      <details><summary>Подсказка</summary><p>Как 598: получится <span class="m">a/3 + 1 = 4</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">599</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = 6x² + 2ax</span>가 <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx = f(1)</span>을 만족시킬 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① −4</span><span>② −2</span><span>③ 0</span><span>④ 2</span><span>⑤ 4</span></div>
+      <details><summary>Подсказка</summary><p>Левая часть — интеграл (число с <span class="m">a</span>), правая — просто подставь 1 в <span class="m">f</span>. Приравняй.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">601</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">y = 4x³ − 12x²</span>의 그래프를 <span class="m">y</span>축의 방향으로 <span class="m">k</span>만큼 평행이동한 그래프를 나타내는 함수를 <span class="m">y = f(x)</span>라 하자. <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span><span class="m">f(x)dx = 0</span>을 만족시키는 상수 <span class="m">k</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Сдвиг вверх на <span class="m">k</span>: <span class="m">f(x) = 4x³ − 12x² + k</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">600</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">삼차함수 <span class="m">f(x)</span>가 모든 실수 <span class="m">x</span>에 대하여 <span class="m">f(x) − f(1) = x³ + 4x² − 5x</span>를 만족시킬 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>1</span></span></span><span class="m">f′(x)dx</span>의 값은?</p>
+      <div class="opts"><span>① 10</span><span>② 12</span><span>③ 14</span><span>④ 16</span><span>⑤ 18</span></div>
+      <details><summary>Подсказка</summary><p>Первообразная <span class="m">f′</span> — это <span class="m">f</span>. Значит, интеграл = <span class="m">f(2) − f(1)</span>. А это уже дано в условии при <span class="m">x = 2</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">604</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">그림과 같이 삼차함수 <span class="m">y = f(x)</span>가 <span class="m">f(−1) = f(1) = f(2) = 0</span>, <span class="m">f(0) = 2</span>를 만족시킬 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f′(x)dx</span>의 값은?</p>
+      <figure><svg id="fig604" viewBox="0 0 300 200" role="img" aria-label="Кубическая парабола через −1, 1, 2 и (0, 2)"></svg><figcaption>Рисунок перерисован, пропорции могут отличаться от учебника.</figcaption></figure>
+      <div class="opts"><span>① −2</span><span>② −1</span><span>③ 0</span><span>④ 1</span><span>⑤ 2</span></div>
+      <details><summary>Подсказка</summary><p>Не ищи формулу <span class="m">f</span>! <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f′dx = f(2) − f(0)</span>, оба значения есть в условии.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">602</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">최고차항의 계수가 1인 삼차함수 <span class="m">f(x)</span>가 <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f′(x)dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f′(x)dx = 0</span>을 만족시킬 때, <span class="m">f′(1)</span>의 값은?</p>
+      <div class="opts"><span>① −4</span><span>② −3</span><span>③ −2</span><span>④ −1</span><span>⑤ 0</span></div>
+      <details><summary>Подсказка</summary><p>Условие значит <span class="m">f(0) = f(1) = f(2)</span>. Тогда <span class="m">f(x) − f(0)</span> имеет корни 0, 1, 2: <span class="m">f(x) = x(x − 1)(x − 2) + f(0)</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">616</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">이차함수 <span class="m">f(x)</span>가 <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span><span class="m">f′(x)dx = 0</span>을 만족시킬 때, <span class="m">f(0) − f(−1) + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">{x² + 2x + f′(x)}dx</span>의 값은?</p>
+      <div class="opts"><span>① 1/3</span><span>② 2/3</span><span>③ 1</span><span>④ 4/3</span><span>⑤ 5/3</span></div>
+      <details><summary>Подсказка</summary><p>Условие: <span class="m">f(1) = f(−1)</span>. Интеграл разбей на <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">(x² + 2x)dx</span> и <span class="m">f(1) − f(0)</span> — всё с <span class="m">f</span> сократится.</p></details>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="type-h"><h3>Тип B · свойства: собрать, перевернуть, склеить</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">617</span><span class="lvl">중하</span><span class="tag">ключевая задача</span><span class="src">2015년 9월 고2 이과 27번</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span><span class="m">(x + 1)²dx − </span><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−1</span></span></span><span class="m">(x − 1)²dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−1</span></span></span><span class="m">(x − 1)²dx</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> найдите значение выражения из трёх интегралов.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1. Ищем одинаковые функции.</span> Второй и третий — оба (x − 1)²</span>
+        <span><span class="ok">Шаг 2. Переворачиваем, чтобы склеить.</span> −<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−1</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−1</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>−1</span><span>3</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−1</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>3</span></span></span> = −<span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span></span>
+        <span><span class="ok">Шаг 3. Теперь пределы одинаковые.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>{(x + 1)² − (x − 1)²}dx</span>
+        <span><span class="ok">Шаг 4. Упрощаем.</span> (x + 1)² − (x − 1)² = 4x</span>
+        <span><span class="ok">Шаг 5.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span>4x dx = [2x²<span class="bl"><span class="s">]</span><span class="lim"><span>3</span><span>0</span></span></span> = 18</span>
+      </div>
+      <p>Три интеграла считать по отдельности не нужно. Свойства (2)② и (3) сводят всё к одному простому интегралу.</p>
+      <p>Ответ: <span class="answer">18</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">605</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">(x³ + 4x²)dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>−3</span><span>3</span></span></span><span class="m">(x³ + x²)dx</span>의 값은?</p>
+      <div class="opts"><span>① 36</span><span>② 42</span><span>③ 48</span><span>④ 54</span><span>⑤ 60</span></div>
+      <details><summary>Подсказка</summary><p>Переверни второй (знак −), собери в один: останется <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">3x²dx</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">607</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>10</span><span>0</span></span></span><span class="m">(x + 1)²dx − </span><span class="dint"><span class="s">∫</span><span class="lim"><span>10</span><span>0</span></span></span><span class="m">(x − 1)²dx</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Пределы одинаковые. <span class="m">(x + 1)² − (x − 1)² = 4x</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">614</span><span class="lvl">하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>5</span></span></span><span class="m">2t dt − </span><span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>5</span></span></span><span class="m">2t dt</span>의 값은?</p>
+      <div class="opts"><span>① −4</span><span>② −2</span><span>③ 0</span><span>④ 2</span><span>⑤ 4</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">−∫₅⁰ = +∫₀⁵</span>. Склей: <span class="dint"><span class="s">∫</span><span class="lim"><span>5</span><span>0</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>5</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>. Буква <span class="m">t</span> вместо <span class="m">x</span> ничего не меняет.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">609</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">(4x² − 3x)dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">(x² + x)dx</span>를 만족시키는 양수 <span class="m">a</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Перенеси всё влево — один интеграл <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">(3x² − 4x)dx = 0</span>. Получится уравнение на <span class="m">a</span>; <span class="kr">양수</span> = положительное.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">611</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x² + x</span>에 대하여 <span class="m">5</span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx − </span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">(5x + f(x))dx</span>의 값은?</p>
+      <div class="opts"><span>① 1/6</span><span>② 1/3</span><span>③ 1/2</span><span>④ 2/3</span><span>⑤ 5/6</span></div>
+      <details><summary>Подсказка</summary><p>Свойства (1), (2): получится <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">(4f(x) − 5x)dx</span>. Подставь <span class="m">f</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">612</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = 3x² − 16x − 20</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−2</span></span></span><span class="m">f(x)dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−2</span></span></span><span class="m">f(x)dx</span>일 때, 양수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 16</span><span>② 14</span><span>③ 12</span><span>④ 10</span><span>⑤ 8</span></div>
+      <details><summary>Подсказка</summary><p><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−2</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−2</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span>. Значит, <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">f(x)dx = 0</span>. Нижний предел 0 — уравнение простое.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">613</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">모든 다항함수 <span class="m">f(x)</span>에 대하여 옳은 것만을 &lt;보기&gt;에서 있는 대로 고른 것은?<br>ㄱ. <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>0</span></span></span><span class="m">f(x)dx = 3</span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx</span><br>ㄴ. <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx = </span><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f(x)dx + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>2</span></span></span><span class="m">f(x)dx</span><br>ㄷ. <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">{f(x)}²dx = {</span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>0</span></span></span><span class="m">f(x)dx}²</span></p>
+      <div class="opts"><span>① ㄴ</span><span>② ㄷ</span><span>③ ㄱ, ㄴ</span><span>④ ㄱ, ㄷ</span><span>⑤ ㄴ, ㄷ</span></div>
+      <details><summary>Подсказка</summary><p>Проверь каждое на <span class="m">f(x) = x</span>. Верно только то, что совпадает со свойством (3). Для ㄷ вспомни «чего нет» в разделе 4.</p></details>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="type-h"><h3>Тип C · модуль и кусочные функции</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">623</span><span class="lvl">중하</span><span class="tag">ключевая задача</span><span class="src">2018년 11월 고3 문과 25번</span></div>
+    <p class="kr pk"><span class="dint"><span class="s">∫</span><span class="lim"><span>4</span><span>1</span></span></span><span class="m">(x + |x − 3|)dx</span>의 값을 구하시오.</p>
+    <p><strong>Перевод:</strong> найдите интеграл с модулем.</p>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1. Точка излома.</span> x − 3 = 0 ⇒ x = 3. Делим [1, 4] на [1, 3] и [3, 4]</span>
+        <span><span class="ok">Шаг 2. Раскрываем модуль.</span> x ≤ 3: x + (3 − x) = 3;  x ≥ 3: x + (x − 3) = 2x − 3</span>
+        <span><span class="ok">Шаг 3.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>1</span></span></span>3 dx = 3·2 = 6</span>
+        <span><span class="ok">Шаг 4.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>4</span><span>3</span></span></span>(2x − 3)dx = [x² − 3x<span class="bl"><span class="s">]</span><span class="lim"><span>4</span><span>3</span></span></span> = 4 − 0 = 4</span>
+        <span><span class="ok">Шаг 5.</span> 6 + 4 = 10</span>
+      </div>
+      <figure><svg id="fig623" viewBox="0 0 520 220" role="img" aria-label="График y = x + |x − 3| от 1 до 4"></svg>
+      <figcaption>На <span class="m">[1, 3]</span> график — горизонтальная прямая <span class="m">y = 3</span> (прямоугольник 2 × 3), на <span class="m">[3, 4]</span> — отрезок от 3 до 5 (трапеция площадью 4).</figcaption></figure>
+      <p>Модуль под интегралом всегда значит: найти, где он равен нулю, и разрезать там промежуток.</p>
+      <p>Ответ: <span class="answer">10</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">621</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−3</span></span></span><span class="m">(2x³ + 6|x|)dx − </span><span class="dint"><span class="s">∫</span><span class="lim"><span>−2</span><span>−3</span></span></span><span class="m">(2x³ − 6x)dx</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>При <span class="m">x &lt; 0</span>: <span class="m">6|x| = −6x</span>. Значит, на <span class="m">[−3, −2]</span> функции одинаковые, и второй интеграл «съедает» кусок первого. Останется <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span><span class="m">(2x³ + 6|x|)dx</span> — дальше тип D.</p></details>
+    </div>
+  </div>
+
+  <!-- D -->
+  <div class="type-h"><h3>Тип D · симметричный промежуток [−a, a]</h3></div>
+  <div class="prob">
+    <div class="prob-top"><span class="pnum">636</span><span class="lvl">중하</span><span class="tag">ключевая задача</span><span class="src">2026년 7월 고3 7번</span></div>
+    <p class="kr pk">함수 <span class="m">f(x) = x³ + x² + a</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span><span class="m">f(x)dx = </span><span class="frac"><span>40</span><span>3</span></span><span class="m"> + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>−2</span><span>0</span></span></span><span class="m">f(x)dx</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+    <p><strong>Перевод:</strong> дано равенство с двумя интегралами. Найдите константу <span class="m">a</span>.</p>
+    <div class="opts"><span>① 11/6</span><span>② 2</span><span>③ 13/6</span><span>④ 7/3</span><span>⑤ 5/2</span></div>
+    <details><summary>Разбор</summary>
+      <div class="calc">
+        <span><span class="ok">Шаг 1. Переносим влево.</span> <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>f dx − <span class="dint"><span class="s">∫</span><span class="lim"><span>−2</span><span>0</span></span></span>f dx = 40/3</span>
+        <span><span class="ok">Шаг 2. Переворачиваем и склеиваем.</span> −<span class="dint"><span class="s">∫</span><span class="lim"><span>−2</span><span>0</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−2</span></span></span> ⇒ <span class="dint"><span class="s">∫</span><span class="lim"><span>0</span><span>−2</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span> = <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span></span>
+        <span><span class="ok">Шаг 3. Симметричный промежуток.</span> x³ вычёркиваем: <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span>f dx = 2<span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>0</span></span></span>(x² + a)dx</span>
+        <span><span class="ok">Шаг 4.</span> 2[⅓x³ + ax<span class="bl"><span class="s">]</span><span class="lim"><span>2</span><span>0</span></span></span> = 2(8/3 + 2a) = 16/3 + 4a</span>
+        <span><span class="ok">Шаг 5.</span> 16/3 + 4a = 40/3 ⇒ 4a = 8 ⇒ a = 2</span>
+      </div>
+      <p>Здесь сразу два приёма: тип B (перевернуть и склеить) даёт промежуток <span class="m">[−2, 2]</span>, а тип D считает его за секунду.</p>
+      <p>Ответ: <span class="answer">② 2</span></p>
+    </details>
+  </div>
+  <div class="hint-grid">
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">632</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−a</span></span></span><span class="m">(2x + 3)dx = 6</span>을 만족시키는 실수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1/2</span><span>② 1</span><span>③ 3/2</span><span>④ 2</span><span>⑤ 5/2</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">2x</span> вычёркиваем. Остаётся <span class="m">2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">3dx = 6a</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">630</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">실수 <span class="m">a</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−a</span></span></span><span class="m">(3x² + 2x)dx = </span><span class="frac"><span>1</span><span>4</span></span>일 때, <span class="m">50a</span>의 값을 구하시오.</p>
+      <details><summary>Подсказка</summary><p>Останется <span class="m">2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span><span class="m">3x²dx = 2a³</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">635</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr"><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span><span class="m">(4x³ + x² − ½x + a)dx = 2</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1/3</span><span>② 2/3</span><span>③ 1</span><span>④ 4/3</span><span>⑤ 5/3</span></div>
+      <details><summary>Подсказка</summary><p>Вычеркни <span class="m">4x³</span> и <span class="m">−½x</span>. Константа <span class="m">a</span> — чётная (это <span class="m">a·x⁰</span>).</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">634</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x + 1</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span><span class="m">{f(x)}²dx = k(</span><span class="dint"><span class="s">∫</span><span class="lim"><span>1</span><span>−1</span></span></span><span class="m">f(x)dx)²</span>일 때, 상수 <span class="m">k</span>의 값은?</p>
+      <div class="opts"><span>① 1/6</span><span>② 1/3</span><span>③ 1/2</span><span>④ 2/3</span><span>⑤ 5/6</span></div>
+      <details><summary>Подсказка</summary><p>Посчитай оба интеграла отдельно. <span class="m">(x + 1)² = x² + 2x + 1</span>; <span class="m">2x</span> вычёркиваем.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">633</span><span class="lvl">중하</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">삼차함수 <span class="m">f(x)</span>가 모든 실수 <span class="m">x</span>에 대하여 <span class="m">xf(x) − f(x) = 3x⁴ − 3x</span>를 만족시킬 때, <span class="dint"><span class="s">∫</span><span class="lim"><span>2</span><span>−2</span></span></span><span class="m">f(x)dx</span>의 값은?</p>
+      <div class="opts"><span>① 12</span><span>② 16</span><span>③ 20</span><span>④ 24</span><span>⑤ 28</span></div>
+      <details><summary>Подсказка</summary><p>Слева <span class="m">(x − 1)f(x)</span>, справа <span class="m">3x(x³ − 1) = 3x(x − 1)(x² + x + 1)</span>. Сократи на <span class="m">x − 1</span>.</p></details>
+    </div>
+    <div class="prob">
+      <div class="prob-top"><span class="pnum">631</span><span class="lvl">중</span><span class="tag hint">подсказка</span></div>
+      <p class="kr">함수 <span class="m">f(x) = x² + ax</span>에 대하여 <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">(x + 1)f(x)dx = 36 + </span><span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">f(x)dx</span>일 때, 상수 <span class="m">a</span>의 값은?</p>
+      <div class="opts"><span>① 1</span><span>② 2</span><span>③ 3</span><span>④ 4</span><span>⑤ 5</span></div>
+      <details><summary>Подсказка</summary><p><span class="m">(x + 1)f = xf + f</span>. Интегралы от <span class="m">f</span> сократятся, останется <span class="dint"><span class="s">∫</span><span class="lim"><span>3</span><span>−3</span></span></span><span class="m">(x³ + ax²)dx = 36</span>.</p></details>
+    </div>
+  </div>
+  <p class="src">Не вошли в урок: задачи уровня <span class="kr">상</span> (608, 618–620, 622, 624–628), а также 615 (тема следующего урока — <span class="kr">정적분으로 정의된 함수</span>). Для дополнительной практики: 596, 606, 610.</p>
+</section>
+
+<!-- ===== 10 шпаргалка ===== -->
+<section id="summary">
+  <div class="head">
+    <span class="sec-num">10 · <span class="kr">정리</span> (шпаргалка)</span>
+    <h2>Шпаргалка</h2>
+  </div>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Что видишь</th><th>По-корейски</th><th>Что делать</th></tr></thead>
+      <tbody>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f(x)dx</span></td><td class="kr">정적분</td><td><span class="m">F(b) − F(a)</span>, без <span class="m">C</span>; ответ — число</td></tr>
+        <tr><td><span class="m">∫f(x)dx</span></td><td class="kr">부정적분</td><td><span class="m">F(x) + C</span>; ответ — функция</td></tr>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>a</span></span></span></td><td class="kr">위끝 = 아래끝</td><td>0</td></tr>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>b</span></span></span></td><td class="kr">위끝과 아래끝을 바꿈</td><td><span class="m">−</span><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span></td></tr>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>c</span><span>a</span></span></span> + <span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>c</span></span></span></td><td class="kr">적분 구간 합치기</td><td><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span></td></tr>
+        <tr><td>одинаковые пределы</td><td class="kr">적분 구간이 같다</td><td>собрать в один интеграл</td></tr>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>b</span><span>a</span></span></span><span class="m">f′(x)dx</span></td><td class="kr">도함수의 정적분</td><td><span class="m">f(b) − f(a)</span></td></tr>
+        <tr><td><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>−a</span></span></span></td><td class="kr">짝수 · 홀수 차수</td><td>нечётные → 0, чётные → <span class="m">2</span><span class="dint"><span class="s">∫</span><span class="lim"><span>a</span><span>0</span></span></span></td></tr>
+        <tr><td><span class="m">|x − c|</span>, кусочная</td><td class="kr">절댓값 · 구간 나누기</td><td>разрезать в точке излома</td></tr>
+        <tr><td><span class="frac"><span>d</span><span>dx</span></span><span class="dint"><span class="s">∫</span><span class="lim"><span>x</span><span>a</span></span></span><span class="m">f(t)dt</span></td><td class="kr">적분과 미분의 관계</td><td><span class="m">f(x)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="box warn">
+    <span class="label">Частые ошибки</span>
+    <ul class="plain">
+      <li>Вычли в обратном порядке: <span class="m">F(a) − F(b)</span>.</li>
+      <li>Минус перед <span class="m">F(a)</span> поменял знак только у первого слагаемого.</li>
+      <li><span class="m">(−2)³</span> посчитали как 8.</li>
+      <li>Дописали <span class="m">+C</span> в определённый интеграл.</li>
+      <li>Посчитали интеграл с модулем, не разрезав промежуток.</li>
+      <li>Решили, что интеграл = площадь, когда график уходит под ось.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>Материал по учебнику NaBi School <span class="kr">미적분1</span>, стр. 137–139, и сборнику задач, стр. 154–161.</footer>
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg";
+  function el(tag,attrs,parent,text){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+  function mapper(x0,x1,y0,y1,L,R,T,B){return{X:x=>L+(x-x0)/(x1-x0)*(R-L),Y:y=>B-(y-y0)/(y1-y0)*(B-T)};}
+  function path(f,a,b,M,n=200){let d="";for(let i=0;i<=n;i++){const x=a+(b-a)*i/n;d+=(i?"L":"M")+M.X(x).toFixed(1)+","+M.Y(f(x)).toFixed(1);}return d;}
+  const C={ink:"var(--ink)",muted:"var(--muted)",blue:"var(--blue)",coral:"var(--coral)",green:"var(--green)",grid:"var(--grid)",paper:"var(--paper)",line:"var(--line)",blueS:"var(--blue-soft)",coralS:"var(--coral-soft)",greenS:"var(--green-soft)"};
+  function T(s,x,y,txt,o){return el("text",Object.assign({x,y,fill:C.ink,"font-size":13},o||{}),s,txt);}
+  function dot(s,x,y,col,r){return el("circle",{cx:x,cy:y,r:r||4.5,fill:col},s);}
+  function axes(s,M,x0,x1,y0,y1,xl,yl,noO){
+    el("line",{x1:M.X(x0),y1:M.Y(0),x2:M.X(x1),y2:M.Y(0),stroke:C.muted,"stroke-width":1.2},s);
+    el("line",{x1:M.X(0),y1:M.Y(y0),x2:M.X(0),y2:M.Y(y1),stroke:C.muted,"stroke-width":1.2},s);
+    T(s,M.X(x1)-4,M.Y(0)+16,xl||"x",{fill:C.muted,"text-anchor":"end"});
+    T(s,M.X(0)+6,M.Y(y1)+12,yl||"y",{fill:C.muted});
+    if(!noO)T(s,M.X(0)-6,M.Y(0)+15,"O",{fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"});
+  }
+  const minus=v=>String(v).replace("-","−");
+  const fmt=v=>{const r=Math.round(v*1000)/1000;return (r<0?"−":"")+String(Math.abs(r));};
+  function tick(s,M,x,lbl,col,up){el("line",{x1:M.X(x),y1:M.Y(0)-3,x2:M.X(x),y2:M.Y(0)+3,stroke:C.muted},s);T(s,M.X(x),M.Y(0)+(up?-7:16),lbl,{"text-anchor":"middle","font-size":12,fill:col||C.ink});}
+  // площадь: положительная часть синим, отрицательная красным
+  function area(s,M,f,lo,hi,colP,colN,op){
+    const n=160;let dp="M"+M.X(lo)+","+M.Y(0),dn=dp;
+    for(let i=0;i<=n;i++){const x=lo+(hi-lo)*i/n,y=f(x);dp+="L"+M.X(x).toFixed(1)+","+M.Y(Math.max(y,0)).toFixed(1);dn+="L"+M.X(x).toFixed(1)+","+M.Y(Math.min(y,0)).toFixed(1);}
+    dp+="L"+M.X(hi)+","+M.Y(0)+"Z";dn+="L"+M.X(hi)+","+M.Y(0)+"Z";
+    el("path",{d:dp,fill:colP||C.blue,opacity:op||.28},s);el("path",{d:dn,fill:colN||C.coral,opacity:op||.28},s);
+  }
+  function vline(s,M,x,y,col){el("line",{x1:M.X(x),y1:M.Y(0),x2:M.X(x),y2:M.Y(y),stroke:col||C.muted,"stroke-dasharray":"3 3"},s);}
+  const SANS={"font-style":"normal","font-family":"Golos Text, sans-serif"};
+
+  /* три рисунка определения */
+  function defFig(id,f,a,b,labels,up){
+    const s=document.getElementById(id);
+    const x0=-0.4,x1=4.2,y0=-3.2,y1=3.2;
+    const M=mapper(x0,x1,y0,y1,10,290,10,190);
+    area(s,M,f,a,b);
+    axes(s,M,x0,x1,y0,y1);
+    el("path",{d:path(f,0.05,4.0,M),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    vline(s,M,a,f(a));vline(s,M,b,f(b));
+    tick(s,M,a,"a",null,up&&f(a)<0);tick(s,M,b,"b",null,up&&f(b)<0);
+    labels(s,M);
+  }
+  defFig("figPos",x=>2+0.7*Math.sin(1.6*x),0.8,3.4,(s,M)=>{T(s,M.X(2.1),M.Y(0.9),"S",{"text-anchor":"middle",fill:C.blue,"font-size":15});T(s,M.X(3.9),M.Y(2.9),"y = f(x)",{"text-anchor":"end","font-size":12});});
+  defFig("figNeg",x=>-2-0.7*Math.sin(1.6*x),0.8,3.4,(s,M)=>{T(s,M.X(2.1),M.Y(-1.2),"S",{"text-anchor":"middle",fill:C.coral,"font-size":15});T(s,M.X(3.9),M.Y(-2.9)+8,"y = f(x)",{"text-anchor":"end","font-size":12});},true);
+  defFig("figMix",x=>-1.8*Math.sin(1.9*(x-1.5)),0.7,2.85,(s,M)=>{T(s,M.X(1.12),M.Y(0.45),"S₁",{"text-anchor":"middle",fill:C.blue,"font-size":14});T(s,M.X(2.3),M.Y(-0.9),"S₂",{"text-anchor":"middle",fill:C.coral,"font-size":14});T(s,M.X(4.1),M.Y(2.7),"y = f(x)",{"text-anchor":"end","font-size":12});},true);
+
+  /* трапеция под y = 2x */
+  (function(){
+    const s=document.getElementById("figFTC");
+    const x0=-0.5,x1=4,y0=-0.8,y1=7.6;
+    const M=mapper(x0,x1,y0,y1,24,500,12,220);
+    el("path",{d:`M${M.X(1)},${M.Y(0)}L${M.X(1)},${M.Y(2)}L${M.X(3)},${M.Y(6)}L${M.X(3)},${M.Y(0)}Z`,fill:C.green,opacity:.22},s);
+    axes(s,M,x0,x1,y0,y1);
+    el("path",{d:path(x=>2*x,-0.3,3.7,M,2),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    el("line",{x1:M.X(1),y1:M.Y(0),x2:M.X(1),y2:M.Y(2),stroke:C.green,"stroke-width":2},s);
+    el("line",{x1:M.X(3),y1:M.Y(0),x2:M.X(3),y2:M.Y(6),stroke:C.green,"stroke-width":2},s);
+    tick(s,M,1,"1");tick(s,M,3,"3");
+    T(s,M.X(1)-6,M.Y(1)+4,"2",{"text-anchor":"end",fill:C.green});
+    T(s,M.X(3)+6,M.Y(3)+4,"6",{fill:C.green});
+    T(s,M.X(2),M.Y(1.4),"8",{"text-anchor":"middle",fill:C.green,"font-size":20});
+    T(s,M.X(3.6),M.Y(7.2)+12,"y = 2x",{"text-anchor":"end"});
+  })();
+
+  /* свойство (3) */
+  (function(){
+    const s=document.getElementById("figAdd");
+    const f=x=>1.4+0.5*x-0.12*x*x+0.6*Math.sin(1.3*x);
+    const x0=-0.4,x1=5.4,y0=-0.6,y1=3.4;
+    const M=mapper(x0,x1,y0,y1,20,500,12,200);
+    area(s,M,f,0.8,2.6,C.blue,C.blue,.28);
+    area(s,M,f,2.6,4.6,C.green,C.green,.28);
+    axes(s,M,x0,x1,y0,y1);
+    el("path",{d:path(f,0.1,5.2,M),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    [0.8,2.6,4.6].forEach(v=>vline(s,M,v,f(v)));
+    tick(s,M,0.8,"a");tick(s,M,2.6,"c");tick(s,M,4.6,"b");
+    T(s,M.X(1.7),M.Y(0.45),"от a до c",{"text-anchor":"middle",fill:C.blue,"font-size":13});
+    T(s,M.X(3.6),M.Y(0.45),"от c до b",{"text-anchor":"middle",fill:C.green,"font-size":13});
+  })();
+
+  /* чётная и нечётная */
+  (function(){
+    const mk=(id,f,y0,y1,odd)=>{
+      const s=document.getElementById(id);
+      const M=mapper(-1.8,1.8,y0,y1,10,290,10,190);
+      if(odd)area(s,M,f,-1.3,1.3);else area(s,M,f,-1.3,1.3,C.blue,C.blue,.28);
+      axes(s,M,-1.8,1.8,y0,y1);
+      el("path",{d:path(f,-1.62,1.62,M),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+      vline(s,M,-1.3,f(-1.3));vline(s,M,1.3,f(1.3));
+      tick(s,M,-1.3,"−a",null,odd);tick(s,M,1.3,"a");
+    };
+    mk("figEven",x=>x*x,-0.5,2.8,false);
+    mk("figOdd",x=>x*x*x,-2.6,2.6,true);
+  })();
+
+  /* лаборатория */
+  (function(){
+    const s=document.getElementById("lab");
+    const f=x=>x*x-2*x, F=x=>x*x*x/3-x*x;
+    const x0=-1.4,x1=4.4,y0=-1.8,y1=8.6;
+    const M=mapper(x0,x1,y0,y1,26,504,12,312);
+    for(let gx=-1;gx<=4;gx++){if(gx)el("line",{x1:M.X(gx),y1:M.Y(y0),x2:M.X(gx),y2:M.Y(y1),stroke:C.grid},s);}
+    for(let gy=-1;gy<=8;gy++){if(gy)el("line",{x1:M.X(x0),y1:M.Y(gy),x2:M.X(x1),y2:M.Y(gy),stroke:C.grid},s);}
+    const fill=el("g",{},s);
+    axes(s,M,x0,x1,y0,y1);
+    [-1,1,2,3,4].forEach(v=>T(s,M.X(v)+(v===2?8:0),M.Y(0)+16,minus(v),{"text-anchor":"middle","font-size":11,fill:C.muted}));
+    [2,4,6,8].forEach(v=>T(s,M.X(0)-6,M.Y(v)+4,String(v),{"text-anchor":"end","font-size":11,fill:C.muted}));
+    el("path",{d:path(f,x0,4.35,M),fill:"none",stroke:C.ink,"stroke-width":2.6},s);
+    T(s,M.X(-1.25),M.Y(8.2),"y = x² − 2x",{});
+    const la=el("line",{stroke:C.ink,"stroke-width":1.6},s),lb=el("line",{stroke:C.ink,"stroke-width":1.6},s);
+    const ta=T(s,0,0,"a",{"text-anchor":"middle","font-size":14,fill:C.ink}),tb=T(s,0,0,"b",{"text-anchor":"middle","font-size":14,fill:C.ink});
+    const aR=document.getElementById("aRange"),bR=document.getElementById("bRange");
+    const rS1=document.getElementById("rS1"),rS2=document.getElementById("rS2"),rI=document.getElementById("rI"),st=document.getElementById("status");
+    function areas(lo,hi){const pts=[lo];[0,2].forEach(r=>{if(r>lo&&r<hi)pts.push(r);});pts.push(hi);let p=0,n=0;for(let i=0;i<pts.length-1;i++){const v=F(pts[i+1])-F(pts[i]);if(v>0)p+=v;else n-=v;}return[p,n];}
+    function place(line,txt,x){line.setAttribute("x1",M.X(x));line.setAttribute("x2",M.X(x));line.setAttribute("y1",M.Y(0));line.setAttribute("y2",M.Y(f(x)));txt.setAttribute("x",M.X(x));txt.setAttribute("y",f(x)>=0?M.Y(0)+32:M.Y(0)-10);}
+    function draw(){
+      const a=+aR.value,b=+bR.value,lo=Math.min(a,b),hi=Math.max(a,b);
+      while(fill.firstChild)fill.removeChild(fill.firstChild);
+      if(hi>lo)area(fill,M,f,lo,hi,C.blue,C.coral,.32);
+      place(la,ta,a);place(lb,tb,b);
+      if(Math.abs(a-b)<1e-9){ta.textContent="a = b";tb.textContent="";}else{ta.textContent="a";tb.textContent="b";}
+      const [S1,S2]=areas(lo,hi),I=F(b)-F(a);
+      rS1.textContent=fmt(S1);rS2.textContent=fmt(S2);rI.textContent=fmt(I);
+      if(Math.abs(a-b)<1e-9){st.className="status st-trap";st.textContent="a = b: ширина 0, интеграл 0. Это правило (2)①.";}
+      else if(a>b){st.className="status st-trap";st.textContent="a > b: идём справа налево. Интеграл = −(S₁ − S₂) = "+fmt(I)+". Это правило (2)②.";}
+      else if(Math.abs(I)<1e-9){st.className="status st-hit";st.textContent="Нашёл! S₁ = S₂ = "+fmt(S1)+", плюс и минус сократились: ∫ = 0.";}
+      else if(I>0){st.className="status st-pos";st.textContent="Синей площади больше: ∫ = S₁ − S₂ = "+fmt(I)+" > 0.";}
+      else{st.className="status st-neg";st.textContent="Красной площади больше: ∫ = S₁ − S₂ = "+fmt(I)+" < 0.";}
+    }
+    aR.addEventListener("input",draw);bR.addEventListener("input",draw);
+    document.getElementById("swap").addEventListener("click",()=>{const t=aR.value;aR.value=bR.value;bR.value=t;draw();});
+    document.getElementById("jump").addEventListener("click",()=>{aR.value=0;bR.value=3;draw();});
+    draw();
+  })();
+
+  /* 511: |x − 2| */
+  (function(){
+    const s=document.getElementById("fig511");
+    const f=x=>Math.abs(x-2);
+    const M=mapper(-0.6,7,-0.8,5,20,500,12,200);
+    area(s,M,f,0,2,C.blue,C.blue,.28);area(s,M,f,2,6,C.green,C.green,.28);
+    axes(s,M,-0.6,7,-0.8,5);
+    el("path",{d:path(f,-0.3,6.7,M,400),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    vline(s,M,6,4);tick(s,M,2,"2");tick(s,M,6,"6");
+    T(s,M.X(0)-6,M.Y(2)+4,"2",{"text-anchor":"end"});
+    T(s,M.X(0.7),M.Y(0.45),"2",{"text-anchor":"middle",fill:C.blue,"font-size":16});
+    T(s,M.X(4.6),M.Y(1),"8",{"text-anchor":"middle",fill:C.green,"font-size":16});
+    T(s,M.X(6.6),M.Y(4.7)+4,"y = |x − 2|",{"text-anchor":"end"});
+  })();
+
+  /* 514: период 2 */
+  (function(){
+    const s=document.getElementById("fig514");
+    const g=x=>{let t=((x%2)+2)%2;return -t*t+2*t;};
+    const M=mapper(-4.6,3,-0.5,1.6,16,504,14,180);
+    area(s,M,g,-4,-2,C.blue,C.blue,.25);area(s,M,g,-2,0,C.green,C.green,.25);area(s,M,g,0,2,C.blue,C.blue,.25);
+    axes(s,M,-4.6,3,-0.5,1.6);
+    el("path",{d:path(g,-4.5,2.8,M,600),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    [-4,-2,2].forEach(v=>tick(s,M,v,minus(v)));
+    [-3,-1,1].forEach(v=>T(s,M.X(v),M.Y(0.4),"4/3",{"text-anchor":"middle","font-size":13,fill:C.ink}));
+    T(s,M.X(0)-6,M.Y(1)+4,"1",{"text-anchor":"end"});
+  })();
+
+  /* 604: (x+1)(x−1)(x−2) */
+  (function(){
+    const s=document.getElementById("fig604");
+    const f=x=>(x+1)*(x-1)*(x-2);
+    const M=mapper(-1.7,2.7,-1.6,3.6,10,290,10,190);
+    axes(s,M,-1.7,2.7,-1.6,3.6,null,null,true);
+    el("path",{d:path(f,-1.3,2.45,M),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    [-1,1,2].forEach(v=>{dot(s,M.X(v),M.Y(0),C.ink,3);T(s,M.X(v)+(v===1?-8:8),M.Y(0)+16,minus(v),{"text-anchor":"middle","font-size":12});});
+    T(s,M.X(0)-5,M.Y(0)+15,"O",{fill:C.muted,"font-size":12,"text-anchor":"end","font-style":"normal"});
+    dot(s,M.X(0),M.Y(2),C.coral,3.5);T(s,M.X(0)+6,M.Y(2)-6,"2",{fill:C.coral});
+    T(s,M.X(2.6),M.Y(3.3),"y = f(x)",{"text-anchor":"end","font-size":12});
+  })();
+
+  /* 623: x + |x − 3| */
+  (function(){
+    const s=document.getElementById("fig623");
+    const f=x=>x+Math.abs(x-3);
+    const M=mapper(-0.4,5,-0.6,6.2,20,500,12,200);
+    area(s,M,f,1,3,C.blue,C.blue,.28);area(s,M,f,3,4,C.green,C.green,.28);
+    axes(s,M,-0.4,5,-0.6,6.2);
+    el("path",{d:path(f,0,4.7,M,400),fill:"none",stroke:C.ink,"stroke-width":2.2},s);
+    [1,3,4].forEach(v=>{vline(s,M,v,f(v));tick(s,M,v,String(v));});
+    T(s,M.X(0)-6,M.Y(3)+4,"3",{"text-anchor":"end"});
+    T(s,M.X(4)+6,M.Y(5)+4,"5",{});
+    T(s,M.X(2),M.Y(1.3),"6",{"text-anchor":"middle",fill:C.blue,"font-size":16});
+    T(s,M.X(3.5),M.Y(1.3),"4",{"text-anchor":"middle",fill:C.green,"font-size":16});
+    T(s,M.X(0.4),M.Y(5.6),"y = x + |x − 3|",{});
+  })();
+})();
+</script>
+</body>
+</html>
