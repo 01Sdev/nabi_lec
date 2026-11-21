@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>상대도수와 그 그래프 — урок</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;1,400;1,600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: one reading column; 상대도수 (стр. 242) → graph → two groups + lab, then 개념 이해 709–710 and 유형 139–146 */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --sunk:#E9EEF6; --line:#D5DCE8;
+  --ink:#14203A; --muted:#566281;
+  --blue:#2457C5; --blue-soft:#E3EAFA; --blue-fill:rgba(36,87,197,.16);
+  --coral:#CF4429; --coral-soft:#FBE8E3; --coral-fill:rgba(207,68,41,.38);
+  --green:#1A7B51; --green-soft:#E0F2E8; --green-fill:rgba(26,123,81,.24);
+  --amber:#A86A12; --amber-soft:#FBF0DC;
+  --f-body:"Golos Text","Noto Sans KR",system-ui,sans-serif;
+  --f-kr:"Noto Sans KR","Golos Text",system-ui,sans-serif;
+  --f-disp:"Unbounded","Golos Text",system-ui,sans-serif;
+  --f-math:"Noto Serif",Georgia,serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#172034; --sunk:#1D2840; --line:#2C3A57;
+  --ink:#E6ECF7; --muted:#9AA7C3;
+  --blue:#7FA4F5; --blue-soft:#1E2D52; --blue-fill:rgba(127,164,245,.18);
+  --coral:#F2876F; --coral-soft:#3A2220; --coral-fill:rgba(242,135,111,.42);
+  --green:#5CCB97; --green-soft:#16352A; --green-fill:rgba(92,203,151,.24);
+  --amber:#E6B35C; --amber-soft:#382C17; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--f-body)}
+.wrap{max-width:820px;margin:0 auto;padding-block:28px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+section{display:flex;flex-direction:column;gap:16px;min-width:0}
+h1,h2,h3{text-wrap:balance;margin:0}
+h1{font:700 clamp(30px,6vw,44px)/1.15 var(--f-disp);display:flex;flex-direction:column;gap:6px}
+h1 .ru{font:500 clamp(17px,3vw,21px)/1.35 var(--f-body);color:var(--muted)}
+h2{font:700 21px/1.3 var(--f-body);display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2 .num{font:700 14px var(--f-disp);color:var(--blue);background:var(--blue-soft);border-radius:6px;padding:2px 8px}
+h3{font:700 18px/1.35 var(--f-body)}
+p{margin:0}
+.kr,.ko{font-family:var(--f-kr)}
+.m{font:italic 400 1.06em var(--f-math)}
+.muted{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:500 13px var(--f-kr);padding:3px 10px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.lead{max-width:62ch;color:var(--ink)}
+.hero{display:flex;flex-direction:column;gap:14px}
+.box{border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.box .tag{font:600 12px var(--f-body);letter-spacing:.06em;text-transform:uppercase}
+.analogy{background:var(--amber-soft)} .analogy .tag{color:var(--amber)}
+.text{background:var(--surface);border:1px solid var(--line)} .text .tag{color:var(--blue)}
+.warn{background:var(--coral-soft)} .warn .tag{color:var(--coral)}
+.ex{background:var(--green-soft)} .ex .tag{color:var(--green)}
+.def-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.def-list li{display:flex;flex-direction:column;gap:2px}
+.def-list .ko{font-weight:500}
+.def-list .tr{color:var(--muted);font-size:15.5px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.vocab div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.vocab b{font:700 17px var(--f-kr)}
+.vocab i{font-style:normal;font-weight:600;font-size:14.5px;color:var(--blue)}
+.vocab span{font-size:13.5px;color:var(--muted);line-height:1.4}
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;min-width:0}
+.card b{font:700 16px var(--f-kr)} .card span{font-size:14px;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--f-kr);fill:var(--ink);font-size:13px}
+svg .lbl{font:italic 15px var(--f-math);fill:var(--ink)}
+svg .sm{font-size:11px;fill:var(--muted)}
+.fig{display:flex;flex-direction:column;gap:6px}
+.cap{font-size:14.5px;color:var(--muted)}
+.steps{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:5px}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:460px;font-size:15px}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:var(--sunk);font-weight:600}
+td .kr,th .kr{font-weight:500}
+/* lab */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.lab-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:620px){.lab-grid{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.btn{font:500 14.5px var(--f-body);border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+.seg.cut button[aria-pressed="true"]{background:var(--coral);border-color:var(--coral)}
+.btn.go{background:var(--blue);color:var(--surface);border-color:var(--blue)}
+button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.ctrl{display:flex;flex-direction:column;gap:4px}
+.ctrl label{font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--blue)}
+#cutH{accent-color:var(--coral)}
+.readout{background:var(--sunk);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:15.5px;min-height:96px}
+.readout b{font-family:var(--f-kr)}
+.status{font-weight:600;color:var(--coral)}
+.status.ok{color:var(--green)}
+/* problems */
+.type{display:flex;flex-direction:column;gap:12px;border-top:2px solid var(--line);padding-top:18px}
+.type-h{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.type-h .tn{font:700 14px var(--f-disp);color:var(--surface);background:var(--blue);border-radius:6px;padding:2px 8px}
+.type-h b{font:700 18px var(--f-kr)}
+.type-h span{color:var(--muted);font-size:15px}
+.prob{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.phead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pno{font:700 22px var(--f-disp);color:var(--blue)}
+.badge{font:600 12px var(--f-kr);padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.badge.rep{background:var(--green-soft);color:var(--green)}
+.pq{font:500 17px/1.6 var(--f-kr)}
+.pt{font-size:15px;color:var(--muted)}
+.opts{display:flex;flex-wrap:wrap;gap:4px 18px;font:500 16px var(--f-kr);margin:0;padding:0;list-style:none}
+details{border-radius:10px;border:1px solid var(--line)}
+details>summary{cursor:pointer;padding:8px 12px;font-weight:600;list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"▸ ";color:var(--muted)}
+details[open]>summary::before{content:"▾ "}
+details.h>summary{color:var(--amber)}
+details.s>summary{color:var(--green)}
+details>div{padding:0 14px 12px;display:flex;flex-direction:column;gap:6px}
+.ans{font-weight:700;color:var(--green)}
+.rest{display:flex;flex-direction:column;gap:8px}
+.rest details>summary b{font-family:var(--f-disp);margin-right:6px;color:var(--ink)}
+.rest details>div .pq{font-size:16px}
+.optfig{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.optfig figure{margin:0;background:var(--sunk);border-radius:10px;padding:6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.optfig figcaption{font:600 14px var(--f-kr)}
+.mistakes{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.figsm{max-width:340px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* --- extra for this lesson: 대푯값 · 줄기와 잎 그림 --- */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.86em;line-height:1.12;margin:0 2px}
+.fr>span:first-child{border-bottom:1.2px solid currentColor;padding:0 3px}
+.fx{font:400 19px/1.9 var(--f-math);display:flex;flex-direction:column;gap:2px;padding:4px 0}
+.fx .ko{font:500 17px var(--f-kr)}
+.hl-b{color:var(--blue);font-weight:600}
+.hl-c{color:var(--coral);font-weight:600}
+.hl-g{color:var(--green);font-weight:600}
+.hl-a{color:var(--amber);font-weight:600}
+.note{font-size:15px;color:var(--muted)}
+.cards2{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cards2 .cc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.cards2 .cc h4{margin:0;font:700 16px var(--f-kr)}
+.cards2 .cc p{font-size:15.5px}
+.cc.b{border-top:4px solid var(--blue)} .cc.c{border-top:4px solid var(--coral)} .cc.g{border-top:4px solid var(--green)}
+.part-h{display:flex;flex-direction:column;gap:6px;padding:14px 16px;border-radius:14px;background:var(--blue-soft)}
+.part-h b{font:700 19px var(--f-kr)}
+.part-h .tn{font:700 13px var(--f-disp);color:var(--blue);letter-spacing:.04em}
+.part-h.b{background:var(--green-soft)} .part-h.b .tn{color:var(--green)}
+.pfig{background:var(--sunk);border-radius:10px;padding:10px;display:flex;justify-content:center;overflow-x:auto}
+/* data strips */
+.nums{display:flex;flex-wrap:wrap;gap:6px;font:400 17px var(--f-math);font-variant-numeric:tabular-nums}
+.nums span{min-width:2.4em;text-align:center;padding:3px 6px;border-radius:7px;background:var(--surface);border:1px solid var(--line)}
+.nums span.mid{background:var(--coral-soft);border-color:var(--coral);color:var(--coral);font-weight:700}
+.nums span.mode{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:700}
+.nums span.used{opacity:.35}
+.nums span.now{border-color:var(--amber);background:var(--amber-soft)}
+.nums span .pos{display:block;font-style:normal;font:500 10.5px var(--f-body);color:var(--muted)}
+
+/* --- extra for this lesson: 도수분포표 · 히스토그램 · 도수분포다각형 --- */
+.big{font:700 20px var(--f-disp)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:2px;vertical-align:middle;margin-right:5px}
+.nums span.c0{background:var(--blue-soft);border-color:var(--blue)}
+.nums span.c1{background:var(--amber-soft);border-color:var(--amber)}
+.nums span.c2{background:var(--green-soft);border-color:var(--green)}
+.nums span.c3{background:var(--coral-soft);border-color:var(--coral)}
+table.ft{min-width:0;width:auto;font-variant-numeric:tabular-nums;font-size:15.5px}
+table.ft th,table.ft td{text-align:center;padding:5px 12px}
+table.ft td.tl{font:500 15px var(--f-math);letter-spacing:.06em;text-align:left;min-width:70px}
+table.ft tr.sum td,table.ft tr.sum th{background:var(--sunk);font-weight:700}
+table.ft td.q{color:var(--coral);font-weight:700}
+table.ft tr.hi td{background:var(--green-soft)}
+.tally s{text-decoration-thickness:1.6px}
+sup.r{font:500 10.5px var(--f-kr);color:var(--muted);margin-left:1px}
+.chart{max-width:420px;width:100%}
+.chart.sm{max-width:340px}
+.pfig.col{flex-direction:column;align-items:center;gap:8px}
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;width:100%}
+.pair figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.pair figcaption{font:600 15px var(--f-kr)}
+.lab .row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.lab .row>span{font-size:14px;color:var(--muted)}
+.chk{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:15px}
+.chk label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.readout .k{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}
+.box ol.steps{padding-left:24px}
+.def-list .ko b{color:var(--blue)}
+.subq{font:500 16px/1.7 var(--f-kr)}
+/* chart marks */
+svg .gr{stroke:var(--line);stroke-dasharray:3 3;stroke-width:1}
+svg .ax{stroke:var(--ink);stroke-width:1.6;fill:none}
+svg .brk{stroke:var(--ink);stroke-width:1.4;fill:none}
+svg .tk{font:400 12.5px var(--f-math);fill:var(--ink)}
+svg .tk.mu{fill:var(--muted)}
+svg .un{font:500 12px var(--f-kr);fill:var(--ink)}
+svg .bar{fill:var(--blue-fill);stroke:var(--blue);stroke-width:1.4}
+svg .bar.hi{fill:var(--green-fill);stroke:var(--green)}
+svg .pl{fill:none;stroke-width:2.2;stroke-linejoin:round}
+svg .pl.coral{stroke:var(--coral)} svg .pl.blue{stroke:var(--blue)} svg .pl.green{stroke:var(--green)}
+svg .dot{stroke:var(--surface);stroke-width:1}
+svg .dot.coral{fill:var(--coral)} svg .dot.blue{fill:var(--blue)} svg .dot.green{fill:var(--green)}
+svg .slab{font:700 13px var(--f-kr)}
+svg .slab.coral{fill:var(--coral)} svg .slab.blue{fill:var(--blue)} svg .slab.green{fill:var(--green)}
+svg .pfill{fill:var(--coral-fill);opacity:.55}
+svg .tri{stroke-width:1.2;opacity:.9}
+svg .tri.t0{fill:var(--amber-soft);stroke:var(--amber)} svg .tri.t1{fill:var(--green-soft);stroke:var(--green)}
+svg .tri.t2{fill:var(--coral-soft);stroke:var(--coral)} svg .tri.t3{fill:var(--blue-soft);stroke:var(--blue)}
+svg .tear{fill:var(--sunk)}
+svg .tearedge{fill:none;stroke:var(--muted);stroke-width:1.3}
+svg .nseg{stroke-width:5;stroke-linecap:butt}
+svg .nseg.c0,svg .cl.c0{stroke:var(--blue)} svg .nseg.c1,svg .cl.c1{stroke:var(--amber)} svg .nseg.c2,svg .cl.c2{stroke:var(--green)}
+svg .cl{stroke-width:2} svg .cl.c0{fill:var(--blue)} svg .cl.c1{fill:var(--amber)} svg .cl.c2{fill:var(--green)}
+svg .op{fill:var(--sunk);stroke-width:2} svg .op.c0{stroke:var(--blue)} svg .op.c1{stroke:var(--amber)} svg .op.c2{stroke:var(--green)}
+svg .brace{fill:none;stroke:var(--muted);stroke-width:1.3}
+/* --- extra for this lesson: 상대도수 --- */
+svg .pl.dash{stroke-dasharray:6 4}
+svg .blob{fill:var(--ink)}
+svg .band{fill:var(--amber-soft)}
+.readout .k{flex-wrap:wrap}
+svg .vl{font:600 11.5px var(--f-math);fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:3px}
+svg .vl.coral{fill:var(--coral)} svg .vl.blue{fill:var(--blue)} svg .vl.green{fill:var(--green)}
+.tri3{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.tri3 .cc .fx{font-size:17px}
+.shoot{display:flex;flex-wrap:wrap;gap:3px;max-width:340px}
+.shoot i{width:14px;height:14px;border-radius:50%;background:var(--line);display:inline-block}
+.shoot i.in{background:var(--green)}
+.shooter{display:flex;flex-direction:column;gap:6px;background:var(--surface);border-radius:10px;padding:10px 12px}
+table.ft td.g{color:var(--green);font-weight:700}
+table.ft td.b{color:var(--blue);font-weight:700}
+table.ft td.c{color:var(--coral);font-weight:700}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cmp>div{background:var(--surface);border-radius:10px;padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.cmp b{font:700 18px var(--f-disp)}
+</style>
+<main class="wrap">
+<header class="hero">
+  <div class="chips">
+    <span class="chip">NaBi school</span>
+    <span class="chip">IV 자료의 정리와 해석 › 1 자료의 정리와 해석</span>
+    <span class="chip">стр. 242–243 · 709–710 · 유형 139–146</span>
+  </div>
+  <h1><span class="kr">상대도수와 그 그래프</span><span class="ru">Относительная частота и её график</span></h1>
+  <p class="lead">До сих пор мы считали «сколько штук» (<span class="kr">도수</span>). Но 10 человек из 20 и 10 человек из 200 — это совсем разное. Сегодня считаем <b>долю</b>: какую часть от всех занимает класс. Эта доля называется <span class="kr">상대도수</span>.</p>
+</header>
+
+<!-- 0 vocab -->
+<section>
+  <h2><span class="num">0</span> 단어장 · словарь</h2>
+  <p>Эти слова будут в задачах. Читай их по-корейски: на контрольной будет именно так.</p>
+  <div class="vocab">
+    <div><b>상대도수</b><i>относительная частота</i><span>доля класса: 도수 ÷ 도수의 총합</span></div>
+    <div><b>상대도수의 분포표</b><i>таблица относительных частот</i><span>классы + их 상대도수</span></div>
+    <div><b>도수</b><i>частота</i><span>сколько данных в классе (штук, человек)</span></div>
+    <div><b>도수의 총합</b><i>сумма частот</i><span>= сколько всего данных</span></div>
+    <div><b>전체 · 전체 학생 수</b><i>всё целое · всего учеников</i><span>то же, что 도수의 총합</span></div>
+    <div><b>계급</b><i>класс (интервал)</i><span>например 10 이상 20 미만</span></div>
+    <div><b>비율</b><i>доля, отношение</i><span>часть ÷ целое</span></div>
+    <div><b>차지하다</b><i>занимать</i><span>전체에서 차지하는 비율 — какую долю занимает</span></div>
+    <div><b>정비례하다</b><i>прямо пропорционален</i><span>больше 도수 → больше 상대도수</span></div>
+    <div><b>항상 1</b><i>всегда 1</i><span>сумма всех 상대도수 = 1</span></div>
+    <div><b>백분율 · %</b><i>процент</i><span>상대도수 × 100 (%)</span></div>
+    <div><b>집단</b><i>группа</i><span>например 1반 и 2반, 남학생 и 여학생</span></div>
+    <div><b>분포 상태</b><i>распределение</i><span>где данных много, где мало</span></div>
+    <div><b>비교하다</b><i>сравнивать</i><span>더 크다 — больше, 더 작다 — меньше</span></div>
+    <div><b>적절하다</b><i>подходящий, уместный</i><span>더 적절하다 — правильнее</span></div>
+    <div><b>상대도수의 분포를 나타낸 그래프</b><i>график относительных частот</i><span>гистограмма или полигон, но по вертикали 상대도수</span></div>
+    <div><b>가로축 · 세로축</b><i>горизонтальная · вертикальная ось</i><span>가로 — классы, 세로 — 상대도수</span></div>
+    <div><b>둘러싸인 부분의 넓이</b><i>площадь ограниченной области</i><span>под графиком и над осью</span></div>
+    <div><b>계급의 크기</b><i>ширина класса</i><span>20 − 10 = 10</span></div>
+    <div><b>찢어진 · 훼손된</b><i>порванный · повреждённый</i><span>часть таблицы/графика не видна</span></div>
+    <div><b>옳지 않은 것</b><i>неверное</i><span>ищем ОШИБКУ, а не правду</span></div>
+    <div><b>모두 고르면</b><i>выбери все</i><span>ответов может быть 2–3</span></div>
+    <div><b>차 · 합</b><i>разность · сумма</i><span>두 수의 차 = большее − меньшее</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">1</span> 복습 · разминка</h2>
+  <p>Сегодня понадобятся три вещи. Все ты уже знаешь.</p>
+  <div class="cards2">
+    <div class="cc b"><h4>도수의 총합</h4><p>Сложи все <span class="kr">도수</span> в таблице — получится количество всех данных. В таблице это строка <span class="kr">합계</span>.</p></div>
+    <div class="cc c"><h4>Дробь → десятичная</h4><p><span class="fr"><span>6</span><span>20</span></span> = <span class="fr"><span>3</span><span>10</span></span> = 0.3. &nbsp; <span class="fr"><span>9</span><span>25</span></span> = <span class="fr"><span>36</span><span>100</span></span> = 0.36. Удобно домножать знаменатель до 10 или 100.</p></div>
+    <div class="cc g"><h4>백분율 · проценты</h4><p>0.3 = 30%, 0.05 = 5%. Обратно: 45% = 0.45. Умножаем или делим на 100.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">2</span> <span class="kr">상대도수</span> · относительная частота</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Тренировка по баскетболу. Миша забил <b>8</b> штрафных, Вова — <b>15</b>. Кто метче? Кажется, Вова. Но Миша бросал 10 раз, а Вова — 30.</p>
+    <div class="cmp">
+      <div class="shooter"><span>Миша: 8 из 10</span><div class="shoot" id="shA"></div><b class="hl-g">0.8</b></div>
+      <div class="shooter"><span>Вова: 15 из 30</span><div class="shoot" id="shB"></div><b class="hl-c">0.5</b></div>
+    </div>
+    <p>Количество попаданий (<span class="kr">도수</span>) обманывает, если всего бросков разное число. Честно сравнивать <b>долю</b>: попадания ÷ все броски. Это и есть <span class="kr">상대도수</span>.</p></div>
+  <div class="box text"><span class="tag">учебник · стр. 242</span>
+    <ul class="def-list">
+      <li><span class="ko"><b>1 상대도수</b><br>(1) 상대도수 : 도수의 총합에 대한 각 계급의 도수의 비율</span><span class="tr">Относительная частота — доля 도수 каждого класса от суммы всех частот.</span></li>
+      <li><span class="ko fx"><span>(어떤 계급의 상대도수) = <span class="fr"><span>(그 계급의 도수)</span><span>(도수의 총합)</span></span></span></span><span class="tr">(относительная частота класса) = (частота этого класса) ÷ (сумма частот)</span></li>
+      <li><span class="ko">(2) 상대도수의 분포표 : 각 계급의 상대도수를 나타낸 표</span><span class="tr">Таблица относительных частот — таблица, где для каждого класса записан его 상대도수.</span></li>
+      <li><span class="ko">(3) 상대도수의 특징<br>① 상대도수의 총합은 항상 1이다.<br>② 각 계급의 상대도수는 그 계급의 도수에 정비례한다.<br>③ 각 계급의 도수가 전체에서 차지하는 비율을 쉽게 알 수 있다.<br>④ 상대도수는 전체 도수가 다른 여러 집단의 자료의 분포 상태를 비교할 때 편리하다.</span><span class="tr">Свойства: ① сумма всех 상대도수 всегда 1; ② 상대도수 прямо пропорционален 도수 класса; ③ сразу видно, какую долю от всех занимает класс; ④ удобно сравнивать группы, у которых разное общее количество.</span></li>
+    </ul></div>
+  <div class="box ex"><span class="tag">Пример · 20 учеников</span>
+    <p>Сколько книг прочитали 20 учеников за месяц. Делим каждый 도수 на 20:</p>
+    <div class="tbl"><table class="ft">
+      <tr><th>책(권)</th><th>도수(명)</th><th>계산</th><th>상대도수</th></tr>
+      <tr><td>10<sup class="r">이상</sup> ~ 20<sup class="r">미만</sup></td><td>10</td><td>10 ÷ 20</td><td class="g">0.5</td></tr>
+      <tr><td>20 ~ 30</td><td>8</td><td>8 ÷ 20</td><td class="g">0.4</td></tr>
+      <tr><td>30 ~ 40</td><td>2</td><td>2 ÷ 20</td><td class="g">0.1</td></tr>
+      <tr class="sum"><td>합계</td><td>20</td><td>20 ÷ 20</td><td>1</td></tr></table></div>
+    <ol class="steps">
+      <li><b>Шаг 1.</b> Найди <span class="kr">도수의 총합</span>: 10 + 8 + 2 = 20.</li>
+      <li><b>Шаг 2.</b> Каждый <span class="kr">도수</span> раздели на 20.</li>
+      <li><b>Шаг 3.</b> Проверка: 0.5 + 0.4 + 0.1 = 1 ✓ (свойство ①).</li>
+    </ol>
+    <p>Класс 10~20 — это 0.5, то есть <b>50%</b> всех учеников (свойство ③). У него самый большой 도수 и самый большой 상대도수 (свойство ②).</p></div>
+  <div class="box warn"><span class="tag">주의 · внимание</span>
+    <p><span class="kr">상대도수</span> — это всегда число от 0 до 1 (дробь, а не «штуки»). Если получилось 4 или 12 — ты нашёл <span class="kr">도수</span>, а не <span class="kr">상대도수</span>. Сумма 상대도수 всегда 1, а сумма 도수 — количество данных.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">3</span> <span class="kr">세 가지 공식</span> · одна формула — три задачи</h2>
+  <p>Из одной формулы получаются три. Если знаешь два числа из трёх, найдёшь третье. Это основа всего <span class="kr">유형 139</span>.</p>
+  <div class="tri3">
+    <div class="cc g"><h4>Найти 상대도수</h4><div class="fx"><span class="ko">상대도수 = <span class="fr"><span>도수</span><span>총합</span></span></span></div><p>16 из 40 → <span class="fr"><span>16</span><span>40</span></span> = 0.4</p></div>
+    <div class="cc b"><h4>Найти 도수</h4><div class="fx"><span class="ko">도수 = 총합 × 상대도수</span></div><p>40 человек, 0.3 → 40 × 0.3 = 12</p></div>
+    <div class="cc c"><h4>Найти 총합</h4><div class="fx"><span class="ko">총합 = <span class="fr"><span>도수</span><span>상대도수</span></span></span></div><p>16 человек — это 0.4 → <span class="fr"><span>16</span><span>0.4</span></span> = 40</p></div>
+  </div>
+  <div class="box analogy"><span class="tag">Как запомнить</span>
+    <p>Как цена в магазине: <b>стоимость = количество × цена</b>. Здесь <b>도수 = 총합 × 상대도수</b>. Нужно одно из множителей — дели.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">4</span> <span class="kr">상대도수의 분포를 나타낸 그래프</span> · график</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Берём обычную гистограмму и <b>меняем только подписи на вертикальной оси</b>: вместо «человек» пишем долю. Высота столбика 10 человек из 20 становится 0.5. Форма картинки та же самая, меняется только масштаб.</p></div>
+  <div class="box text"><span class="tag">учебник · стр. 242</span>
+    <ul class="def-list">
+      <li><span class="ko"><b>2 상대도수의 분포를 나타낸 그래프</b><br>(1) 상대도수의 분포를 나타낸 그래프 : 상대도수의 분포표를 히스토그램이나 도수분포다각형 모양으로 그린 그래프</span><span class="tr">График относительных частот — таблицу относительных частот рисуют в виде гистограммы или полигона частот.</span></li>
+      <li><span class="ko">(2) 상대도수의 분포를 나타낸 그래프 그리는 순서<br>(ⅰ) 가로축에는 각 계급의 양 끝 값을, 세로축에는 상대도수를 차례로 나타낸다.<br>(ⅱ) 히스토그램 또는 도수분포다각형을 그릴 때와 같은 방법으로 그린다.</span><span class="tr">Порядок: (ⅰ) на горизонтальной оси — концы классов, на вертикальной — 상대도수; (ⅱ) дальше рисуем так же, как гистограмму или полигон.</span></li>
+      <li><span class="ko"><b>참고</b> 상대도수의 분포를 나타낸 그래프와 가로축으로 둘러싸인 부분의 넓이는 계급의 크기와 같다.<br>(넓이) = (계급의 크기) × (상대도수의 총합) = (계급의 크기) × 1 = (계급의 크기)</span><span class="tr">Площадь под графиком относительных частот равна ширине класса: ширина × (сумма 상대도수) = ширина × 1.</span></li>
+    </ul></div>
+  <div class="fig">
+    <div class="pfig col"><svg id="g242" class="chart" role="img" aria-label="График относительных частот учебника: 10–20: 0.5, 20–30: 0.4, 30–40: 0.1"></svg>
+      <div class="seg"><button class="btn" id="b242a" aria-pressed="false">По вертикали: 도수 (20 человек)</button><button class="btn" id="b242b" aria-pressed="false">Закрасить площадь</button></div></div>
+    <p class="cap" id="cap242">Рисунок учебника стр. 242 (перерисован). Нажми первую кнопку: столбики не меняются, меняются только числа слева.</p>
+  </div>
+  <div class="box ex"><span class="tag">Почему площадь = 계급의 크기</span>
+    <p>Площади столбиков: 10 × 0.5 = 5, &nbsp;10 × 0.4 = 4, &nbsp;10 × 0.1 = 1. Сумма 5 + 4 + 1 = <b>10</b> = <span class="kr">계급의 크기</span>.</p>
+    <p>Под ломаной площадь такая же (как в прошлый раз: треугольники отрезаются и добавляются парами). Это верно для <b>любого</b> графика 상대도수, потому что сумма 상대도수 всегда 1.</p></div>
+</section>
+
+<section>
+  <h2><span class="num">5</span> <span class="kr">도수의 총합이 다른 두 자료의 비교</span> · сравнение двух групп</h2>
+  <div class="box analogy"><span class="tag">Представь</span>
+    <p>Вспомни Мишу и Вову. В школе то же самое: мальчиков 150, девочек 100. «Мальчиков, которые читают много, больше» — это может быть просто потому, что мальчиков вообще больше. Честный вопрос: какая <b>доля</b> мальчиков и какая <b>доля</b> девочек читает много?</p></div>
+  <div class="box text"><span class="tag">учебник · стр. 242</span>
+    <ul class="def-list">
+      <li><span class="ko"><b>3 도수의 총합이 다른 두 자료의 분포의 비교</b><br>도수의 총합이 다른 두 자료의 분포를 비교할 때는 각 계급의 도수를 비교하는 것보다 상대도수를 비교하는 것이 더 적절하다.</span><span class="tr">Если в двух группах разное общее количество, правильнее сравнивать не 도수 классов, а их 상대도수.</span></li>
+    </ul></div>
+  <div class="box ex"><span class="tag">예시 · пример из 유형 145</span>
+    <p>Сколько книг взяли в библиотеке за 1 семестр (<span class="kr">대출도서 수</span>):</p>
+    <div class="tbl"><table class="ft">
+      <tr><th rowspan="2">대출도서(권)</th><th colspan="2">도수(명)</th><th colspan="2">상대도수</th></tr>
+      <tr><th>남학생</th><th>여학생</th><th>남학생</th><th>여학생</th></tr>
+      <tr><td>4<sup class="r">이상</sup> ~ 8<sup class="r">미만</sup></td><td>30</td><td>15</td><td>0.2</td><td>0.15</td></tr>
+      <tr><td>8 ~ 12</td><td>45</td><td>25</td><td>0.3</td><td>0.25</td></tr>
+      <tr><td>12 ~ 16</td><td>27</td><td>20</td><td>0.18</td><td>0.2</td></tr>
+      <tr class="hi"><td>16 ~ 20</td><td class="b">48</td><td>40</td><td>0.32</td><td class="c">0.4</td></tr>
+      <tr class="sum"><td>합계</td><td>150</td><td>100</td><td>1</td><td>1</td></tr></table></div>
+    <p class="ko">⇨ 대출도서가 16권 이상 20권 미만인 계급에서 도수는 남학생이 더 크지만 상대도수는 여학생이 더 크다.</p>
+    <p>В классе 16~20: по 도수 больше мальчиков (48 &gt; 40), а по 상대도수 — девочек (0.32 &lt; 0.4). Значит, <b>среди девочек</b> много читающих встречаются чаще.</p></div>
+  <div class="box text"><span class="tag">유형 146 · 참고</span>
+    <p class="ko">도수의 총합이 다른 두 자료의 분포를 비교할 때 상대도수의 분포를 나타낸 그래프를 이용하면 편리하다. 그래프를 동시에 나타내면 두 자료의 분포 상태를 한눈에 비교할 수 있다.</p>
+    <p class="muted">Две ломаные 상대도수 на одном рисунке — и сразу видно, какая группа «правее» (больше значения) или «левее».</p></div>
+</section>
+
+<section>
+  <h2><span class="num">6</span> 실험실 · 도수 или 상대도수?</h2>
+  <p>Данные из примера выше. Меняй, сколько девочек в школе (доли остаются те же). Смотри, что происходит с графиком 도수 и с графиком 상대도수.</p>
+  <div class="lab">
+    <div class="row"><span>По вертикали</span><div class="seg" id="lMode">
+      <button aria-pressed="true" data-v="f">도수 (человек)</button>
+      <button aria-pressed="false" data-v="r">상대도수 (доля)</button></div></div>
+    <div class="ctrl"><label for="lN"><span>Девочек в школе (<span class="kr">여학생 수</span>)</span><b id="lNv">100</b></label>
+      <input type="range" id="lN" min="20" max="300" step="20" value="100"></div>
+    <div class="row"><span>Класс</span><div class="seg" id="lCls"></div></div>
+    <div class="lab-grid">
+      <div class="pfig"><svg id="labSvg" class="chart" role="img" aria-label="Полигоны мальчиков и девочек"></svg></div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+        <div class="tbl"><table class="ft" id="labTable"></table></div>
+        <div class="readout" id="labOut" aria-live="polite"></div>
+      </div>
+    </div>
+    <div class="seg"><button class="btn go" id="lTrap">Ловушка: 여학생 = 120</button><button class="btn" id="lReset">Как в учебнике (100)</button></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">7</span> 풀이 순서 · рецепт</h2>
+  <div class="cards2">
+    <div class="cc b"><h4>Пустая клетка в таблице</h4><ol class="steps"><li>Есть класс, где известны и 도수, и 상대도수? → 총합 = 도수 ÷ 상대도수.</li><li>Дальше: 도수 = 총합 × 상대도수.</li><li>Проверь: сумма 상대도수 = 1.</li></ol></div>
+    <div class="cc c"><h4>Порванная таблица / график</h4><ol class="steps"><li>Спрятанный 상대도수 = 1 − (сумма видимых).</li><li>Если дан % («전체의 55%») → это сумма 상대도수 нескольких классов (0.55).</li><li>총합 из класса, где известны оба числа.</li></ol></div>
+    <div class="cc g"><h4>Чтение графика</h4><ol class="steps"><li>Точка полигона стоит над <b>серединой</b> класса.</li><li>Посчитай шаг сетки (0.05? 0.02?).</li><li>도수 = 총합 × высота точки.</li></ol></div>
+    <div class="cc"><h4>Две группы</h4><ol class="steps"><li>«Где доля больше?» → сравни 상대도수.</li><li>«Где человек больше?» → посчитай 도수 каждой группы <b>со своим</b> 총합.</li><li>Площади под двумя графиками равны (= 계급의 크기).</li></ol></div>
+  </div>
+  <div class="box warn"><span class="tag">чаще всего ошибаются здесь</span>
+    <p>Считают 도수 одной группы с <span class="kr">총합</span> другой группы. И путают направления формулы: 총합 = 도수 <b>÷</b> 상대도수 (16 ÷ 0.4 = 40), а не 16 × 0.4.</p></div>
+</section>
+
+<!-- 개념 이해 -->
+<section>
+  <h2><span class="num">8</span> 개념 이해 · задачи учебника стр. 243</h2>
+
+  <article class="prob"><div class="phead"><span class="pno">709</span><span class="badge">중하</span></div>
+    <p class="pt">[2005년 4월 고3 이과 확률과 통계 26번]</p>
+    <p class="pq">다음 표는 어느 학급 학생 35명이 등교하는데 걸리는 시간을 조사하여 나타낸 것이다. 이때 <span class="m">a</span> + 10<span class="m">b</span> + <span class="m">c</span>의 값은?</p>
+    <p class="pt">Сколько минут 35 учеников добираются до школы (<span class="kr">등교 시간</span>). Найди <span class="m">a</span> + 10<span class="m">b</span> + <span class="m">c</span>.</p>
+    <div class="tbl"><table class="ft"><tr><th>등교 시간(분)</th><th>도수(명)</th><th>상대도수</th></tr>
+      <tr><td>0<sup class="r">이상</sup> ~ 20<sup class="r">미만</sup></td><td>6</td><td></td></tr>
+      <tr><td>20 ~ 40</td><td>12</td><td></td></tr>
+      <tr><td>40 ~ 60</td><td>7</td><td class="m">b</td></tr>
+      <tr><td>60 ~ 80</td><td class="m">a</td><td></td></tr>
+      <tr><td>80 ~ 100</td><td>3</td><td></td></tr>
+      <tr class="sum"><td>합계</td><td>35</td><td class="m">c</td></tr></table></div>
+    <ul class="opts"><li>① 8</li><li>② 9</li><li>③ 10</li><li>④ 11</li><li>⑤ 12</li></ul>
+    <details class="h"><summary>Подсказка</summary><div><p><span class="m">a</span> — из 합계 35. <span class="m">b</span> — 도수 7 из 35. <span class="m">c</span> — сумма всех 상대도수: вспомни свойство ①.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p><span class="m">a</span> = 35 − (6 + 12 + 7 + 3) = 35 − 28 = 7.</p>
+      <p><span class="m">b</span> = <span class="fr"><span>7</span><span>35</span></span> = <span class="fr"><span>1</span><span>5</span></span> = 0.2. &nbsp; <span class="m">c</span> = 1 (<span class="kr">상대도수의 총합은 항상 1</span>).</p>
+      <p><span class="m">a</span> + 10<span class="m">b</span> + <span class="m">c</span> = 7 + 2 + 1 = 10. <span class="ans">Ответ: ③</span></p></div></details>
+  </article>
+
+  <article class="prob"><div class="phead"><span class="pno">710</span><span class="badge">중하</span></div>
+    <p class="pq">어느 상대도수의 분포표에서 도수가 16인 계급의 상대도수가 0.4일 때, 상대도수가 0.3인 계급의 도수를 구하시오.</p>
+    <p class="pt">В таблице относительных частот класс с 도수 16 имеет 상대도수 0.4. Найди 도수 класса, у которого 상대도수 0.3.</p>
+    <details class="h"><summary>Подсказка</summary><div><p>Сначала найди <span class="kr">도수의 총합</span>: 16 — это 0.4 от всех. Потом третья формула наоборот.</p></div></details>
+    <details class="s"><summary>Решение</summary><div>
+      <p>총합 = <span class="fr"><span>16</span><span>0.4</span></span> = 40.</p>
+      <p>도수 = 40 × 0.3 = 12. <span class="ans">Ответ: 12</span></p></div></details>
+  </article>
+</section>
+
+<!-- 유형 연습 -->
+<section>
+  <h2><span class="num">9</span> 유형 연습 · задачи для тренировки стр. 260–269</h2>
+  <p>В каждом типе: <b>대표 유제</b> разобран полностью, остальные — только с подсказкой. Сначала реши сам, потом открывай.</p>
+
+  <!-- 139 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">139</span><b>상대도수의 이해</b><span>три формулы · стр. 260</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 139</span>
+      <p class="ko">(1) (어떤 계급의 상대도수) = <span class="fr"><span>(그 계급의 도수)</span><span>(도수의 총합)</span></span> &nbsp; (2) (어떤 계급의 도수) = (도수의 총합) × (그 계급의 상대도수) &nbsp; (3) (도수의 총합) = <span class="fr"><span>(그 계급의 도수)</span><span>(어떤 계급의 상대도수)</span></span></p>
+      <p class="muted">Те же три формулы из раздела 3.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">759</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pt">[2006년 4월 고3 이과 확률과 통계 26번]</p>
+      <p class="pq">다음은 어떤 봉사동아리 회원들의 1년 동안의 봉사활동 시간을 나타낸 도수분포표이다. 70시간 이상 80시간 미만 계급의 상대도수가 0.3일 때, 80시간 이상 90시간 미만 계급의 상대도수는?</p>
+      <p class="pt">Часы волонтёрства членов кружка за год. У класса 70~80 часов 상대도수 0.3. Найди 상대도수 класса 80~90.</p>
+      <div class="tbl"><table class="ft"><tr><th>봉사 시간(시간)</th><th>회원 수(명)</th></tr>
+        <tr><td>40<sup class="r">이상</sup> ~ 50<sup class="r">미만</sup></td><td>3</td></tr><tr><td>50 ~ 60</td><td>5</td></tr><tr><td>60 ~ 70</td><td>6</td></tr><tr><td>70 ~ 80</td><td>9</td></tr><tr><td>80 ~ 90</td><td class="m">a</td></tr><tr><td>90 ~ 100</td><td>4</td></tr></table></div>
+      <ul class="opts"><li>① 0.05</li><li>② 0.1</li><li>③ 0.15</li><li>④ 0.2</li><li>⑤ 0.25</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>Класс 70~80: 도수 9 и 상대도수 0.3 — оба известны. Значит, можно найти 총합.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><b>Шаг 1.</b> 총합 = <span class="fr"><span>9</span><span>0.3</span></span> = 30.</p>
+        <p><b>Шаг 2.</b> 3 + 5 + 6 + 9 + <span class="m">a</span> + 4 = 30 → 27 + <span class="m">a</span> = 30 → <span class="m">a</span> = 3.</p>
+        <p><b>Шаг 3.</b> 상대도수 = <span class="fr"><span>3</span><span>30</span></span> = 0.1. <span class="ans">Ответ: ②</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>760</b>100 m 달리기 — 18초 이상</summary><div><p class="pq">다음 그림은 예린이네 반 학생들의 100 m 달리기 기록을 조사하여 나타낸 도수분포다각형이다. 기록이 18초 이상인 학생의 상대도수를 구하시오.</p>
+        <div class="pfig"><svg id="g760" class="chart sm" role="img" aria-label="Полигон частот к задаче 760"></svg></div>
+        <p>Подсказка: это обычный полигон <b>도수</b> (по вертикали — человек). Сложи все 도수 → 총합. «18초 이상» — классы 18~19 и 19~20.</p></div></details>
+      <details class="h"><summary><b>761</b>찢어진 히스토그램 — 도수가 가장 큰 계급</summary><div><p class="pq">다음은 어느 학급 20명의 학생들이 1년 동안 직접 영화관에 가서 영화를 관람한 횟수를 조사하여 히스토그램으로 나타낸 것인데 일부가 찢어져 나간 것이다. 이때 도수가 가장 큰 계급의 상대도수는? ① 0.2 ② 0.25 ③ 0.3 ④ 0.35 ⑤ 0.4</p>
+        <div class="pfig"><svg id="g761" class="chart sm" role="img" aria-label="Порванная гистограмма к задаче 761"></svg></div>
+        <p>Подсказка: спрятанный столбик = 20 − (сумма видимых). Потом раздели на 20.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 140 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">140</span><b>상대도수의 분포표</b><span>таблица · стр. 261–262</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 140</span>
+      <p class="ko">(1) 상대도수의 총합은 항상 1이다. (2) 도수의 총합, 계급의 도수, 상대도수 중 어느 두 가지가 주어지면 나머지 한 가지를 구할 수 있다. (3) (백분율) = (상대도수) × 100 (%)</p>
+      <p class="muted">Сумма 상대도수 = 1. Знаешь два из трёх — найдёшь третье. Процент = 상대도수 × 100.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">762</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 표는 유진이네 반 학생에 대한 체육 실기 점수를 조사하여 나타낸 상대도수의 분포표이다. 다음 설명 중 옳지 <u>않은</u> 것을 고르면?</p>
+      <p class="pt">Оценки по физкультуре (практика). Найди <b>неверное</b> утверждение.</p>
+      <div class="tbl"><table class="ft"><tr><th>실기 점수(점)</th><th>학생 수(명)</th><th>상대도수</th></tr>
+        <tr><td>60<sup class="r">이상</sup> ~ 70<sup class="r">미만</sup></td><td>4</td><td></td></tr><tr><td>70 ~ 80</td><td>8</td><td></td></tr><tr><td>80 ~ 90</td><td>12</td><td></td></tr><tr><td>90 ~ 100</td><td></td><td>0.04</td></tr><tr class="sum"><td>합계</td><td>25</td><td></td></tr></table></div>
+      <ul class="opts" style="flex-direction:column"><li>① 실기 점수가 70 점 이상 80 점 미만인 계급의 상대도수는 0.32 이다.</li><li>② 상대도수의 총합은 1 이다.</li><li>③ 실기 점수가 60 점 이상 70 점 미만인 계급의 상대도수는 0.16 이다.</li><li>④ 실기 점수가 90 점 이상 100 점 미만인 학생 수는 1 명이다.</li><li>⑤ 실기 점수가 80 점 이상 90 점 미만인 계급의 상대도수는 0.4 이다.</li></ul>
+      <p class="pt">① у 70~80 상대도수 0.32; ② сумма 상대도수 = 1; ③ у 60~70 — 0.16; ④ в 90~100 один ученик; ⑤ у 80~90 — 0.4.</p>
+      <details class="h"><summary>Подсказка</summary><div><p>총합 = 25. Каждый 도수 раздели на 25 (удобно: умножь на 4 и получишь сотые).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>① <span class="fr"><span>8</span><span>25</span></span> = <span class="fr"><span>32</span><span>100</span></span> = 0.32 ✓ &nbsp; ② всегда 1 ✓ &nbsp; ③ <span class="fr"><span>4</span><span>25</span></span> = 0.16 ✓</p>
+        <p>④ 25 × 0.04 = 1 ✓ (или 25 − 24 = 1).</p>
+        <p>⑤ <span class="fr"><span>12</span><span>25</span></span> = <span class="fr"><span>48</span><span>100</span></span> = <b>0.48</b>, а не 0.4 ✗. <span class="ans">Ответ: ⑤</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>763</b>5 km 단축 마라톤 — 옳은 것 모두</summary><div><p class="pq">다음 표는 사랑이네 학교 1학년 학생들의 5 km 단축 마라톤 기록을 조사하여 나타낸 상대도수의 분포표이다. 다음 설명 중 옳은 것을 모두 고르면?</p>
+        <div class="tbl"><table class="ft"><tr><th>기록(분)</th><th>학생 수(명)</th><th>상대도수</th></tr><tr><td>10<sup class="r">이상</sup> ~ 15<sup class="r">미만</sup></td><td></td><td>0.06</td></tr><tr><td>15 ~ 20</td><td>9</td><td>0.09</td></tr><tr><td>20 ~ 25</td><td>15</td><td></td></tr><tr><td>25 ~ 30</td><td>31</td><td>0.31</td></tr><tr><td>30 ~ 35</td><td>25</td><td></td></tr><tr><td>35 ~ 40</td><td>14</td><td>0.14</td></tr><tr class="sum"><td>합계</td><td></td><td></td></tr></table></div>
+        <p class="ko">① 총 학생수는 120 명이다. ② 기록이 10 분 이상 15 분 미만 학생 수는 6 명이다. ③ 기록이 20 분 이상 25 분 미만 계급의 상대도수는 0.2 이다. ④ 기록이 30 분 이상 35 분 미만 계급의 상대도수는 0.25 이다. ⑤ 상대도수의 총합은 1 이다.</p>
+        <p>Подсказка: найди 총합 по строке 15~20 (9 и 0.09). Потом проверь каждый пункт. Верных несколько.</p></div></details>
+      <details class="h"><summary><b>764</b>휴대전화 통화량 — 몇 %</summary><div><p class="pq">다음 표는 현진이네 반 학생들의 한 달 평균 휴대전화 통화량을 조사한 것이다. 한 달 평균 통화량이 30분 이상 90분 미만인 학생은 전체의 몇 %인지 구하시오.</p>
+        <div class="tbl"><table class="ft"><tr><th>통화량(분)</th><th>학생 수</th><th>상대도수</th></tr><tr><td>0<sup class="r">이상</sup> ~ 30<sup class="r">미만</sup></td><td></td><td>0.1</td></tr><tr><td>30 ~ 60</td><td>9</td><td></td></tr><tr><td>60 ~ 90</td><td></td><td></td></tr><tr><td>90 ~ 120</td><td>21</td><td>0.35</td></tr><tr><td>120 ~ 150</td><td></td><td>0.15</td></tr><tr class="sum"><td>합계</td><td></td><td></td></tr></table></div>
+        <p>Подсказка: 30~90 — это две строки без 상대도수. Вместе они = 1 − (сумма известных 상대도수). Потом × 100.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 141 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">141</span><b>찢어진 상대도수의 분포표</b><span>порванная таблица · стр. 262–263</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 141</span>
+      <p class="ko">어떤 계급의 도수와 상대도수를 알 때 (도수의 총합) = <span class="fr"><span>(그 계급의 도수)</span><span>(어떤 계급의 상대도수)</span></span> 임을 이용하여 도수의 총합을 먼저 구한다.</p>
+      <p class="muted">Найди строку, где видны и 도수, и 상대도수 → сначала 총합.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">765</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 표는 은영이네 반 학생들의 신발의 크기를 조사하여 나타낸 상대도수의 분포표인데 일부가 찢어져 보이지 않는다. 신발의 크기가 245 mm 이상인 학생이 전체의 55%일 때, 신발의 크기가 240 mm 이상 245 mm 미만인 학생 수를 구하시오.</p>
+      <p class="pt">Размер обуви. Таблица порвана. Учеников с размером 245 мм и больше — 55% от всех. Сколько учеников с размером 240~245?</p>
+      <div class="tbl"><table class="ft"><tr><th>신발 크기(mm)</th><th>도수(명)</th><th>상대도수</th></tr><tr><td>235<sup class="r">이상</sup> ~ 240<sup class="r">미만</sup></td><td>4</td><td>0.2</td></tr><tr><td>240 ~ 245</td><td class="muted">≈≈</td><td class="muted">≈≈</td></tr><tr><td>245 ~ 250</td><td class="muted">≈≈</td><td class="muted">≈≈</td></tr><tr><td class="muted">…</td><td class="muted">(порвано)</td><td></td></tr></table></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Первая строка даёт 총합. «245 이상 — 55%» — это сумма 상대도수 всех классов от 245 и выше = 0.55.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><b>Шаг 1.</b> 총합 = <span class="fr"><span>4</span><span>0.2</span></span> = 20 человек.</p>
+        <p><b>Шаг 2.</b> 245 이상 — 55% → 상대도수 0.55. Тогда у 240~245: 1 − (0.2 + 0.55) = 0.25.</p>
+        <p><b>Шаг 3.</b> 도수 = 20 × 0.25 = 5. <span class="ans">Ответ: 5명</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>766</b>봉사활동 시간 — 2시간 이상 4시간 미만</summary><div><p class="pq">다음 표는 유록이네 반 학생들의 봉사활동 시간을 조사하여 나타낸 상대도수의 분포표인데 일부가 찢어져 보이지 않는다. 봉사활동 시간이 4시간 이상인 학생이 전체의 60%일 때, 봉사활동 시간이 2시간 이상 4시간 미만인 학생 수를 구하시오.</p>
+        <div class="tbl"><table class="ft"><tr><th>봉사활동(시간)</th><th>학생 수(명)</th><th>상대도수</th></tr><tr><td>0<sup class="r">이상</sup> ~ 2<sup class="r">미만</sup></td><td>2</td><td>0.04</td></tr><tr><td>2 ~ 4</td><td class="muted">≈≈</td><td class="muted">≈≈</td></tr><tr><td>4 ~ 6</td><td class="muted">≈≈</td><td class="muted">≈≈</td></tr></table></div>
+        <p>Подсказка: точно как 765. 총합 из первой строки, «4시간 이상 60%» = 0.6.</p></div></details>
+      <details class="h"><summary><b>767</b>국사 성적 — <span class="m">x</span>점 미만이 45%</summary><div><p class="pq">다음 표는 유나네 반 학생들의 국사 성적을 조사하여 나타낸 상대도수의 분포표인데 일부가 찢어져 보이지 않는다. 국사 성적이 <span class="m">x</span>점 미만인 학생이 전체의 45%일 때, <span class="m">x</span>의 값을 구하시오.</p>
+        <div class="tbl"><table class="ft"><tr><th>국사 성적(점)</th><th>학생 수(명)</th><th>상대도수</th></tr><tr><td>50<sup class="r">이상</sup> ~ 60<sup class="r">미만</sup></td><td>6</td><td>0.15</td></tr><tr><td>60 ~ 70</td><td>12</td><td class="muted">≈≈</td></tr><tr><td>70 ~ 80</td><td>16</td><td class="muted">≈≈</td></tr><tr><td>80 ~ 90</td><td class="muted">≈≈</td><td></td></tr></table></div>
+        <p>Подсказка: найди 총합, потом сколько человек — это 45%. Складывай 도수 сверху вниз, пока не получится это число. Граница, на которой остановился, и есть <span class="m">x</span>.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 142 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">142</span><b>상대도수의 분포를 나타낸 그래프 (1)</b><span>총합 дан · стр. 263–264</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 142 · 도수의 총합이 주어진 경우</span>
+      <p class="ko">상대도수의 분포를 나타낸 그래프에서 (1) 가로축 ⇨ 계급의 끝 값, 세로축 ⇨ 상대도수 (2) (계급의 도수) = (계급의 상대도수) × (도수의 총합)</p>
+      <p class="muted">Читаем высоту точки → умножаем на 총합 → получаем человек.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">768</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">아래 표는 어느 해 프로야구 선수들 중 홈런을 친 선수들 40명을 조사하여 나타낸 상대도수의 그래프이다. 다음 설명 중 옳지 않은 것은?</p>
+      <p class="pt">40 бейсболистов, которые выбили хоум-ран (<span class="kr">홈런</span>). По горизонтали — сколько хоум-ранов. Найди <b>неверное</b>.</p>
+      <div class="pfig col"><svg id="g768" class="chart sm" role="img" aria-label="График относительных частот к задаче 768"></svg>
+        <div class="seg"><button class="btn" id="b768" aria-pressed="false">Подписать значения</button></div></div>
+      <ul class="opts" style="flex-direction:column"><li>① 홈런 개수가 15개 이상 20개 미만인 선수 수는 8명이다.</li><li>② 도수가 작을수록 상대도수도 작다.</li><li>③ 상대도수가 가장 큰 계급은 5개 이상 10개 미만이다.</li><li>④ 상대도수가 가장 큰 계급의 선수는 12명이다.</li><li>⑤ 상대도수가 가장 작은 계급은 20개 이상 25개 미만이다.</li></ul>
+      <p class="pt">① в 15~20 — 8 человек; ② меньше 도수 → меньше 상대도수; ③ самый большой 상대도수 у 5~10; ④ в этом классе 12 человек; ⑤ самый маленький 상대도수 у 20~25.</p>
+      <details class="h"><summary>Подсказка</summary><div><p>Точки стоят над серединами: 7.5 → класс 5~10, 12.5 → 10~15 и т. д. Найди самую низкую точку (не считая нулей по краям).</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>По графику: 5~10: 0.3, 10~15: 0.25, 15~20: 0.2, 20~25: 0.15, 25~30: 0.1 (сумма 1 ✓).</p>
+        <p>① 40 × 0.2 = 8 ✓ &nbsp; ② 상대도수 정비례 도수 ✓ &nbsp; ③ 0.3 — самый большой ✓ &nbsp; ④ 40 × 0.3 = 12 ✓</p>
+        <p>⑤ Самый маленький — 0.1 у класса <b>25~30</b>, а не 20~25 ✗. <span class="ans">Ответ: ⑤</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>769</b>통학시간 40명 — 옳지 않은 것 2개</summary><div><p class="pq">아래 표는 어느 중학교 1반 학생 40명의 통학시간에 대한 상대도수의 분포를 나타낸 상대도수의 그래프이다. 다음 설명 중 옳지 않은 것을 모두 고르면? (정답 2개)</p>
+        <div class="pfig"><svg id="g769" class="chart sm" role="img" aria-label="График к задаче 769"></svg></div>
+        <p class="ko">① 상대도수가 가장 큰 계급은 20분 이상 25분 미만이다. ② 상대도수가 가장 작은 계급의 학생은 4명이다. ③ 상대도수가 가장 큰 계급의 학생은 10명이다. ④ 도수가 클수록 상대도수가 작다. ⑤ 통학 시간이 30분 이상 35분 미만인 학생은 6명이다.</p>
+        <p>Подсказка: каждую высоту умножай на 40. И вспомни свойство ② (정비례).</p></div></details>
+      <details class="h"><summary><b>770</b>통학 시간 100명 — 옳지 않은 것</summary><div><p class="pq">아래 그림은 어느 중학교 학생 100명의 통학 시간에 대한 상대도수의 분포를 나타낸 것이다. 다음 중 옳지 않은 것은?</p>
+        <div class="pfig"><svg id="g770" class="chart sm" role="img" aria-label="График к задаче 770"></svg></div>
+        <p class="ko">① 통학 시간이 20분 이상 25분 미만 학생은 전체의 24%이다. ② 통학 시간이 10분 이상 15분 미만인 학생은 8명이다. ③ 상대도수를 모두 더하면 정확히 1이 된다. ④ 통학 시간이 25분 이상 30분 미만인 학생은 25명이다. ⑤ 이 그래프를 보고 통학 시간의 대략적인 평균을 구할 수 있다.</p>
+        <p>Подсказка: при 총합 = 100 도수 = 상대도수 × 100. Внимательно считай клетки: шаг сетки 0.01.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 143 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">143</span><b>상대도수의 분포를 나타낸 그래프 (2)</b><span>총합 не дан · стр. 265–266</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 143 · 도수의 총합이 주어지지 않은 경우</span>
+      <p class="ko">(ⅰ) (도수의 총합) = <span class="fr"><span>(그 계급의 도수)</span><span>(어떤 계급의 상대도수)</span></span> 임을 이용하여 도수의 총합을 구한다. (ⅱ) (계급의 도수) = (계급의 상대도수) × (도수의 총합) 임을 이용한다.</p>
+      <p class="muted">Сначала 총합 из класса, где известен 도수, потом всё остальное.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">771</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음 그림은 A반 학생들의 수학 성적에 대한 상대도수의 그래프이다. 옳지 <u>않은</u> 것은?</p>
+      <p class="pt">Оценки по математике класса A. Найди <b>неверное</b>.</p>
+      <div class="pfig col"><svg id="g771" class="chart sm" role="img" aria-label="График к задаче 771"></svg>
+        <div class="seg"><button class="btn" id="b771" aria-pressed="false">Подписать значения</button></div></div>
+      <ul class="opts" style="flex-direction:column"><li>① 모든 계급의 상대도수의 합은 1이다.</li><li>② 총 도수가 50명일 때, 계급 60점 이상 70점 미만의 도수는 11명이다.</li><li>③ 도수분포다각형과 모양이 같다.</li><li>④ 6개의 계급으로 나뉘었다.</li><li>⑤ 70점 이상인 학생은 전체의 20%이다.</li></ul>
+      <p class="pt">① сумма 1; ② если всего 50, в 60~70 — 11 человек; ③ форма как у полигона частот; ④ 6 классов; ⑤ 70 и выше — 20%.</p>
+      <details class="h"><summary>Подсказка</summary><div><p>Шаг сетки по вертикали 0.02. «70점 이상» — это <b>все</b> классы от 70: 70~80 и 80~90.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>По графику: 30~40: 0.08, 40~50: 0.14, 50~60: 0.3, 60~70: 0.22, 70~80: 0.2, 80~90: 0.06.</p>
+        <p>① 0.08 + 0.14 + 0.3 + 0.22 + 0.2 + 0.06 = 1 ✓ &nbsp; ② 50 × 0.22 = 11 ✓ &nbsp; ③ ✓ (только масштаб другой) &nbsp; ④ 6 классов ✓</p>
+        <p>⑤ 70점 이상: 0.2 + 0.06 = 0.26 → <b>26%</b>, а не 20% ✗. <span class="ans">Ответ: ⑤</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>772</b>사회 성적 — 옳지 않은 것 2개</summary><div><p class="pq">다음은 어느 중학교 1학년 학생들의 사회 성적에 대한 상대도수의 분포를 나타낸 그래프이다. 50점 이상 60점 미만인 계급의 도수가 9명일 때, 옳지 않은 것을 모두 고르면? (정답 2개)</p>
+        <div class="pfig"><svg id="g772" class="chart sm" role="img" aria-label="График к задаче 772"></svg></div>
+        <p class="ko">① 계급의 개수는 5이다. ② 전체 학생 수는 60명이다. ③ 성적이 80점 이상 90점 미만인 계급의 도수는 15명이다. ④ 성적이 80점 이상인 학생은 전체의 30%이다. ⑤ 성적이 3번째로 좋은 학생이 속하는 계급의 도수는 5명이다.</p>
+        <p>Подсказка: 총합 = 9 ÷ (высота у 50~60). Для ⑤: в каком классе окажется 3-й по счёту сверху ученик? Сколько людей в самом верхнем классе?</p></div></details>
+      <details class="h"><summary><b>773</b>휴가 일수 — 10일 이상</summary><div><p class="pq">다음 그림은 미현이네 반 학생들의 여름 방학 동안의 휴가를 다녀온 날의 수에 대한 상대도수의 분포를 나타낸 그래프이다. 상대도수가 가장 큰 계급에 속하는 학생 수가 16명일 때, 10일 이상 휴가를 다녀온 학생 수는? ① 9명 ② 10명 ③ 11명 ④ 12명 ⑤ 13명</p>
+        <div class="pfig"><svg id="g773" class="chart sm" role="img" aria-label="График к задаче 773"></svg></div>
+        <p>Подсказка: самая высокая точка — 16 человек. Отсюда 총합. «10일 이상» — классы 10~12 и 12~14.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 144 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">144</span><b>상대도수의 그래프가 찢어진 경우</b><span>порванный график · стр. 266–267</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 144</span>
+      <p class="ko">(ⅰ) 상대도수의 총합은 1임을 이용하여 찢어진 부분의 상대도수를 구한다. (ⅱ) (계급의 도수) = (계급의 상대도수) × (도수의 총합) 임을 이용한다.</p>
+      <p class="muted">Спрятанная точка = 1 − (сумма видимых). Потом формула.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">774</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">다음은 다짐이네 반 학생들이 원반을 던진 거리를 조사하여 나타낸 상대도수의 그래프인데 일부가 훼손되어 보이지 않는다. 원반을 던진 거리가 10 m 이상 15 m 미만인 학생 수가 8일 때, 전체 학생 수를 구하시오.</p>
+      <p class="pt">Метание диска (<span class="kr">원반</span>), дальность в метрах. На график упала клякса. В классе 10~15 м — 8 учеников. Сколько всего учеников?</p>
+      <div class="pfig col"><svg id="g774" class="chart sm" role="img" aria-label="График с кляксой к задаче 774"></svg>
+        <div class="seg"><button class="btn" id="b774" aria-pressed="false">Убрать кляксу</button></div></div>
+      <details class="h"><summary>Подсказка</summary><div><p>Под кляксой одна точка — над 12.5 (класс 10~15). Остальные видны. Сумма всех = 1.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p><b>Шаг 1.</b> Видимые: 5~10: 0.05, 15~20: 0.25, 20~25: 0.2, 25~30: 0.15, 30~35: 0.15.</p>
+        <p><b>Шаг 2.</b> 0.05 + <span class="m">x</span> + 0.25 + 0.2 + 0.15 + 0.15 = 1 → 0.8 + <span class="m">x</span> = 1 → <span class="m">x</span> = 0.2.</p>
+        <p><b>Шаг 3.</b> 총합 = <span class="fr"><span>8</span><span>0.2</span></span> = 40. <span class="ans">Ответ: 40명</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>775</b>수학 점수 — 70점 이상 80점 미만 6명</summary><div><p class="pq">다음 그래프는 하늘이네 반 학생들의 수학 점수를 조사하여 나타낸 것으로 그 일부가 훼손되어 보이지않는다. 70점 이상 80점 미만의 학생 수가 6명일 때, 전체 학생 수를 구하시오.</p>
+        <div class="pfig"><svg id="g775" class="chart sm" role="img" aria-label="Порванный график к задаче 775"></svg></div>
+        <p>Подсказка: как 774. Какая точка спрятана? Найди её через сумму = 1, потом 6 ÷ (эта высота).</p></div></details>
+      <details class="h"><summary><b>776</b>멀리뛰기 — 50 cm 이상 100 cm 미만</summary><div><p class="pq">다음 그림은 철이네 반 학생들의 멀리뛰기 기록을 조사하여 나타낸 상대도수의 그래프로 일부가 훼손되었다. 멀리뛰기 기록이 150 cm 이상 200 cm 미만인 학생 수가 12명일 때, 멀리뛰기 기록이 50 cm 이상 100 cm 미만인 학생 수를 구하시오.</p>
+        <div class="pfig"><svg id="g776" class="chart sm" role="img" aria-label="Порванный график к задаче 776"></svg></div>
+        <p>Подсказка: спрятана точка класса 150~200. Сумма = 1 → её высота → 총합 = 12 ÷ высота → 도수 класса 50~100.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 145 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">145</span><b>도수의 총합이 다른 두 자료의 상대도수</b><span>две таблицы · стр. 267–268</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 145</span>
+      <p class="ko">도수의 총합이 다른 두 자료의 분포를 비교할 때 상대도수를 이용한다.</p>
+      <p class="muted">Пример с библиотекой — в разделе 5. У каждой группы свой 총합.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">777</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pq">A, B의 두 상대도수의 분포표가 있다. A 분포표에서 도수가 14인 계급의 상대도수가 0.7, B 분포표에서 도수가 9인 계급의 상대도수가 0.36일 때, 두 분포표의 전체 도수의 차를 구하시오.</p>
+      <p class="pt">Две таблицы A и B. В A класс с 도수 14 имеет 상대도수 0.7. В B класс с 도수 9 имеет 상대도수 0.36. Найди разность общих количеств (<span class="kr">전체 도수의 차</span>).</p>
+      <details class="h"><summary>Подсказка</summary><div><p>Два раза третья формула: 총합 = 도수 ÷ 상대도수. Отдельно для A и для B.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>A: <span class="fr"><span>14</span><span>0.7</span></span> = 20. &nbsp; B: <span class="fr"><span>9</span><span>0.36</span></span> = <span class="fr"><span>900</span><span>36</span></span> = 25.</p>
+        <p>차 = 25 − 20 = 5. <span class="ans">Ответ: 5</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>778</b>두 분포표의 전체 도수의 합</summary><div><p class="pq">A, B의 두 상대도수의 분포표가 있다. A 분포표에서 도수가 10인 계급의 상대도수가 0.5, B 분포표에서 도수가 15인 계급의 상대도수가 0.2 일 때, 두 분포표의 전체 도수의 합을 구하여라. ① 90 ② 95 ③ 100 ④ 105 ⑤ 110</p>
+        <p>Подсказка: как 777, только в конце <b>сумма</b> (<span class="kr">합</span>), а не разность.</p></div></details>
+      <details class="h"><summary><b>779</b>수학을 좋아하는 남학생 vs 여학생</summary><div><p class="pq">다음 표는 남학생 30명과 여학생 20명을 대상으로 좋아하는 과목을 조사하여 상대도수로 나타낸 것이다. 수학을 좋아하는 여학생의 수와 남학생의 수의 차를 구하시오.</p>
+        <div class="tbl"><table class="ft"><tr><th colspan="2">〈남학생〉</th><th colspan="2">〈여학생〉</th></tr><tr><th>좋아하는 과목</th><th>상대도수</th><th>좋아하는 과목</th><th>상대도수</th></tr><tr><td>수학</td><td>0.5</td><td>수학</td><td>0.6</td></tr></table></div>
+        <p>Подсказка: у девочек доля больше — но человек ли больше? Посчитай 도수 каждой группы со <b>своим</b> 총합.</p></div></details>
+    </div>
+  </div>
+
+  <!-- 146 -->
+  <div class="type">
+    <div class="type-h"><span class="tn">146</span><b>두 상대도수 그래프의 비교</b><span>два графика · стр. 268–269</span></div>
+    <div class="box text"><span class="tag">учебник · 유형 146</span>
+      <p class="ko">도수의 총합이 다른 두 자료의 분포를 비교할 때 상대도수의 분포를 나타낸 그래프를 이용하면 편리하다. <b>참고</b> 그래프를 동시에 나타내면 두 자료의 분포 상태를 한눈에 비교할 수 있다.</p>
+      <p class="muted">График «правее» — у этой группы значения больше, среднее выше.</p></div>
+    <article class="prob"><div class="phead"><span class="pno">780</span><span class="badge rep">대표 유제</span><span class="badge">중</span></div>
+      <p class="pt">[2012년 3월 고1 17번/4점]</p>
+      <p class="pq">아래 그림은 학생수가 30명인 A반과 20명인 B반의 수학 점수를 조사하여 상대도수분포다각형으로 나타낸 것이다. 다음 보기 중 옳은 것만을 있는 대로 고른 것은?</p>
+      <p class="pt">Класс A — 30 учеников (сплошная линия), класс B — 20 (пунктир). Выбери <b>все верные</b> утверждения.</p>
+      <div class="pfig col"><svg id="g780" class="chart" role="img" aria-label="Два полигона относительных частот к задаче 780"></svg></div>
+      <div class="box text"><span class="tag">보기</span>
+        <p class="ko">ㄱ. A반에서 수학 점수가 40점 이상 60점 미만인 학생은 6명이다.<br>ㄴ. 수학 점수의 평균은 A반이 B반보다 높다.<br>ㄷ. 각 반의 상대도수분포다각형과 가로축으로 둘러싸인 도형의 넓이는 서로 같다.</p>
+        <p class="muted">ㄱ. В A в классе 40~60 — 6 человек. ㄴ. Средний балл в A выше, чем в B. ㄷ. Площади под двумя ломаными равны.</p></div>
+      <ul class="opts"><li>① ㄱ</li><li>② ㄷ</li><li>③ ㄱ, ㄴ</li><li>④ ㄴ, ㄷ</li><li>⑤ ㄱ, ㄴ, ㄷ</li></ul>
+      <details class="h"><summary>Подсказка</summary><div><p>ㄱ: у A свой 총합 — 30. ㄴ: какая ломаная сдвинута вправо? ㄷ: вспомни 참고 со стр. 242.</p></div></details>
+      <details class="s"><summary>Решение</summary><div>
+        <p>ㄱ. У A в 40~60 высота 0.2 → 30 × 0.2 = 6 ✓.</p>
+        <p>ㄴ. Вершина A — над 70 (0.5), вершина B — над 50 (0.45). График A сдвинут <b>вправо</b>, к большим баллам → среднее A выше ✓.</p>
+        <p>ㄷ. Площадь = (계급의 크기) × (상대도수의 총합) = 20 × 1 = 20 у обоих ✓.</p>
+        <p><span class="ans">Ответ: ⑤</span></p></div></details>
+    </article>
+    <div class="rest">
+      <details class="h"><summary><b>781</b>A중학교 150명 · B중학교 100명 — 옳지 않은 것</summary><div><p class="pq">아래 그림은 A중학교 독서반 학생 150명과 B중학교 독서반 학생 100명의 한 학기 동안의 독서량에 대한 상대도수의 분포를 나타낸 그래프이다. 다음 중 옳지 않은 것은?</p>
+        <div class="pfig"><svg id="g781" class="chart" role="img" aria-label="Два графика к задаче 781"></svg></div>
+        <p class="ko">① A중학교에서 9권 이상 11권 미만의 책을 읽은 학생 수는 42이다. ② B중학교에서 도수가 가장 큰 계급의 상대도수는 0.32이다. ③ 13권 이상의 책을 읽은 학생은 B중학교에서 8% 이내에 든다. ④ 두 그래프와 가로축으로 둘러싸인 도형의 넓이는 서로 같다. ⑤ 계급값이 10권인 계급에 속한 학생 수는 A중학교보다 B중학교가 더 많다.</p>
+        <p>Подсказка: в ⑤ сравнивают <b>человек</b>, а не долю. Посчитай 150 × (высота A) и 100 × (высота B) над 10.</p></div></details>
+      <details class="h"><summary><b>782</b>A고 200명 · B고 300명 — <span class="m">a</span> − <span class="m">b</span></summary><div><p class="pt">[2018년 3월 고1 10번/3점]</p><p class="pq">A 고등학교 학생 200명과 B 고등학교 학생 300명의 하루 평균 수면 시간을 조사한 상대도수의 그래프가 그림과 같다. 두 고등학교 A, B에서 조사한 학생들 중 하루 평균 수면 시간이 7시간 이상 8시간 미만인 학생 수를 각각 <span class="m">a</span>, <span class="m">b</span>라 할 때, <span class="m">a</span> − <span class="m">b</span>의 값은? ① −30 ② −15 ③ 0 ④ 15 ⑤ 30</p>
+        <div class="pfig"><svg id="g782" class="chart" role="img" aria-label="Два графика к задаче 782"></svg></div>
+        <p>Подсказка: над 7.5 графики пересекаются — доля одинаковая. Но 총합 разные! Ответ не 0.</p></div></details>
+    </div>
+  </div>
+  <p class="cap">Графики задач перерисованы по учебнику; масштаб и подписи могут немного отличаться от книги.</p>
+</section>
+
+<section>
+  <h2><span class="num">10</span> 정리 · шпаргалка</h2>
+  <div class="tbl"><table>
+    <tr><th></th><th>Что это</th><th>Формула / свойство</th><th>Ловушка</th></tr>
+    <tr><td class="kr">상대도수</td><td>доля класса от всех</td><td>도수 ÷ 총합; от 0 до 1</td><td>не путать с 도수 (штуки)</td></tr>
+    <tr><td class="kr">상대도수의 총합</td><td>сумма всех долей</td><td>всегда 1</td><td>сумма 도수 — не 1, а число данных</td></tr>
+    <tr><td class="kr">도수의 총합</td><td>всего данных</td><td>도수 ÷ 상대도수</td><td>делить, а не умножать</td></tr>
+    <tr><td class="kr">그래프</td><td>гистограмма/полигон по 상대도수</td><td>площадь = 계급의 크기</td><td>точка — над серединой класса</td></tr>
+    <tr><td class="kr">두 집단 비교</td><td>разные 총합</td><td>сравниваем 상대도수</td><td>«человек больше» — считать со своим 총합</td></tr>
+  </table></div>
+  <div class="box warn"><span class="tag">자주 하는 실수 · частые ошибки</span>
+    <ul class="mistakes">
+      <li>Находят 총합 умножением: 16 × 0.4 вместо 16 ÷ 0.4.</li>
+      <li>Забывают, что «245 mm 이상 55%» — это сумма нескольких классов.</li>
+      <li>«70점 이상» берут только один класс 70~80.</li>
+      <li>Неправильно читают шаг сетки (0.02 вместо 0.05).</li>
+      <li>При двух группах считают людей одной группы по 총합 другой; думают, что одинаковая высота точки = одинаковое число людей.</li>
+    </ul></div>
+</section>
+</main>
+<script>
+(()=>{
+const NS="http://www.w3.org/2000/svg";
+const $=id=>document.getElementById(id);
+function el(tag,a,p){const e=document.createElementNS(NS,tag);for(const k in a){if(k==="text")e.textContent=a[k];else e.setAttribute(k,a[k]);}if(p)p.appendChild(e);return e;}
+const fmt=v=>{const r=Math.round(v*1000)/1000;return String(r);};
+
+/* ---------- generic histogram / polygon chart (from previous lesson, + vals, dash, blob, yl) ---------- */
+function chart(id,o){
+  const svg=$(id); if(!svg) return; svg.innerHTML="";
+  const W=o.W||380,H=o.H||250,L=o.L||44,R=40,T=26,B=30;
+  const lo=o.lo,w=o.w,f=o.f||o.series[0].f,n=f.length;
+  const x0=o.x0!==undefined?o.x0:lo-w;
+  const x1=o.x1!==undefined?o.x1:lo+w*(n+1);
+  const ymax=o.ymax,ys=o.ystep||1,ev=o.every||1;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const X=v=>L+(v-x0)/(x1-x0)*(W-L-R), Y=v=>H-B-v/ymax*(H-B-T);
+  const g=el("g",{},svg);
+  if(o.band) el("rect",{x:X(o.band[0]),y:Y(ymax),width:X(o.band[1])-X(o.band[0]),height:Y(0)-Y(ymax),class:"band"},g);
+  for(let k=1;k*ys<=ymax+1e-9;k++) el("line",{x1:X(x0),x2:X(x1),y1:Y(k*ys),y2:Y(k*ys),class:"gr"},g);
+  for(let k=-2;k<=n+2;k++){const v=lo+k*w; if(v>x0+1e-9&&v<=x1+1e-9) el("line",{x1:X(v),x2:X(v),y1:Y(0),y2:Y(ymax),class:"gr"},g);}
+  if(o.hist){f.forEach((h,i)=>{if(!h)return;const hi=o.hi&&o.hi.includes(i);
+    el("rect",{x:X(lo+i*w),y:Y(h),width:X(lo+(i+1)*w)-X(lo+i*w),height:Y(0)-Y(h),class:hi?"bar hi":"bar"},svg);});}
+  const ser=o.series||(o.poly?[{f,c:"coral"}]:[]);
+  const cid=id+"clip";const cp=el("clipPath",{id:cid},svg);el("rect",{x:0,y:T-12,width:W,height:H},cp);
+  ser.forEach(s=>{const pts=[[lo-w/2,0],...s.f.map((h,i)=>[lo+(i+0.5)*w,h]),[lo+(s.f.length+0.5)*w,0]];
+    const ps=pts.map(p=>`${X(p[0])},${Y(p[1])}`).join(" ");
+    if(o.pfill) el("polygon",{points:ps,class:"pfill"},svg);
+    el("polyline",{points:ps,class:"pl "+s.c+(s.dash?" dash":""),"clip-path":`url(#${cid})`},svg);
+    pts.forEach(p=>el("circle",{cx:X(p[0]),cy:Y(p[1]),r:3,class:"dot "+s.c},svg));
+    if(o.vals) s.f.forEach((h,i)=>el("text",{x:X(lo+(i+0.5)*w),y:Y(h)-8,"text-anchor":"middle",class:"vl "+s.c,text:fmt(h)},svg));
+    if(s.label) el("text",{x:X(s.lx),y:Y(s.ly),class:"slab "+s.c,"text-anchor":"middle",text:s.label},svg);});
+  if(o.hvals&&o.hist) f.forEach((h,i)=>el("text",{x:X(lo+(i+0.5)*w),y:Y(h)-6,"text-anchor":"middle",class:"vl blue",text:fmt(h)},svg));
+  if(o.torn){const P=o.torn.map(p=>[X(p[0]),Y(p[1])]);const E=[];
+    for(let i=0;i<P.length-1;i++){const [ax,ay]=P[i],[bx,by]=P[i+1];for(let s=0;s<5;s++){const t=s/5;E.push([ax+(bx-ax)*t+1.6*Math.sin((i*5+s)*2.1),ay+(by-ay)*t+1.6*Math.cos((i*5+s)*1.7)]);}}
+    E.push(P[P.length-1]);
+    const d="M"+E.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" L");
+    el("path",{d:d+` L${E[E.length-1][0].toFixed(1)},-2 L${E[0][0].toFixed(1)},-2 Z`,class:"tear"},svg);
+    el("path",{d,class:"tearedge"},svg);}
+  if(o.blob){const P=o.blob.map(p=>[X(p[0]),Y(p[1])]);const m=P.length;
+    const mid=(a,b)=>`${((a[0]+b[0])/2).toFixed(1)},${((a[1]+b[1])/2).toFixed(1)}`;
+    let d="M"+mid(P[0],P[1]);
+    for(let i=1;i<=m;i++){const a=P[i%m],b=P[(i+1)%m];d+=` Q${a[0].toFixed(1)},${a[1].toFixed(1)} ${mid(a,b)}`;}
+    el("path",{d:d+" Z",class:"blob"},svg);}
+  el("line",{x1:X(x0),x2:X(x1),y1:Y(0),y2:Y(0),class:"ax"},svg);
+  el("line",{x1:X(x0),x2:X(x0),y1:Y(0),y2:T-12,class:"ax"},svg);
+  if(o.brk){const bx=X(x0)+9,by=Y(0);el("path",{d:`M${bx-4},${by+5} l3,-10 M${bx+1},${by+5} l3,-10`,class:"brk"},svg);}
+  const yl=o.yl||(v=>fmt(v));
+  for(let k=0;k*ys*ev<=ymax+1e-9;k++){const v=k*ys*ev;el("text",{x:X(x0)-6,y:Y(v)+4,"text-anchor":"end",class:"tk",text:yl(v)},svg);}
+  const xl=o.xl||Array.from({length:n+1},(_,k)=>lo+k*w);
+  xl.forEach(v=>{if(v<x0-1e-9||v>x1+1e-9)return;el("text",{x:X(v),y:Y(0)+16,"text-anchor":"middle",class:"tk",text:fmt(v)},svg);});
+  if(!xl.includes(x0)) el("text",{x:X(x0),y:Y(0)+16,"text-anchor":"middle",class:"tk",text:o.brk?"0":fmt(x0)},svg);
+  el("text",{x:4,y:T-14,"text-anchor":"start",class:"un",text:o.yu||"(상대도수)"},svg);
+  el("text",{x:X(x1)+4,y:Y(0)+16,"text-anchor":"start",class:"un",text:o.xu||""},svg);
+}
+
+/* ---------- shooting dots ---------- */
+const dots=(id,hit,all)=>{$(id).innerHTML=Array.from({length:all},(_,i)=>`<i class="${i<hit?"in":""}"></i>`).join("");};
+dots("shA",8,10); dots("shB",15,30);
+
+/* ---------- concept figure 242 ---------- */
+let c242=false,a242=false;
+const F242=[.5,.4,.1];
+function d242(){
+  chart("g242",{lo:10,w:10,f:F242,hist:true,poly:true,pfill:a242,x0:0,ymax:.55,ystep:.05,every:2,xu:"(권)",
+    yu:c242?"(명)":"(상대도수)",yl:c242?(v=>fmt(Math.round(v*20*100)/100)):null});
+  $("cap242").textContent=c242?"Те же столбики, но слева подписаны человеки (из 20): 0.5 → 10, 0.4 → 8, 0.1 → 2. Форма не изменилась!"
+   :a242?"Закрашенная площадь под ломаной = 10 = 계급의 크기 (ширина класса), потому что сумма 상대도수 = 1."
+   :"Рисунок учебника стр. 242 (перерисован). Нажми первую кнопку: столбики не меняются, меняются только числа слева.";}
+d242();
+$("b242a").onclick=e=>{c242=!c242;e.currentTarget.setAttribute("aria-pressed",c242);d242();};
+$("b242b").onclick=e=>{a242=!a242;e.currentTarget.setAttribute("aria-pressed",a242);d242();};
+
+/* ---------- lab: boys vs girls ---------- */
+const BOY=[30,45,27,48], GP=[.15,.25,.2,.4], CL=["4~8","8~12","12~16","16~20"];
+let mode="f", ci=3;
+$("lCls").innerHTML=CL.map((c,i)=>`<button aria-pressed="${i===ci}" data-i="${i}">${c}</button>`).join("");
+function lab(){
+  const N=+$("lN").value; $("lNv").textContent=N;
+  const GIRL=GP.map(p=>Math.round(p*N)), NB=150;
+  const rb=BOY.map(v=>v/NB), rg=GIRL.map(v=>v/N);
+  const fb=mode==="f"?BOY:rb, fg=mode==="f"?GIRL:rg;
+  const mx=Math.max(...fb,...fg);
+  const ymax=mode==="f"?Math.max(50,Math.ceil((mx+5)/10)*10):0.5, ystep=mode==="f"?10:.05, every=mode==="f"?1:2;
+  chart("labSvg",{lo:4,w:4,x0:0,ymax,ystep,every,xu:"(권)",yu:mode==="f"?"(명)":"(상대도수)",band:[4+4*ci,8+4*ci],
+    series:[{f:fb,c:"blue"},{f:fg,c:"coral"}]});
+  let h=`<tr><th rowspan="2">권</th><th colspan="2">도수</th><th colspan="2">상대도수</th></tr><tr><th>남</th><th>여</th><th>남</th><th>여</th></tr>`;
+  CL.forEach((c,i)=>{h+=`<tr${i===ci?' class="hi"':""}><td>${c}</td><td class="b">${BOY[i]}</td><td class="c">${GIRL[i]}</td><td class="b">${fmt(rb[i])}</td><td class="c">${fmt(rg[i])}</td></tr>`;});
+  h+=`<tr class="sum"><td>합계</td><td>150</td><td>${N}</td><td>1</td><td>1</td></tr>`;
+  $("labTable").innerHTML=h;
+  const bf=BOY[ci],gf=GIRL[ci],br=rb[ci],gr=rg[ci];
+  const s=(a,b)=>a>b?"남학생":a<b?"여학생":"поровну";
+  const wf=s(bf,gf), wr=s(br,gr);
+  const st=wf===wr?`<span class="status ok">Здесь 도수 и 상대도수 говорят одно и то же.</span>`
+    :`<span class="status">도수 и 상대도수 говорят разное! Верить надо 상대도수.</span>`;
+  $("labOut").innerHTML=`<div class="k"><span>Класс ${CL[ci]} · по 도수 больше</span><b>${wf} (${bf} vs ${gf})</b></div>
+    <div class="k"><span>по 상대도수 больше</span><b>${wr} (${fmt(br)} vs ${fmt(gr)})</b></div>${st}
+    <div class="k"><span class="muted">Синяя — 남학생 (150), красная — 여학생 (${N})</span></div>`;
+}
+$("lMode").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;mode=b.dataset.v;[...$("lMode").children].forEach(x=>x.setAttribute("aria-pressed",x===b));lab();});
+$("lCls").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;ci=+b.dataset.i;[...$("lCls").children].forEach(x=>x.setAttribute("aria-pressed",x===b));lab();});
+$("lN").addEventListener("input",lab);
+$("lTrap").onclick=()=>{$("lN").value=120;lab();};
+$("lReset").onclick=()=>{$("lN").value=100;lab();};
+lab();
+
+/* ---------- problem charts ---------- */
+const tog=(btn,draw)=>{let on=false;draw(on);$(btn).onclick=e=>{on=!on;e.currentTarget.setAttribute("aria-pressed",on);draw(on);};};
+chart("g760",{lo:15,w:1,f:[4,7,10,6,3],poly:true,x0:14,brk:true,ymax:13,ystep:1,every:2,yu:"(명)",xu:"(초)"});
+chart("g761",{lo:2,w:2,f:[1,2,4,7,5,1],hist:true,x0:0,ymax:9.5,ystep:1,every:2,yu:"(명)",xu:"(회)",
+  torn:[[2.2,9.6],[3,9],[4,8.4],[5,8],[6,7.5],[7,6.6],[8,5.9],[9,5.8],[9.6,6.3],[10.5,6.6],[11.5,6],[12.5,5.9],[13.5,6.4],[14.5,6.2],[16,5.8]]});
+tog("b768",on=>chart("g768",{lo:5,w:5,f:[.3,.25,.2,.15,.1],poly:true,x0:0,ymax:.55,ystep:.05,every:2,xu:"(개)",vals:on}));
+chart("g769",{lo:10,w:5,f:[.1,.25,.3,.2,.15],poly:true,x0:5,brk:true,ymax:.55,ystep:.05,every:2,xu:"(분)"});
+chart("g770",{lo:10,w:5,f:[.09,.15,.24,.25,.22,.05],poly:true,x0:5,brk:true,ymax:.27,ystep:.01,every:5,xu:"(분)",H:280});
+tog("b771",on=>chart("g771",{lo:30,w:10,f:[.08,.14,.3,.22,.2,.06],poly:true,x0:20,brk:true,ymax:.33,ystep:.02,every:5,xu:"(점)",vals:on}));
+chart("g772",{lo:50,w:10,f:[.15,.2,.3,.25,.1],poly:true,x0:40,brk:true,ymax:.35,ystep:.05,every:1,xu:"(점)",H:270});
+chart("g773",{lo:2,w:2,f:[.02,.32,.28,.2,.14,.04],poly:true,x0:0,ymax:.34,ystep:.02,every:5,xu:"(일)"});
+tog("b774",on=>chart("g774",{lo:5,w:5,f:[.05,.2,.25,.2,.15,.15],poly:true,x0:0,ymax:.55,ystep:.05,every:2,xu:"(m)",vals:on,
+  blob:on?null:[[7,.33],[9.5,.37],[12,.34],[13.5,.28],[16.5,.22],[18,.14],[17,.08],[14,.065],[11,.1],[8,.13],[6,.2],[5.6,.28]]}));
+chart("g775",{lo:50,w:10,f:[.1,.25,.3,.2,.15],poly:true,x0:40,brk:true,ymax:.35,ystep:.05,every:1,xu:"(점)",H:270,
+  torn:[[63,.37],[66,.31],[70,.285],[73,.265],[76,.24],[79,.228],[82,.225],[86,.229],[90,.224],[95,.22],[100,.228],[108,.22]]});
+chart("g776",{lo:50,w:50,f:[.1,.15,.3,.2,.15,.1],poly:true,x0:0,ymax:.55,ystep:.05,every:2,xu:"(cm)",
+  torn:[[112,.56],[116,.43],[124,.35],[136,.32],[146,.25],[160,.222],[176,.232],[196,.27],[216,.258],[240,.25],[260,.29],[282,.27],[302,.285],[322,.25],[342,.28],[380,.27]]});
+chart("g780",{lo:20,w:20,x0:0,ymax:.55,ystep:.05,every:2,xu:"(점수)",W:420,series:[
+  {f:[.1,.2,.5,.2],c:"blue",label:"A반 (30명)",lx:92,ly:.47},{f:[.3,.45,.15,.1],c:"coral",dash:true,label:"B반 (20명)",lx:28,ly:.48}]});
+chart("g781",{lo:5,w:2,x0:3,brk:true,ymax:.36,ystep:.02,every:5,xu:"(권)",W:420,series:[
+  {f:[.2,.26,.28,.14,.12],c:"blue",label:"A중학교",lx:5.6,ly:.31},{f:[.12,.22,.32,.26,.08],c:"green",label:"B중학교",lx:14.2,ly:.29}]});
+chart("g782",{lo:5,w:1,x0:4,brk:true,ymax:.42,ystep:.02,every:5,xu:"(시간)",W:420,series:[
+  {f:[.12,.38,.3,.2],c:"blue",label:"A 고등학교",lx:7.6,ly:.4},{f:[.18,.26,.3,.26],c:"coral",dash:true,label:"B 고등학교",lx:9.2,ly:.34}]});
+})();
+</script>
